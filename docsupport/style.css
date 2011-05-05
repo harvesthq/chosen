@@ -1,1 +1,30 @@
-body { background: black; color: white; }
+/* Reset */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
+
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after, q:before, q:after { content: ""; content: none; }
+ins { background-color: #ff9; color: #000; text-decoration: none; } 
+mark { background-color: #ff9; color: #000; font-style: italic; font-weight: bold; }
+del { text-decoration: line-through; }
+abbr[title], dfn[title] { border-bottom: 1px dotted; cursor: help; }
+table { border-collapse: collapse; border-spacing: 0; }
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
+input, select { vertical-align: middle; }
+
+body { font:13px/1.231 sans-serif; *font-size:small; } /* Hack retained to preserve specificity */
+select, input, textarea, button { font:99% sans-serif; }
+pre, code, kbd, samp { font-family: monospace, sans-serif; }
+
+
+body { background: #EEE; color: #444; }
+
+header { background: #F36C00 url(header-bg.gif) repeat-x; height: 59px; min-width:780px; width: 100%; }
+header div { margin: 0 auto; padding: 0 20px; width: 745px; }
+header h1 { color:#FFF; font-size: 2em; font-weight: bold; height:59px; line-height: 59px; }
+header a { color: white; float: right; line-height: 59px; }
+
+div#content { background: white; border: 1px solid #DDD; border-width: 0 1px 1px; margin: 0 auto; padding: 20px 20px 30px; width: 738px; }
+
+footer { color: #999; margin: 20px auto; padding: 0 20px; width: 745px; text-align:center; }
