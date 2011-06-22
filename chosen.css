@@ -1,32 +1,47 @@
-div.chzn-container { font-family: sans-serif; position: relative; }
+/* line 3, sass/chosen.scss */
+div.chzn-container {
+  font-size: 82.5%;
+  position: relative;
+}
 
 div.chzn-container input {
+  background: #fff;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
+  background-image: -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
   border: 1px solid #aaa;
   font-family: sans-serif;
   font-size: 1em;
   margin: 0px;
-  padding: 5px;
-  width: 90%;
+  padding: 4px 5px;
   outline: none;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -khtml-border-radius: 3px;
   border-radius: 3px;
-  background: #fff;
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
-  background-image: -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-  height: 25px;
-  line-height: 25px;
-  padding: 0 5px;
 }
-div.chzn-container input:focus {
+div.chzn-container textarea:focus {
   border-color: #058cf5;
   -moz-box-shadow: 0px 0px 5px #999;
   -webkit-box-shadow: 0px 0px 5px #999;
   box-shadow: 0px 0px 5px #999;
 }
 
-div.chzn-container div.chzn-drop { background: #FFF; border: 1px solid #BBB; border-width: 0 1px 1px; left: 0; position: absolute; top: 29px; -webkit-box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15); -moz-box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15); z-index: 20; }
-
+/* line 6, sass/chosen.scss */
+div.chzn-container div.chzn-drop {
+  background: #FFF;
+  border: 1px solid #BBB;
+  border-width: 0 1px 1px;
+  left: 0;
+  position: absolute;
+  top: 29px;
+  -webkit-box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  z-index: 20;
+}
+/* line 19, sass/chosen.scss */
 div.chzn-container a.chzn-single {
   background: #FFF;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.5, white));
@@ -36,27 +51,80 @@ div.chzn-container a.chzn-single {
   overflow: hidden;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -khtml-border-radius: 3px;
   border-radius: 3px;
   height: 28px;
   color: #666;
   line-height: 28px;
-  padding: 0px 8px;
+  padding: 0px 0px 0px 8px;
   position: relative;
   text-decoration: none;
   z-index: 19;
+  white-space: nowrap;
 }
-/* line 36, sass/chosen.scss */
+/* line 35, sass/chosen.scss */
+div.chzn-container a.chzn-single span {
+  display: block;
+  margin-right: 26px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* line 41, sass/chosen.scss */
+div.chzn-container a.chzn-single div {
+  -moz-border-radius-topright: 2px;
+  -webkit-border-top-right-radius: 2px;
+  -o-border-top-right-radius: 2px;
+  -ms-border-top-right-radius: 2px;
+  -khtml-border-top-right-radius: 2px;
+  border-top-right-radius: 2px;
+  -moz-border-radius-bottomright: 2px;
+  -webkit-border-bottom-right-radius: 2px;
+  -o-border-bottom-right-radius: 2px;
+  -ms-border-bottom-right-radius: 2px;
+  -khtml-border-bottom-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  background: #EEE;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, white), color-stop(0.5, #eeeeee));
+  background-image: -moz-linear-gradient(center bottom, white 0%, #eeeeee 50%);
+  border-left: 1px solid #BBB;
+  display: block;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 18px;
+}
+/* line 53, sass/chosen.scss */
+div.chzn-container a.chzn-single div b {
+  background: url('chosen-arrows.png') no-repeat left center;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* line 62, sass/chosen.scss */
 div.chzn-container div.chzn-search {
   padding: 4px 3px;
+  margin: 0px;
+  white-space: nowrap;
 }
-/* line 38, sass/chosen.scss */
+/* line 66, sass/chosen.scss */
 div.chzn-container div.chzn-search input {
   padding: 0 3px;
   -moz-border-radius: 0px;
   -webkit-border-radius: 0px;
+  -o-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -khtml-border-radius: 0px;
   border-radius: 0px;
+  color: #666;
+  background: transparent !important;
+  padding: 5px;
+  margin: 1px 0;
+  outline: 0;
 }
-/* line 46, sass/chosen.scss */
+/* line 78, sass/chosen.scss */
 div.chzn-container ul.chzn-choices {
   background: #fff;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
@@ -73,44 +141,42 @@ div.chzn-container ul.chzn-choices {
   -webkit-border-radius: 3px;
   border-radius: 3px;
 }
-/* line 61, sass/chosen.scss */
+/* line 93, sass/chosen.scss */
 div.chzn-container ul.chzn-choices:focus {
   border-color: #058cf5;
   -moz-box-shadow: 0px 0px 5px #999;
   -webkit-box-shadow: 0px 0px 5px #999;
   box-shadow: 0px 0px 5px #999;
 }
-/* line 67, sass/chosen.scss */
+/* line 99, sass/chosen.scss */
 div.chzn-container ul.chzn-choices li {
   float: left;
   list-style-type: none;
   margin: 0px;
 }
-/* line 71, sass/chosen.scss */
+/* line 103, sass/chosen.scss */
 div.chzn-container ul.chzn-choices li.search-field {
   margin: 0px;
   white-space: nowrap;
   padding: 0px;
 }
-/* line 75, sass/chosen.scss */
+/* line 107, sass/chosen.scss */
 div.chzn-container ul.chzn-choices li.search-field input {
   color: #666;
-  width: 90px !important;
   background: transparent !important;
   border: 0px !important;
-  line-height: 26px;
+  padding: 5px;
   margin: 1px 0;
   outline: 0;
-  padding: 0px 5px;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
 }
-/* line 87, sass/chosen.scss */
+/* line 118, sass/chosen.scss */
 div.chzn-container ul.chzn-choices li.search-field input.default {
   color: #999;
 }
-/* line 92, sass/chosen.scss */
+/* line 123, sass/chosen.scss */
 div.chzn-container ul.chzn-choices li.search-choice {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -121,21 +187,21 @@ div.chzn-container ul.chzn-choices li.search-choice {
   color: #333;
   border: 1px solid #b3c9db;
   font-weight: bold;
-  padding: 2px 18px 2px 6px;
+  line-height: 13px;
+  padding: 3px 18px 3px 6px;
   position: relative;
   margin: 3px 0px 3px 5px;
-  line-height: 15px;
   text-shadow: 0px 1px 0px #e9f2fa;
 }
-/* line 107, sass/chosen.scss */
+/* line 138, sass/chosen.scss */
 div.chzn-container ul.chzn-choices li.search-choice span {
   cursor: default;
 }
-/* line 110, sass/chosen.scss */
+/* line 141, sass/chosen.scss */
 div.chzn-container ul.chzn-choices li.search-choice.search-choice-focus {
   background: #DDD;
 }
-/* line 113, sass/chosen.scss */
+/* line 144, sass/chosen.scss */
 div.chzn-container ul.chzn-choices li.search-choice a.search-choice-close {
   position: absolute;
   right: 4px;
@@ -144,13 +210,13 @@ div.chzn-container ul.chzn-choices li.search-choice a.search-choice-close {
   width: 8px;
   height: 9px;
   font-size: 1px;
-  background: url(/images/close.png) no-repeat;
+  background: url(chosen-close.png) no-repeat;
 }
-/* line 122, sass/chosen.scss */
+/* line 153, sass/chosen.scss */
 div.chzn-container ul.chzn-choices li.search-choice a.search-choice-close:hover {
   background-position: 0 -9px;
 }
-/* line 130, sass/chosen.scss */
+/* line 161, sass/chosen.scss */
 div.chzn-container ul.chzn-results {
   margin: 0;
   max-height: 196px;
@@ -160,62 +226,67 @@ div.chzn-container ul.chzn-results {
   overflow-y: auto;
   z-index: 20;
 }
-/* line 138, sass/chosen.scss */
+/* line 169, sass/chosen.scss */
 div.chzn-container ul.chzn-results li {
   padding: 7px 10px;
   z-index: 22;
   margin: 0;
   list-style-type: none;
 }
-/* line 143, sass/chosen.scss */
+/* line 174, sass/chosen.scss */
 div.chzn-container ul.chzn-results li.active-result {
   cursor: pointer;
 }
-/* line 146, sass/chosen.scss */
+/* line 177, sass/chosen.scss */
 div.chzn-container ul.chzn-results li em {
   font-weight: bold;
   font-style: normal;
   background: #FEFFDC;
 }
-/* line 151, sass/chosen.scss */
+/* line 182, sass/chosen.scss */
 div.chzn-container ul.chzn-results li.highlighted {
   background: #066bb9;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #066bb9), color-stop(0.5, #2482cb));
   background-image: -moz-linear-gradient(center bottom, #066bb9 0%, #2482cb 70%);
   color: #fff;
 }
-/* line 156, sass/chosen.scss */
+/* line 187, sass/chosen.scss */
 div.chzn-container ul.chzn-results li.highlighted em {
   color: #066bb9;
 }
-/* line 160, sass/chosen.scss */
+/* line 191, sass/chosen.scss */
 div.chzn-container ul.chzn-results li.no-results {
   background: #F4F4F4;
 }
-/* line 163, sass/chosen.scss */
+/* line 194, sass/chosen.scss */
 div.chzn-container ul.chzn-results li.group-result {
   cursor: default;
   color: #999;
   font-weight: bold;
 }
-/* line 168, sass/chosen.scss */
+/* line 199, sass/chosen.scss */
 div.chzn-container ul.chzn-results li.group-option {
   padding-left: 20px;
 }
 
-/* line 186, sass/chosen.scss */
+/* line 213, sass/chosen.scss */
+div.chzn-container-multi div.chzn-drop li.result-selected {
+  display: none;
+}
+
+/* line 218, sass/chosen.scss */
 div.chzn-container-active a.chzn-single {
   border-color: #058cf5;
   -moz-box-shadow: 0px 0px 5px #999;
   -webkit-box-shadow: 0px 0px 5px #999;
   box-shadow: 0px 0px 5px #999;
 }
-/* line 192, sass/chosen.scss */
+/* line 224, sass/chosen.scss */
 div.chzn-container-active a.chzn-single-with-drop {
   border: 1px solid #BBB;
-  border-width: 1px 1px 0;
+  border-width: 1px 1px 1px;
   box-shadow: 0px 1px 0px #FFF inset;
-  background: #000;
+  background: #EEE;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, white), color-stop(0.5, #eeeeee));
   background-image: -moz-linear-gradient(center bottom, white 0%, #eeeeee 50%);
   -webkit-border-bottom-left-radius: 0px;
@@ -225,7 +296,16 @@ div.chzn-container-active a.chzn-single-with-drop {
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-/* line 206, sass/chosen.scss */
+/* line 237, sass/chosen.scss */
+div.chzn-container-active a.chzn-single-with-drop div {
+  background: transparent;
+  border-left: none;
+}
+/* line 240, sass/chosen.scss */
+div.chzn-container-active a.chzn-single-with-drop div b {
+  background-position: right center;
+}
+/* line 245, sass/chosen.scss */
 div.chzn-container-active ul.chzn-choices {
   z-index: 21;
   border-color: #058cf5;
@@ -233,7 +313,7 @@ div.chzn-container-active ul.chzn-choices {
   -webkit-box-shadow: 0px 0px 5px #999;
   box-shadow: 0px 0px 5px #999;
 }
-/* line 208, sass/chosen.scss */
+/* line 247, sass/chosen.scss */
 div.chzn-container-active ul.chzn-choices input {
   color: #111 !important;
 }

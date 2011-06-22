@@ -25,6 +25,7 @@ THE SOFTWARE.
 
 */
 
+var Chosen;
 Chosen = Class.create();
 
 Chosen.prototype = {
@@ -32,18 +33,18 @@ Chosen.prototype = {
   active_field : false,
   mouse_on_container : false,
 
+  results_showing: false,
+
   result_highlighted : null,
   result_single_selected : null,
 
   choices: 0,
   
   // HTML Templates
-  single_temp : new Template('<a href="#" class="chzn-single">#{default}</a><div class="chzn-drop" style="display:none;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>'),
-  multi_temp : new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" /></li></ul><div class="chzn-drop" style="display:none;"><ul class="chzn-results"></ul></div>'),
+  single_temp : new Template('<a href="#" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>'),
+  multi_temp : new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'),
   
   choice_temp : new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="#" class="search-choice-close" rel="#{position}"></a></li>'),
-  group_temp : new Template('<li id="#{id}" class="group-result" style="display:none;">#{label}</li>'),
-  result_temp : new Template('<li id="#{id}" class="active-result">#{result}</li>'),
   no_results_temp : new Template('<li class="no-results">No results match "<span>#{terms}</span>"</li>'),
 
   initialize: function(el){
@@ -64,11 +65,11 @@ Chosen.prototype = {
   set_up_html: function(){
     this.container_id = this.form_field.id + "_chzn";
     
-    var f_width = (this.form_field.getStyle("width")) ? parseInt( this.form_field.getStyle("width"), 10 ) : this.form_field.getWidth();
+    this.f_width = (this.form_field.getStyle("width")) ? parseInt( this.form_field.getStyle("width"), 10 ) : this.form_field.getWidth();
     var container_props = {
       'id': this.container_id,
       'class':'chzn-container',
-      'style':'width:'+ f_width +'px'
+      'style':'width:'+ this.f_width +'px'
     };
     
     this.default_text = this.form_field.readAttribute('title') ? this.form_field.readAttribute('title') : this.default_text_default
@@ -82,13 +83,14 @@ Chosen.prototype = {
     this.dropdown = this.container.down('div.chzn-drop');
     
     var dd_top = this.container.getHeight();
-    var dd_width = (f_width - get_side_border_padding(this.dropdown));
+    var dd_width = (this.f_width - get_side_border_padding(this.dropdown));
 
     this.dropdown.setStyle({"width": dd_width  + "px", "top": dd_top + "px"});
 
     this.search_field = this.container.down('input');
     this.search_results = this.container.down('ul.chzn-results');
-    
+    this.search_field_scale();
+
     this.search_no_results = this.container.down('li.no-results');
     
     if( !this.is_multiple ){
@@ -104,7 +106,7 @@ Chosen.prototype = {
       this.search_choices.observe("click", this.choices_click.bindAsEventListener(this));
     }
 
-    this.results_parse_field();
+    this.results_build();
   },
   
   register_observers: function(){
@@ -118,8 +120,12 @@ Chosen.prototype = {
     this.search_field.observe("keydown", this.keydown_checker.bindAsEventListener(this));
     this.set_tab_index();
     
+    this.search_results.observe("click", this.search_results_click.bindAsEventListener(this) );
+    this.search_results.observe("mouseover", this.search_results_mouseover.bindAsEventListener(this) );
+    this.search_results.observe("mouseout", this.search_results_mouseout.bindAsEventListener(this) );
+    
     if( !this.is_multiple ){ this.selected_item.observe("focus", this.input_focus.bindAsEventListener(this)); }
-    else{ this.search_field.observe("focus", this.input_focus.bindAsEventListener(this)); }
+    this.search_field.observe("focus", this.input_focus.bindAsEventListener(this));
   },
   
   set_tab_index: function(el){
@@ -153,18 +159,18 @@ Chosen.prototype = {
   mouse_leave: function(){ this.mouse_on_container = false; },
   
   input_focus: function(evt){
-    if(!this.active_field){ setTimeout( this.container_click.bind(this) , 100 ); }
+    if(!this.active_field){ setTimeout( this.container_click.bind(this) , 50 ); }
   },
   
   input_blur: function(evt){
     if( !this.mouse_on_container ){
       this.active_field = false;
-      setTimeout( this.blur_test.bind(this) , 150 );
+      setTimeout( this.blur_test.bind(this) , 100 );
     }
   },
   
   blur_test: function(evt){
-    if( !this.active_field ){ this.close_field(); }
+    if( !this.active_field && this.container.hasClassName("chzn-container-active") ){ this.close_field(); }
   },
   
   test_active_click: function(evt){
@@ -173,6 +179,10 @@ Chosen.prototype = {
   },
   
   close_field: function(){
+    document.stopObserving("click", this.click_test_action);
+    
+    if( !this.is_multiple ){ this.selected_item.tabIndex = this.search_field.tabIndex; }
+    
     this.active_field = false;
     this.results_hide();
     
@@ -180,11 +190,37 @@ Chosen.prototype = {
     this.winnow_results_clear();
     this.clear_backstroke();
     
-    if( this.is_multiple && this.choices < 1 ){
+    this.show_search_field_default();
+    this.search_field_scale();
+  },
+  
+  show_search_field_default: function(){
+    if( this.is_multiple && this.choices < 1 && !this.active_field ){
       this.search_field.value = this.default_text;
       this.search_field.addClassName("default");
     }
+    else{
+      this.search_field.value = "";
+      this.search_field.removeClassName("default");
+    }
   },
+  
+  search_results_click: function(evt){
+    var target = (evt.target.hasClassName("active-result")) ? evt.target : evt.target.up(".active-result");
+    if( target ){
+      this.result_highlight = target;
+      this.result_select();
+    }
+  },
+  
+  search_results_mouseover: function(evt){
+    var target = (evt.target.hasClassName("active-result")) ? evt.target : evt.target.up(".active-result");
+    if( target ){ this.result_do_highlight( target ); }
+  },
+  
+  search_results_mouseout: function(evt){
+    if( evt.target.hasClassName('active-result') || evt.target.up('.active-result') ){ this.result_clear_highlight(); }
+  },  
   
   results_show: function(){
     if( !this.is_multiple ){
@@ -192,8 +228,11 @@ Chosen.prototype = {
       if( this.result_single_selected ){ this.result_do_highlight( this.result_single_selected ); }
     }
 
-    this.dropdown.setStyle({"top": this.container.getHeight() + "px"});
-    this.dropdown.show();
+    var dd_top = (this.is_multiple) ? this.container.getHeight() : this.container.getHeight() - 1;
+    this.dropdown.setStyle({"top":  dd_top + "px", "left":0});
+    this.results_showing = true;
+    
+    if( !this.is_multiple ){ this.selected_item.tabIndex = -1; }
     
     this.search_field.focus();
     this.search_field.value = this.search_field.value;
@@ -204,7 +243,7 @@ Chosen.prototype = {
   results_toggle: function(evt){
     evt.preventDefault();
     if( this.active_field ){
-      if( this.dropdown.visible() ){ this.results_hide(); }
+      if( this.results_showing ){ this.results_hide(); }
       else{ this.results_show(); }
     }
   },
@@ -212,67 +251,62 @@ Chosen.prototype = {
   results_hide: function(){
     if( !this.is_multiple ){ this.selected_item.removeClassName('chzn-single-with-drop'); }
     this.result_clear_highlight();
-    this.dropdown.hide();
+    this.dropdown.setStyle({"left":"-9000px"});
+    this.results_showing = false;
   },
   
   results_build: function(){
-    this.choices = 0;
-    var data = this.results_data;
-    
-    var i;
-    for( i = 0;  i<data.length; i++){
-      if( data[i].group ){ this.result_add_group( data[i] ); }
-      else{ this.result_add_option( data[i] ); }
-    }
-    
-    this.parsing = false;
-    this.winnow_results();
-  },
-  
-  results_parse_field: function(){
+    // TODO remove debugging
+    var startTime = new Date();
+
     this.parsing = true;
-    
-    if( this.search_results.select("li").length ){ this.search_results.update(""); }
-    if( this.is_multiple && this.search_choices.select("li.search-choice").length ){ this.search_choices.select("li.search-choice").invoke("remove"); }
-    
     this.results_data = select_to_array.parse( this.form_field );
-    this.results_build();
+
+    if( this.is_multiple && this.choices > 0 ){
+      this.search_choices.select("li.search-choice").invoke("remove");
+      this.choices = 0;
+    }
+
+    var i, content='';
+    for( i = 0;  i<this.results_data.length; i++){
+      if( this.results_data[i].group ){ content += this.result_add_group( this.results_data[i] ); }
+      else{
+        content += this.result_add_option( this.results_data[i] );
+        if( this.results_data[i].selected ){
+          if( this.is_multiple ){ this.choice_build( this.results_data[i] ); }
+          else { this.selected_item.down("span").update(this.results_data[i].text); }
+        }
+      }
+    }
+    this.show_search_field_default();
+    this.search_results.update( content );
+    this.parsing = false;
   },
   
   results_update_field: function(){
     this.result_clear_highlight();
-    this.results_parse_field();
+    this.results_build();
   },
   
   result_add_group: function(group){
     if( !group.disabled ){
       group.dom_id = this.form_field.id + "chzn_g_" + group.id;
-      this.search_results.insert( this.group_temp.evaluate({"id":group.dom_id, "label":group.label}) );
+      return '<li id="' + group.dom_id + '" class="group-result">' + group.label.escapeHTML() + '</li>';
     }
+    else{ return ""; }
   },
   
   result_add_option: function(option){
     if( !option.disabled ){
       option.dom_id = (this.form_field.id + "chzn_o_" + option.id);
-      this.search_results.insert( this.result_temp.evaluate({"id":option.dom_id,"result":option.text}) );
-    
-      var result = $(option.dom_id);
+      
+      var classes = ( option.selected && this.is_multiple ) ? [] : ["active-result"];
+      if( option.selected ){ classes.push("result-selected"); }
+      if( option.group_id >= 0 ){ classes.push("group-option"); }
 
-      if( option.selected ){
-        this.result_do_highlight( result );
-        this.result_select();
-      }
-
-      if( option.group_id >= 0 ){ result.addClassName("group-option"); }
-
-      result.observe('click',this.result_click.bindAsEventListener(this));
-      result.observe('mouseover',this.result_over.bindAsEventListener(this));
-      result.observe('mouseout', this.result_clear_highlight.bindAsEventListener(this));
+      return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.text.escapeHTML() + '</li>';
     }
-  },
-  
-  result_over: function(evt){
-    this.result_do_highlight( (evt.target.hasClassName("active-result")) ? evt.target : evt.target.up(".active-result") );
+    else{ return ""; }
   },
   
   result_do_highlight: function(el){
@@ -298,14 +332,8 @@ Chosen.prototype = {
     }
   },
   
-  result_click: function(evt){
-    this.result_highlight = (evt.target.hasClassName("active-result")) ? evt.target : evt.target.up(".active-result");
-    this.result_select();
-  },
-  
   result_select: function(){
     if(this.result_highlight){
-
       var high = this.result_highlight;
       this.result_clear_highlight();
 
@@ -315,18 +343,20 @@ Chosen.prototype = {
 
       var position = high.id.substr( high.id.lastIndexOf("_") + 1 );
       var item = this.results_data[position];
+      item.selected = true;
+      
       this.form_field.options[item.select_index].selected = true;
 
       if( this.is_multiple ){ this.choice_build( item ); }
-      else { this.selected_item.innerHTML = item.text; }
+      else { this.selected_item.down("span").update(item.text); }
+
 
       this.results_hide();
-
-      if(!this.parsing){ this.winnow_results(); }
-
       this.search_field.value = "";
 
       if(typeof Event.simulate === 'function'){ this.form_field.simulate("change"); }
+      
+      this.search_field_scale();
     }
   },
   
@@ -340,6 +370,8 @@ Chosen.prototype = {
   
   result_deselect: function(pos){
     var result_data = this.results_data[pos];
+    result_data.selected = false;
+    
     this.form_field.options[result_data.select_index].selected = false;
     var result = $(this.form_field.id + "chzn_o_" + pos);
     result.removeClassName("result-selected").addClassName("active-result").show();
@@ -348,37 +380,41 @@ Chosen.prototype = {
     this.winnow_results();
     
     if(typeof Event.simulate === 'function'){ this.form_field.simulate("change"); }
+    
+    this.search_field_scale();
   },
   
   results_search: function(){
-    if( !this.dropdown.visible() ){ this.results_show(); }
+    if( !this.results_showing ){ this.results_show(); }
     else{ this.winnow_results(); }
   },
   
   winnow_results: function(){
+    var startTime = new Date();
     this.no_results_clear();
     
     var results = 0;
 
     var searchText = (this.search_field.value == this.default_text) ? "" : this.search_field.value.strip();
     var regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+    var zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
     
-    // SPOT
     var i;
     for( i = 0; i<this.results_data.length; i+=1 ){
       var option = this.results_data[i];
        
       if(!option.disabled){
         if(option.group){ $(option.dom_id).hide(); }
-        else if(!(this.is_multiple && $(option.dom_id).hasClassName('result-selected'))){
+        else if(!(this.is_multiple && option.selected)){
           var found = false;
         
           var result_id = this.form_field.id + "chzn_o_" + option.id;
           if( regex.test( option.text ) ){
             found = true; results += 1;
           }
-          else if( option.text.indexOf(" ") >= 0){
-            var parts = option.text.split(" ");
+          else if( option.text.indexOf(" ") >= 0 || option.text.indexOf("[") == 0){
+            // TODO: replace this substitution of /\[\]/ with a list of characters to skip.
+            var parts = option.text.replace(/\[|\]/g, "").split(" ");
             if( parts.length ){
               var j;
               for( j = 0; j<parts.length; j++){
@@ -388,13 +424,15 @@ Chosen.prototype = {
           }
         
           if( found ){
-            var zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-            var startpos = option.text.search( zregex );
+            var text;
+            if( searchText.length ){
+              var startpos = option.text.search( zregex );
+              text = option.text.substr(0,startpos + searchText.length) + '</em>' + option.text.substr(startpos + searchText.length);
+              text = text.substr(0,startpos) + '<em>' + text.substr(startpos);
+            }
+            else{ text = option.text; }
 
-            var text = option.text.substr(0,startpos + searchText.length) + '</em>' + option.text.substr(startpos + searchText.length);
-            text = text.substr(0,startpos) + '<em>' + text.substr(startpos);
-
-            $(result_id).innerHTML = text;
+            if( $(result_id).innerHTML !== text ){ $(result_id).update( text ); }
             
             this.result_activate( $(result_id) );
             
@@ -443,7 +481,7 @@ Chosen.prototype = {
   
   choices_click: function(evt){
     evt.preventDefault();
-    if( this.active_field && !(evt.target.hasClassName('search-choice') || evt.target.up('.search-choice')) && !this.dropdown.visible() ){ this.results_show(); }
+    if( this.active_field && !(evt.target.hasClassName('search-choice') || evt.target.up('.search-choice')) && !this.results_showing ){ this.results_show(); }
   },
   
   choice_build: function(item){
@@ -462,30 +500,57 @@ Chosen.prototype = {
   
   choice_destroy: function(link){
     this.choices -= 1;
+    this.show_search_field_default();
     
     if( this.is_multiple && this.choices > 0 && this.search_field.value.length < 1 ){ this.results_hide(); }
     
     this.result_deselect(link.readAttribute("rel"));
     link.up('li').remove();
+  },
+  
+  search_field_scale: function(){
+    if(this.is_multiple){
+      var input = this.search_field;
     
-    if( this.choices < 1 ){ this.close_field(); }
+      var h = 0, w = 0;
+
+      var style_block = "position:absolute; left: -1000px; top: -1000px; display:none;";
+      var styles = ['font-size','font-style', 'font-weight', 'font-family','line-height', 'text-transform', 'letter-spacing'];
+      styles.each(function(style){ style_block += style + ":" + input.getStyle(style) + ";"});
+
+      var div = new Element('div', { 'style' : style_block }).update(input.value);
+      document.body.appendChild(div);
+      
+      console.log( Element.measure(div, 'width') );
+      w = Element.measure(div, 'width') + 25;
+      div.remove();
+      
+      if( w > this.f_width-10 ){ w = this.f_width - 10; }
+      this.search_field.setStyle({'width':w + 'px'});
+      
+      var dd_top = this.container.getHeight();
+      this.dropdown.setStyle({"top":  dd_top + "px"});      
+    }
   },
   
   keydown_arrow: function(){
     var actives = this.search_results.select("li.active-result");
     if( actives.length ){
       if( !this.result_highlight ){ this.result_do_highlight( actives.first() ); }
-      else if( this.dropdown.visible() ){
+      else if( this.results_showing ){
         var sibs = this.result_highlight.nextSiblings();
         var nexts = sibs.intersect(actives);
         if( nexts.length ){ this.result_do_highlight(nexts.first()); }
       }
-      if( !this.dropdown.visible() ){ this.results_show(); }
+      if( !this.results_showing ){ this.results_show(); }
     }
   },
   
   keyup_arrow: function(){
-    if( this.result_highlight ){
+    if( !this.results_showing && !this.is_multiple ){
+      this.results_show();
+    }
+    else if( this.result_highlight ){
       var sibs = this.result_highlight.previousSiblings();
       var actives = this.search_results.select("li.active-result");
       var prevs = sibs.intersect(actives);
@@ -501,7 +566,7 @@ Chosen.prototype = {
   keydown_backstroke: function(){
     if( this.pending_backstroke ){
       this.choice_destroy( this.pending_backstroke.down("a") );
-      this.clear_backstroke();  
+      this.clear_backstroke();
     }
     else{
       this.pending_backstroke = this.search_container.siblings("li.search-choice").last();
@@ -516,6 +581,7 @@ Chosen.prototype = {
   
   keyup_checker: function(evt){
     var stroke = evt.which || evt.keyCode;
+    this.search_field_scale();
 
     switch(stroke){
       case 8:
@@ -524,7 +590,7 @@ Chosen.prototype = {
         break;
       case 13:
         evt.preventDefault();
-        if( this.dropdown.visible() ){ this.result_select(); }
+        if( this.results_showing ){ this.result_select(); }
         break;
       case 9:
       case 13:
@@ -539,6 +605,7 @@ Chosen.prototype = {
   
   keydown_checker: function(evt){
     var stroke = evt.which || evt.keyCode;
+    this.search_field_scale();
     
     if(stroke !== 8 && this.pending_backstroke) this.clear_backstroke();
 
@@ -569,7 +636,7 @@ var get_side_border_padding = function(item){
 }
 
 var select_to_array = {
-  parse: function(select){
+  parse: function(select) {
     var children = select.children;
     var opt_array = [];
 
@@ -578,7 +645,7 @@ var select_to_array = {
     
     var i;
     
-    for( i = 0; i<children.length; i++){
+    for( i = 0; i<children.length; i++) {
       if( children[i].nodeName==="OPTGROUP" ){
         var group = children[i];
         var group_options = group.children;
@@ -597,12 +664,15 @@ var select_to_array = {
         opt_array.push( select_to_array.parse_option( children[i], opt_array.length, sel_index ) );
         sel_index += 1;
       }
+      else {
+        sel_index += 1;
+      }
     }
 
     return opt_array;
   },
   
-  parse_option: function(option, opt_id, select_index, group_id, group_disabled){
+  parse_option: function(option, opt_id, select_index, group_id, group_disabled) {
     var opt = { id:opt_id, select_index:select_index, value:option.value, text:option.text, selected:option.selected, disabled:option.disabled }
     if(group_id || group_id===0){
       opt.group_id = group_id;
