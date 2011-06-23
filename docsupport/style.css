@@ -18,7 +18,7 @@ select, input, textarea, button { font:99% sans-serif; }
 pre, code, kbd, samp { font-family: monospace, sans-serif; }
 
 
-body { background: #EEE; color: #444; }
+body { background: #EEE; color: #444; line-height: 1.4em; }
 
 header { background: #F36C00 url(header-bg.gif) repeat-x; height: 59px; min-width:780px; width: 100%; }
 header div { margin: 0 auto; padding: 0 40px; width: 745px; }
@@ -37,7 +37,7 @@ h1, h2 { font-family: Georgia, Times, serif; }
 h2 { font-size: 1.25em; margin: 2.5em 0 .5em; border-bottom: 1px solid #999; padding-bottom: 5px; }
 h3 { font-weight: bold; }
 
-ul li { list-style: disc; margin-left: 1em; margin-bottom: 1em; }
+ul li { list-style: disc; margin-left: 1em; margin-bottom: 1.25em; }
 ol li { margin-left: 1.25em; }
 
 li > p { margin-top: .25em; }
