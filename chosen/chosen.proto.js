@@ -603,6 +603,7 @@ Chosen.prototype = {
       case 13:
       case 38:
       case 40:
+      case 16:
         break;
       default:
         this.results_search();
