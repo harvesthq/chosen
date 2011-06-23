@@ -96,7 +96,6 @@ Chosen.prototype = {
     if( !this.is_multiple ){
       this.search_container = this.container.down('div.chzn-search');
       this.selected_item = this.container.down('.chzn-single');
-      this.selected_item.observe("click", this.results_toggle.bindAsEventListener(this));
       var sf_width = (dd_width - get_side_border_padding(this.search_container) - get_side_border_padding(this.search_field));
       this.search_field.setStyle( {"width" : sf_width + "px"} );
     }
@@ -124,7 +123,7 @@ Chosen.prototype = {
     this.search_results.observe("mouseover", this.search_results_mouseover.bindAsEventListener(this) );
     this.search_results.observe("mouseout", this.search_results_mouseout.bindAsEventListener(this) );
     
-    if( !this.is_multiple ){ this.selected_item.observe("focus", this.input_focus.bindAsEventListener(this)); }
+    if( !this.is_multiple ){ this.selected_item.observe("focus", this.activate_field.bindAsEventListener(this)); }
     this.search_field.observe("focus", this.input_focus.bindAsEventListener(this));
   },
   
@@ -133,30 +132,46 @@ Chosen.prototype = {
       var ti = this.form_field.tabIndex;
       this.form_field.tabIndex = -1;
 
-      this.search_field.tabIndex = ti;
-      if( !this.is_multiple ){ this.selected_item.tabIndex = ti; }
+      if( !this.is_multiple ){
+        this.selected_item.tabIndex = ti;
+        this.search_field.tabIndex = -1;
+      }
+      else{ this.search_field.tabIndex = ti; }
     }
   },
   
   container_click: function(evt){
-    if(evt && evt.type=="click"){ evt.preventDefault(); }
+    if(evt && evt.type=="click"){ evt.stop(); }
     if( !this.pending_destroy_click ){
       if(!this.active_field){
         if(this.is_multiple){ this.search_field.clear(); }
         document.observe("click", this.click_test_action);
         this.results_show();
       }
-      this.search_field.value = this.search_field.value;
-      this.search_field.focus();
-
-      this.container.addClassName("chzn-container-active");
-      this.active_field = true;
+      else if( !this.is_multiple && evt && (evt.target === this.selected_item || evt.target.up("a.chzn-single"))){
+        this.results_show();
+      }
+      
+      this.activate_field();
     }
     else{ this.pending_destroy_click = false; }
   },
   
   mouse_enter: function(){ this.mouse_on_container = true; },
   mouse_leave: function(){ this.mouse_on_container = false; },
+
+  activate_field: function(){
+    if( !this.is_multiple && !this.active_field ){
+      this.search_field.tabIndex = this.selected_item.tabIndex;
+      this.selected_item.tabIndex = -1;
+    }
+    
+    this.container.addClassName("chzn-container-active");
+    this.active_field = true;
+    
+    this.search_field.value = this.search_field.value;
+    this.search_field.focus();    
+  },
   
   input_focus: function(evt){
     if(!this.active_field){ setTimeout( this.container_click.bind(this) , 50 ); }
@@ -181,7 +196,10 @@ Chosen.prototype = {
   close_field: function(){
     document.stopObserving("click", this.click_test_action);
     
-    if( !this.is_multiple ){ this.selected_item.tabIndex = this.search_field.tabIndex; }
+    if( !this.is_multiple ){
+      this.selected_item.tabIndex = this.search_field.tabIndex;
+      this.search_field.tabIndex = -1;
+    }
     
     this.active_field = false;
     this.results_hide();
@@ -232,20 +250,10 @@ Chosen.prototype = {
     this.dropdown.setStyle({"top":  dd_top + "px", "left":0});
     this.results_showing = true;
     
-    if( !this.is_multiple ){ this.selected_item.tabIndex = -1; }
-    
     this.search_field.focus();
     this.search_field.value = this.search_field.value;
     
     this.winnow_results();
-  },
-  
-  results_toggle: function(evt){
-    evt.preventDefault();
-    if( this.active_field ){
-      if( this.results_showing ){ this.results_hide(); }
-      else{ this.results_show(); }
-    }
   },
   
   results_hide: function(){
@@ -595,6 +603,7 @@ Chosen.prototype = {
       case 13:
       case 38:
       case 40:
+      case 16:
         break;
       default:
         this.results_search();
