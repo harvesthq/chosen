@@ -285,6 +285,8 @@ div.chzn-container-active a.chzn-single {
 div.chzn-container-active a.chzn-single-with-drop {
   border: 1px solid #BBB;
   border-width: 1px 1px 1px;
+  -moz-box-shadow:  0px 1px 0px #FFF inset;
+  -webkit-box-shadow:  0px 1px 0px #FFF inset;
   box-shadow: 0px 1px 0px #FFF inset;
   background: #EEE;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, white), color-stop(0.5, #eeeeee));
