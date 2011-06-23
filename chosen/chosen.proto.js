@@ -1,7 +1,7 @@
 /*!
 
 Chosen for Protoype.js
-by Patrick Filler at Harvest
+by Patrick Filler for Harvest
 
 Copyright (c) 2011 Harvest
 
