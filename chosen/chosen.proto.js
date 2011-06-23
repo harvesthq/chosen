@@ -521,7 +521,6 @@ Chosen.prototype = {
       var div = new Element('div', { 'style' : style_block }).update(input.value);
       document.body.appendChild(div);
       
-      console.log( Element.measure(div, 'width') );
       w = Element.measure(div, 'width') + 25;
       div.remove();
       
