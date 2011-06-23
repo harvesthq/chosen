@@ -123,7 +123,7 @@ Chosen.prototype = {
     this.search_results.observe("mouseover", this.search_results_mouseover.bindAsEventListener(this) );
     this.search_results.observe("mouseout", this.search_results_mouseout.bindAsEventListener(this) );
     
-    if( !this.is_multiple ){ this.selected_item.observe("focus", this.input_focus.bindAsEventListener(this)); }
+    if( !this.is_multiple ){ this.selected_item.observe("focus", this.activate_field.bindAsEventListener(this)); }
     this.search_field.observe("focus", this.input_focus.bindAsEventListener(this));
   },
   
@@ -132,8 +132,11 @@ Chosen.prototype = {
       var ti = this.form_field.tabIndex;
       this.form_field.tabIndex = -1;
 
-      this.search_field.tabIndex = ti;
-      if( !this.is_multiple ){ this.selected_item.tabIndex = ti; }
+      if( !this.is_multiple ){
+        this.selected_item.tabIndex = ti;
+        this.search_field.tabIndex = -1;
+      }
+      else{ this.search_field.tabIndex = ti; }
     }
   },
   
@@ -145,21 +148,30 @@ Chosen.prototype = {
         document.observe("click", this.click_test_action);
         this.results_show();
       }
-      else if( !this.is_multiple  && evt && (evt.target === this.selected_item || evt.target.up("a.chzn-single"))){
+      else if( !this.is_multiple && evt && (evt.target === this.selected_item || evt.target.up("a.chzn-single"))){
         this.results_show();
       }
       
-      this.search_field.value = this.search_field.value;
-      this.search_field.focus();
-
-      this.container.addClassName("chzn-container-active");
-      this.active_field = true;
+      this.activate_field();
     }
     else{ this.pending_destroy_click = false; }
   },
   
   mouse_enter: function(){ this.mouse_on_container = true; },
   mouse_leave: function(){ this.mouse_on_container = false; },
+
+  activate_field: function(){
+    if( !this.is_multiple && !this.active_field ){
+      this.search_field.tabIndex = this.selected_item.tabIndex;
+      this.selected_item.tabIndex = -1;
+    }
+    
+    this.container.addClassName("chzn-container-active");
+    this.active_field = true;
+    
+    this.search_field.value = this.search_field.value;
+    this.search_field.focus();    
+  },
   
   input_focus: function(evt){
     if(!this.active_field){ setTimeout( this.container_click.bind(this) , 50 ); }
@@ -184,7 +196,10 @@ Chosen.prototype = {
   close_field: function(){
     document.stopObserving("click", this.click_test_action);
     
-    if( !this.is_multiple ){ this.selected_item.tabIndex = this.search_field.tabIndex; }
+    if( !this.is_multiple ){
+      this.selected_item.tabIndex = this.search_field.tabIndex;
+      this.search_field.tabIndex = -1;
+    }
     
     this.active_field = false;
     this.results_hide();
@@ -234,8 +249,6 @@ Chosen.prototype = {
     var dd_top = (this.is_multiple) ? this.container.getHeight() : this.container.getHeight() - 1;
     this.dropdown.setStyle({"top":  dd_top + "px", "left":0});
     this.results_showing = true;
-    
-    if( !this.is_multiple ){ this.selected_item.tabIndex = -1; }
     
     this.search_field.focus();
     this.search_field.value = this.search_field.value;
