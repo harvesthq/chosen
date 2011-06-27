@@ -274,6 +274,9 @@ Chosen.prototype = {
       this.search_choices.select("li.search-choice").invoke("remove");
       this.choices = 0;
     }
+    else if( !this.is_multiple ){
+      this.selected_item.down("span").update(this.default_text);
+    }
 
     var i, content='';
     for( i = 0;  i<this.results_data.length; i++){
@@ -293,6 +296,7 @@ Chosen.prototype = {
   
   results_update_field: function(){
     this.result_clear_highlight();
+    this.result_single_selected = null;
     this.results_build();
   },
   
@@ -334,10 +338,8 @@ Chosen.prototype = {
     else if( high_top < visible_top ){ this.search_results.scrollTop = high_top; }
   },
   result_clear_highlight: function(){
-    if( this.result_highlight ){
-      this.result_highlight.removeClassName('highlighted');
-      this.result_highlight = null;
-    }
+    if( this.result_highlight ){ this.result_highlight.removeClassName('highlighted'); }
+    this.result_highlight = null;
   },
   
   result_select: function(){
