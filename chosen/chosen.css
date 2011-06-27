@@ -220,7 +220,7 @@ div.chzn-container ul.chzn-results {
   z-index: 20;
 }
 div.chzn-container-multi ul.chzn-results {
-  margin: 2px 2px 2px 0;
+  margin: -1px 0 0;
   padding: 0;
 }
 div.chzn-container-multi ul.chzn-results li {
