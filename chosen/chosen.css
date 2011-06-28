@@ -201,13 +201,13 @@ div.chzn-container ul.chzn-choices li.search-choice a.search-choice-close {
   width: 8px;
   height: 9px;
   font-size: 1px;
-  background: url(chosen-close.png) no-repeat;
+  background: url(chosen-sprite.png) right top no-repeat;
 }
 div.chzn-container ul.chzn-choices li.search-choice a.search-choice-close:hover {
-  background-position: 0 -9px;
+  background-position: right -9px;
 }
 div.chzn-container ul.chzn-choices li.search-choice.search-choice-focus a.search-choice-close {
-  background-position: 0 -9px;
+  background-position: right -9px;
 }
 
 
