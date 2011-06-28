@@ -96,7 +96,7 @@ Chosen.prototype = {
     if( !this.is_multiple ){
       this.search_container = this.container.down('div.chzn-search');
       this.selected_item = this.container.down('.chzn-single');
-      var sf_width = (dd_width - get_side_border_padding(this.search_container) - get_side_border_padding(this.search_field));
+      var sf_width = (dd_width - get_side_border_padding(this.search_container));
       this.search_field.setStyle( {"width" : sf_width + "px"} );
     }
     else{
