@@ -30,7 +30,7 @@ div.chzn-container textarea:focus {
 
 div.chzn-container div.chzn-drop {
   background: #FFF;
-  border: 1px solid #BBB;
+  border: 1px solid #aaa;
   border-width: 0 1px 1px;
   left: 0;
   position: absolute;
@@ -55,7 +55,7 @@ div.chzn-container a.chzn-single {
   background: #FFF;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.5, white));
   background-image: -moz-linear-gradient(center bottom, #eeeeee 0%, white 50%);
-  border: 1px solid #BBB;
+  border: 1px solid #aaa;
   display: block;
   overflow: hidden;
   -moz-border-radius: 4px;
@@ -92,10 +92,10 @@ div.chzn-container a.chzn-single div {
   -ms-border-bottom-right-radius: 4px;
   -khtml-border-bottom-right-radius: 4px;
   border-bottom-right-radius: 4px;
-  background: #dddddd;
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #dddddd), color-stop(0.5, #fafafa));
-  background-image: -moz-linear-gradient(center bottom, #dddddd 0%, #fafafa 50%);
-  border-left: 1px solid #BBB;
+  background: #ccc;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc), color-stop(0.6, #eee));
+  background-image: -moz-linear-gradient(center bottom, #ccc 0%, #eee 60%);
+  border-left: 1px solid #aaa;
   display: block;
   height: 100%;
   position: absolute;
@@ -110,7 +110,7 @@ div.chzn-container a.chzn-single div b {
   height: 100%;
 }
 div.chzn-container div.chzn-search {
-  padding: 4px;
+  padding: 3px 4px;
   margin: 0px;
   white-space: nowrap;
 }
@@ -136,7 +136,7 @@ div.chzn-container ul.chzn-choices {
   background-image: -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
   margin: 0;
   cursor: text;
-  border: 1px solid #bbb;
+  border: 1px solid #aaa;
   overflow: hidden;
   height: auto !important;
   height: 1%;
@@ -177,14 +177,13 @@ div.chzn-container ul.chzn-choices li.search-choice {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
-  background: #dddddd;
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #dddddd), color-stop(0.7, #eeeeee));
-  background-image: -moz-linear-gradient(center bottom, #dddddd 0%, #eeeeee 70%);
+  background: #e4e4e4;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #e4e4e4), color-stop(0.7, #eeeeee));
+  background-image: -moz-linear-gradient(center bottom, #e4e4e4 0%, #eeeeee 70%);
   color: #333;
-  border: 1px solid #bbb;
-  font-weight: bold;
+  border: 1px solid #b4b4b4;
   line-height: 13px;
-  padding: 3px 20px 3px 6px;
+  padding: 3px 19px 3px 6px;
   position: relative;
   margin: 3px 0px 3px 5px;
 }
@@ -207,13 +206,16 @@ div.chzn-container ul.chzn-choices li.search-choice a.search-choice-close {
 div.chzn-container ul.chzn-choices li.search-choice a.search-choice-close:hover {
   background-position: 0 -9px;
 }
+div.chzn-container ul.chzn-choices li.search-choice.search-choice-focus a.search-choice-close {
+  background-position: 0 -9px;
+}
 
 
 /* Results */
 div.chzn-container ul.chzn-results {
   margin: 0 4px 4px 0;
-  max-height: 196px;
-  padding: 0 3px 0 4px;
+  max-height: 190px;
+  padding: 0 0 0 4px;
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
@@ -228,9 +230,8 @@ div.chzn-container-multi ul.chzn-results li {
   border-right: 0px !important;
 }
 div.chzn-container ul.chzn-results li {
-  border: 1px solid #ffffff;
   line-height: 80%;
-  padding: 7px 7px;
+  padding: 7px 7px 8px;
   z-index: 22;
   margin: 0;
   list-style-type: none;
@@ -239,15 +240,15 @@ div.chzn-container ul.chzn-results li.active-result {
   cursor: pointer;
 }
 div.chzn-container ul.chzn-results li em {
-  font-weight: bold;
   font-style: normal;
   background: #FEFFDC;
 }
 div.chzn-container ul.chzn-results li.highlighted {
-  background: #dddddd;
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #dddddd), color-stop(0.7, #eeeeee));
-  background-image: -moz-linear-gradient(center bottom, #dddddd 0%, #eeeeee 70%);
-  border: 1px solid #bbbbbb;
+  background: #3875d7;
+  color: #fff;
+}
+div.chzn-container ul.chzn-results li.highlighted em {
+  background: transparent;
 }
 div.chzn-container ul.chzn-results li.no-results {
   background: #F4F4F4;
@@ -269,13 +270,13 @@ div.chzn-container-multi div.chzn-drop li.result-selected {
 
 /* Active */
 div.chzn-container-active a.chzn-single {
-  -moz-box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
-  -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
-  box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
-  border: 1px solid #999;
+  -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  border: 1px solid #5897fb;
 }
 div.chzn-container-active a.chzn-single-with-drop {
-  border: 1px solid #BBB;
+  border: 1px solid #aaa;
   border-width: 1px 1px 1px;
   -moz-box-shadow:  0px 1px 0px #FFF inset;
   -webkit-box-shadow:  0px 1px 0px #FFF inset;
@@ -299,10 +300,10 @@ div.chzn-container-active a.chzn-single-with-drop div b {
 }
 div.chzn-container-active ul.chzn-choices {
   z-index: 21;
-  -moz-box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
-  -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
-  box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
-  border: 1px solid #999;
+  -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  border: 1px solid #5897fb;
 }
 div.chzn-container-active ul.chzn-choices input {
   color: #111 !important;
