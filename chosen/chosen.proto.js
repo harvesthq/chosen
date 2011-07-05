@@ -264,7 +264,6 @@ Chosen.prototype = {
   },
   
   results_build: function(){
-    // TODO remove debugging
     var startTime = new Date();
 
     this.parsing = true;
@@ -643,7 +642,7 @@ Chosen.prototype = {
 var get_side_border_padding = function(item){
   var layout = new Element.Layout(item);
   return layout.get("border-left") + layout.get("border-right") + layout.get("padding-left") + layout.get("padding-right");
-}
+};
 
 var select_to_array = {
   parse: function(select) {
