@@ -124,17 +124,17 @@ class Chosen
   container_click: (evt) ->
     if evt and evt.type is "click"
       evt.stop()
-      if not @pending_destroy_click
-        if not @active_field
-          @search_field.clear() if @is_multiple
-          document.observe "click", @click_test_action
-          this.results_show()
-        else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chzn-single"))
-          this.results_show()
+    if not @pending_destroy_click
+      if not @active_field
+        @search_field.clear() if @is_multiple
+        document.observe "click", @click_test_action
+        this.results_show()
+      else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chzn-single"))
+        this.results_show()
 
-        this.activate_field()
-      else
-        @pending_destroy_click = false
+      this.activate_field()
+    else
+      @pending_destroy_click = false
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
