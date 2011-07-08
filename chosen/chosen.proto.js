@@ -141,20 +141,20 @@
     Chosen.prototype.container_click = function(evt) {
       if (evt && evt.type === "click") {
         evt.stop();
-        if (!this.pending_destroy_click) {
-          if (!this.active_field) {
-            if (this.is_multiple) {
-              this.search_field.clear();
-            }
-            document.observe("click", this.click_test_action);
-            this.results_show();
-          } else if (!this.is_multiple && evt && (evt.target === this.selected_item || evt.target.up("a.chzn-single"))) {
-            this.results_show();
+      }
+      if (!this.pending_destroy_click) {
+        if (!this.active_field) {
+          if (this.is_multiple) {
+            this.search_field.clear();
           }
-          return this.activate_field();
-        } else {
-          return this.pending_destroy_click = false;
+          document.observe("click", this.click_test_action);
+          this.results_show();
+        } else if (!this.is_multiple && evt && (evt.target === this.selected_item || evt.target.up("a.chzn-single"))) {
+          this.results_show();
         }
+        return this.activate_field();
+      } else {
+        return this.pending_destroy_click = false;
       }
     };
     Chosen.prototype.mouse_enter = function() {
