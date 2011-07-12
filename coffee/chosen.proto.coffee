@@ -553,7 +553,7 @@ class Chosen
       style_block = "position:absolute; left: -1000px; top: -1000px; display:none;"
       styles = ['font-size','font-style', 'font-weight', 'font-family','line-height', 'text-transform', 'letter-spacing']
       
-      for style of styles
+      for style in styles
         style_block += style + ":" + @search_field.getStyle(style) + ";"
       
       div = new Element('div', { 'style' : style_block }).update(@search_field.value)
