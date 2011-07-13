@@ -600,6 +600,7 @@
           if (this.is_multiple && this.backstroke_length < 1 && this.choices > 0) {
             return this.keydown_backstroke();
           } else if (!this.pending_backstroke) {
+            this.result_clear_highlight();
             return this.results_search();
           }
           break;

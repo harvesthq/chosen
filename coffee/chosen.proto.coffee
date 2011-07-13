@@ -516,6 +516,7 @@ class Chosen
         if @is_multiple and @backstroke_length < 1 and @choices > 0
           this.keydown_backstroke()
         else if not @pending_backstroke
+          this.result_clear_highlight()
           this.results_search()
       when 13
         evt.preventDefault()

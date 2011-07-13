@@ -608,6 +608,7 @@
           if (this.is_multiple && this.backstroke_length < 1 && this.choices > 0) {
             return this.keydown_backstroke();
           } else if (!this.pending_backstroke) {
+            this.result_clear_highlight();
             return this.results_search();
           }
           break;
@@ -649,13 +650,14 @@
       }
     };
     Chosen.prototype.search_field_scale = function() {
-      var dd_top, div, h, style, style_block, styles, w;
+      var dd_top, div, h, style, style_block, styles, w, _i, _len;
       if (this.is_multiple) {
         h = 0;
         w = 0;
         style_block = "position:absolute; left: -1000px; top: -1000px; display:none;";
         styles = ['font-size', 'font-style', 'font-weight', 'font-family', 'line-height', 'text-transform', 'letter-spacing'];
-        for (style in styles) {
+        for (_i = 0, _len = styles.length; _i < _len; _i++) {
+          style = styles[_i];
           style_block += style + ":" + this.search_field.getStyle(style) + ";";
         }
         div = new Element('div', {
