@@ -184,8 +184,8 @@
     Chosen.prototype.close_field = function() {
       $(document).unbind("click", this.click_test_action);
       if (!this.is_multiple) {
-        this.selected_item.attr("tabIndex", this.search_field.attr("tabIndex"));
-        this.search_field.attr("tabIndex", -1);
+        this.selected_item.attr("tabindex", this.search_field.attr("tabindex"));
+        this.search_field.attr("tabindex", -1);
       }
       this.active_field = false;
       this.results_hide();
@@ -197,8 +197,8 @@
     };
     Chosen.prototype.activate_field = function() {
       if (!this.is_multiple && !this.active_field) {
-        this.search_field.attr("tabIndex", this.selected_item.attr("tabIndex"));
-        this.selected_item.attr("tabIndex", -1);
+        this.search_field.attr("tabindex", this.selected_item.attr("tabindex"));
+        this.selected_item.attr("tabindex", -1);
       }
       this.container.addClass("chzn-container-active");
       this.active_field = true;
@@ -273,7 +273,7 @@
     };
     Chosen.prototype.result_do_highlight = function(el) {
       var high_bottom, high_top, maxHeight, visible_bottom, visible_top;
-      if (el) {
+      if (el.length) {
         this.result_clear_highlight();
         this.result_highlight = el;
         this.result_highlight.addClass("highlighted");
@@ -325,14 +325,14 @@
     };
     Chosen.prototype.set_tab_index = function(el) {
       var ti;
-      if (($(this.form_field)).attr("tabIndex")) {
-        ti = ($(this.form_field)).attr("tabIndex");
-        ($(this.form_field)).attr("tabIndex", -1);
+      if (($(this.form_field)).attr("tabindex")) {
+        ti = ($(this.form_field)).attr("tabindex");
+        ($(this.form_field)).attr("tabindex", -1);
         if (this.is_multiple) {
-          return this.search_field.attr("tabIndex", ti);
+          return this.search_field.attr("tabindex", ti);
         } else {
-          this.selected_item.attr("tabIndex", ti);
-          return this.search_field.attr("tabIndex", -1);
+          this.selected_item.attr("tabindex", ti);
+          return this.search_field.attr("tabindex", -1);
         }
       }
     };
@@ -626,16 +626,21 @@
       }
       switch (stroke) {
         case 8:
-          return this.backstroke_length = this.search_field.val().length;
+          this.backstroke_length = this.search_field.val().length;
+          break;
         case 9:
-          return this.mouse_on_container = false;
+          this.mouse_on_container = false;
+          break;
         case 13:
-          return evt.preventDefault();
+          evt.preventDefault();
+          break;
         case 38:
           evt.preventDefault();
-          return this.keyup_arrow();
+          this.keyup_arrow();
+          break;
         case 40:
-          return this.keydown_arrow();
+          this.keydown_arrow();
+          break;
       }
     };
     Chosen.prototype.search_field_scale = function() {

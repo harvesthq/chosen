@@ -147,6 +147,7 @@ class Chosen
     setTimeout this.container_click.bind(this), 50 unless @active_field
   
   input_blur: (evt) ->
+    console.log "HUH?"
     if not @mouse_on_container
       @active_field = false
       setTimeout this.blur_test.bind(this), 100
@@ -158,8 +159,8 @@ class Chosen
     $(document).unbind "click", @click_test_action
     
     if not @is_multiple
-      @selected_item.attr "tabIndex", @search_field.attr("tabIndex")
-      @search_field.attr "tabIndex", -1
+      @selected_item.attr "tabindex", @search_field.attr("tabindex")
+      @search_field.attr "tabindex", -1
     
     @active_field = false
     this.results_hide()
@@ -173,8 +174,8 @@ class Chosen
 
   activate_field: ->
     if not @is_multiple and not @active_field
-      @search_field.attr "tabIndex", @selected_item.attr "tabIndex"
-      @selected_item.attr "tabIndex", -1
+      @search_field.attr "tabindex", (@selected_item.attr "tabindex")
+      @selected_item.attr "tabindex", -1
 
     @container.addClass "chzn-container-active"
     @active_field = true
@@ -241,7 +242,7 @@ class Chosen
     this.results_build()
 
   result_do_highlight: (el) ->
-    if el
+    if el.length
       this.result_clear_highlight();
 
       @result_highlight = el;
@@ -290,15 +291,15 @@ class Chosen
 
 
   set_tab_index: (el) ->
-    if ($ @form_field).attr "tabIndex"
-      ti = ($ @form_field).attr "tabIndex"
-      ($ @form_field).attr "tabIndex", -1
+    if ($ @form_field).attr "tabindex"
+      ti = ($ @form_field).attr "tabindex"
+      ($ @form_field).attr "tabindex", -1
 
       if @is_multiple
-        @search_field.attr "tabIndex", ti
+        @search_field.attr "tabindex", ti
       else
-        @selected_item.attr "tabIndex", ti
-        @search_field.attr "tabIndex", -1
+        @selected_item.attr "tabindex", ti
+        @search_field.attr "tabindex", -1
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
@@ -546,15 +547,20 @@ class Chosen
     switch stroke
       when 8
         @backstroke_length = this.search_field.val().length
+        break
       when 9
         @mouse_on_container = false
+        break
       when 13
         evt.preventDefault()
+        break
       when 38
         evt.preventDefault()
         this.keyup_arrow()
+        break
       when 40
         this.keydown_arrow()
+        break
 
 
   search_field_scale: ->
