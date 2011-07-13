@@ -147,7 +147,6 @@ class Chosen
     setTimeout this.container_click.bind(this), 50 unless @active_field
   
   input_blur: (evt) ->
-    console.log "HUH?"
     if not @mouse_on_container
       @active_field = false
       setTimeout this.blur_test.bind(this), 100
