@@ -486,26 +486,22 @@ class Chosen
     @search_results.find(".no-results").remove()
 
   keydown_arrow: ->
-    actives = @search_results.find "li.active-result"
-    if actives.length
-      if not @result_highlight
-        this.result_do_highlight $(actives[0])
-      else if @results_showing
-        sibs = @result_highlight.nextAll()
-        next = first_intersect sibs, actives
-        this.result_do_highlight $(next) if next
-      this.results_show() if not @results_showing
+    if not @result_highlight
+      first_active = @search_results.find("li.active-result").first()
+      this.result_do_highlight $(first_active) if first_active
+    else if @results_showing
+      next_sib = @result_highlight.nextAll("li.active-result").first()
+      this.result_do_highlight next_sib if next_sib
+    this.results_show() if not @results_showing
 
   keyup_arrow: ->
     if not @results_showing and not @is_multiple
-      this.results_show()
+      this.results_show() 
     else if @result_highlight
-      sibs = @result_highlight.prevAll()
-      actives = @search_results.find "li.active-result"
-      prev = first_intersect sibs, actives
-
-      if prev
-        this.result_do_highlight ($ prev)
+      prev_sibs = @result_highlight.prevAll("li.active-result")
+      
+      if prev_sibs.length
+        this.result_do_highlight prev_sibs.first()
       else
         this.results_hide() if @choices > 0
         this.result_clear_highlight()
@@ -590,18 +586,6 @@ get_side_border_padding = (elmt) ->
   side_border_padding = elmt.outerWidth() - elmt.width()
 
 root.get_side_border_padding = get_side_border_padding
-
-first_intersect = (a1, a2) ->
-  # TODO for some reason, up arrow doesn't find the first
-  #console.log a2
-  for element in a1
-    #console.log element
-    #console.log $.inArray element, a2
-    return element if $.inArray element, a2
-
-  return null
-  
-root.first_intersect = first_intersect
 
 class OptionsParser
   

@@ -22,7 +22,7 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
-  */  var $, Chosen, OptionsParser, first_intersect, get_side_border_padding, root;
+  */  var $, Chosen, OptionsParser, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
   $ = jQuery;
@@ -541,33 +541,30 @@
       return this.search_results.find(".no-results").remove();
     };
     Chosen.prototype.keydown_arrow = function() {
-      var actives, next, sibs;
-      actives = this.search_results.find("li.active-result");
-      if (actives.length) {
-        if (!this.result_highlight) {
-          this.result_do_highlight($(actives[0]));
-        } else if (this.results_showing) {
-          sibs = this.result_highlight.nextAll();
-          next = first_intersect(sibs, actives);
-          if (next) {
-            this.result_do_highlight($(next));
-          }
+      var first_active, next_sib;
+      if (!this.result_highlight) {
+        first_active = this.search_results.find("li.active-result").first();
+        if (first_active) {
+          this.result_do_highlight($(first_active));
         }
-        if (!this.results_showing) {
-          return this.results_show();
+      } else if (this.results_showing) {
+        next_sib = this.result_highlight.nextAll("li.active-result").first();
+        if (next_sib) {
+          this.result_do_highlight(next_sib);
         }
+      }
+      if (!this.results_showing) {
+        return this.results_show();
       }
     };
     Chosen.prototype.keyup_arrow = function() {
-      var actives, prev, sibs;
+      var prev_sibs;
       if (!this.results_showing && !this.is_multiple) {
         return this.results_show();
       } else if (this.result_highlight) {
-        sibs = this.result_highlight.prevAll();
-        actives = this.search_results.find("li.active-result");
-        prev = first_intersect(sibs, actives);
-        if (prev) {
-          return this.result_do_highlight($(prev));
+        prev_sibs = this.result_highlight.prevAll("li.active-result");
+        if (prev_sibs.length) {
+          return this.result_do_highlight(prev_sibs.first());
         } else {
           if (this.choices > 0) {
             this.results_hide();
@@ -677,17 +674,6 @@
     return side_border_padding = elmt.outerWidth() - elmt.width();
   };
   root.get_side_border_padding = get_side_border_padding;
-  first_intersect = function(a1, a2) {
-    var element, _i, _len;
-    for (_i = 0, _len = a1.length; _i < _len; _i++) {
-      element = a1[_i];
-      if ($.inArray(element, a2)) {
-        return element;
-      }
-    }
-    return null;
-  };
-  root.first_intersect = first_intersect;
   OptionsParser = (function() {
     function OptionsParser() {
       this.group_index = 0;
