@@ -134,6 +134,7 @@ class Chosen
         $(document).click @click_test_action
         this.results_show()
       else if not @is_multiple and evt and ($(evt.target) is @selected_item || $(evt.target).parents("a.chzn-single").length)
+        evt.preventDefault()
         this.results_show()
 
       this.activate_field()
@@ -307,7 +308,6 @@ class Chosen
   search_results_click: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
     if target
-      # TODO fix
       @result_highlight = target
       this.result_select()
 
