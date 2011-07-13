@@ -273,18 +273,20 @@
     };
     Chosen.prototype.result_do_highlight = function(el) {
       var high_bottom, high_top, maxHeight, visible_bottom, visible_top;
-      this.result_clear_highlight();
-      this.result_highlight = el;
-      this.result_highlight.addClass("highlighted");
-      maxHeight = parseInt(this.search_results.css("maxHeight"), 10);
-      visible_top = this.search_results.scrollTop();
-      visible_bottom = maxHeight + visible_top;
-      high_top = this.result_highlight.position().top;
-      high_bottom = high_top + this.result_highlight.outerHeight();
-      if (high_bottom >= visible_bottom) {
-        return this.search_results.scrollTop((high_bottom - maxHeight) > 0 ? high_bottom - maxHeight : 0);
-      } else if (high_top < visible_top) {
-        return this.search_results.scrollTop(high_top);
+      if (el) {
+        this.result_clear_highlight();
+        this.result_highlight = el;
+        this.result_highlight.addClass("highlighted");
+        maxHeight = parseInt(this.search_results.css("maxHeight"), 10);
+        visible_top = this.search_results.scrollTop();
+        visible_bottom = maxHeight + visible_top;
+        high_top = this.result_highlight.position().top;
+        high_bottom = high_top + this.result_highlight.outerHeight();
+        if (high_bottom >= visible_bottom) {
+          return this.search_results.scrollTop((high_bottom - maxHeight) > 0 ? high_bottom - maxHeight : 0);
+        } else if (high_top < visible_top) {
+          return this.search_results.scrollTop(high_top);
+        }
       }
     };
     Chosen.prototype.result_clear_highlight = function() {
@@ -451,7 +453,7 @@
       startTime = new Date();
       this.no_results_clear();
       results = 0;
-      searchText = this.search_field.value === this.default_text ? "" : $.trim(this.search_field.value);
+      searchText = this.search_field.val() === this.default_text ? "" : $.trim(this.search_field.val());
       regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       _ref = this.results_data;
@@ -486,18 +488,18 @@
               } else {
                 text = option.text;
               }
-              if ($(result_id).innerHTML !== text) {
-                $(result_id).text(text);
+              if ($("#" + result_id).html !== text) {
+                $("#" + result_id).html(text);
               }
-              this.result_activate($(result_id));
+              this.result_activate($("#" + result_id));
               if (option.group_id != null) {
-                $(this.results_data[option.group_id].dom_id).show();
+                $("#" + this.results_data[option.group_id].dom_id).show();
               }
             } else {
-              if ($(result_id) === this.result_highlight) {
+              if (this.result_highlight && result_id === this.result_highlight.attr('id')) {
                 this.result_clear_highlight();
               }
-              this.result_deactivate($(result_id));
+              this.result_deactivate($("#" + result_id));
             }
           }
         }
@@ -530,9 +532,10 @@
       }
     };
     Chosen.prototype.no_results = function(terms) {
-      return this.search_results.insert(this.no_results_temp.evaluate({
-        "terms": terms.escapeHTML()
-      }));
+      var no_results_html;
+      no_results_html = $('<li class="no-results">No results match "<span></span>"</li>');
+      no_results_html.find("span").first().text(terms);
+      return this.search_results.append(no_results_html);
     };
     Chosen.prototype.no_results_clear = function() {
       return this.search_results.find(".no-results").remove();
@@ -675,11 +678,8 @@
   root.get_side_border_padding = get_side_border_padding;
   first_intersect = function(a1, a2) {
     var element, _i, _len;
-    console.log(a2);
     for (_i = 0, _len = a1.length; _i < _len; _i++) {
       element = a1[_i];
-      console.log(element);
-      console.log($.inArray(element, a2));
       if ($.inArray(element, a2)) {
         return element;
       }

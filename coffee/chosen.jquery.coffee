@@ -57,10 +57,6 @@ class Chosen
     @result_single_selected = null
     @choices = 0
 
-    # HTML Templates
-    #@no_results_temp = new Template('<li class="no-results">No results match "<span>#{terms}</span>"</li>')
-
-
   set_up_html: ->
     @container_id = @form_field.id + "_chzn"
     
@@ -245,6 +241,7 @@ class Chosen
     this.results_build()
 
   result_do_highlight: (el) ->
+    if el
       this.result_clear_highlight();
 
       @result_highlight = el;
@@ -253,10 +250,10 @@ class Chosen
       maxHeight = parseInt @search_results.css("maxHeight"), 10
       visible_top = @search_results.scrollTop()
       visible_bottom = maxHeight + visible_top
-      
+    
       high_top = @result_highlight.position().top
       high_bottom = high_top + @result_highlight.outerHeight()
-      
+    
       #console.log visible_top, visible_bottom, high_top, high_bottom
 
       if high_bottom >= visible_bottom
@@ -413,10 +410,10 @@ class Chosen
   winnow_results: ->
     startTime = new Date()
     this.no_results_clear()
-
+    
     results = 0
 
-    searchText = if @search_field.value is @default_text then "" else $.trim @search_field.value
+    searchText = if @search_field.val() is @default_text then "" else $.trim @search_field.val()
     regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
@@ -448,17 +445,17 @@ class Chosen
             else
               text = option.text
 
-            $(result_id).text text if $(result_id).innerHTML != text
+            $("#" + result_id).html text if $("#" + result_id).html != text
 
-            this.result_activate $(result_id)
+            this.result_activate $("#" + result_id)
 
-            $(@results_data[option.group_id].dom_id).show() if option.group_id?
+            $("#" + @results_data[option.group_id].dom_id).show() if option.group_id?
           else
-            this.result_clear_highlight() if $(result_id) is @result_highlight
-            this.result_deactivate $(result_id)
-
+            this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
+            this.result_deactivate $("#" + result_id)
+    
     if results < 1 and searchText.length
-      this.no_results(searchText)
+      this.no_results searchText
     else
       this.winnow_results_set_highlight()
 
@@ -480,7 +477,10 @@ class Chosen
         this.result_do_highlight do_high
   
   no_results: (terms) ->
-    @search_results.insert @no_results_temp.evaluate({"terms":terms.escapeHTML()})
+    no_results_html = $('<li class="no-results">No results match "<span></span>"</li>')
+    no_results_html.find("span").first().text(terms)
+
+    @search_results.append no_results_html
   
   no_results_clear: ->
     @search_results.find(".no-results").remove()
@@ -592,10 +592,10 @@ root.get_side_border_padding = get_side_border_padding
 
 first_intersect = (a1, a2) ->
   # TODO for some reason, up arrow doesn't find the first
-  console.log a2
+  #console.log a2
   for element in a1
-    console.log element
-    console.log $.inArray element, a2
+    #console.log element
+    #console.log $.inArray element, a2
     return element if $.inArray element, a2
 
   return null
