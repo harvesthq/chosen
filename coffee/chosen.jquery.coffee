@@ -377,8 +377,7 @@ class Chosen
       this.results_hide()
       @search_field.val ""
 
-      # TODO
-      #@form_field.simulate("change") if typeof Event.simulate is 'function'
+      ($ @form_field).trigger "change"
       this.search_field_scale()
 
   result_activate: (el) ->
@@ -398,7 +397,7 @@ class Chosen
     this.result_clear_highlight()
     this.winnow_results()
 
-    @form_field.simulate("change") if typeof Event.simulate is 'function'
+    ($ @form_field).trigger "change"
     this.search_field_scale()
 
   results_search: (evt) ->

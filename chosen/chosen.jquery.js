@@ -418,6 +418,7 @@
         }
         this.results_hide();
         this.search_field.val("");
+        ($(this.form_field)).trigger("change");
         return this.search_field_scale();
       }
     };
@@ -436,9 +437,7 @@
       result.removeClass("result-selected").addClass("active-result").show();
       this.result_clear_highlight();
       this.winnow_results();
-      if (typeof Event.simulate === 'function') {
-        this.form_field.simulate("change");
-      }
+      ($(this.form_field)).trigger("change");
       return this.search_field_scale();
     };
     Chosen.prototype.results_search = function(evt) {
