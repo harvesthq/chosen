@@ -179,7 +179,7 @@ class Chosen
     @container.addClass "chzn-container-active"
     @active_field = true
 
-    @search_field.value = @search_field.value
+    @search_field.val(@search_field.val())
     @search_field.focus()
 
 
@@ -302,10 +302,10 @@ class Chosen
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
-      @search_field.value = @default_text
+      @search_field.val(@default_text)
       @search_field.addClass "default"
     else
-      @search_field.value = ""
+      @search_field.val("")
       @search_field.removeClass "default"
 
   search_results_click: (evt) ->
@@ -344,7 +344,7 @@ class Chosen
     @choices -= 1
     this.show_search_field_default()
 
-    this.results_hide() if @is_multiple and @choices > 0 and @search_field.value.length < 1
+    this.results_hide() if @is_multiple and @choices > 0 and @search_field.val().length < 1
 
     this.result_deselect (link.attr "rel")
     link.parents('li').first().remove()
@@ -545,7 +545,7 @@ class Chosen
     
     switch stroke
       when 8
-        @backstroke_length = this.search_field.value.length
+        @backstroke_length = this.search_field.val().length
       when 9
         @mouse_on_container = false
       when 13

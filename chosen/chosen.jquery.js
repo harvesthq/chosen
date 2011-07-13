@@ -202,7 +202,7 @@
       }
       this.container.addClass("chzn-container-active");
       this.active_field = true;
-      this.search_field.value = this.search_field.value;
+      this.search_field.val(this.search_field.val());
       return this.search_field.focus();
     };
     Chosen.prototype.test_active_click = function(evt) {
@@ -338,10 +338,10 @@
     };
     Chosen.prototype.show_search_field_default = function() {
       if (this.is_multiple && this.choices < 1 && !this.active_field) {
-        this.search_field.value = this.default_text;
+        this.search_field.val(this.default_text);
         return this.search_field.addClass("default");
       } else {
-        this.search_field.value = "";
+        this.search_field.val("");
         return this.search_field.removeClass("default");
       }
     };
@@ -389,7 +389,7 @@
     Chosen.prototype.choice_destroy = function(link) {
       this.choices -= 1;
       this.show_search_field_default();
-      if (this.is_multiple && this.choices > 0 && this.search_field.value.length < 1) {
+      if (this.is_multiple && this.choices > 0 && this.search_field.val().length < 1) {
         this.results_hide();
       }
       this.result_deselect(link.attr("rel"));
@@ -626,7 +626,7 @@
       }
       switch (stroke) {
         case 8:
-          return this.backstroke_length = this.search_field.value.length;
+          return this.backstroke_length = this.search_field.val().length;
         case 9:
           return this.mouse_on_container = false;
         case 13:
