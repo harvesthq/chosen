@@ -250,17 +250,13 @@ class Chosen
       maxHeight = parseInt @search_results.css("maxHeight"), 10
       visible_top = @search_results.scrollTop()
       visible_bottom = maxHeight + visible_top
-    
-      high_top = @result_highlight.position().top
+      
+      high_top = @result_highlight.position().top + @search_results.scrollTop()
       high_bottom = high_top + @result_highlight.outerHeight()
-    
-      #console.log visible_top, visible_bottom, high_top, high_bottom
 
       if high_bottom >= visible_bottom
-        #console.log "bottom is greater than bottom"
         @search_results.scrollTop if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
       else if high_top < visible_top
-        #console.log "top is less than top"
         @search_results.scrollTop high_top
     
   result_clear_highlight: ->

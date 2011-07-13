@@ -280,7 +280,7 @@
         maxHeight = parseInt(this.search_results.css("maxHeight"), 10);
         visible_top = this.search_results.scrollTop();
         visible_bottom = maxHeight + visible_top;
-        high_top = this.result_highlight.position().top;
+        high_top = this.result_highlight.position().top + this.search_results.scrollTop();
         high_bottom = high_top + this.result_highlight.outerHeight();
         if (high_bottom >= visible_bottom) {
           return this.search_results.scrollTop((high_bottom - maxHeight) > 0 ? high_bottom - maxHeight : 0);
