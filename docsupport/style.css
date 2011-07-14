@@ -20,21 +20,19 @@ pre, code, kbd, samp { font-family: monospace, sans-serif; }
 
 body { background: #EEE; color: #444; line-height: 1.4em; }
 
-header { background: #F36C00 url(header-bg.gif) repeat-x; height: 59px; min-width:780px; width: 100%; }
-header div { margin: 0 auto; padding: 0 40px; width: 745px; }
-header h1 { color:#FFF; font-size: 2em; height:59px; line-height: 59px; }
-header a { color: white; float: right; font-size: .825em; line-height: 59px; }
+header { background: #222; background: -moz-linear-gradient(center bottom , #222 0%, #444 80%) repeat scroll 0 0 transparent; background: -webkit-gradient(linear, 0% 100%, 0% 0%, color-stop(0, #222), color-stop(0.8, #444)); height: 59px; margin: 0 auto; padding: 0 50px; width: 740px; }
+header h1 { color: white; font-size: 2em; line-height: 1.1em; text-indent: -5000px; display: inline-block; width: 109px; height: 27px; background: url(chosen.png); margin-top: 13px; }
+header a { color: white; float: right; font-size: .825em; line-height: 60px; }
 
-div#content { background: white; border: 1px solid #DDD; border-width: 0 1px 1px; margin: 0 auto; padding: 20px 40px 30px; width: 738px; }
+div#content { background: white; border: 1px solid #ccc; border-width: 0 1px 1px; margin: 0 auto; padding: 40px 50px 40px; width: 738px; }
 
-footer { color: #999; margin: 20px auto; padding: 0 20px; width: 745px; text-align:center; }
+footer { color: #999; padding-top: 40px; font-size: 0.8em; text-align: center; }
 
 body { font-family: sans-serif; font-size: 1em; }
 
-p { margin: 1em 0; max-width: 700px; }
+p { margin: 0 0 .7em; max-width: 700px; }
 
-h1, h2 { font-family: Georgia, Times, serif; }
-h2 { font-size: 1.25em; margin: 2.5em 0 .5em; border-bottom: 1px solid #999; padding-bottom: 5px; }
+h2 { border-bottom: 1px solid #ccc; font-size: 1.2em; margin: 3em 0 1em 0; font-weight: bold;}
 h3 { font-weight: bold; }
 
 ul li { list-style: disc; margin-left: 1em; margin-bottom: 1.25em; }
@@ -57,4 +55,5 @@ div.side-by-side > div > em { margin-bottom: 10px; display: block; }
   visibility: hidden;
 }
 
-a { color: #F36C00; outline: none; }
+a { color: #F36C00; outline: none; text-decoration: none; }
+a:hover { text-decoration: underline; }
