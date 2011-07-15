@@ -211,7 +211,7 @@
         data = _ref[_i];
         if (data.group) {
           content += this.result_add_group(data);
-        } else {
+        } else if (!data.empty) {
           content += this.result_add_option(data);
           if (data.selected && this.is_multiple) {
             this.choice_build(data);
@@ -447,7 +447,7 @@
       _ref = this.results_data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
-        if (!option.disabled) {
+        if (!option.disabled && !option.empty) {
           if (option.group) {
             $(option.dom_id).hide();
           } else if (!(this.is_multiple && option.selected)) {
@@ -715,21 +715,27 @@
     };
     OptionsParser.prototype.add_option = function(option, group_id, group_disabled) {
       var _ref;
-      if (option.nodeName === "OPTION" && (this.sel_index > 0 || option.text !== "")) {
-        if (group_id || group_id === 0) {
-          this.parsed[group_id].children += 1;
+      if (option.nodeName === "OPTION") {
+        if (option.text !== "") {
+          if (group_id || group_id === 0) {
+            this.parsed[group_id].children += 1;
+          }
+          this.parsed.push({
+            id: this.sel_index + this.group_index,
+            select_index: this.sel_index,
+            value: option.value,
+            text: option.text,
+            selected: option.selected,
+            disabled: (_ref = group_disabled === true) != null ? _ref : {
+              group_disabled: option.disabled
+            },
+            group_id: group_id
+          });
+        } else {
+          this.parsed.push({
+            empty: true
+          });
         }
-        this.parsed.push({
-          id: this.sel_index + this.group_index,
-          select_index: this.sel_index,
-          value: option.value,
-          text: option.text,
-          selected: option.selected,
-          disabled: (_ref = group_disabled === true) != null ? _ref : {
-            group_disabled: option.disabled
-          },
-          group_id: group_id
-        });
         return this.sel_index += 1;
       }
     };

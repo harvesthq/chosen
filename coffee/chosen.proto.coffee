@@ -184,7 +184,7 @@ class Chosen
     for data in @results_data
       if data.group
         content += this.result_add_group data
-      else
+      else if !data.empty
         content += this.result_add_option data
         if data.selected and @is_multiple
           this.choice_build data
@@ -389,7 +389,7 @@ class Chosen
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
-      if not option.disabled
+      if not option.disabled and not option.empty
         if option.group
           $(option.dom_id).hide()
         else if not (@is_multiple and option.selected)
@@ -595,17 +595,21 @@ class OptionsParser
     @group_index += 1
 
   add_option: (option, group_id, group_disabled) ->
-    if option.nodeName is "OPTION" and (@sel_index > 0 or option.text != "")
-      if group_id || group_id is 0
-        @parsed[group_id].children += 1
-      @parsed.push
-        id: @sel_index + @group_index
-        select_index: @sel_index
-        value: option.value
-        text: option.text
-        selected: option.selected
-        disabled: ((group_disabled is true) ? group_disabled : option.disabled)
-        group_id: group_id
+    if option.nodeName is "OPTION"
+      if option.text != ""
+        if group_id || group_id is 0
+          @parsed[group_id].children += 1
+        @parsed.push
+          id: @sel_index + @group_index
+          select_index: @sel_index
+          value: option.value
+          text: option.text
+          selected: option.selected
+          disabled: ((group_disabled is true) ? group_disabled : option.disabled)
+          group_id: group_id
+      else
+        @parsed.push
+          empty: true
       @sel_index += 1
 
 OptionsParser.select_to_array = (select) ->
