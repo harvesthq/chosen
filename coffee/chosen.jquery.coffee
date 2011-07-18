@@ -119,7 +119,7 @@ class Chosen
         this.results_show()
       else if not @is_multiple and evt and ($(evt.target) is @selected_item || $(evt.target).parents("a.chzn-single").length)
         evt.preventDefault()
-        this.results_show()
+        this.results_toggle()
 
       this.activate_field()
     else
@@ -247,6 +247,12 @@ class Chosen
   result_clear_highlight: ->
     @result_highlight.removeClass "highlighted" if @result_highlight
     @result_highlight = null
+
+  results_toggle: ->
+    if @results_showing
+      this.results_hide()
+    else
+      this.results_show()
 
   results_show: ->
     if not @is_multiple

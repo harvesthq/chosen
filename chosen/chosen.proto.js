@@ -134,7 +134,7 @@
           document.observe("click", this.click_test_action);
           this.results_show();
         } else if (!this.is_multiple && evt && (evt.target === this.selected_item || evt.target.up("a.chzn-single"))) {
-          this.results_show();
+          this.results_toggle();
         }
         return this.activate_field();
       } else {
@@ -274,6 +274,13 @@
         this.result_highlight.removeClassName('highlighted');
       }
       return this.result_highlight = null;
+    };
+    Chosen.prototype.results_toggle = function() {
+      if (this.results_showing) {
+        return this.results_hide();
+      } else {
+        return this.results_show();
+      }
     };
     Chosen.prototype.results_show = function() {
       var dd_top;
