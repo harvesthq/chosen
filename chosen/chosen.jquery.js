@@ -340,7 +340,7 @@
     Chosen.prototype.search_results_click = function(evt) {
       var target;
       target = $(evt.target).hasClass("active-result") ? $(evt.target) : $(evt.target).parents(".active-result").first();
-      if (target) {
+      if (target.length) {
         this.result_highlight = target;
         return this.result_select();
       }

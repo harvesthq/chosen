@@ -297,7 +297,7 @@ class Chosen
 
   search_results_click: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    if target
+    if target.length
       @result_highlight = target
       this.result_select()
 
