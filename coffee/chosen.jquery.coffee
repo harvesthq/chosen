@@ -599,8 +599,8 @@ class OptionsParser
       position: @group_index
       children: 0
       disabled: group.disabled
-    this.add_option( option, group_id, group.disabled ) for option in group.childNodes
     @group_index += 1
+    this.add_option( option, group_id, group.disabled ) for option in group.childNodes
 
   add_option: (option, group_id, group_disabled) ->
     if option.nodeName is "OPTION"
