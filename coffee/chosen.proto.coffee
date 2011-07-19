@@ -192,6 +192,8 @@ class Chosen
           @selected_item.down("span").update( data.text )
 
     this.show_search_field_default()
+    this.search_field_scale()
+    
     @search_results.update content
     @parsing = false
 

@@ -221,6 +221,7 @@
         }
       }
       this.show_search_field_default();
+      this.search_field_scale();
       this.search_results.update(content);
       return this.parsing = false;
     };

@@ -197,6 +197,8 @@ class Chosen
           @selected_item.find("span").text data.text
 
     this.show_search_field_default()
+    this.search_field_scale()
+    
     @search_results.html content
     @parsing = false
 
