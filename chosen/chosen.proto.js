@@ -6,7 +6,7 @@
   Available for use under the MIT License, http://en.wikipedia.org/wiki/MIT_License
   
   Copyright (c) 2011 by Harvest
-  */  var Chosen, OptionsParser, get_side_border_padding, root;
+  */  var Chosen, SelectParser, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
   Chosen = (function() {
@@ -198,7 +198,7 @@
       var content, data, startTime, _i, _len, _ref;
       startTime = new Date();
       this.parsing = true;
-      this.results_data = OptionsParser.select_to_array(this.form_field);
+      this.results_data = SelectParser.select_to_array(this.form_field);
       if (this.is_multiple && this.choices > 0) {
         this.search_choices.select("li.search-choice").invoke("remove");
         this.choices = 0;
@@ -226,7 +226,7 @@
     };
     Chosen.prototype.result_add_group = function(group) {
       if (!group.disabled) {
-        group.dom_id = this.form_field.id + "chzn_g_" + group.id;
+        group.dom_id = this.form_field.id + "chzn_g_" + group.array_index;
         return '<li id="' + group.dom_id + '" class="group-result">' + group.label.escapeHTML() + '</li>';
       } else {
         return "";
@@ -235,12 +235,12 @@
     Chosen.prototype.result_add_option = function(option) {
       var classes;
       if (!option.disabled) {
-        option.dom_id = this.form_field.id + "chzn_o_" + option.id;
+        option.dom_id = this.form_field.id + "chzn_o_" + option.array_index;
         classes = option.selected && this.is_multiple ? [] : ["active-result"];
         if (option.selected) {
           classes.push("result-selected");
         }
-        if (option.group_id >= 0) {
+        if (option.group_array_index != null) {
           classes.push("group-option");
         }
         return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.text.escapeHTML() + '</li>';
@@ -360,13 +360,13 @@
     };
     Chosen.prototype.choice_build = function(item) {
       var choice_id, link;
-      choice_id = this.form_field.id + "_chzn_c_" + item.id;
+      choice_id = this.form_field.id + "_chzn_c_" + item.array_index;
       this.choices += 1;
       this.search_container.insert({
         before: this.choice_temp.evaluate({
           "id": choice_id,
           "choice": item.text,
-          "position": item.id
+          "position": item.array_index
         })
       });
       link = $(choice_id).down('a');
@@ -402,7 +402,7 @@
         position = high.id.substr(high.id.lastIndexOf("_") + 1);
         item = this.results_data[position];
         item.selected = true;
-        this.form_field.options[item.select_index].selected = true;
+        this.form_field.options[item.options_index].selected = true;
         if (this.is_multiple) {
           this.choice_build(item);
         } else {
@@ -426,7 +426,7 @@
       var result, result_data;
       result_data = this.results_data[pos];
       result_data.selected = false;
-      this.form_field.options[result_data.select_index].selected = false;
+      this.form_field.options[result_data.options_index].selected = false;
       result = $(this.form_field.id + "chzn_o_" + pos);
       result.removeClassName("result-selected").addClassName("active-result").show();
       this.result_clear_highlight();
@@ -459,7 +459,7 @@
             $(option.dom_id).hide();
           } else if (!(this.is_multiple && option.selected)) {
             found = false;
-            result_id = this.form_field.id + "chzn_o_" + option.id;
+            result_id = option.dom_id;
             if (regex.test(option.text)) {
               found = true;
               results += 1;
@@ -487,8 +487,8 @@
                 $(result_id).update(text);
               }
               this.result_activate($(result_id));
-              if (option.group_id != null) {
-                $(this.results_data[option.group_id].dom_id).show();
+              if (option.group_array_index != null) {
+                $(this.results_data[option.group_array_index].dom_id).show();
               }
             } else {
               if ($(result_id) === this.result_highlight) {
@@ -689,68 +689,69 @@
   };
   root.get_side_border_padding = get_side_border_padding;
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
-  OptionsParser = (function() {
-    function OptionsParser() {
-      this.group_index = 0;
-      this.sel_index = 0;
+  SelectParser = (function() {
+    function SelectParser() {
+      this.options_index = 0;
       this.parsed = [];
     }
-    OptionsParser.prototype.add_node = function(child) {
+    SelectParser.prototype.add_node = function(child) {
       if (child.nodeName === "OPTGROUP") {
         return this.add_group(child);
       } else {
         return this.add_option(child);
       }
     };
-    OptionsParser.prototype.add_group = function(group) {
-      var group_id, option, _i, _len, _ref;
-      group_id = this.sel_index + this.group_index;
+    SelectParser.prototype.add_group = function(group) {
+      var group_position, option, _i, _len, _ref, _results;
+      group_position = this.parsed.length;
       this.parsed.push({
-        id: group_id,
+        array_index: group_position,
         group: true,
         label: group.label,
-        position: this.group_index,
         children: 0,
         disabled: group.disabled
       });
       _ref = group.childNodes;
+      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
-        this.add_option(option, group_id, group.disabled);
+        _results.push(this.add_option(option, group_position, group.disabled));
       }
-      return this.group_index += 1;
+      return _results;
     };
-    OptionsParser.prototype.add_option = function(option, group_id, group_disabled) {
+    SelectParser.prototype.add_option = function(option, group_position, group_disabled) {
       var _ref;
       if (option.nodeName === "OPTION") {
         if (option.text !== "") {
-          if (group_id || group_id === 0) {
-            this.parsed[group_id].children += 1;
+          if (group_position != null) {
+            this.parsed[group_position].children += 1;
           }
           this.parsed.push({
-            id: this.sel_index + this.group_index,
-            select_index: this.sel_index,
+            array_index: this.parsed.length,
+            options_index: this.options_index,
             value: option.value,
             text: option.text,
             selected: option.selected,
             disabled: (_ref = group_disabled === true) != null ? _ref : {
               group_disabled: option.disabled
             },
-            group_id: group_id
+            group_array_index: group_position
           });
         } else {
           this.parsed.push({
+            array_index: this.parsed.length,
+            options_index: this.options_index,
             empty: true
           });
         }
-        return this.sel_index += 1;
+        return this.options_index += 1;
       }
     };
-    return OptionsParser;
+    return SelectParser;
   })();
-  OptionsParser.select_to_array = function(select) {
+  SelectParser.select_to_array = function(select) {
     var child, parser, _i, _len, _ref;
-    parser = new OptionsParser();
+    parser = new SelectParser();
     _ref = select.childNodes;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       child = _ref[_i];
@@ -758,5 +759,5 @@
     }
     return parser.parsed;
   };
-  root.OptionsParser = OptionsParser;
+  root.SelectParser = SelectParser;
 }).call(this);
