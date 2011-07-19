@@ -1159,6 +1159,45 @@
         </select>
       </div>
     </div>
+    
+    <h2>Selected and Disabled Support</h2>
+    <div class="side-by-side clearfix">
+      <p>Chosen automatically highlights selected options and removes disabled options.</p>
+      <div>
+        <em>Single Select</em>
+        <select id="bears_single" title="Your Favorite Type of Bear" style="width:350px;" class="chzn-select" tabindex="7">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option selected>Sloth Bear</option>
+          <option disabled>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option disabled>Spectacled Bear</option>
+        </select>
+      </div>
+      <div>
+        <em>Multiple Select with Groups</em>
+        <select id="bears_multiple" title="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select" tabindex="8">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option selected>Sloth Bear</option>
+          <option disabled>Sun Bear</option>
+          <option selected>Polar Bear</option>
+          <option disabled>Spectacled Bear</option>
+        </select>
+      </div>
+    </div>
+
+    <h2>Default Text Support</h2>
+    <div class="side-by-side clearfix">
+      <p>Chosen automatically sets the default field text ("Choose a country...") by reading the select element's title value. If no title value is present, it will default to "Select Some Option" or "Select Some Options" depending on whether the select is single or multiple. You can change these elements in the plug-in js file as you see fit.</p>
+      <code>&lt;select <strong>title="Choose a country..."</strong> style="width:350px;" multiple class="chzn-select"&gt;</code>
+    </div>
 
     <h2>Setup</h2>
     <p>Using Chosen is easy as can be.</p>
