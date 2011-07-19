@@ -177,7 +177,7 @@ class Chosen
   results_build: ->
     startTime = new Date()
     @parsing = true
-    @results_data = OptionsParser.select_to_array @form_field
+    @results_data = SelectParser.select_to_array @form_field
 
     if @is_multiple and @choices > 0
       @search_choices.find("li.search-choice").remove()
@@ -203,18 +203,18 @@ class Chosen
 
   result_add_group: (group) ->
     if not group.disabled
-      group.dom_id = @form_field.id + "chzn_g_" + group.id
+      group.dom_id = @form_field.id + "chzn_g_" + group.array_index
       '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
     else
       ""
   
   result_add_option: (option) ->
     if not option.disabled 
-      option.dom_id = @form_field.id + "chzn_o_" + option.id
+      option.dom_id = @form_field.id + "chzn_o_" + option.array_index
       
       classes = if option.selected and @is_multiple then [] else ["active-result"]
       classes.push "result-selected" if option.selected
-      classes.push "group-option" if option.group_id >= 0
+      classes.push "group-option" if option.group_array_index?
       
       '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + $("<div />").text(option.text).html() + '</li>'
     else
@@ -315,9 +315,9 @@ class Chosen
       this.results_show()
 
   choice_build: (item) ->
-    choice_id = @form_field.id + "_chzn_c_" + item.id
+    choice_id = @form_field.id + "_chzn_c_" + item.array_index
     @choices += 1
-    @search_container.before  '<li class="search-choice" id="' + choice_id + '"><span>' + item.text + '</span><a href="#" class="search-choice-close" rel="' + item.id + '"></a></li>'
+    @search_container.before  '<li class="search-choice" id="' + choice_id + '"><span>' + item.text + '</span><a href="#" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
     link = $('#' + choice_id).find("a").first()
     link.click (evt) => this.choice_destroy_link_click(evt)
 
@@ -353,7 +353,7 @@ class Chosen
       item = @results_data[position]
       item.selected = true
 
-      @form_field.options[item.select_index].selected = true
+      @form_field.options[item.options_index].selected = true
 
       if @is_multiple
         this.choice_build item
@@ -376,7 +376,7 @@ class Chosen
     result_data = @results_data[pos]
     result_data.selected = false
 
-    @form_field.options[result_data.select_index].selected = false
+    @form_field.options[result_data.options_index].selected = false
     result = $(@form_field.id + "chzn_o_" + pos)
     result.removeClass("result-selected").addClass("active-result").show()
 
@@ -408,7 +408,7 @@ class Chosen
           $(option.dom_id).hide()
         else if not (@is_multiple and option.selected)
           found = false
-          result_id = @form_field.id + "chzn_o_" + option.id
+          result_id = option.dom_id
           
           if regex.test option.text
             found = true;
@@ -434,7 +434,7 @@ class Chosen
 
             this.result_activate $("#" + result_id)
 
-            $("#" + @results_data[option.group_id].dom_id).show() if option.group_id?
+            $("#" + @results_data[option.group_array_index].dom_id).show() if option.group_array_index?
           else
             this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
             this.result_deactivate $("#" + result_id)
@@ -577,11 +577,10 @@ get_side_border_padding = (elmt) ->
 
 root.get_side_border_padding = get_side_border_padding
 
-class OptionsParser
+class SelectParser
   
   constructor: ->
-    @group_index = 0
-    @sel_index = 0
+    @options_index = 0
     @parsed = []
 
   add_node: (child) ->
@@ -591,38 +590,38 @@ class OptionsParser
       this.add_option child
 
   add_group: (group) ->
-    group_id = @sel_index + @group_index
+    group_position = @parsed.length
     @parsed.push
-      id: group_id
+      array_index: group_position
       group: true
       label: group.label
-      position: @group_index
       children: 0
       disabled: group.disabled
-    this.add_option( option, group_id, group.disabled ) for option in group.childNodes
-    @group_index += 1
+    this.add_option( option, group_position, group.disabled ) for option in group.childNodes
 
-  add_option: (option, group_id, group_disabled) ->
+  add_option: (option, group_position, group_disabled) ->
     if option.nodeName is "OPTION"
       if option.text != ""
-        if group_id || group_id is 0
-          @parsed[group_id].children += 1
+        if group_position?
+          @parsed[group_position].children += 1
         @parsed.push
-          id: @sel_index + @group_index
-          select_index: @sel_index
+          array_index: @parsed.length
+          options_index: @options_index
           value: option.value
           text: option.text
           selected: option.selected
           disabled: ((group_disabled is true) ? group_disabled : option.disabled)
-          group_id: group_id
+          group_array_index: group_position
       else
         @parsed.push
+          array_index: @parsed.length
+          options_index: @options_index
           empty: true
-      @sel_index += 1
+      @options_index += 1
 
-OptionsParser.select_to_array = (select) ->
-  parser = new OptionsParser()
+SelectParser.select_to_array = (select) ->
+  parser = new SelectParser()
   parser.add_node( child ) for child in select.childNodes
   parser.parsed
   
-root.OptionsParser = OptionsParser
+root.SelectParser = SelectParser
