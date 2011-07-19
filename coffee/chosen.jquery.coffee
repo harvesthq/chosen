@@ -610,7 +610,7 @@ class SelectParser
           value: option.value
           text: option.text
           selected: option.selected
-          disabled: ((group_disabled is true) ? group_disabled : option.disabled)
+          disabled: if group_disabled is true then group_disabled else option.disabled
           group_array_index: group_position
       else
         @parsed.push

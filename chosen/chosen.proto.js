@@ -720,7 +720,6 @@
       return _results;
     };
     SelectParser.prototype.add_option = function(option, group_position, group_disabled) {
-      var _ref;
       if (option.nodeName === "OPTION") {
         if (option.text !== "") {
           if (group_position != null) {
@@ -732,9 +731,7 @@
             value: option.value,
             text: option.text,
             selected: option.selected,
-            disabled: (_ref = group_disabled === true) != null ? _ref : {
-              group_disabled: option.disabled
-            },
+            disabled: group_disabled === true ? group_disabled : option.disabled,
             group_array_index: group_position
           });
         } else {
