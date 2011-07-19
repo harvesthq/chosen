@@ -57,3 +57,5 @@ div.side-by-side > div > em { margin-bottom: 10px; display: block; }
 
 a { color: #F36C00; outline: none; text-decoration: none; }
 a:hover { text-decoration: underline; }
+
+ul.credits li { margin-bottom: .25em; }
