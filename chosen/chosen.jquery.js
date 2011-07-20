@@ -427,7 +427,7 @@
       result_data = this.results_data[pos];
       result_data.selected = false;
       this.form_field.options[result_data.options_index].selected = false;
-      result = $(this.form_field.id + "chzn_o_" + pos);
+      result = $("#" + this.form_field.id + "chzn_o_" + pos);
       result.removeClass("result-selected").addClass("active-result").show();
       this.result_clear_highlight();
       this.winnow_results();
@@ -454,7 +454,7 @@
         option = _ref[_i];
         if (!option.disabled && !option.empty) {
           if (option.group) {
-            $(option.dom_id).hide();
+            $('#' + option.dom_id).hide();
           } else if (!(this.is_multiple && option.selected)) {
             found = false;
             result_id = option.dom_id;

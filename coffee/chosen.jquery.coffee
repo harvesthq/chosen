@@ -379,7 +379,7 @@ class Chosen
     result_data.selected = false
 
     @form_field.options[result_data.options_index].selected = false
-    result = $(@form_field.id + "chzn_o_" + pos)
+    result = $("#" + @form_field.id + "chzn_o_" + pos)
     result.removeClass("result-selected").addClass("active-result").show()
 
     this.result_clear_highlight()
@@ -407,7 +407,7 @@ class Chosen
     for option in @results_data
       if not option.disabled and not option.empty
         if option.group
-          $(option.dom_id).hide()
+          $('#' + option.dom_id).hide()
         else if not (@is_multiple and option.selected)
           found = false
           result_id = option.dom_id
