@@ -653,7 +653,8 @@
         }
         div = $('<div />', {
           'style': style_block
-        }).text(this.search_field.val());
+        });
+        div.text(this.search_field.val());
         $('body').append(div);
         w = div.width() + 25;
         div.remove();

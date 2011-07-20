@@ -560,7 +560,8 @@ class Chosen
       for style in styles
         style_block += style + ":" + @search_field.css(style) + ";"
       
-      div = $('<div />', { 'style' : style_block }).text @search_field.val()
+      div = $('<div />', { 'style' : style_block })
+      div.text @search_field.val()
       $('body').append div
 
       w = div.width() + 25
