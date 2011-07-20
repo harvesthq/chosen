@@ -23,13 +23,13 @@ class Chosen
     this.set_default_values()
     
     @form_field = elmn
+    @form_field_jq = $ @form_field
     @is_multiple = @form_field.multiple
 
     @default_text_default = if @form_field.multiple then "Select Some Options" else "Select an Option"
 
     this.set_up_html()
     this.register_observers()
-
 
   set_default_values: ->
     
@@ -44,9 +44,9 @@ class Chosen
   set_up_html: ->
     @container_id = @form_field.id + "_chzn"
     
-    @f_width = ($ @form_field).width()
+    @f_width = @form_field_jq.width()
     
-    @default_text = if ($ @form_field).attr 'title' then ($ @form_field).attr 'title' else @default_text_default
+    @default_text = if @form_field_jq.attr 'title' then @form_field_jq.attr 'title' else @default_text_default
     
     container_div = ($ "<div />", {
       id: @container_id
@@ -59,7 +59,7 @@ class Chosen
     else
       container_div.html '<a href="#" class="chzn-single"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>';
 
-    ($ @form_field).hide().after container_div
+    @form_field_jq.hide().after container_div
     @container = ($ '#' + @container_id)
     @container.addClass( "chzn-container-" + (if @is_multiple then "multi" else "single") )
     @dropdown = @container.find('div.chzn-drop').first()
@@ -97,7 +97,7 @@ class Chosen
     @search_results.mouseover (evt) => this.search_results_mouseover(evt)
     @search_results.mouseout (evt) => this.search_results_mouseout(evt)
 
-    ($ @form_field).bind "liszt:updated", (evt) => this.results_update_field(evt)
+    @form_field_jq.bind "liszt:updated", (evt) => this.results_update_field(evt)
 
     @search_field.blur (evt) => this.input_blur(evt)
     @search_field.keyup (evt) => this.keyup_checker(evt)
@@ -279,9 +279,9 @@ class Chosen
 
 
   set_tab_index: (el) ->
-    if ($ @form_field).attr "tabindex"
-      ti = ($ @form_field).attr "tabindex"
-      ($ @form_field).attr "tabindex", -1
+    if @form_field_jq.attr "tabindex"
+      ti = @form_field_jq.attr "tabindex"
+      @form_field_jq.attr "tabindex", -1
 
       if @is_multiple
         @search_field.attr "tabindex", ti
@@ -365,7 +365,7 @@ class Chosen
       this.results_hide()
       @search_field.val ""
 
-      ($ @form_field).trigger "change"
+      @form_field_jq.trigger "change"
       this.search_field_scale()
 
   result_activate: (el) ->
@@ -385,7 +385,7 @@ class Chosen
     this.result_clear_highlight()
     this.winnow_results()
 
-    ($ @form_field).trigger "change"
+    @form_field_jq.trigger "change"
     this.search_field_scale()
 
   results_search: (evt) ->

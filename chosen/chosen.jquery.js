@@ -21,6 +21,7 @@
     function Chosen(elmn) {
       this.set_default_values();
       this.form_field = elmn;
+      this.form_field_jq = $(this.form_field);
       this.is_multiple = this.form_field.multiple;
       this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
       this.set_up_html();
@@ -40,8 +41,8 @@
     Chosen.prototype.set_up_html = function() {
       var container_div, dd_top, dd_width, sf_width;
       this.container_id = this.form_field.id + "_chzn";
-      this.f_width = ($(this.form_field)).width();
-      this.default_text = ($(this.form_field)).attr('title') ? ($(this.form_field)).attr('title') : this.default_text_default;
+      this.f_width = this.form_field_jq.width();
+      this.default_text = this.form_field_jq.attr('title') ? this.form_field_jq.attr('title') : this.default_text_default;
       container_div = $("<div />", {
         id: this.container_id,
         "class": 'chzn-container',
@@ -52,7 +53,7 @@
       } else {
         container_div.html('<a href="#" class="chzn-single"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>');
       }
-      ($(this.form_field)).hide().after(container_div);
+      this.form_field_jq.hide().after(container_div);
       this.container = $('#' + this.container_id);
       this.container.addClass("chzn-container-" + (this.is_multiple ? "multi" : "single"));
       this.dropdown = this.container.find('div.chzn-drop').first();
@@ -99,7 +100,7 @@
       this.search_results.mouseout(__bind(function(evt) {
         return this.search_results_mouseout(evt);
       }, this));
-      ($(this.form_field)).bind("liszt:updated", __bind(function(evt) {
+      this.form_field_jq.bind("liszt:updated", __bind(function(evt) {
         return this.results_update_field(evt);
       }, this));
       this.search_field.blur(__bind(function(evt) {
@@ -318,9 +319,9 @@
     };
     Chosen.prototype.set_tab_index = function(el) {
       var ti;
-      if (($(this.form_field)).attr("tabindex")) {
-        ti = ($(this.form_field)).attr("tabindex");
-        ($(this.form_field)).attr("tabindex", -1);
+      if (this.form_field_jq.attr("tabindex")) {
+        ti = this.form_field_jq.attr("tabindex");
+        this.form_field_jq.attr("tabindex", -1);
         if (this.is_multiple) {
           return this.search_field.attr("tabindex", ti);
         } else {
@@ -411,7 +412,7 @@
         }
         this.results_hide();
         this.search_field.val("");
-        ($(this.form_field)).trigger("change");
+        this.form_field_jq.trigger("change");
         return this.search_field_scale();
       }
     };
@@ -430,7 +431,7 @@
       result.removeClass("result-selected").addClass("active-result").show();
       this.result_clear_highlight();
       this.winnow_results();
-      ($(this.form_field)).trigger("change");
+      this.form_field_jq.trigger("change");
       return this.search_field_scale();
     };
     Chosen.prototype.results_search = function(evt) {
