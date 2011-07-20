@@ -152,22 +152,18 @@
       return this.mouse_on_container = false;
     };
     Chosen.prototype.input_focus = function(evt) {
-      var binding;
-      binding = this;
       if (!this.active_field) {
-        return setTimeout((function() {
-          return binding.container_click();
-        }), 50);
+        return setTimeout((__bind(function() {
+          return this.container_click();
+        }, this)), 50);
       }
     };
     Chosen.prototype.input_blur = function(evt) {
-      var binding;
       if (!this.mouse_on_container) {
         this.active_field = false;
-        binding = this;
-        return setTimeout((function() {
-          return binding.blur_test();
-        }), 100);
+        return setTimeout((__bind(function() {
+          return this.blur_test();
+        }, this)), 100);
       }
     };
     Chosen.prototype.blur_test = function(evt) {

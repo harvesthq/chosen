@@ -129,14 +129,12 @@ class Chosen
   mouse_leave: -> @mouse_on_container = false
 
   input_focus: (evt) ->
-    binding = this
-    setTimeout (-> binding.container_click()), 50 unless @active_field
+    setTimeout (=> this.container_click()), 50 unless @active_field
   
   input_blur: (evt) ->
     if not @mouse_on_container
       @active_field = false
-      binding = this
-      setTimeout (-> binding.blur_test()), 100
+      setTimeout (=> this.blur_test()), 100
 
   blur_test: (evt) ->
     this.close_field() if not @active_field and @container.hasClass "chzn-container-active"
