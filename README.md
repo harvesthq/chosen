@@ -2,8 +2,8 @@
 
 Chosen is a library for making long, unwieldy select boxes more user friendly.
 
-jQuery version: chosen/chosen.jquery.js
-Prototype version: chosen/chosen.proto.js
+- jQuery support: 1.4+
+- Prototype support: 1.7+
 
 For documentation, usage, and examples, see:
 http://harvesthq.github.com/chosen
