@@ -13,7 +13,9 @@
   $.fn.extend({
     chosen: function(data, options) {
       return $(this).each(function(input_field) {
-        return new Chosen(this, data, options);
+        if (!($(this)).hasClass("chzn-done")) {
+          return new Chosen(this, data, options);
+        }
       });
     }
   });
@@ -26,6 +28,7 @@
       this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
       this.set_up_html();
       this.register_observers();
+      this.form_field_jq.addClass("chzn-done");
     }
     Chosen.prototype.set_default_values = function() {
       this.click_test_action = __bind(function(evt) {

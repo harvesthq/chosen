@@ -13,7 +13,7 @@ $ = jQuery
 $.fn.extend({
   chosen: (data, options) ->
     $(this).each((input_field) -> 
-      new Chosen(this, data, options)
+      new Chosen(this, data, options) unless ($ this).hasClass "chzn-done"
     )
 })
 
@@ -30,6 +30,7 @@ class Chosen
 
     this.set_up_html()
     this.register_observers()
+    @form_field_jq.addClass "chzn-done"
 
   set_default_values: ->
     
