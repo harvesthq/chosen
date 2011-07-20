@@ -520,7 +520,9 @@ class Chosen
       when 13
         evt.preventDefault()
         this.result_select() if this.results_showing
-      when 9, 13, 38, 40, 16
+      when 27
+        this.results_hide() if @results_showing
+      when 9, 38, 40, 16
         # don't do anything on these keys
       else this.results_search()
 

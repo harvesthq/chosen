@@ -607,8 +607,12 @@
             return this.result_select();
           }
           break;
+        case 27:
+          if (this.results_showing) {
+            return this.results_hide();
+          }
+          break;
         case 9:
-        case 13:
         case 38:
         case 40:
         case 16:
