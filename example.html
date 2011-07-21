@@ -1198,6 +1198,26 @@
       <p>Chosen automatically sets the default field text ("Choose a country...") by reading the select element's title value. If no title value is present, it will default to "Select Some Option" or "Select Some Options" depending on whether the select is single or multiple. You can change these elements in the plug-in js file as you see fit.</p>
       <code>&lt;select <strong>title="Choose a country..."</strong> style="width:350px;" multiple class="chzn-select"&gt;</code>
     </div>
+    
+    <h2>Change / Update Events</h2>
+    <div class="side-by-side clearfix">
+      <ul>
+        <li>
+          <h3>Form Field Change</h3>
+          <p>When working with form fields, you often want to perform some behavior after a value has been selected or deselected. Whenever a user selects a field in Chosen, it triggers a "change" event* on the original form field. That let's you do something like this:</p>
+          <p><code>$("#form_field").chosen().change( &hellip; );</code></p>
+          <p><strong>Note:</strong> Prototype doesn't offer support for triggering standard browser events. <a href="https://github.com/kangax/protolicious/blob/5b56fdafcd7d7662c9d648534225039b2e78e371/event.simulate.js">Event.simulate</a> is required to trigger the change event when using the Prototype version.</p>
+        </li>
+        <li>
+          <h3>Updating Chosen Dynamically</h3>
+          <p>If you need to update the options in your select field and want Chosen to pick up the changes, you'll need to trigger the "liszt:updated" event on the field. Chosen will re-build itself based on the updated content.</p>
+          <ul>
+            <li><strong>jQuery Version:</strong> <code>$("#form_field").trigger("liszt:updated");</code></li>
+            <li><strong>Prototype Version:</strong> <code>Event.fire($("form_field"), "liszt:updated");</code></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
 
     <h2>Setup (for Prototype)</h2>
     <p>Using Chosen is easy as can be.</p>
