@@ -54,7 +54,7 @@
       if (this.is_multiple) {
         container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       } else {
-        container_div.html('<a href="#" class="chzn-single"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>');
+        container_div.html('<a href="javascript:void(0)" class="chzn-single"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>');
       }
       this.form_field_jq.hide().after(container_div);
       this.container = $('#' + this.container_id);
@@ -376,7 +376,7 @@
       var choice_id, link;
       choice_id = this.form_field.id + "_chzn_c_" + item.array_index;
       this.choices += 1;
-      this.search_container.before('<li class="search-choice" id="' + choice_id + '"><span>' + item.text + '</span><a href="#" class="search-choice-close" rel="' + item.array_index + '"></a></li>');
+      this.search_container.before('<li class="search-choice" id="' + choice_id + '"><span>' + item.text + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>');
       link = $('#' + choice_id).find("a").first();
       return link.click(__bind(function(evt) {
         return this.choice_destroy_link_click(evt);
