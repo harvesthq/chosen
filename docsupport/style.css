@@ -37,8 +37,8 @@ h3 { font-weight: bold; }
 
 ul li { list-style: disc; margin-left: 1em; margin-bottom: 1.25em; }
 ol li { margin-left: 1.25em; }
-ol ul { margin: .25em 0 0; }
-ol ul li { margin: 0 0 .25em 1em; }
+ol ul, ul ul { margin: .25em 0 0; }
+ol ul li, ul ul li { list-style-type: circle; margin: 0 0 .25em 1em; }
 
 li > p { margin-top: .25em; }
 
