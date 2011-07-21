@@ -37,6 +37,8 @@ h3 { font-weight: bold; }
 
 ul li { list-style: disc; margin-left: 1em; margin-bottom: 1.25em; }
 ol li { margin-left: 1.25em; }
+ol ul { margin: .25em 0 0; }
+ol ul li { margin: 0 0 .25em 1em; }
 
 li > p { margin-top: .25em; }
 
@@ -59,3 +61,5 @@ a { color: #F36C00; outline: none; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 ul.credits li { margin-bottom: .25em; }
+
+strong { font-weight: bold; }
