@@ -206,7 +206,7 @@ class Chosen
       ""
   
   result_add_option: (option) ->
-    if not option.disabled 
+    if not option.disabled
       option.dom_id = @form_field.id + "chzn_o_" + option.array_index
       
       classes = if option.selected and @is_multiple then [] else ["active-result"]
@@ -223,9 +223,9 @@ class Chosen
     this.results_build()
 
   result_do_highlight: (el) ->
-      this.result_clear_highlight();
+      this.result_clear_highlight()
 
-      @result_highlight = el;
+      @result_highlight = el
       @result_highlight.addClassName "highlighted"
 
       maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
@@ -334,11 +334,11 @@ class Chosen
   result_select: ->
     if @result_highlight
       high = @result_highlight
-      this.result_clear_highlight();
+      this.result_clear_highlight()
 
       high.addClassName("result-selected")
       
-      if @is_multiple 
+      if @is_multiple
         this.result_deactivate high
       else
         @result_single_selected = high
@@ -405,8 +405,8 @@ class Chosen
           result_id = option.dom_id
           
           if regex.test option.text
-            found = true;
-            results += 1;
+            found = true
+            results += 1
           else if option.text.indexOf(" ") >= 0 or option.text.indexOf("[") == 0
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
             parts = option.text.replace(/\[|\]/g, "").split(" ")
