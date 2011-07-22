@@ -12,7 +12,7 @@ $ = jQuery
 
 $.fn.extend({
   chosen: (data, options) ->
-    $(this).each((input_field) -> 
+    $(this).each((input_field) ->
       new Chosen(this, data, options) unless ($ this).hasClass "chzn-done"
     )
 })
@@ -58,7 +58,7 @@ class Chosen
     if @is_multiple
       container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
     else
-      container_div.html '<a href="javascript:void(0)" class="chzn-single"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>';
+      container_div.html '<a href="javascript:void(0)" class="chzn-single"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>'
 
     @form_field_jq.hide().after container_div
     @container = ($ '#' + @container_id)
@@ -212,7 +212,7 @@ class Chosen
       ""
   
   result_add_option: (option) ->
-    if not option.disabled 
+    if not option.disabled
       option.dom_id = @form_field.id + "chzn_o_" + option.array_index
       
       classes = if option.selected and @is_multiple then [] else ["active-result"]
@@ -230,9 +230,9 @@ class Chosen
 
   result_do_highlight: (el) ->
     if el.length
-      this.result_clear_highlight();
+      this.result_clear_highlight()
 
-      @result_highlight = el;
+      @result_highlight = el
       @result_highlight.addClass "highlighted"
 
       maxHeight = parseInt @search_results.css("maxHeight"), 10
@@ -343,11 +343,11 @@ class Chosen
       high = @result_highlight
       high_id = high.attr "id"
       
-      this.result_clear_highlight();
+      this.result_clear_highlight()
 
       high.addClass "result-selected"
       
-      if @is_multiple 
+      if @is_multiple
         this.result_deactivate high
       else
         @result_single_selected = high
@@ -414,8 +414,8 @@ class Chosen
           result_id = option.dom_id
           
           if regex.test option.text
-            found = true;
-            results += 1;
+            found = true
+            results += 1
           else if option.text.indexOf(" ") >= 0 or option.text.indexOf("[") == 0
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
             parts = option.text.replace(/\[|\]/g, "").split(" ")
@@ -484,7 +484,7 @@ class Chosen
 
   keyup_arrow: ->
     if not @results_showing and not @is_multiple
-      this.results_show() 
+      this.results_show()
     else if @result_highlight
       prev_sibs = @result_highlight.prevAll("li.active-result")
       
