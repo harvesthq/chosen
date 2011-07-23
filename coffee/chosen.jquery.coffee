@@ -302,7 +302,7 @@ class Chosen
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
     if target.length
       @result_highlight = target
-      this.result_select()
+      this.result_select(evt)
 
   search_results_mouseover: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
@@ -338,7 +338,7 @@ class Chosen
     this.result_deselect (link.attr "rel")
     link.parents('li').first().remove()
 
-  result_select: ->
+  result_select: (evt) ->
     if @result_highlight
       high = @result_highlight
       high_id = high.attr "id"
@@ -363,7 +363,9 @@ class Chosen
       else
         @selected_item.find("span").first().text item.text
 
-      this.results_hide()
+      if not evt.metaKey
+        this.results_hide()
+
       @search_field.val ""
 
       @form_field_jq.trigger "change"
@@ -519,7 +521,7 @@ class Chosen
           this.results_search()
       when 13
         evt.preventDefault()
-        this.result_select() if this.results_showing
+        this.result_select(evt) if this.results_showing
       when 27
         this.results_hide() if @results_showing
       when 9, 38, 40, 16
