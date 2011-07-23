@@ -2,9 +2,9 @@
   /*
   Chosen, a Select Box Enhancer for jQuery and Protoype
   by Patrick Filler for Harvest, http://getharvest.com
-  
+
   Available for use under the MIT License, http://en.wikipedia.org/wiki/MIT_License
-  
+
   Copyright (c) 2011 by Harvest
   */  var $, Chosen, SelectParser, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -44,7 +44,18 @@
     Chosen.prototype.set_up_html = function() {
       var container_div, dd_top, dd_width, sf_width;
       this.container_id = this.form_field.id.replace('.', '_') + "_chzn";
-      this.f_width = this.form_field_jq.width();
+
+      /* Calculate the selectbox's width based on the options and optgroups,
+         because firefox on os/x lies about this when asked for it.
+      */
+      var max = max = this.form_field_jq.width();
+      $($(this.form_field).children()).each(function(){
+          var w = $(this).width();
+          max = max > w ? max : w;
+      });
+      max += 25; // Add extra px for the arrow on the right
+      this.f_width = max;
+
       this.default_text = this.form_field_jq.attr('title') ? this.form_field_jq.attr('title') : this.default_text_default;
       container_div = $("<div />", {
         id: this.container_id,
