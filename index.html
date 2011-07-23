@@ -1191,7 +1191,9 @@
           <h2>Default Text Support</h2>
           <div class="side-by-side clearfix">
             <p>Chosen automatically sets the default field text ("Choose a country...") by reading the select element's title value. If no title value is present, it will default to "Select Some Option" or "Select Some Options" depending on whether the select is single or multiple. You can change these elements in the plug-in js file as you see fit.</p>
-            <code>&lt;select <strong>title="Choose a country..."</strong> style="width:350px;" multiple class="chzn-select"&gt;</code>
+            <p>You must use have an empty <code>&lt;option&gt;</code> for the default text to work.</p>
+            <code>&lt;select <strong>title="Choose a country..."</strong> style="width:350px;" multiple class="chzn-select"&gt;</code><br />
+            <pre>    &lt;option value=""&gt;&lt;/option&gt;</pre>
           </div>
           
           <h2>Change / Update Events</h2>
