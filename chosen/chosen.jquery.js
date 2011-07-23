@@ -12,7 +12,7 @@
   $ = jQuery;
   $.fn.extend({
     chosen: function(data, options) {
-      return $(this).each(function(input_field) {
+	  return $(this).each(function(input_field) {
         if (!($(this)).hasClass("chzn-done")) {
           return new Chosen(this, data, options);
         }
@@ -20,8 +20,14 @@
     }
   });
   Chosen = (function() {
-    function Chosen(elmn) {
-      this.set_default_values();
+    function Chosen(elmn, data, options) {
+	  var params = {};
+	  if( options && typeof options === 'object') {
+		params = options;
+	  } else if ( data && typeof data === 'object' ) {
+		params = data;
+	  } 
+	  this.set_default_values(params);
       this.form_field = elmn;
       this.form_field_jq = $(this.form_field);
       this.is_multiple = this.form_field.multiple;
@@ -30,7 +36,7 @@
       this.register_observers();
       this.form_field_jq.addClass("chzn-done");
     }
-    Chosen.prototype.set_default_values = function() {
+    Chosen.prototype.set_default_values = function( options ) {
       this.click_test_action = __bind(function(evt) {
         return this.test_active_click(evt);
       }, this);
@@ -39,10 +45,20 @@
       this.results_showing = false;
       this.result_highlighted = null;
       this.result_single_selected = null;
+	  if(options.search_enabled) {
+		this.search_enabled = true;
+	  } else {
+		this.search_enabled = false;
+	  }	  
+	  if(options.search_at_start) {
+		this.search_at_start = true;
+	  } else {
+		this.search_at_start = false;
+	  }
       return this.choices = 0;
     };
     Chosen.prototype.set_up_html = function() {
-      var container_div, dd_top, dd_width, sf_width;
+      var container_div, dd_top, dd_width, sf_width, add_search = '';
       this.container_id = this.form_field.id + "_chzn";
       this.f_width = this.form_field_jq.width();
       this.default_text = this.form_field_jq.attr('title') ? this.form_field_jq.attr('title') : this.default_text_default;
@@ -51,10 +67,15 @@
         "class": 'chzn-container',
         style: 'width: ' + this.f_width + 'px;'
       });
+	 
+	  
       if (this.is_multiple) {
         container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       } else {
-        container_div.html('<a href="javascript:void(0)" class="chzn-single"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>');
+		if( this.search_enabled ) {
+		  add_search = '<div class="chzn-search"><input type="text" /></div>';
+		}
+        container_div.html('<a href="javascript:void(0)" class="chzn-single"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;">' + add_search + '<ul class="chzn-results"></ul></div>');
       }
       this.form_field_jq.hide().after(container_div);
       this.container = $('#' + this.container_id);
@@ -449,13 +470,18 @@
       }
     };
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, result_id, results, searchText, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref;
+      var found, option, part, parts, regex, result_id, results, searchText, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref, text_regex;
       startTime = new Date();
       this.no_results_clear();
       results = 0;
       searchText = this.search_field.val() === this.default_text ? "" : $.trim(this.search_field.val());
-      regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      text_regex = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+	  zregex = new RegExp(text_regex, 'i');
+	  if( this.search_at_start ) {
+		regex = new RegExp('^' +  text_regex, 'i');
+	  } else {
+		regex = zregex;
+	  }
       _ref = this.results_data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
