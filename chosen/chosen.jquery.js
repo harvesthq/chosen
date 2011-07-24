@@ -29,6 +29,7 @@
       this.set_up_html();
       this.register_observers();
       this.form_field_jq.addClass("chzn-done");
+      this.in_result_select = false;
     }
     Chosen.prototype.set_default_values = function() {
       this.click_test_action = __bind(function(evt) {
@@ -105,6 +106,9 @@
       }, this));
       this.form_field_jq.bind("liszt:updated", __bind(function(evt) {
         return this.results_update_field(evt);
+      }, this));
+      this.form_field_jq.bind("change", __bind(function(evt) {
+        return this.form_field_change(evt);
       }, this));
       this.search_field.blur(__bind(function(evt) {
         return this.input_blur(evt);
@@ -419,7 +423,9 @@
         }
         this.results_hide();
         this.search_field.val("");
+        this.in_result_select = true;
         this.form_field_jq.trigger("change");
+        this.in_result_select = false;
         return this.search_field_scale();
       }
     };
@@ -438,7 +444,9 @@
       result.removeClass("result-selected").addClass("active-result").show();
       this.result_clear_highlight();
       this.winnow_results();
+      this.in_result_select = true;
       this.form_field_jq.trigger("change");
+      this.in_result_select = true;
       return this.search_field_scale();
     };
     Chosen.prototype.results_search = function(evt) {
@@ -676,6 +684,50 @@
           "top": dd_top + "px"
         });
       }
+    };
+    Chosen.prototype.form_field_change = function(evt) {
+        // make sure we're not going in circles...
+        if(this.in_result_select) {
+            return;
+        }
+        // similar to result_select() but in reverse...
+        var item = null, val = this.form_field_jq.val();
+
+        // find the item with the current value
+        for(var i=0; i < this.results_data.length; i++) {
+            if(this.results_data[i].value == val) {
+                item = this.results_data[i];
+                break;
+            }
+        }
+
+        if(item) {
+            this.result_clear_highlight();
+
+            // highlight it
+            var high = $('#' + this.form_field.id + "chzn_o_" + i);
+            high.addClass("result-selected");
+            this.result_highlight = high;
+            
+            if (this.is_multiple) {
+                this.result_deactivate(high);
+            } else {
+                this.result_single_selected = high;
+            }
+
+            // select it
+            item.selected = true;
+            if (this.is_multiple) {
+                this.choice_build(item);
+            } else {
+                this.selected_item.find("span").first().text(item.text);
+            }
+
+            // clean up
+            this.results_hide();
+            this.search_field.val("");
+            return this.search_field_scale();
+        }
     };
     return Chosen;
   })();
