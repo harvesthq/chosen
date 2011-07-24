@@ -2,9 +2,9 @@
   /*
   Chosen, a Select Box Enhancer for jQuery and Protoype
   by Patrick Filler for Harvest, http://getharvest.com
-  
+
   Available for use under the MIT License, http://en.wikipedia.org/wiki/MIT_License
-  
+
   Copyright (c) 2011 by Harvest
   */  var $, Chosen, SelectParser, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -43,8 +43,19 @@
     };
     Chosen.prototype.set_up_html = function() {
       var container_div, dd_top, dd_width, sf_width;
-      this.container_id = this.form_field.id + "_chzn";
-      this.f_width = this.form_field_jq.width();
+      this.container_id = this.form_field.id.replace('.', '_') + "_chzn";
+
+      /* Calculate the selectbox's width based on the options and optgroups,
+         because firefox on os/x lies about this when asked for it.
+      */
+      var max = max = this.form_field_jq.width();
+      $($(this.form_field).children()).each(function(){
+          var w = $(this).width();
+          max = max > w ? max : w;
+      });
+      max += 25; // Add extra px for the arrow on the right
+      this.f_width = max;
+
       this.default_text = this.form_field_jq.attr('title') ? this.form_field_jq.attr('title') : this.default_text_default;
       container_div = $("<div />", {
         id: this.container_id,
@@ -238,7 +249,7 @@
     };
     Chosen.prototype.result_add_group = function(group) {
       if (!group.disabled) {
-        group.dom_id = this.form_field.id + "chzn_g_" + group.array_index;
+        group.dom_id = this.form_field.id.replace('.', '_') + "chzn_g_" + group.array_index;
         return '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>';
       } else {
         return "";
@@ -247,7 +258,7 @@
     Chosen.prototype.result_add_option = function(option) {
       var classes;
       if (!option.disabled) {
-        option.dom_id = this.form_field.id + "chzn_o_" + option.array_index;
+        option.dom_id = this.form_field.id.replace('.', '_') + "chzn_o_" + option.array_index;
         classes = option.selected && this.is_multiple ? [] : ["active-result"];
         if (option.selected) {
           classes.push("result-selected");
@@ -374,7 +385,7 @@
     };
     Chosen.prototype.choice_build = function(item) {
       var choice_id, link;
-      choice_id = this.form_field.id + "_chzn_c_" + item.array_index;
+      choice_id = this.form_field.id.replace('.', '_') + "_chzn_c_" + item.array_index;
       this.choices += 1;
       this.search_container.before('<li class="search-choice" id="' + choice_id + '"><span>' + item.text + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>');
       link = $('#' + choice_id).find("a").first();
@@ -434,7 +445,7 @@
       result_data = this.results_data[pos];
       result_data.selected = false;
       this.form_field.options[result_data.options_index].selected = false;
-      result = $("#" + this.form_field.id + "chzn_o_" + pos);
+      result = $("#" + this.form_field.id.replace('.', '_') + "chzn_o_" + pos);
       result.removeClass("result-selected").addClass("active-result").show();
       this.result_clear_highlight();
       this.winnow_results();

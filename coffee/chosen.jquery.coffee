@@ -43,7 +43,7 @@ class Chosen
     @choices = 0
 
   set_up_html: ->
-    @container_id = @form_field.id + "_chzn"
+    @container_id = @form_field.id.replace('.', '_') + "_chzn"
     
     @f_width = @form_field_jq.width()
     
@@ -206,14 +206,14 @@ class Chosen
 
   result_add_group: (group) ->
     if not group.disabled
-      group.dom_id = @form_field.id + "chzn_g_" + group.array_index
+      group.dom_id = @form_field.id.replace('.', '_') + "chzn_g_" + group.array_index
       '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
     else
       ""
   
   result_add_option: (option) ->
     if not option.disabled
-      option.dom_id = @form_field.id + "chzn_o_" + option.array_index
+      option.dom_id = @form_field.id.replace('.', '_') + "chzn_o_" + option.array_index
       
       classes = if option.selected and @is_multiple then [] else ["active-result"]
       classes.push "result-selected" if option.selected
@@ -318,7 +318,7 @@ class Chosen
       this.results_show()
 
   choice_build: (item) ->
-    choice_id = @form_field.id + "_chzn_c_" + item.array_index
+    choice_id = @form_field.id.replace('.', '_') + "_chzn_c_" + item.array_index
     @choices += 1
     @search_container.before  '<li class="search-choice" id="' + choice_id + '"><span>' + item.text + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
     link = $('#' + choice_id).find("a").first()
@@ -380,7 +380,7 @@ class Chosen
     result_data.selected = false
 
     @form_field.options[result_data.options_index].selected = false
-    result = $("#" + @form_field.id + "chzn_o_" + pos)
+    result = $("#" + @form_field.id.replace('.', '_') + "chzn_o_" + pos)
     result.removeClass("result-selected").addClass("active-result").show()
 
     this.result_clear_highlight()
