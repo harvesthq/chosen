@@ -19,8 +19,16 @@ $.fn.extend({
 
 class Chosen
 
-  constructor: (elmn) ->
-    this.set_default_values()
+  constructor: (elmn, data, options) ->
+    params = 
+      if  typeof options is 'object'
+        options
+      else if typeof data is 'object'
+        data
+      else
+        {}
+	
+    this.set_default_values(params)
     
     @form_field = elmn
     @form_field_jq = $ @form_field
@@ -32,7 +40,7 @@ class Chosen
     this.register_observers()
     @form_field_jq.addClass "chzn-done"
 
-  set_default_values: ->
+  set_default_values: (options) ->
     
     @click_test_action = (evt) => this.test_active_click(evt)
     @active_field = false
@@ -40,6 +48,14 @@ class Chosen
     @results_showing = false
     @result_highlighted = null
     @result_single_selected = null
+    if options.search_enabled? && typeof options.search_enabled is 'boolean'
+      @search_enabled = options.search_enabled;
+    else
+      @search_enabled = true;
+    if options.search_at_start? && typeof options.search_at_start is 'boolean'
+      @search_at_start = options.search_at_start;
+    else
+      @search_at_start = false;
     @choices = 0
 
   set_up_html: ->
@@ -58,7 +74,12 @@ class Chosen
     if @is_multiple
       container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
     else
-      container_div.html '<a href="javascript:void(0)" class="chzn-single"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>'
+      if @search_enabled
+        add_search = '<div class="chzn-search"><input type="text" /></div>'
+      else 
+        add_search = ''
+
+      container_div.html '<a href="javascript:void(0)" class="chzn-single"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;">' + add_search + '<ul class="chzn-results"></ul></div>'
 
     @form_field_jq.hide().after container_div
     @container = ($ '#' + @container_id)
@@ -402,8 +423,12 @@ class Chosen
     results = 0
 
     searchText = if @search_field.val() is @default_text then "" else $.trim @search_field.val()
-    regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    text_regex = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    zregex = new RegExp(text_regex, 'i')
+    if @search_at_start
+      regex = new RegExp('^' +  text_regex, 'i')
+    else
+      regex = zregex
 
     for option in @results_data
       if not option.disabled and not option.empty
