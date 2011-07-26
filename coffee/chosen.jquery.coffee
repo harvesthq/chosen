@@ -43,7 +43,7 @@ class Chosen
     @choices = 0
 
   set_up_html: ->
-    @container_id = if @form_field.id.length then @form_field.id else this.generate_field_id()
+    @container_id = if @form_field.id.length then @form_field.id.replace('.', '_') else this.generate_field_id()
     @container_id += "_chzn"
     
     @f_width = @form_field_jq.width()
@@ -585,7 +585,7 @@ class Chosen
     new_id
   
   generate_random_id: ->
-    string = 'sel' + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()
+    string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()
     while $("#" + string).length > 0
       string += this.generate_random_char()
     string

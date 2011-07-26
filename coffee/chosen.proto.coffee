@@ -41,7 +41,7 @@ class Chosen
 
 
   set_up_html: ->
-    @container_id = @form_field.identify() + "_chzn"
+    @container_id = @form_field.identify().replace('.', '_') + "_chzn"
     
     @f_width = if @form_field.getStyle("width") then parseInt @form_field.getStyle("width"), 10 else @form_field.getWidth()
     

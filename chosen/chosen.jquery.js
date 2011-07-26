@@ -43,7 +43,7 @@
     };
     Chosen.prototype.set_up_html = function() {
       var container_div, dd_top, dd_width, sf_width;
-      this.container_id = this.form_field.id.length ? this.form_field.id : this.generate_field_id();
+      this.container_id = this.form_field.id.length ? this.form_field.id.replace('.', '_') : this.generate_field_id();
       this.container_id += "_chzn";
       this.f_width = this.form_field_jq.width();
       this.default_text = this.form_field_jq.attr('title') ? this.form_field_jq.attr('title') : this.default_text_default;
@@ -686,7 +686,7 @@
     };
     Chosen.prototype.generate_random_id = function() {
       var string;
-      string = 'sel' + this.generate_random_char() + this.generate_random_char() + this.generate_random_char();
+      string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char();
       while ($("#" + string).length > 0) {
         string += this.generate_random_char();
       }
