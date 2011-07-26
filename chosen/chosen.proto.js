@@ -28,14 +28,14 @@
       this.result_highlighted = null;
       this.result_single_selected = null;
       this.choices = 0;
-      this.single_temp = new Template('<a href="#" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>');
+      this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
-      this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="#" class="search-choice-close" rel="#{position}"></a></li>');
+      this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
       return this.no_results_temp = new Template('<li class="no-results">No results match "<span>#{terms}</span>"</li>');
     };
     Chosen.prototype.set_up_html = function() {
       var base_template, container_props, dd_top, dd_width, sf_width;
-      this.container_id = this.form_field.id + "_chzn";
+      this.container_id = this.form_field.identify().replace('.', '_') + "_chzn";
       this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
       container_props = {
         'id': this.container_id,
@@ -188,7 +188,7 @@
       return this.search_field.focus();
     };
     Chosen.prototype.test_active_click = function(evt) {
-      if (evt.target.up('#' + this.container.id)) {
+      if (evt.target.up('#' + this.container_id)) {
         return this.active_field = true;
       } else {
         return this.close_field();
@@ -227,7 +227,7 @@
     };
     Chosen.prototype.result_add_group = function(group) {
       if (!group.disabled) {
-        group.dom_id = this.form_field.id + "chzn_g_" + group.array_index;
+        group.dom_id = this.container_id + "_g_" + group.array_index;
         return '<li id="' + group.dom_id + '" class="group-result">' + group.label.escapeHTML() + '</li>';
       } else {
         return "";
@@ -236,7 +236,7 @@
     Chosen.prototype.result_add_option = function(option) {
       var classes;
       if (!option.disabled) {
-        option.dom_id = this.form_field.id + "chzn_o_" + option.array_index;
+        option.dom_id = this.container_id + "_o_" + option.array_index;
         classes = option.selected && this.is_multiple ? [] : ["active-result"];
         if (option.selected) {
           classes.push("result-selected");
@@ -361,7 +361,7 @@
     };
     Chosen.prototype.choice_build = function(item) {
       var choice_id, link;
-      choice_id = this.form_field.id + "_chzn_c_" + item.array_index;
+      choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
       this.search_container.insert({
         before: this.choice_temp.evaluate({
@@ -428,7 +428,7 @@
       result_data = this.results_data[pos];
       result_data.selected = false;
       this.form_field.options[result_data.options_index].selected = false;
-      result = $(this.form_field.id + "chzn_o_" + pos);
+      result = $(this.container_id + "_o_" + pos);
       result.removeClassName("result-selected").addClassName("active-result").show();
       this.result_clear_highlight();
       this.winnow_results();
