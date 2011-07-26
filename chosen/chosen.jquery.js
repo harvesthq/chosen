@@ -29,6 +29,13 @@
       this.set_up_html();
       this.register_observers();
       this.form_field_jq.addClass("chzn-done");
+      jQuery(function() {
+         var zIndexNumber = 1000;
+         jQuery('div').each(function() {
+            jQuery(this).css('zIndex', zIndexNumber);
+            zIndexNumber -= 10;
+         });
+      });
     }
     Chosen.prototype.set_default_values = function() {
       this.click_test_action = __bind(function(evt) {
