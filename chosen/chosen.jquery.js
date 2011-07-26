@@ -446,7 +446,7 @@
       this.winnow_results();
       this.in_result_select = true;
       this.form_field_jq.trigger("change");
-      this.in_result_select = true;
+      this.in_result_select = false;
       return this.search_field_scale();
     };
     Chosen.prototype.results_search = function(evt) {
@@ -686,48 +686,32 @@
       }
     };
     Chosen.prototype.form_field_change = function(evt) {
-        // make sure we're not going in circles...
-        if(this.in_result_select) {
-            return;
-        }
-        // similar to result_select() but in reverse...
-        var item = null, val = this.form_field_jq.val();
-
-        // find the item with the current value
-        for(var i=0; i < this.results_data.length; i++) {
-            if(this.results_data[i].value == val) {
-                item = this.results_data[i];
-                break;
-            }
-        }
-
-        if(item) {
+      var item, val, _i, _len, _ref;
+      if (!this.in_result_select) {
+        val = this.form_field_jq.val();
+        _ref = this.results_data;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          item = _ref[_i];
+          if (item.value === val) {
             this.result_clear_highlight();
-
-            // highlight it
-            var high = $('#' + this.form_field.id + "chzn_o_" + i);
-            high.addClass("result-selected");
-            this.result_highlight = high;
-            
+            this.result_highlight = $('#' + item.dom_id).addClass("result-selected");
             if (this.is_multiple) {
-                this.result_deactivate(high);
+              this.result_deactivate(this.result_highlight);
             } else {
-                this.result_single_selected = high;
+              this.result_single_selected = this.result_highlight;
             }
-
-            // select it
             item.selected = true;
             if (this.is_multiple) {
-                this.choice_build(item);
+              this.choice_build(item);
             } else {
-                this.selected_item.find("span").first().text(item.text);
+              this.selected_item.find("span").first().text(item.text);
             }
-
-            // clean up
             this.results_hide();
             this.search_field.val("");
             return this.search_field_scale();
+          }
         }
+      }
     };
     return Chosen;
   })();

@@ -31,6 +31,7 @@ class Chosen
     this.set_up_html()
     this.register_observers()
     @form_field_jq.addClass "chzn-done"
+    @in_result_select = false
 
   set_default_values: ->
     
@@ -100,6 +101,8 @@ class Chosen
 
     @form_field_jq.bind "liszt:updated", (evt) => this.results_update_field(evt)
 
+    @form_field_jq.bind "change", (evt) => this.form_field_change(evt)
+    
     @search_field.blur (evt) => this.input_blur(evt)
     @search_field.keyup (evt) => this.keyup_checker(evt)
     @search_field.keydown (evt) => this.keydown_checker(evt)
@@ -366,7 +369,9 @@ class Chosen
       this.results_hide()
       @search_field.val ""
 
+      @in_result_select = true
       @form_field_jq.trigger "change"
+      @in_result_select = false
       this.search_field_scale()
 
   result_activate: (el) ->
@@ -386,7 +391,9 @@ class Chosen
     this.result_clear_highlight()
     this.winnow_results()
 
+    @in_result_select = true
     @form_field_jq.trigger "change"
+    @in_result_select = false
     this.search_field_scale()
 
   results_search: (evt) ->
@@ -577,6 +584,38 @@ class Chosen
 
       dd_top = @container.height()
       @dropdown.css({"top":  dd_top + "px"})
+
+  form_field_change: (evt) ->
+    # make sure we're not going in circles...
+    if not @in_result_select
+
+      # similar to result_select() but in reverse...
+      val = @form_field_jq.val()
+
+      # find the item with the current value
+      for item in @results_data
+        if item.value == val
+          @result_clear_highlight()
+
+          # highlight it
+          @result_highlight = $('#' + item.dom_id).addClass "result-selected"
+
+          if @is_multiple
+            @result_deactivate(@result_highlight)
+          else
+            @result_single_selected = @result_highlight
+
+          # select it
+          item.selected = true
+          if @is_multiple
+            @choice_build(item)
+          else
+            @selected_item.find("span").first().text(item.text)
+
+          # clean up
+          @results_hide()
+          @search_field.val("")
+          return @search_field_scale()
 
 get_side_border_padding = (elmt) ->
   side_border_padding = elmt.outerWidth() - elmt.width()
