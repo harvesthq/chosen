@@ -592,8 +592,8 @@ class Chosen
     
   generate_random_char: ->
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ";
-    random = Math.floor(Math.random() * chars.length)
-    char = chars.substring random, random+1
+    rand = Math.floor(Math.random() * chars.length)
+    newchar = chars.substring rand, rand+1
 
 get_side_border_padding = (elmt) ->
   side_border_padding = elmt.outerWidth() - elmt.width()

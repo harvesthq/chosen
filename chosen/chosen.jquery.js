@@ -693,10 +693,10 @@
       return string;
     };
     Chosen.prototype.generate_random_char = function() {
-      var char, chars, random;
+      var chars, newchar, rand;
       chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ";
-      random = Math.floor(Math.random() * chars.length);
-      return char = chars.substring(random, random + 1);
+      rand = Math.floor(Math.random() * chars.length);
+      return newchar = chars.substring(rand, rand + 1);
     };
     return Chosen;
   })();
