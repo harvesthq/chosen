@@ -164,7 +164,7 @@ class Chosen
 
 
   test_active_click: (evt) ->
-    if evt.target.up('#' + @container.id)
+    if evt.target.up('#' + @container_id)
       @active_field = true
     else
       this.close_field()

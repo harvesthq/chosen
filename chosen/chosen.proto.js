@@ -188,7 +188,7 @@
       return this.search_field.focus();
     };
     Chosen.prototype.test_active_click = function(evt) {
-      if (evt.target.up('#' + this.container.id)) {
+      if (evt.target.up('#' + this.container_id)) {
         return this.active_field = true;
       } else {
         return this.close_field();
