@@ -459,10 +459,9 @@
       _ref = this.results_data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
-        if (searchText == "") {
+        if (searchText === "") {
           found = true;
-        }
-        else {
+        } else {
           if (!option.disabled && !option.empty) {
             if (option.group) {
               $('#' + option.dom_id).hide();
