@@ -459,23 +459,28 @@
       _ref = this.results_data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
-        if (!option.disabled && !option.empty) {
-          if (option.group) {
-            $('#' + option.dom_id).hide();
-          } else if (!(this.is_multiple && option.selected)) {
-            found = false;
-            result_id = option.dom_id;
-            if (regex.test(option.text)) {
-              found = true;
-              results += 1;
-            } else if (option.text.indexOf(" ") >= 0 || option.text.indexOf("[") === 0) {
-              parts = option.text.replace(/\[|\]/g, "").split(" ");
-              if (parts.length) {
-                for (_j = 0, _len2 = parts.length; _j < _len2; _j++) {
-                  part = parts[_j];
-                  if (regex.test(part)) {
-                    found = true;
-                    results += 1;
+        if (searchText == "") {
+          found = true;
+        }
+        else {
+          if (!option.disabled && !option.empty) {
+            if (option.group) {
+              $('#' + option.dom_id).hide();
+            } else if (!(this.is_multiple && option.selected)) {
+              found = false;
+              result_id = option.dom_id;
+              if (regex.test(option.text)) {
+                found = true;
+                results += 1;
+              } else if (option.text.indexOf(" ") >= 0 || option.text.indexOf("[") === 0) {
+                parts = option.text.replace(/\[|\]/g, "").split(" ");
+                if (parts.length) {
+                  for (_j = 0, _len2 = parts.length; _j < _len2; _j++) {
+                    part = parts[_j];
+                    if (regex.test(part)) {
+                      found = true;
+                      results += 1;
+                    }
                   }
                 }
               }
