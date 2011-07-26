@@ -295,7 +295,7 @@ class Chosen
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
     if target
       @result_highlight = target
-      this.result_select()
+      this.result_select(evt)
 
   search_results_mouseover: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
@@ -331,7 +331,7 @@ class Chosen
     this.result_deselect link.readAttribute("rel")
     link.up('li').remove()
 
-  result_select: ->
+  result_select: (evt) ->
     if @result_highlight
       high = @result_highlight
       this.result_clear_highlight()
@@ -354,7 +354,9 @@ class Chosen
       else
         @selected_item.down("span").update(item.text)
 
-      this.results_hide()
+      if not evt.metaKey
+        this.results_hide()
+
       @search_field.value = ""
 
       @form_field.simulate("change") if typeof Event.simulate is 'function'
@@ -512,7 +514,7 @@ class Chosen
           this.results_search()
       when 13
         evt.preventDefault()
-        this.result_select() if this.results_showing
+        this.result_select(evt) if this.results_showing
       when 27
         this.results_hide() if @results_showing
       when 9, 38, 40, 16

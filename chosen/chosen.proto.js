@@ -338,7 +338,7 @@
       target = evt.target.hasClassName("active-result") ? evt.target : evt.target.up(".active-result");
       if (target) {
         this.result_highlight = target;
-        return this.result_select();
+        return this.result_select(evt);
       }
     };
     Chosen.prototype.search_results_mouseover = function(evt) {
@@ -389,7 +389,7 @@
       this.result_deselect(link.readAttribute("rel"));
       return link.up('li').remove();
     };
-    Chosen.prototype.result_select = function() {
+    Chosen.prototype.result_select = function(evt) {
       var high, item, position;
       if (this.result_highlight) {
         high = this.result_highlight;
@@ -409,7 +409,9 @@
         } else {
           this.selected_item.down("span").update(item.text);
         }
-        this.results_hide();
+        if (!evt.metaKey) {
+          this.results_hide();
+        }
         this.search_field.value = "";
         if (typeof Event.simulate === 'function') {
           this.form_field.simulate("change");
@@ -607,7 +609,7 @@
         case 13:
           evt.preventDefault();
           if (this.results_showing) {
-            return this.result_select();
+            return this.result_select(evt);
           }
           break;
         case 27:
