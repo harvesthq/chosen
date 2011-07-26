@@ -406,24 +406,27 @@ class Chosen
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
-      if not option.disabled and not option.empty
-        if option.group
-          $('#' + option.dom_id).hide()
-        else if not (@is_multiple and option.selected)
-          found = false
-          result_id = option.dom_id
+      if searchText == ""
+        found = true
+      else
+        if not option.disabled and not option.empty
+          if option.group
+            $('#' + option.dom_id).hide()
+          else if not (@is_multiple and option.selected)
+            found = false
+            result_id = option.dom_id
           
-          if regex.test option.text
-            found = true
-            results += 1
-          else if option.text.indexOf(" ") >= 0 or option.text.indexOf("[") == 0
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.text.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  found = true
-                  results += 1
+            if regex.test option.text
+              found = true
+              results += 1
+            else if option.text.indexOf(" ") >= 0 or option.text.indexOf("[") == 0
+              #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
+              parts = option.text.replace(/\[|\]/g, "").split(" ")
+              if parts.length
+                for part in parts
+                  if regex.test part
+                    found = true
+                    results += 1
 
           if found
             if searchText.length
