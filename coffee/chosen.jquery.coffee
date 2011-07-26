@@ -43,7 +43,8 @@ class Chosen
     @choices = 0
 
   set_up_html: ->
-    @container_id = @form_field.id + "_chzn"
+    @container_id = if @form_field.id.length then @form_field.id else this.generate_field_id()
+    @container_id += "_chzn"
     
     @f_width = @form_field_jq.width()
     
@@ -170,7 +171,7 @@ class Chosen
 
 
   test_active_click: (evt) ->
-    if $(evt.target).parents('#' + @container.id).length
+    if $(evt.target).parents('#' + @container_id).length
       @active_field = true
     else
       this.close_field()
@@ -206,14 +207,14 @@ class Chosen
 
   result_add_group: (group) ->
     if not group.disabled
-      group.dom_id = @form_field.id + "chzn_g_" + group.array_index
+      group.dom_id = @container_id + "_g_" + group.array_index
       '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
     else
       ""
   
   result_add_option: (option) ->
     if not option.disabled
-      option.dom_id = @form_field.id + "chzn_o_" + option.array_index
+      option.dom_id = @container_id + "_o_" + option.array_index
       
       classes = if option.selected and @is_multiple then [] else ["active-result"]
       classes.push "result-selected" if option.selected
@@ -318,7 +319,7 @@ class Chosen
       this.results_show()
 
   choice_build: (item) ->
-    choice_id = @form_field.id + "_chzn_c_" + item.array_index
+    choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
     @search_container.before  '<li class="search-choice" id="' + choice_id + '"><span>' + item.text + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
     link = $('#' + choice_id).find("a").first()
@@ -380,7 +381,7 @@ class Chosen
     result_data.selected = false
 
     @form_field.options[result_data.options_index].selected = false
-    result = $("#" + @form_field.id + "chzn_o_" + pos)
+    result = $("#" + @container_id + "_o_" + pos)
     result.removeClass("result-selected").addClass("active-result").show()
 
     this.result_clear_highlight()
@@ -577,6 +578,22 @@ class Chosen
 
       dd_top = @container.height()
       @dropdown.css({"top":  dd_top + "px"})
+  
+  generate_field_id: ->
+    new_id = this.generate_random_id()
+    @form_field.id = new_id
+    new_id
+  
+  generate_random_id: ->
+    string = 'sel' + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()
+    while $("#" + string).length > 0
+      string += this.generate_random_char()
+    string
+    
+  generate_random_char: ->
+    chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ";
+    random = Math.floor(Math.random() * chars.length)
+    char = chars.substring random, random+1
 
 get_side_border_padding = (elmt) ->
   side_border_padding = elmt.outerWidth() - elmt.width()
