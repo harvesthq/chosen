@@ -41,7 +41,7 @@ class Chosen
 
 
   set_up_html: ->
-    @container_id = @form_field.id + "_chzn"
+    @container_id = @form_field.identify() + "_chzn"
     
     @f_width = if @form_field.getStyle("width") then parseInt @form_field.getStyle("width"), 10 else @form_field.getWidth()
     
@@ -200,14 +200,14 @@ class Chosen
 
   result_add_group: (group) ->
     if not group.disabled
-      group.dom_id = @form_field.id + "chzn_g_" + group.array_index
+      group.dom_id = @container_id + "_g_" + group.array_index
       '<li id="' + group.dom_id + '" class="group-result">' + group.label.escapeHTML() + '</li>'
     else
       ""
   
   result_add_option: (option) ->
     if not option.disabled
-      option.dom_id = @form_field.id + "chzn_o_" + option.array_index
+      option.dom_id = @container_id + "_o_" + option.array_index
       
       classes = if option.selected and @is_multiple then [] else ["active-result"]
       classes.push "result-selected" if option.selected
@@ -311,7 +311,7 @@ class Chosen
       this.results_show()
 
   choice_build: (item) ->
-    choice_id = @form_field.id + "_chzn_c_" + item.array_index
+    choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
     @search_container.insert { before: @choice_temp.evaluate({"id":choice_id, "choice":item.text, "position":item.array_index}) }
     link = $(choice_id).down('a')
@@ -371,7 +371,7 @@ class Chosen
     result_data.selected = false
 
     @form_field.options[result_data.options_index].selected = false
-    result = $(@form_field.id + "chzn_o_" + pos)
+    result = $(@container_id + "_o_" + pos)
     result.removeClassName("result-selected").addClassName("active-result").show()
 
     this.result_clear_highlight()
