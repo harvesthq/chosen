@@ -8,6 +8,9 @@ div.chzn-container input {
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
   background: -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
   background: -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
+  background: -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee',GradientType=0 );
+  background: linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   border: 1px solid #aaa;
   font-family: sans-serif;
   font-size: 1em;
@@ -53,10 +56,13 @@ div.chzn-container-single div.chzn-drop {
 
 /* SINGLE */
 div.chzn-container a.chzn-single {
-  background: #FFF;
+  background: #ffffff;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.5, white));
   background-image: -moz-linear-gradient(center bottom, #eeeeee 0%, white 50%);
-  background-image: -o-linear-gradient(bottom, #eeeeee 0%, white 50%);
+  background-image: -o-linear-gradient(top, #eeeeee 0%,#ffffff 50%);
+  background-image: -ms-linear-gradient(top, #eeeeee 0%,#ffffff 50%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 );
+  background-image: linear-gradient(top, #eeeeee 0%,#ffffff 50%);
   border: 1px solid #aaa;
   display: block;
   overflow: hidden;
@@ -98,6 +104,9 @@ div.chzn-container a.chzn-single div {
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc), color-stop(0.6, #eee));
   background-image: -moz-linear-gradient(center bottom, #ccc 0%, #eee 60%);
   background-image: -o-linear-gradient(bottom, #ccc 0%, #eee 60%);
+  background-image: -ms-linear-gradient(top, #cccccc 0%,#eeeeee 60%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#eeeeee',GradientType=0 );
+  background-image: linear-gradient(top, #cccccc 0%,#eeeeee 60%);
   border-left: 1px solid #aaa;
   display: block;
   height: 100%;
@@ -122,6 +131,9 @@ div.chzn-container div.chzn-search input {
   background: url('chosen-sprite.png') no-repeat 97% -35px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
   background: url('chosen-sprite.png') no-repeat 97% -35px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
   background: url('chosen-sprite.png') no-repeat 97% -35px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
+  background: url('chosen-sprite.png') no-repeat 97% -35px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
+  background: url('chosen-sprite.png') no-repeat 97% -35px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
+  background: linear-gradient(top, #ffffff 85%,#eeeeee 99%)
   -moz-border-radius: 0px;
   -webkit-border-radius: 0px;
   -o-border-radius: 0px;
@@ -139,6 +151,9 @@ div.chzn-container ul.chzn-choices {
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
   background-image: -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
   background-image: -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
+  background-image: -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee',GradientType=0 );
+  background-image: linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   margin: 0;
   cursor: text;
   border: 1px solid #aaa;
@@ -186,6 +201,9 @@ div.chzn-container ul.chzn-choices li.search-choice {
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #e4e4e4), color-stop(0.7, #eeeeee));
   background-image: -moz-linear-gradient(center bottom, #e4e4e4 0%, #eeeeee 70%);
   background-image: -o-linear-gradient(bottom, #e4e4e4 0%, #eeeeee 70%);
+  background: -ms-linear-gradient(top, #e4e4e4 0%,#eeeeee 70%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4e4e4', endColorstr='#eeeeee',GradientType=0 );
+  background: linear-gradient(top, #e4e4e4 0%,#eeeeee 70%);
   color: #333;
   border: 1px solid #b4b4b4;
   line-height: 13px;
@@ -291,6 +309,9 @@ div.chzn-container-active a.chzn-single-with-drop {
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, white), color-stop(0.5, #eeeeee));
   background-image: -moz-linear-gradient(center bottom, white 0%, #eeeeee 50%);
   background-image: -o-linear-gradient(bottom, white 0%, #eeeeee 50%);
+  background-image: -ms-linear-gradient(top, #ffffff 0%,#eeeeee 50%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee',GradientType=0 );
+  background-image: linear-gradient(top, #ffffff 0%,#eeeeee 50%);
   -webkit-border-bottom-left-radius: 0px;
   -webkit-border-bottom-right-radius: 0px;
   -moz-border-radius-bottomleft: 0px;
