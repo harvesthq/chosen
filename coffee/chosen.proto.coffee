@@ -555,7 +555,7 @@ class Chosen
       for style in styles
         style_block += style + ":" + @search_field.getStyle(style) + ";"
       
-      div = new Element('div', { 'style' : style_block }).update(@search_field.value.unescapeHTML())
+      div = new Element('div', { 'style' : style_block }).update(@search_field.value.escapeHTML())
       document.body.appendChild(div)
 
       w = Element.measure(div, 'width') + 25

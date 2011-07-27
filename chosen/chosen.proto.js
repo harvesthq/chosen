@@ -658,7 +658,7 @@
         }
         div = new Element('div', {
           'style': style_block
-        }).update(this.search_field.value.unescapeHTML());
+        }).update(this.search_field.value.escapeHTML());
         document.body.appendChild(div);
         w = Element.measure(div, 'width') + 25;
         div.remove();
