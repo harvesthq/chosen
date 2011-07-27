@@ -213,7 +213,7 @@ class Chosen
       classes.push "result-selected" if option.selected
       classes.push "group-option" if option.group_array_index?
       
-      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.text.escapeHTML() + '</li>'
+      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.text + '</li>'
     else
       ""
 
@@ -603,14 +603,14 @@ class SelectParser
 
   add_option: (option, group_position, group_disabled) ->
     if option.nodeName is "OPTION"
-      if option.text != ""
+      if option.innerHTML != ""
         if group_position?
           @parsed[group_position].children += 1
         @parsed.push
           array_index: @parsed.length
           options_index: @options_index
           value: option.value
-          text: option.text
+          text: option.innerHTML
           selected: option.selected
           disabled: if group_disabled is true then group_disabled else option.disabled
           group_array_index: group_position

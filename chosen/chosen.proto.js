@@ -244,7 +244,7 @@
         if (option.group_array_index != null) {
           classes.push("group-option");
         }
-        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.text.escapeHTML() + '</li>';
+        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.text + '</li>';
       } else {
         return "";
       }
@@ -726,7 +726,7 @@
     };
     SelectParser.prototype.add_option = function(option, group_position, group_disabled) {
       if (option.nodeName === "OPTION") {
-        if (option.text !== "") {
+        if (option.innerHTML !== "") {
           if (group_position != null) {
             this.parsed[group_position].children += 1;
           }
@@ -734,7 +734,7 @@
             array_index: this.parsed.length,
             options_index: this.options_index,
             value: option.value,
-            text: option.text,
+            text: option.innerHTML,
             selected: option.selected,
             disabled: group_disabled === true ? group_disabled : option.disabled,
             group_array_index: group_position
