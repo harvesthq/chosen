@@ -216,7 +216,7 @@
           if (data.selected && this.is_multiple) {
             this.choice_build(data);
           } else if (data.selected && !this.is_multiple) {
-            this.selected_item.down("span").update(data.text);
+            this.selected_item.down("span").update(data.html);
           }
         }
       }
@@ -244,7 +244,7 @@
         if (option.group_array_index != null) {
           classes.push("group-option");
         }
-        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.text.escapeHTML() + '</li>';
+        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>';
       } else {
         return "";
       }
@@ -365,9 +365,9 @@
       this.choices += 1;
       this.search_container.insert({
         before: this.choice_temp.evaluate({
-          "id": choice_id,
-          "choice": item.text,
-          "position": item.array_index
+          id: choice_id,
+          choice: item.html,
+          position: item.array_index
         })
       });
       link = $(choice_id).down('a');
@@ -407,7 +407,7 @@
         if (this.is_multiple) {
           this.choice_build(item);
         } else {
-          this.selected_item.down("span").update(item.text);
+          this.selected_item.down("span").update(item.html);
         }
         this.results_hide();
         this.search_field.value = "";
@@ -449,7 +449,7 @@
       startTime = new Date();
       this.no_results_clear();
       results = 0;
-      searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip();
+      searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
       regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       _ref = this.results_data;
@@ -461,11 +461,11 @@
           } else if (!(this.is_multiple && option.selected)) {
             found = false;
             result_id = option.dom_id;
-            if (regex.test(option.text)) {
+            if (regex.test(option.html)) {
               found = true;
               results += 1;
-            } else if (option.text.indexOf(" ") >= 0 || option.text.indexOf("[") === 0) {
-              parts = option.text.replace(/\[|\]/g, "").split(" ");
+            } else if (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0) {
+              parts = option.html.replace(/\[|\]/g, "").split(" ");
               if (parts.length) {
                 for (_j = 0, _len2 = parts.length; _j < _len2; _j++) {
                   part = parts[_j];
@@ -478,11 +478,11 @@
             }
             if (found) {
               if (searchText.length) {
-                startpos = option.text.search(zregex);
-                text = option.text.substr(0, startpos + searchText.length) + '</em>' + option.text.substr(startpos + searchText.length);
+                startpos = option.html.search(zregex);
+                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
                 text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
               } else {
-                text = option.text;
+                text = option.html;
               }
               if ($(result_id).innerHTML !== text) {
                 $(result_id).update(text);
@@ -528,7 +528,7 @@
     };
     Chosen.prototype.no_results = function(terms) {
       return this.search_results.insert(this.no_results_temp.evaluate({
-        "terms": terms.escapeHTML()
+        terms: terms
       }));
     };
     Chosen.prototype.no_results_clear = function() {
@@ -658,7 +658,7 @@
         }
         div = new Element('div', {
           'style': style_block
-        }).update(this.search_field.value);
+        }).update(this.search_field.value.escapeHTML());
         document.body.appendChild(div);
         w = Element.measure(div, 'width') + 25;
         div.remove();
@@ -735,6 +735,7 @@
             options_index: this.options_index,
             value: option.value,
             text: option.text,
+            html: option.innerHTML,
             selected: option.selected,
             disabled: group_disabled === true ? group_disabled : option.disabled,
             group_array_index: group_position

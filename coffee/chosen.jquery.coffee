@@ -220,7 +220,7 @@ class Chosen
       classes.push "result-selected" if option.selected
       classes.push "group-option" if option.group_array_index?
       
-      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + $("<div />").text(option.text).html() + '</li>'
+      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>'
     else
       ""
 
@@ -321,7 +321,7 @@ class Chosen
   choice_build: (item) ->
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
-    @search_container.before  '<li class="search-choice" id="' + choice_id + '"><span>' + item.text + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
+    @search_container.before  '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
     link = $('#' + choice_id).find("a").first()
     link.click (evt) => this.choice_destroy_link_click(evt)
 
@@ -402,7 +402,7 @@ class Chosen
     
     results = 0
 
-    searchText = if @search_field.val() is @default_text then "" else $.trim @search_field.val()
+    searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
     regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
@@ -414,12 +414,12 @@ class Chosen
           found = false
           result_id = option.dom_id
           
-          if regex.test option.text
+          if regex.test option.html
             found = true
             results += 1
-          else if option.text.indexOf(" ") >= 0 or option.text.indexOf("[") == 0
+          else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.text.replace(/\[|\]/g, "").split(" ")
+            parts = option.html.replace(/\[|\]/g, "").split(" ")
             if parts.length
               for part in parts
                 if regex.test part
@@ -428,11 +428,11 @@ class Chosen
 
           if found
             if searchText.length
-              startpos = option.text.search zregex
-              text = option.text.substr(0, startpos + searchText.length) + '</em>' + option.text.substr(startpos + searchText.length)
+              startpos = option.html.search zregex
+              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
             else
-              text = option.text
+              text = option.html
 
             $("#" + result_id).html text if $("#" + result_id).html != text
 
@@ -467,7 +467,7 @@ class Chosen
   
   no_results: (terms) ->
     no_results_html = $('<li class="no-results">No results match "<span></span>"</li>')
-    no_results_html.find("span").first().text(terms)
+    no_results_html.find("span").first().html(terms)
 
     @search_results.append no_results_html
   
@@ -632,6 +632,7 @@ class SelectParser
           options_index: @options_index
           value: option.value
           text: option.text
+          html: option.innerHTML
           selected: option.selected
           disabled: if group_disabled is true then group_disabled else option.disabled
           group_array_index: group_position
