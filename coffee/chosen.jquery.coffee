@@ -15,7 +15,7 @@ $.fn.extend({
     $(this).each((input_field) ->
       new Chosen(this, data, options) unless ($ this).hasClass "chzn-done"
     )
-})
+}) 
 
 class Chosen
 
@@ -48,7 +48,7 @@ class Chosen
     
     @f_width = @form_field_jq.width()
     
-    @default_text = if @form_field_jq.attr 'title' then @form_field_jq.attr 'title' else @default_text_default
+    @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
     
     container_div = ($ "<div />", {
       id: @container_id
