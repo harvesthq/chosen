@@ -42,7 +42,7 @@
         'class': 'chzn-container',
         'style': 'width: ' + this.f_width + 'px'
       };
-      this.default_text = this.form_field.readAttribute('title') ? this.form_field.readAttribute('title') : this.default_text_default;
+      this.default_text = this.form_field.readAttribute('data-placeholder') ? this.form_field.readAttribute('data-placeholder') : this.default_text_default;
       base_template = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
         "default": this.default_text
       })) : new Element('div', container_props).update(this.single_temp.evaluate({

@@ -46,7 +46,7 @@
       this.container_id = this.form_field.id.length ? this.form_field.id.replace('.', '_') : this.generate_field_id();
       this.container_id += "_chzn";
       this.f_width = this.form_field_jq.width();
-      this.default_text = this.form_field_jq.attr('title') ? this.form_field_jq.attr('title') : this.default_text_default;
+      this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
       container_div = $("<div />", {
         id: this.container_id,
         "class": 'chzn-container',
