@@ -125,11 +125,14 @@ class Chosen
     @search_field.keyup (evt) => this.keyup_checker(evt)
     @search_field.keydown (evt) => this.keydown_checker(evt)
 
+        
     if @is_multiple
       @search_choices.click (evt) => this.choices_click(evt)
       @search_field.focus (evt) => this.input_focus(evt)
     else
       @selected_item.focus (evt) => this.activate_field(evt)
+      if( ! @search_enabled )
+        @selected_item.blur (evt) => this.input_blur(evt)
 
   container_click: (evt) ->
     if evt and evt.type is "click"
