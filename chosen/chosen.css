@@ -15,7 +15,7 @@ div.chzn-container input {
   font-family: sans-serif;
   font-size: 1em;
   margin: 0px;
-  padding: 4px 5px;
+  padding: 4px 20px 4px 5px;
   outline: none;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -126,12 +126,12 @@ div.chzn-container div.chzn-search {
   white-space: nowrap;
 }
 div.chzn-container div.chzn-search input {
-  background: url('chosen-sprite.png') no-repeat 97% -35px, #ffffff;
-  background: url('chosen-sprite.png') no-repeat 97% -35px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
-  background: url('chosen-sprite.png') no-repeat 97% -35px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-  background: url('chosen-sprite.png') no-repeat 97% -35px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
-  background: url('chosen-sprite.png') no-repeat 97% -35px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
-  background: url('chosen-sprite.png') no-repeat 97% -35px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
+  background: url('chosen-sprite.png') no-repeat 100% -20px, #ffffff;
+  background: url('chosen-sprite.png') no-repeat 100% -20px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
+  background: url('chosen-sprite.png') no-repeat 100% -20px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
+  background: url('chosen-sprite.png') no-repeat 100% -20px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
+  background: url('chosen-sprite.png') no-repeat 100% -20px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
+  background: url('chosen-sprite.png') no-repeat 100% -20px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   background: linear-gradient(top, #ffffff 85%,#eeeeee 99%)
   -moz-border-radius: 0px;
   -webkit-border-radius: 0px;
