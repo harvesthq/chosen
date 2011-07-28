@@ -189,7 +189,7 @@ class Chosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          @selected_item.down("span").update( data.text )
+          @selected_item.down("span").update( data.html )
 
     this.show_search_field_default()
     this.search_field_scale()
@@ -213,7 +213,7 @@ class Chosen
       classes.push "result-selected" if option.selected
       classes.push "group-option" if option.group_array_index?
       
-      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.text.escapeHTML() + '</li>'
+      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>'
     else
       ""
 
@@ -313,7 +313,11 @@ class Chosen
   choice_build: (item) ->
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
-    @search_container.insert { before: @choice_temp.evaluate({"id":choice_id, "choice":item.text, "position":item.array_index}) }
+    @search_container.insert
+      before: @choice_temp.evaluate
+        id:       choice_id
+        choice:   item.html
+        position: item.array_index
     link = $(choice_id).down('a')
     link.observe "click", (evt) => this.choice_destroy_link_click(evt)
 
@@ -352,7 +356,7 @@ class Chosen
       if @is_multiple
         this.choice_build item
       else
-        @selected_item.down("span").update(item.text)
+        @selected_item.down("span").update(item.html)
 
       this.results_hide()
       @search_field.value = ""
@@ -392,7 +396,7 @@ class Chosen
 
     results = 0
 
-    searchText = if @search_field.value is @default_text then "" else @search_field.value.strip()
+    searchText = if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
     regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
@@ -404,12 +408,12 @@ class Chosen
           found = false
           result_id = option.dom_id
           
-          if regex.test option.text
+          if regex.test option.html
             found = true
             results += 1
-          else if option.text.indexOf(" ") >= 0 or option.text.indexOf("[") == 0
+          else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.text.replace(/\[|\]/g, "").split(" ")
+            parts = option.html.replace(/\[|\]/g, "").split(" ")
             if parts.length
               for part in parts
                 if regex.test part
@@ -418,11 +422,11 @@ class Chosen
 
           if found
             if searchText.length
-              startpos = option.text.search zregex
-              text = option.text.substr(0, startpos + searchText.length) + '</em>' + option.text.substr(startpos + searchText.length)
+              startpos = option.html.search zregex
+              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
             else
-              text = option.text
+              text = option.html
 
             $(result_id).update text if $(result_id).innerHTML != text
 
@@ -455,7 +459,7 @@ class Chosen
         this.result_do_highlight do_high
   
   no_results: (terms) ->
-    @search_results.insert @no_results_temp.evaluate({"terms":terms.escapeHTML()})
+    @search_results.insert @no_results_temp.evaluate( terms: terms )
   
   no_results_clear: ->
     nr = null
@@ -551,7 +555,7 @@ class Chosen
       for style in styles
         style_block += style + ":" + @search_field.getStyle(style) + ";"
       
-      div = new Element('div', { 'style' : style_block }).update(@search_field.value)
+      div = new Element('div', { 'style' : style_block }).update(@search_field.value.escapeHTML())
       document.body.appendChild(div)
 
       w = Element.measure(div, 'width') + 25
@@ -611,6 +615,7 @@ class SelectParser
           options_index: @options_index
           value: option.value
           text: option.text
+          html: option.innerHTML
           selected: option.selected
           disabled: if group_disabled is true then group_disabled else option.disabled
           group_array_index: group_position

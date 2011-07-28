@@ -256,7 +256,7 @@
         if (option.group_array_index != null) {
           classes.push("group-option");
         }
-        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + $("<div />").text(option.text).html() + '</li>';
+        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>';
       } else {
         return "";
       }
@@ -377,7 +377,7 @@
       var choice_id, link;
       choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
-      this.search_container.before('<li class="search-choice" id="' + choice_id + '"><span>' + item.text + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>');
+      this.search_container.before('<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>');
       link = $('#' + choice_id).find("a").first();
       return link.click(__bind(function(evt) {
         return this.choice_destroy_link_click(evt);
@@ -454,7 +454,7 @@
       startTime = new Date();
       this.no_results_clear();
       results = 0;
-      searchText = this.search_field.val() === this.default_text ? "" : $.trim(this.search_field.val());
+      searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
       regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       _ref = this.results_data;
@@ -466,11 +466,11 @@
           } else if (!(this.is_multiple && option.selected)) {
             found = false;
             result_id = option.dom_id;
-            if (regex.test(option.text)) {
+            if (regex.test(option.html)) {
               found = true;
               results += 1;
-            } else if (option.text.indexOf(" ") >= 0 || option.text.indexOf("[") === 0) {
-              parts = option.text.replace(/\[|\]/g, "").split(" ");
+            } else if (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0) {
+              parts = option.html.replace(/\[|\]/g, "").split(" ");
               if (parts.length) {
                 for (_j = 0, _len2 = parts.length; _j < _len2; _j++) {
                   part = parts[_j];
@@ -483,11 +483,11 @@
             }
             if (found) {
               if (searchText.length) {
-                startpos = option.text.search(zregex);
-                text = option.text.substr(0, startpos + searchText.length) + '</em>' + option.text.substr(startpos + searchText.length);
+                startpos = option.html.search(zregex);
+                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
                 text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
               } else {
-                text = option.text;
+                text = option.html;
               }
               if ($("#" + result_id).html !== text) {
                 $("#" + result_id).html(text);
@@ -535,7 +535,7 @@
     Chosen.prototype.no_results = function(terms) {
       var no_results_html;
       no_results_html = $('<li class="no-results">No results match "<span></span>"</li>');
-      no_results_html.find("span").first().text(terms);
+      no_results_html.find("span").first().html(terms);
       return this.search_results.append(no_results_html);
     };
     Chosen.prototype.no_results_clear = function() {
@@ -746,6 +746,7 @@
             options_index: this.options_index,
             value: option.value,
             text: option.text,
+            html: option.innerHTML,
             selected: option.selected,
             disabled: group_disabled === true ? group_disabled : option.disabled,
             group_array_index: group_position
