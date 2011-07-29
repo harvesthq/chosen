@@ -44,7 +44,8 @@
     };
     Chosen.prototype.set_up_html = function() {
       var container_div, dd_top, dd_width, sf_width;
-      this.container_id = this.form_field.id + "_chzn";
+      this.container_id = this.form_field.id.length ? this.form_field.id.replace('.', '_') : this.generate_field_id();
+      this.container_id += "_chzn";
       this.f_width = this.form_field_jq.width();
       this.default_text = this.form_field_jq.attr('title') ? this.form_field_jq.attr('title') : this.default_text_default;
       container_div = $("<div />", {
@@ -203,7 +204,7 @@
       return this.search_field.focus();
     };
     Chosen.prototype.test_active_click = function(evt) {
-      if ($(evt.target).parents('#' + this.container.id).length) {
+      if ($(evt.target).parents('#' + this.container_id).length) {
         return this.active_field = true;
       } else {
         return this.close_field();
@@ -242,7 +243,7 @@
     };
     Chosen.prototype.result_add_group = function(group) {
       if (!group.disabled) {
-        group.dom_id = this.form_field.id + "chzn_g_" + group.array_index;
+        group.dom_id = this.container_id + "_g_" + group.array_index;
         return '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>';
       } else {
         return "";
@@ -251,7 +252,7 @@
     Chosen.prototype.result_add_option = function(option) {
       var classes;
       if (!option.disabled) {
-        option.dom_id = this.form_field.id + "chzn_o_" + option.array_index;
+        option.dom_id = this.container_id + "_o_" + option.array_index;
         classes = option.selected && this.is_multiple ? [] : ["active-result"];
         if (option.selected) {
           classes.push("result-selected");
@@ -259,7 +260,7 @@
         if (option.group_array_index != null) {
           classes.push("group-option");
         }
-        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + $("<div />").text(option.text).html() + '</li>';
+        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>';
       } else {
         return "";
       }
@@ -378,9 +379,9 @@
     };
     Chosen.prototype.choice_build = function(item) {
       var choice_id, link;
-      choice_id = this.form_field.id + "_chzn_c_" + item.array_index;
+      choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
-      this.search_container.before('<li class="search-choice" id="' + choice_id + '"><span>' + item.text + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>');
+      this.search_container.before('<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>');
       link = $('#' + choice_id).find("a").first();
       return link.click(__bind(function(evt) {
         return this.choice_destroy_link_click(evt);
@@ -442,7 +443,7 @@
       result_data = this.results_data[pos];
       result_data.selected = false;
       this.form_field.options[result_data.options_index].selected = false;
-      result = $("#" + this.form_field.id + "chzn_o_" + pos);
+      result = $("#" + this.container_id + "_o_" + pos);
       result.removeClass("result-selected").addClass("active-result").show();
       this.result_clear_highlight();
       this.winnow_results();
@@ -463,7 +464,7 @@
       startTime = new Date();
       this.no_results_clear();
       results = 0;
-      searchText = this.search_field.val() === this.default_text ? "" : $.trim(this.search_field.val());
+      searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
       regex = new RegExp('\\b' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       _ref = this.results_data;
@@ -475,11 +476,11 @@
           } else if (!(this.is_multiple && option.selected)) {
             found = false;
             result_id = option.dom_id;
-            if (regex.test(option.text)) {
+            if (regex.test(option.html)) {
               found = true;
               results += 1;
-            } else if (option.text.indexOf(" ") >= 0 || option.text.indexOf("[") === 0) {
-              parts = option.text.replace(/\[|\]/g, "").split(" ");
+            } else if (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0) {
+              parts = option.html.replace(/\[|\]/g, "").split(" ");
               if (parts.length) {
                 for (_j = 0, _len2 = parts.length; _j < _len2; _j++) {
                   part = parts[_j];
@@ -492,11 +493,11 @@
             }
             if (found) {
               if (searchText.length) {
-                startpos = option.text.search(zregex);
-                text = option.text.substr(0, startpos + searchText.length) + '</em>' + option.text.substr(startpos + searchText.length);
+                startpos = option.html.search(zregex);
+                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
                 text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
               } else {
-                text = option.text;
+                text = option.html;
               }
               if ($("#" + result_id).html !== text) {
                 $("#" + result_id).html(text);
@@ -544,7 +545,7 @@
     Chosen.prototype.no_results = function(terms) {
       var no_results_html;
       no_results_html = $('<li class="no-results">No results match "<span></span>"</li>');
-      no_results_html.find("span").first().text(terms);
+      no_results_html.find("span").first().html(terms);
       return this.search_results.append(no_results_html);
     };
     Chosen.prototype.no_results_clear = function() {
@@ -687,6 +688,26 @@
         });
       }
     };
+    Chosen.prototype.generate_field_id = function() {
+      var new_id;
+      new_id = this.generate_random_id();
+      this.form_field.id = new_id;
+      return new_id;
+    };
+    Chosen.prototype.generate_random_id = function() {
+      var string;
+      string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char();
+      while ($("#" + string).length > 0) {
+        string += this.generate_random_char();
+      }
+      return string;
+    };
+    Chosen.prototype.generate_random_char = function() {
+      var chars, newchar, rand;
+      chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ";
+      rand = Math.floor(Math.random() * chars.length);
+      return newchar = chars.substring(rand, rand + 1);
+    };
     Chosen.prototype.form_field_change = function(evt) {
       var item, val, _i, _len, _ref;
       if (!this.in_result_select) {
@@ -763,6 +784,7 @@
             options_index: this.options_index,
             value: option.value,
             text: option.text,
+            html: option.innerHTML,
             selected: option.selected,
             disabled: group_disabled === true ? group_disabled : option.disabled,
             group_array_index: group_position
