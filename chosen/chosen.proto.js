@@ -748,7 +748,7 @@
     };
     return Chosen;
   })();
-  this.Chosen = Chosen;
+  root.Chosen = Chosen;
   document.observe('dom:loaded', function(evt) {
     var select, selects, _i, _len, _results;
     selects = $$(".chzn-select");
