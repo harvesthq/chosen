@@ -132,7 +132,7 @@ div.chzn-container div.chzn-search input {
   background: url('chosen-sprite.png') no-repeat 97% -35px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
   background: url('chosen-sprite.png') no-repeat 97% -35px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   background: url('chosen-sprite.png') no-repeat 97% -35px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
-  background: linear-gradient(top, #ffffff 85%,#eeeeee 99%)
+  background: linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   -moz-border-radius: 0px;
   -webkit-border-radius: 0px;
   -o-border-radius: 0px;
