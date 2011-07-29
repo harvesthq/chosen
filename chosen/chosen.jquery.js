@@ -2,9 +2,9 @@
   /*
   Chosen, a Select Box Enhancer for jQuery and Protoype
   by Patrick Filler for Harvest, http://getharvest.com
-  
+
   Available for use under the MIT License, http://en.wikipedia.org/wiki/MIT_License
-  
+
   Copyright (c) 2011 by Harvest
   */  var $, Chosen, SelectParser, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -45,7 +45,7 @@
       var container_div, dd_top, dd_width, sf_width;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace('.', '_') : this.generate_field_id();
       this.container_id += "_chzn";
-      this.f_width = this.form_field_jq.width();
+      this.f_width = this.form_field_jq.outerWidth();
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
       container_div = $("<div />", {
         id: this.container_id,

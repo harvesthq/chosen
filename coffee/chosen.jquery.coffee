@@ -15,13 +15,13 @@ $.fn.extend({
     $(this).each((input_field) ->
       new Chosen(this, data, options) unless ($ this).hasClass "chzn-done"
     )
-}) 
+})
 
 class Chosen
 
   constructor: (elmn) ->
     this.set_default_values()
-    
+
     @form_field = elmn
     @form_field_jq = $ @form_field
     @is_multiple = @form_field.multiple
@@ -33,7 +33,7 @@ class Chosen
     @form_field_jq.addClass "chzn-done"
 
   set_default_values: ->
-    
+
     @click_test_action = (evt) => this.test_active_click(evt)
     @active_field = false
     @mouse_on_container = false
@@ -45,17 +45,17 @@ class Chosen
   set_up_html: ->
     @container_id = if @form_field.id.length then @form_field.id.replace('.', '_') else this.generate_field_id()
     @container_id += "_chzn"
-    
-    @f_width = @form_field_jq.width()
-    
+
+    @f_width = @form_field_jq.Outerwidth()
+
     @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
-    
+
     container_div = ($ "<div />", {
       id: @container_id
       class: 'chzn-container'
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
     })
-    
+
     if @is_multiple
       container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
     else
@@ -65,10 +65,10 @@ class Chosen
     @container = ($ '#' + @container_id)
     @container.addClass( "chzn-container-" + (if @is_multiple then "multi" else "single") )
     @dropdown = @container.find('div.chzn-drop').first()
-    
+
     dd_top = @container.height()
     dd_width = (@f_width - get_side_border_padding(@dropdown))
-    
+
     @dropdown.css({"width": dd_width  + "px", "top": dd_top + "px"})
 
     @search_field = @container.find('input').first()
@@ -76,7 +76,7 @@ class Chosen
     this.search_field_scale()
 
     @search_no_results = @container.find('li.no-results').first()
-    
+
     if @is_multiple
       @search_choices = @container.find('ul.chzn-choices').first()
       @search_container = @container.find('li.search-field').first()
@@ -85,7 +85,7 @@ class Chosen
       @selected_item = @container.find('.chzn-single').first()
       sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
       @search_field.css( {"width" : sf_width + "px"} )
-    
+
     this.results_build()
     this.set_tab_index()
 
@@ -94,7 +94,7 @@ class Chosen
     @container.click (evt) => this.container_click(evt)
     @container.mouseenter (evt) => this.mouse_enter(evt)
     @container.mouseleave (evt) => this.mouse_leave(evt)
-  
+
     @search_results.click (evt) => this.search_results_click(evt)
     @search_results.mouseover (evt) => this.search_results_mouseover(evt)
     @search_results.mouseout (evt) => this.search_results_mouseout(evt)
@@ -132,7 +132,7 @@ class Chosen
 
   input_focus: (evt) ->
     setTimeout (=> this.container_click()), 50 unless @active_field
-  
+
   input_blur: (evt) ->
     if not @mouse_on_container
       @active_field = false
@@ -143,11 +143,11 @@ class Chosen
 
   close_field: ->
     $(document).unbind "click", @click_test_action
-    
+
     if not @is_multiple
       @selected_item.attr "tabindex", @search_field.attr("tabindex")
       @search_field.attr "tabindex", -1
-    
+
     @active_field = false
     this.results_hide()
 
@@ -175,7 +175,7 @@ class Chosen
       @active_field = true
     else
       this.close_field()
-    
+
   results_build: ->
     startTime = new Date()
     @parsing = true
@@ -200,7 +200,7 @@ class Chosen
 
     this.show_search_field_default()
     this.search_field_scale()
-    
+
     @search_results.html content
     @parsing = false
 
@@ -211,15 +211,15 @@ class Chosen
       '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
     else
       ""
-  
+
   result_add_option: (option) ->
     if not option.disabled
       option.dom_id = @container_id + "_o_" + option.array_index
-      
+
       classes = if option.selected and @is_multiple then [] else ["active-result"]
       classes.push "result-selected" if option.selected
       classes.push "group-option" if option.group_array_index?
-      
+
       '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>'
     else
       ""
@@ -239,7 +239,7 @@ class Chosen
       maxHeight = parseInt @search_results.css("maxHeight"), 10
       visible_top = @search_results.scrollTop()
       visible_bottom = maxHeight + visible_top
-      
+
       high_top = @result_highlight.position().top + @search_results.scrollTop()
       high_bottom = high_top + @result_highlight.outerHeight()
 
@@ -247,7 +247,7 @@ class Chosen
         @search_results.scrollTop if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
       else if high_top < visible_top
         @search_results.scrollTop high_top
-    
+
   result_clear_highlight: ->
     @result_highlight.removeClass "highlighted" if @result_highlight
     @result_highlight = null
@@ -343,16 +343,16 @@ class Chosen
     if @result_highlight
       high = @result_highlight
       high_id = high.attr "id"
-      
+
       this.result_clear_highlight()
 
       high.addClass "result-selected"
-      
+
       if @is_multiple
         this.result_deactivate high
       else
         @result_single_selected = high
-      
+
       position = high_id.substr(high_id.lastIndexOf("_") + 1 )
       item = @results_data[position]
       item.selected = true
@@ -399,7 +399,7 @@ class Chosen
   winnow_results: ->
     startTime = new Date()
     this.no_results_clear()
-    
+
     results = 0
 
     searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
@@ -413,7 +413,7 @@ class Chosen
         else if not (@is_multiple and option.selected)
           found = false
           result_id = option.dom_id
-          
+
           if regex.test option.html
             found = true
             results += 1
@@ -442,7 +442,7 @@ class Chosen
           else
             this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
             this.result_deactivate $("#" + result_id)
-    
+
     if results < 1 and searchText.length
       this.no_results searchText
     else
@@ -464,13 +464,13 @@ class Chosen
       do_high = @search_results.find(".active-result").first()
       if(do_high)
         this.result_do_highlight do_high
-  
+
   no_results: (terms) ->
     no_results_html = $('<li class="no-results">No results match "<span></span>"</li>')
     no_results_html.find("span").first().html(terms)
 
     @search_results.append no_results_html
-  
+
   no_results_clear: ->
     @search_results.find(".no-results").remove()
 
@@ -488,7 +488,7 @@ class Chosen
       this.results_show()
     else if @result_highlight
       prev_sibs = @result_highlight.prevAll("li.active-result")
-      
+
       if prev_sibs.length
         this.result_do_highlight prev_sibs.first()
       else
@@ -533,7 +533,7 @@ class Chosen
     this.search_field_scale()
 
     this.clear_backstroke() if stroke != 8 and this.pending_backstroke
-    
+
     switch stroke
       when 8
         @backstroke_length = this.search_field.val().length
@@ -560,10 +560,10 @@ class Chosen
 
       style_block = "position:absolute; left: -1000px; top: -1000px; display:none;"
       styles = ['font-size','font-style', 'font-weight', 'font-family','line-height', 'text-transform', 'letter-spacing']
-      
+
       for style in styles
         style_block += style + ":" + @search_field.css(style) + ";"
-      
+
       div = $('<div />', { 'style' : style_block })
       div.text @search_field.val()
       $('body').append div
@@ -578,18 +578,18 @@ class Chosen
 
       dd_top = @container.height()
       @dropdown.css({"top":  dd_top + "px"})
-  
+
   generate_field_id: ->
     new_id = this.generate_random_id()
     @form_field.id = new_id
     new_id
-  
+
   generate_random_id: ->
     string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()
     while $("#" + string).length > 0
       string += this.generate_random_char()
     string
-    
+
   generate_random_char: ->
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ";
     rand = Math.floor(Math.random() * chars.length)
@@ -601,7 +601,7 @@ get_side_border_padding = (elmt) ->
 root.get_side_border_padding = get_side_border_padding
 
 class SelectParser
-  
+
   constructor: ->
     @options_index = 0
     @parsed = []
@@ -647,5 +647,5 @@ SelectParser.select_to_array = (select) ->
   parser = new SelectParser()
   parser.add_node( child ) for child in select.childNodes
   parser.parsed
-  
+
 root.SelectParser = SelectParser
