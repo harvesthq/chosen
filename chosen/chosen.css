@@ -1,9 +1,9 @@
-div.chzn-container {
+.chzn-container {
   font-size: 13px;
   position: relative;
 }
 
-div.chzn-container input {
+.chzn-container input {
   background: #fff;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
   background: -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
@@ -14,7 +14,7 @@ div.chzn-container input {
   border: 1px solid #aaa;
   font-family: sans-serif;
   font-size: 1em;
-  margin: 0px;
+  margin: 0;
   padding: 4px 20px 4px 5px;
   outline: none;
   -moz-border-radius: 3px;
@@ -24,27 +24,27 @@ div.chzn-container input {
   -khtml-border-radius: 3px;
   border-radius: 3px;
 }
-div.chzn-container textarea:focus {
+.chzn-container textarea:focus {
   border-color: #058cf5;
-  -moz-box-shadow: 0px 0px 3px #aaa;
-  -webkit-box-shadow: 0px 0px 3px #aaa;
-  box-shadow: 0px 0px 3px #aaa;
+  -moz-box-shadow: 0 0 3px #aaa;
+  -webkit-box-shadow: 0 0 3px #aaa;
+  box-shadow: 0 0 3px #aaa;
 }
 
 
-div.chzn-container div.chzn-drop {
+.chzn-container .chzn-drop {
   background: #FFF;
   border: 1px solid #aaa;
   border-width: 0 1px 1px;
   left: 0;
   position: absolute;
   top: 29px;
-  -webkit-box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   z-index: 999;
 }
-div.chzn-container-single div.chzn-drop {
+.chzn-container-single .chzn-drop {
   -moz-border-radius: 0 0 4px 4px;
   -webkit-border-radius: 0 0 4px 4px;
   -o-border-radius: 0 0 4px 4px;
@@ -55,7 +55,7 @@ div.chzn-container-single div.chzn-drop {
 
 
 /* SINGLE */
-div.chzn-container a.chzn-single {
+.chzn-container .chzn-single {
   background: #ffffff;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.5, white));
   background-image: -moz-linear-gradient(center bottom, #eeeeee 0%, white 50%);
@@ -75,18 +75,18 @@ div.chzn-container a.chzn-single {
   height: 25px;
   color: #444;
   line-height: 26px;
-  padding: 0px 0px 0px 8px;
+  padding: 0 0 0 8px;
   position: relative;
   text-decoration: none;
   white-space: nowrap;
 }
-div.chzn-container a.chzn-single span {
+.chzn-container .chzn-single span {
   display: block;
   margin-right: 26px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-div.chzn-container a.chzn-single div {
+.chzn-container .chzn-single div {
   -moz-border-radius-topright: 4px;
   -webkit-border-top-right-radius: 4px;
   -o-border-top-right-radius: 4px;
@@ -114,18 +114,18 @@ div.chzn-container a.chzn-single div {
   top: 0;
   width: 18px;
 }
-div.chzn-container a.chzn-single div b {
+.chzn-container .chzn-single div b {
   background: url('chosen-sprite.png') no-repeat 0 1px;
   display: block;
   width: 100%;
   height: 100%;
 }
-div.chzn-container div.chzn-search {
+.chzn-container .chzn-search {
   padding: 3px 4px;
-  margin: 0px;
+  margin: 0;
   white-space: nowrap;
 }
-div.chzn-container div.chzn-search input {
+.chzn-container .chzn-search input {
   background: url('chosen-sprite.png') no-repeat 100% -20px, #ffffff;
   background: url('chosen-sprite.png') no-repeat 100% -20px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
   background: url('chosen-sprite.png') no-repeat 100% -20px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
@@ -133,19 +133,19 @@ div.chzn-container div.chzn-search input {
   background: url('chosen-sprite.png') no-repeat 100% -20px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   background: url('chosen-sprite.png') no-repeat 100% -20px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   background: linear-gradient(top, #ffffff 85%,#eeeeee 99%);
-  -moz-border-radius: 0px;
-  -webkit-border-radius: 0px;
-  -o-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -khtml-border-radius: 0px;
-  border-radius: 0px;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  -o-border-radius: 0;
+  -ms-border-radius: 0;
+  -khtml-border-radius: 0;
+  border-radius: 0;
   margin: 1px 0;
   outline: 0;
 }
 
 
 /* Multi */
-div.chzn-container ul.chzn-choices {
+.chzn-container .chzn-choices {
   background: #fff;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
   background-image: -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
@@ -162,26 +162,26 @@ div.chzn-container ul.chzn-choices {
   padding: 0;
   position: relative;
 }
-div.chzn-container ul.chzn-choices:focus {
+.chzn-container .chzn-choices:focus {
   border-color: #058cf5;
-  -moz-box-shadow: 0px 0px 5px #999;
-  -webkit-box-shadow: 0px 0px 5px #999;
-  box-shadow: 0px 0px 5px #999;
+  -moz-box-shadow: 0 0 5px #999;
+  -webkit-box-shadow: 0 0 5px #999;
+  box-shadow: 0 0 5px #999;
 }
-div.chzn-container ul.chzn-choices li {
+.chzn-container .chzn-choices li {
   float: left;
   list-style-type: none;
-  margin: 0px;
+  margin: 0;
 }
-div.chzn-container ul.chzn-choices li.search-field {
-  margin: 0px;
+.chzn-container .chzn-choices .search-field {
+  margin: 0;
   white-space: nowrap;
-  padding: 0px;
+  padding: 0;
 }
-div.chzn-container ul.chzn-choices li.search-field input {
+.chzn-container .chzn-choices .search-field input {
   color: #666;
   background: transparent !important;
-  border: 0px !important;
+  border: 0 !important;
   padding: 5px;
   margin: 1px 0;
   outline: 0;
@@ -189,10 +189,10 @@ div.chzn-container ul.chzn-choices li.search-field input {
   -moz-box-shadow: none;
   box-shadow: none;
 }
-div.chzn-container ul.chzn-choices li.search-field input.default {
+.chzn-container .chzn-choices .search-field .default {
   color: #999;
 }
-div.chzn-container ul.chzn-choices li.search-choice {
+.chzn-container .chzn-choices .search-choice {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -208,15 +208,15 @@ div.chzn-container ul.chzn-choices li.search-choice {
   line-height: 13px;
   padding: 3px 19px 3px 6px;
   position: relative;
-  margin: 3px 0px 3px 5px;
+  margin: 3px 0 3px 5px;
 }
-div.chzn-container ul.chzn-choices li.search-choice span {
+.chzn-container .chzn-choices .search-choice span {
   cursor: default;
 }
-div.chzn-container ul.chzn-choices li.search-choice.search-choice-focus {
+.chzn-container .chzn-choices .search-choice.search-choice-focus {
   background: #d4d4d4;
 }
-div.chzn-container ul.chzn-choices li.search-choice a.search-choice-close {
+.chzn-container .chzn-choices .search-choice .search-choice-close {
   position: absolute;
   right: 5px;
   top: 6px;
@@ -226,16 +226,16 @@ div.chzn-container ul.chzn-choices li.search-choice a.search-choice-close {
   font-size: 1px;
   background: url(chosen-sprite.png) right top no-repeat;
 }
-div.chzn-container ul.chzn-choices li.search-choice a.search-choice-close:hover {
+.chzn-container .chzn-choices .search-choice .search-choice-close:hover {
   background-position: right -9px;
 }
-div.chzn-container ul.chzn-choices li.search-choice.search-choice-focus a.search-choice-close {
+.chzn-container .chzn-choices .search-choice.search-choice-focus .search-choice-close {
   background-position: right -9px;
 }
 
 
 /* Results */
-div.chzn-container ul.chzn-results {
+.chzn-container .chzn-results {
   margin: 0 4px 4px 0;
   max-height: 190px;
   padding: 0 0 0 4px;
@@ -243,65 +243,65 @@ div.chzn-container ul.chzn-results {
   overflow-x: hidden;
   overflow-y: auto;
 }
-div.chzn-container-multi ul.chzn-results {
+.chzn-container-multi .chzn-results {
   margin: -1px 0 0;
   padding: 0;
 }
-div.chzn-container-multi ul.chzn-results li {
-  border-left: 0px !important;
-  border-right: 0px !important;
+.chzn-container-multi .chzn-results li {
+  border-left: 0 !important;
+  border-right: 0 !important;
 }
-div.chzn-container ul.chzn-results li {
+.chzn-container .chzn-results li {
   line-height: 80%;
   padding: 7px 7px 8px;
   margin: 0;
   list-style-type: none;
 }
-div.chzn-container ul.chzn-results li.active-result {
+.chzn-container .chzn-results .active-result {
   cursor: pointer;
 }
-div.chzn-container ul.chzn-results li em {
+.chzn-container .chzn-results li em {
   font-style: normal;
   background: #FEFFDC;
 }
-div.chzn-container ul.chzn-results li.highlighted {
+.chzn-container .chzn-results .highlighted {
   background: #3875d7;
   color: #fff;
 }
-div.chzn-container ul.chzn-results li.highlighted em {
+.chzn-container .chzn-results .highlighted em {
   background: transparent;
 }
-div.chzn-container ul.chzn-results li.no-results {
+.chzn-container .chzn-results .no-results {
   background: #F4F4F4;
 }
-div.chzn-container ul.chzn-results li.group-result {
+.chzn-container .chzn-results .group-result {
   cursor: default;
   color: #999;
   font-weight: bold;
 }
-div.chzn-container ul.chzn-results li.group-option {
+.chzn-container .chzn-results .group-option {
   padding-left: 20px;
 }
 
-div.chzn-container-multi div.chzn-drop li.result-selected {
+.chzn-container-multi .chzn-drop .result-selected {
   display: none;
 }
 
 
 
 /* Active */
-div.chzn-container-active a.chzn-single {
-  -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+.chzn-container-active .chzn-single {
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   border: 1px solid #5897fb;
 }
-div.chzn-container-active a.chzn-single-with-drop {
+.chzn-container-active .chzn-single-with-drop {
   border: 1px solid #aaa;
   border-width: 1px 1px 1px;
-  -moz-box-shadow:  0px 1px 0px #FFF inset;
-  -webkit-box-shadow:  0px 1px 0px #FFF inset;
-  box-shadow: 0px 1px 0px #FFF inset;
+  -moz-box-shadow:  0 1px 0 #FFF inset;
+  -webkit-box-shadow:  0 1px 0 #FFF inset;
+  box-shadow: 0 1px 0 #FFF inset;
   background: #EEE;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, white), color-stop(0.5, #eeeeee));
   background-image: -moz-linear-gradient(center bottom, white 0%, #eeeeee 50%);
@@ -309,26 +309,26 @@ div.chzn-container-active a.chzn-single-with-drop {
   background-image: -ms-linear-gradient(top, #ffffff 0%,#eeeeee 50%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee',GradientType=0 );
   background-image: linear-gradient(top, #ffffff 0%,#eeeeee 50%);
-  -webkit-border-bottom-left-radius: 0px;
-  -webkit-border-bottom-right-radius: 0px;
-  -moz-border-radius-bottomleft: 0px;
-  -moz-border-radius-bottomright: 0px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
+  -webkit-border-bottom-left-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+  -moz-border-radius-bottomright: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
-div.chzn-container-active a.chzn-single-with-drop div {
+.chzn-container-active .chzn-single-with-drop div {
   background: transparent;
   border-left: none;
 }
-div.chzn-container-active a.chzn-single-with-drop div b {
+.chzn-container-active .chzn-single-with-drop div b {
   background-position: -18px 1px;
 }
-div.chzn-container-active ul.chzn-choices {
-  -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+.chzn-container-active .chzn-choices {
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   border: 1px solid #5897fb;
 }
-div.chzn-container-active ul.chzn-choices input {
+.chzn-container-active .chzn-choices input {
   color: #111 !important;
 }
