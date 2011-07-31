@@ -1208,7 +1208,37 @@
       <code>&lt;select <strong>data-placeholder="Choose a country..."</strong> style="width:350px;" multiple class="chzn-select"&gt;</code>
       <p><strong>Note:</strong> on single selects, the first element is assumed to be selected by the browser. To take advantage of the default text support, you will need to include a blank option as the first element of your select list.</p>
     </div>
-    
+
+    <h2>Right to Left Support</h2>
+    <div class="side-by-side clearfix">
+      <p>Chosen supports right to left select boxes too. just add <code>"chzn-rtl"</code> in addition to <code>"chzn-select"</code> to your select tags and you are good to go.</p>
+      <p><code>&lt;select class="chzn-select <strong>chzn-rtl</strong>"&gt;</code></p>
+      <div>
+        <em>Single right to left select</em>
+        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select chzn-rtl" tabindex="9">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option selected>Sloth Bear</option>
+          <option>Polar Bear</option>
+        </select>
+      </div>
+      <div>
+        <em>Multiple right to left select</em>
+        <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select  chzn-rtl" tabindex="10">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option selected>Sloth Bear</option>
+          <option selected>Polar Bear</option>
+        </select>
+      </div>
+    </div>
+        
     <h2>Change / Update Events</h2>
     <div class="side-by-side clearfix">
       <ul>
