@@ -86,6 +86,7 @@
       this.set_default_values();
       this.form_field = elmn;
       this.is_multiple = this.form_field.multiple;
+      this.is_rtl = this.form_field.hasClassName("chzn-rtl");
       this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
       this.set_up_html();
       this.register_observers();
@@ -107,14 +108,14 @@
     };
     Chosen.prototype.set_up_html = function() {
       var base_template, container_props, dd_top, dd_width, sf_width;
-      this.container_id = this.form_field.identify().replace('.', '_') + "_chzn";
+      this.container_id = this.form_field.identify().replace(/(:|\.)/g, '_') + "_chzn";
       this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
       container_props = {
         'id': this.container_id,
-        'class': 'chzn-container',
+        'class': "chzn-container " + (this.is_rtl ? ' chzn-rtl' : void 0),
         'style': 'width: ' + this.f_width + 'px'
       };
-      this.default_text = this.form_field.readAttribute('title') ? this.form_field.readAttribute('title') : this.default_text_default;
+      this.default_text = this.form_field.readAttribute('data-placeholder') ? this.form_field.readAttribute('data-placeholder') : this.default_text_default;
       base_template = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
         "default": this.default_text
       })) : new Element('div', container_props).update(this.single_temp.evaluate({

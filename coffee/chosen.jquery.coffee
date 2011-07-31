@@ -14,7 +14,7 @@ $.fn.extend({
     $(this).each((input_field) ->
       new Chosen(this, data, options) unless ($ this).hasClass "chzn-done"
     )
-})
+}) 
 
 class Chosen
 
@@ -24,6 +24,7 @@ class Chosen
     @form_field = elmn
     @form_field_jq = $ @form_field
     @is_multiple = @form_field.multiple
+    @is_rtl = @form_field_jq.hasClass "chzn-rtl"
 
     @default_text_default = if @form_field.multiple then "Select Some Options" else "Select an Option"
 
@@ -42,16 +43,16 @@ class Chosen
     @choices = 0
 
   set_up_html: ->
-    @container_id = if @form_field.id.length then @form_field.id.replace('.', '_') else this.generate_field_id()
+    @container_id = if @form_field.id.length then @form_field.id.replace(/(:|\.)/g, '_') else this.generate_field_id()
     @container_id += "_chzn"
     
     @f_width = @form_field_jq.width()
     
-    @default_text = if @form_field_jq.attr 'title' then @form_field_jq.attr 'title' else @default_text_default
+    @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
     
     container_div = ($ "<div />", {
       id: @container_id
-      class: 'chzn-container'
+      class: "chzn-container #{' chzn-rtl' if @is_rtl}"
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
     })
     

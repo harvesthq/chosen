@@ -15,6 +15,7 @@ class Chosen
     
     @form_field = elmn
     @is_multiple = @form_field.multiple
+    @is_rtl = @form_field.hasClassName "chzn-rtl"
 
     @default_text_default = if @form_field.multiple then "Select Some Options" else "Select an Option"
 
@@ -40,16 +41,16 @@ class Chosen
 
 
   set_up_html: ->
-    @container_id = @form_field.identify().replace('.', '_') + "_chzn"
+    @container_id = @form_field.identify().replace(/(:|\.)/g, '_') + "_chzn"
     
     @f_width = if @form_field.getStyle("width") then parseInt @form_field.getStyle("width"), 10 else @form_field.getWidth()
     
     container_props =
       'id': @container_id
-      'class': 'chzn-container'
+      'class': "chzn-container #{' chzn-rtl' if @is_rtl}"
       'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
     
-    @default_text = if @form_field.readAttribute 'title' then @form_field.readAttribute 'title' else @default_text_default
+    @default_text = if @form_field.readAttribute 'data-placeholder' then @form_field.readAttribute 'data-placeholder' else @default_text_default
     
     base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
