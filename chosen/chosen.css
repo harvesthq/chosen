@@ -1,4 +1,9 @@
 /* @group Base */
+select.chzn-select {
+  visibility: hidden;
+  height: 28px !important;
+  min-height: 28px !important;
+}
 .chzn-container {
   font-size: 13px;
   position: relative;
