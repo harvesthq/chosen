@@ -44,7 +44,7 @@ class Chosen
     @choices = 0
 
   set_up_html: ->
-    @container_id = if @form_field.id.length then @form_field.id.replace('.', '_') else this.generate_field_id()
+    @container_id = if @form_field.id.length then @form_field.id.replace(/(:|\.)/g, '_') else this.generate_field_id()
     @container_id += "_chzn"
     
     @f_width = @form_field_jq.width()
