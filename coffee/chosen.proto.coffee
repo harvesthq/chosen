@@ -1,13 +1,8 @@
 ###
-Chosen, a Select Box Enhancer for jQuery and Protoype
-by Patrick Filler for Harvest, http://getharvest.com
-
-Available for use under the MIT License, http://en.wikipedia.org/wiki/MIT_License
-
+Chosen source: generate output using 'cake build'
 Copyright (c) 2011 by Harvest
 ###
-
-root = exports ? this
+root = this
 
 class Chosen
 
@@ -173,7 +168,7 @@ class Chosen
   results_build: ->
     startTime = new Date()
     @parsing = true
-    @results_data = SelectParser.select_to_array @form_field
+    @results_data = root.SelectParser.select_to_array @form_field
 
     if @is_multiple and @choices > 0
       @search_choices.select("li.search-choice").invoke("remove")
@@ -581,55 +576,3 @@ get_side_border_padding = (elmt) ->
   side_border_padding = layout.get("border-left") + layout.get("border-right") + layout.get("padding-left") + layout.get("padding-right")
 
 root.get_side_border_padding = get_side_border_padding
-
-root = exports ? this
-
-class SelectParser
-  
-  constructor: ->
-    @options_index = 0
-    @parsed = []
-
-  add_node: (child) ->
-    if child.nodeName is "OPTGROUP"
-      this.add_group child
-    else
-      this.add_option child
-
-  add_group: (group) ->
-    group_position = @parsed.length
-    @parsed.push
-      array_index: group_position
-      group: true
-      label: group.label
-      children: 0
-      disabled: group.disabled
-    this.add_option( option, group_position, group.disabled ) for option in group.childNodes
-
-  add_option: (option, group_position, group_disabled) ->
-    if option.nodeName is "OPTION"
-      if option.text != ""
-        if group_position?
-          @parsed[group_position].children += 1
-        @parsed.push
-          array_index: @parsed.length
-          options_index: @options_index
-          value: option.value
-          text: option.text
-          html: option.innerHTML
-          selected: option.selected
-          disabled: if group_disabled is true then group_disabled else option.disabled
-          group_array_index: group_position
-      else
-        @parsed.push
-          array_index: @parsed.length
-          options_index: @options_index
-          empty: true
-      @options_index += 1
-
-SelectParser.select_to_array = (select) ->
-  parser = new SelectParser()
-  parser.add_node( child ) for child in select.childNodes
-  parser.parsed
-  
-root.SelectParser = SelectParser
