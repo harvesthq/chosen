@@ -11,12 +11,12 @@ CoffeeScript     = require 'coffee-script'
 
 javascripts = {
   'chosen/chosen.jquery.js': [
-    'coffee/chosen/select-parser.coffee'
     'coffee/chosen.jquery.coffee'
+    'coffee/lib/select-parser.coffee'
   ]
   'chosen/chosen.proto.js': [
-    'coffee/chosen/select-parser.coffee'
     'coffee/chosen.proto.coffee'
+    'coffee/lib/select-parser.coffee'
   ]
 }
 
