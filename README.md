@@ -15,7 +15,7 @@ Contributions and pull requests are very welcome. Please follow these guidelines
 1. Make all changes in Coffeescript files, **not** JavaScript files.
 2. For feature changes, update both jQuery *and* Prototype versions
 3. Use 'cake build' to generate Chosen's JavaScript file and minified version.
-4. Update VERSION file according to [Semantic Versioning](http://semver.org/) guidelines.
+4. Don't touch the VERSION file
 5. Submit a Pull Request using GitHub.
 
 ### Using CoffeeScript & Cake
