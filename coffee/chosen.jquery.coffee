@@ -25,6 +25,7 @@ class Chosen
     @form_field = elmn
     @form_field_jq = $ @form_field
     @is_multiple = @form_field.multiple
+    @is_rtl = @form_field_jq.hasClass "chzn-rtl"
 
     @default_text_default = if @form_field.multiple then "Select Some Options" else "Select an Option"
 
@@ -52,7 +53,7 @@ class Chosen
     
     container_div = ($ "<div />", {
       id: @container_id
-      class: 'chzn-container'
+      class: "chzn-container #{' chzn-rtl' if @is_rtl}"
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
     })
     
