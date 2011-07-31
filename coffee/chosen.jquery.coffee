@@ -1,9 +1,5 @@
 ###
-Chosen, a Select Box Enhancer for jQuery and Protoype
-by Patrick Filler for Harvest, http://getharvest.com
-
-Available for use under the MIT License, http://en.wikipedia.org/wiki/MIT_License
-
+Chosen source: generate output using 'cake build'
 Copyright (c) 2011 by Harvest
 ###
 root = this
