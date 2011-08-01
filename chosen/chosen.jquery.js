@@ -1,7 +1,7 @@
 // Chosen, a Select Box Enhancer for jQuery and Protoype
 // by Patrick Filler for Harvest, http://getharvest.com
 // 
-// Version 0.9
+// Version 0.9.1
 // Full source at https://github.com/harvesthq/chosen
 // Copyright (c) 2011 Harvest http://getharvest.com
 
@@ -530,10 +530,11 @@
       return _results;
     };
     Chosen.prototype.winnow_results_set_highlight = function() {
-      var do_high;
+      var do_high, selected_results;
       if (!this.result_highlight) {
-        do_high = this.search_results.find(".active-result").first();
-        if (do_high) {
+        selected_results = !this.is_multiple ? this.search_results.find(".result-selected") : [];
+        do_high = selected_results.length ? selected_results.first() : this.search_results.find(".active-result").first();
+        if (do_high != null) {
           return this.result_do_highlight(do_high);
         }
       }

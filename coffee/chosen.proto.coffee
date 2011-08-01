@@ -17,6 +17,7 @@ class Chosen
 
     this.set_up_html()
     this.register_observers()
+    @form_field.addClassName "chzn-done"
 
 
   set_default_values: ->
@@ -450,9 +451,14 @@ class Chosen
 
   winnow_results_set_highlight: ->
     if not @result_highlight
-      do_high = @search_results.down(".active-result")
-      if(do_high)
-        this.result_do_highlight do_high
+
+      if not @is_multiple
+        do_high = @search_results.down(".result-selected")
+
+      if not do_high?
+        do_high = @search_results.down(".active-result")
+
+      this.result_do_highlight do_high if do_high?
   
   no_results: (terms) ->
     @search_results.insert @no_results_temp.evaluate( terms: terms )
