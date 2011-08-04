@@ -573,7 +573,16 @@ class Chosen
 
 root.Chosen = Chosen
 
+# Prototype does not support version numbers so we add it ourselves
+if Prototype.Browser.IE 
+  if /MSIE (\d+\.\d+);/.test(navigator.userAgent)
+    Prototype.BrowserFeatures['Version'] = new Number(RegExp.$1);
+
+
 document.observe 'dom:loaded', (evt) ->
+  # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
+  return if Prototype.Browser.IE and (Prototype.BrowserFeatures['Version'] is 6 or Prototype.BrowserFeatures['Version'] is 7)
+  
   selects = $$(".chzn-select")
   new Chosen select for select in selects
 
