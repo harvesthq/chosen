@@ -27,7 +27,7 @@
   });
   Chosen = (function() {
     function Chosen(elmn, options) {
-      this.set_default_values(options);
+      this.set_default_values(options || {});
       this.form_field = elmn;
       this.form_field_jq = $(this.form_field);
       this.is_multiple = this.form_field.multiple;

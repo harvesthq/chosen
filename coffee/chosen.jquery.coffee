@@ -15,7 +15,7 @@ $.fn.extend({
 class Chosen
 
   constructor: (elmn, options) ->
-    this.set_default_values(options)
+    this.set_default_values(options or {})
     
     @form_field = elmn
     @form_field_jq = $ @form_field
