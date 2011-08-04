@@ -18,9 +18,9 @@
   $.fn.extend({
     chosen: function(data, options) {
       return $(this).each(function(input_field) {
-        var chhosen, chosen, element;
+        var chosen, element;
         element = $(this);
-        chhosen = element.data("chosen");
+        chosen = element.data("chosen");
         if (!chosen) {
           chosen = new Chosen(this, data, options);
           element.data("chosen", chosen);

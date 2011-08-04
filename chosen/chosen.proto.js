@@ -723,7 +723,7 @@
     _results = [];
     for (_i = 0, _len = selects.length; _i < _len; _i++) {
       select = selects[_i];
-      _results.push(select.chosen = new Chosen(select));
+      _results.push(!select.hasClassName("chzn-done") ? select.chosen = new Chosen(select) : void 0);
     }
     return _results;
   });

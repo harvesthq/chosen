@@ -9,7 +9,7 @@ $.fn.extend({
   chosen: (data, options) ->
     $(this).each((input_field) ->
       element = ($ this)
-      chhosen = element.data("chosen")
+      chosen = element.data("chosen")
       if not chosen
         chosen = new Chosen(this, data, options)
         element.data "chosen", chosen

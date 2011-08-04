@@ -600,7 +600,7 @@ Element.addMethods({
 document.observe 'dom:loaded', (evt) ->
   selects = $$(".chzn-select")
   for select in selects
-    select.chosen = new Chosen select
+    select.chosen = new Chosen select unless select.hasClassName("chzn-done")
 
 get_side_border_padding = (elmt) ->
   layout = new Element.Layout(elmt)
