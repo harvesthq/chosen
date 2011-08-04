@@ -129,6 +129,14 @@
         }, this));
       }
     };
+    Chosen.prototype.unregister_observers = function() {
+      return this.form_field.stopObserving("liszt:updated");
+    };
+    Chosen.prototype.remove_html = function() {
+      this.form_field.show();
+      this.container.remove();
+      return this.form_field.removeClassName("chzn-select").removeClassName("chzn-done");
+    };
     Chosen.prototype.container_click = function(evt) {
       if (evt && evt.type === "click") {
         evt.stop();
@@ -329,6 +337,12 @@
           this.selected_item.tabIndex = ti;
           return this.search_field.tabIndex = -1;
         }
+      }
+    };
+    Chosen.prototype.reset_tab_index = function() {
+      if (this.search_field.tabIndex) {
+        this.form_field.tabIndex = this.search_field.tabIndex;
+        return this.search_field.tabIndex = -1;
       }
     };
     Chosen.prototype.show_search_field_default = function() {
@@ -552,6 +566,11 @@
       }
       return _results;
     };
+    Chosen.prototype.remove = function() {
+      this.reset_tab_index();
+      this.unregister_observers();
+      return this.remove_html();
+    };
     Chosen.prototype.keydown_arrow = function() {
       var actives, nexts, sibs;
       actives = this.search_results.select("li.active-result");
@@ -689,13 +708,22 @@
     return Chosen;
   })();
   root.Chosen = Chosen;
+  Element.addMethods({
+    unchosen: function(element) {
+      if (element[0].chosen) {
+        element[0].chosen.remove();
+        element[0].chosen = null;
+      }
+      return element;
+    }
+  });
   document.observe('dom:loaded', function(evt) {
     var select, selects, _i, _len, _results;
     selects = $$(".chzn-select");
     _results = [];
     for (_i = 0, _len = selects.length; _i < _len; _i++) {
       select = selects[_i];
-      _results.push(new Chosen(select));
+      _results.push(!select.hasClassName("chzn-done") ? select.chosen = new Chosen(select) : void 0);
     }
     return _results;
   });

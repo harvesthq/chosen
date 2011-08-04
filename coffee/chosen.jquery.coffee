@@ -8,9 +8,23 @@ $ = jQuery
 $.fn.extend({
   chosen: (data, options) ->
     $(this).each((input_field) ->
-      new Chosen(this, data, options) unless ($ this).hasClass "chzn-done"
+      element = ($ this)
+      chosen = element.data("chosen")
+      if not chosen
+        chosen = new Chosen(this, data, options)
+        element.data "chosen", chosen
+      return chosen
     )
-}) 
+  unchosen: ->
+    $(this).each((input_field) ->
+      element = ($ this)
+      chosen = element.data("chosen")
+      if chosen
+        chosen.remove()
+        element.data("chosen", null)
+      return element
+    )
+})
 
 class Chosen
 
@@ -26,7 +40,6 @@ class Chosen
 
     this.set_up_html()
     this.register_observers()
-    @form_field_jq.addClass "chzn-done"
 
   set_default_values: ->
     
@@ -46,18 +59,18 @@ class Chosen
     
     @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
     
-    container_div = ($ "<div />", {
+    @container_div = ($ "<div />", {
       id: @container_id
       class: "chzn-container #{ if @is_rtl then 'chzn-rtl' else '' }"
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
     })
     
     if @is_multiple
-      container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
+      @container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
     else
-      container_div.html '<a href="javascript:void(0)" class="chzn-single"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
+      @container_div.html '<a href="javascript:void(0)" class="chzn-single"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
 
-    @form_field_jq.hide().after container_div
+    @form_field_jq.hide().after @container_div
     @container = ($ '#' + @container_id)
     @container.addClass( "chzn-container-" + (if @is_multiple then "multi" else "single") )
     @dropdown = @container.find('div.chzn-drop').first()
@@ -106,6 +119,13 @@ class Chosen
       @search_field.focus (evt) => this.input_focus(evt)
     else
       @selected_item.focus (evt) => this.activate_field(evt)
+
+  unregister_observers: ->
+    @form_field_jq.unbind("liszt:updated")
+
+  remove_html: ->
+    @form_field_jq.show()
+    @container_div.remove()
 
   container_click: (evt) ->
     if evt and evt.type is "click"
@@ -286,6 +306,11 @@ class Chosen
       else
         @selected_item.attr "tabindex", ti
         @search_field.attr "tabindex", -1
+
+  reset_tab_index: ->
+    if @search_field.tabIndex
+      @form_field_jq.tabIndex = @search_field.tabIndex
+      @search_field.tabIndex = -1
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
@@ -471,6 +496,11 @@ class Chosen
   
   no_results_clear: ->
     @search_results.find(".no-results").remove()
+
+  remove: ->
+    this.reset_tab_index()
+    this.unregister_observers()
+    this.remove_html()
 
   keydown_arrow: ->
     if not @result_highlight

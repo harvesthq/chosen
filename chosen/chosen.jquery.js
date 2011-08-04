@@ -18,9 +18,26 @@
   $.fn.extend({
     chosen: function(data, options) {
       return $(this).each(function(input_field) {
-        if (!($(this)).hasClass("chzn-done")) {
-          return new Chosen(this, data, options);
+        var chosen, element;
+        element = $(this);
+        chosen = element.data("chosen");
+        if (!chosen) {
+          chosen = new Chosen(this, data, options);
+          element.data("chosen", chosen);
         }
+        return chosen;
+      });
+    },
+    unchosen: function() {
+      return $(this).each(function(input_field) {
+        var chosen, element;
+        element = $(this);
+        chosen = element.data("chosen");
+        if (chosen) {
+          chosen.remove();
+          element.data("chosen", null);
+        }
+        return element;
       });
     }
   });
@@ -34,7 +51,6 @@
       this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
       this.set_up_html();
       this.register_observers();
-      this.form_field_jq.addClass("chzn-done");
     }
     Chosen.prototype.set_default_values = function() {
       this.click_test_action = __bind(function(evt) {
@@ -48,22 +64,22 @@
       return this.choices = 0;
     };
     Chosen.prototype.set_up_html = function() {
-      var container_div, dd_top, dd_width, sf_width;
+      var dd_top, dd_width, sf_width;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/(:|\.)/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
       this.f_width = this.form_field_jq.width();
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
-      container_div = $("<div />", {
+      this.container_div = $("<div />", {
         id: this.container_id,
         "class": "chzn-container " + (this.is_rtl ? 'chzn-rtl' : ''),
         style: 'width: ' + this.f_width + 'px;'
       });
       if (this.is_multiple) {
-        container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
+        this.container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       } else {
-        container_div.html('<a href="javascript:void(0)" class="chzn-single"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
+        this.container_div.html('<a href="javascript:void(0)" class="chzn-single"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       }
-      this.form_field_jq.hide().after(container_div);
+      this.form_field_jq.hide().after(this.container_div);
       this.container = $('#' + this.container_id);
       this.container.addClass("chzn-container-" + (this.is_multiple ? "multi" : "single"));
       this.dropdown = this.container.find('div.chzn-drop').first();
@@ -134,6 +150,13 @@
           return this.activate_field(evt);
         }, this));
       }
+    };
+    Chosen.prototype.unregister_observers = function() {
+      return this.form_field_jq.unbind("liszt:updated");
+    };
+    Chosen.prototype.remove_html = function() {
+      this.form_field_jq.show();
+      return this.container_div.remove();
     };
     Chosen.prototype.container_click = function(evt) {
       if (evt && evt.type === "click") {
@@ -344,6 +367,12 @@
         }
       }
     };
+    Chosen.prototype.reset_tab_index = function() {
+      if (this.search_field.tabIndex) {
+        this.form_field_jq.tabIndex = this.search_field.tabIndex;
+        return this.search_field.tabIndex = -1;
+      }
+    };
     Chosen.prototype.show_search_field_default = function() {
       if (this.is_multiple && this.choices < 1 && !this.active_field) {
         this.search_field.val(this.default_text);
@@ -547,6 +576,11 @@
     };
     Chosen.prototype.no_results_clear = function() {
       return this.search_results.find(".no-results").remove();
+    };
+    Chosen.prototype.remove = function() {
+      this.reset_tab_index();
+      this.unregister_observers();
+      return this.remove_html();
     };
     Chosen.prototype.keydown_arrow = function() {
       var first_active, next_sib;
