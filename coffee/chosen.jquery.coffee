@@ -308,9 +308,10 @@ class Chosen
         @search_field.attr "tabindex", -1
 
   reset_tab_index: ->
-    if @search_field.tabIndex
-      @form_field_jq.tabIndex = @search_field.tabIndex
-      @search_field.tabIndex = -1
+    tabbed_item = if @is_multiple then @search_field else @selected_item
+
+    @form_field_jq.attr "tabindex", tabbed_item.attr "tabindex"
+    tabbed_item.attr "tabindex" -1
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
@@ -608,9 +609,7 @@ class Chosen
       @dropdown.css({"top":  dd_top + "px"})
   
   generate_field_id: ->
-    new_id = this.generate_random_id()
-    @form_field.id = new_id
-    new_id
+    this.generate_random_id()
   
   generate_random_id: ->
     string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()

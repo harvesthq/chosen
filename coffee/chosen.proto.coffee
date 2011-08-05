@@ -288,9 +288,10 @@ class Chosen
         @search_field.tabIndex = -1
 
   reset_tab_index: ->
-    if @search_field.tabIndex
-      @form_field.tabIndex = @search_field.tabIndex
-      @search_field.tabIndex = -1
+    tabbed_item = if @is_multiple then @search_field else @selected_item
+
+    @form_field_jq.tabindex = tabbed_item.tabindex
+    tabbed_item.tabindex = -1
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field

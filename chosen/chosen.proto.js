@@ -340,10 +340,10 @@
       }
     };
     Chosen.prototype.reset_tab_index = function() {
-      if (this.search_field.tabIndex) {
-        this.form_field.tabIndex = this.search_field.tabIndex;
-        return this.search_field.tabIndex = -1;
-      }
+      var tabbed_item;
+      tabbed_item = this.is_multiple ? this.search_field : this.selected_item;
+      this.form_field_jq.tabindex = tabbed_item.tabindex;
+      return tabbed_item.tabindex = -1;
     };
     Chosen.prototype.show_search_field_default = function() {
       if (this.is_multiple && this.choices < 1 && !this.active_field) {

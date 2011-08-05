@@ -368,10 +368,10 @@
       }
     };
     Chosen.prototype.reset_tab_index = function() {
-      if (this.search_field.tabIndex) {
-        this.form_field_jq.tabIndex = this.search_field.tabIndex;
-        return this.search_field.tabIndex = -1;
-      }
+      var tabbed_item;
+      tabbed_item = this.is_multiple ? this.search_field : this.selected_item;
+      this.form_field_jq.attr("tabindex", tabbed_item.attr("tabindex"));
+      return tabbed_item.attr("tabindex" - 1);
     };
     Chosen.prototype.show_search_field_default = function() {
       if (this.is_multiple && this.choices < 1 && !this.active_field) {
@@ -720,10 +720,7 @@
       }
     };
     Chosen.prototype.generate_field_id = function() {
-      var new_id;
-      new_id = this.generate_random_id();
-      this.form_field.id = new_id;
-      return new_id;
+      return this.generate_random_id();
     };
     Chosen.prototype.generate_random_id = function() {
       var string;
