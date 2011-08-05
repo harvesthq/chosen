@@ -78,6 +78,7 @@ class Chosen
     
     this.results_build()
     this.set_tab_index()
+    @form_field.fire("liszt:ready", {chosen: this})
 
 
   register_observers: ->
