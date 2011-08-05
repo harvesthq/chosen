@@ -215,6 +215,7 @@ class Chosen
       classes = if option.selected and @is_multiple then [] else ["active-result"]
       classes.push "result-selected" if option.selected
       classes.push "group-option" if option.group_array_index?
+      classes.push option.classes
       
       '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>'
     else
