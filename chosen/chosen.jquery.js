@@ -89,7 +89,10 @@
         });
       }
       this.results_build();
-      return this.set_tab_index();
+      this.set_tab_index();
+      return this.form_field_jq.fire("liszt:ready", {
+        chosen: this
+      });
     };
     Chosen.prototype.register_observers = function() {
       this.container.click(__bind(function(evt) {
