@@ -1272,6 +1272,10 @@
   <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
   <script type="text/javascript">
   $(".chzn-select").chosen({
+    noResultsText: 'Geen resultaten voor',
+    addOptionText: 'Toevoegen',
+    selectOptionText: 'Selecteer een optie',
+    selectOptionsText: 'Selecteer opties',
     addOption: function(term, callback){
       callback.call(this, term);
     }

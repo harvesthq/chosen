@@ -25,14 +25,21 @@
     }
   });
   Chosen = (function() {
+    var default_options;
+    default_options = {
+      addOptionText: 'Add this item',
+      noResultsText: 'No results match',
+      selectOptionText: 'Select an Option',
+      selectOptionsText: 'Select Some Options'
+    };
     function Chosen(elmn, options) {
-      this.options = $.extend({}, options);
+      this.options = $.extend({}, default_options, options);
       this.set_default_values();
       this.form_field = elmn;
       this.form_field_jq = $(this.form_field);
       this.is_multiple = this.form_field.multiple;
       this.is_rtl = this.form_field_jq.hasClass("chzn-rtl");
-      this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
+      this.default_text_default = this.form_field.multiple ? this.options.selectOptionsText : this.options.selectOptionText;
       this.set_up_html();
       this.register_observers();
       this.form_field_jq.addClass("chzn-done");
@@ -547,10 +554,10 @@
     };
     Chosen.prototype.no_results = function(terms, selected) {
       var no_results_html;
-      no_results_html = $('<li class="no-results">No results match "<span></span>".</li>');
+      no_results_html = $('<li class="no-results">' + this.options.noResultsText + ' "<span></span>".</li>');
       no_results_html.find("span").first().html(terms);
       if (this.options.addOption && !selected) {
-        no_results_html.append(' <a href="javascript:void(0);" class="option-add">Add this item</a>');
+        no_results_html.append(' <a href="javascript:void(0);" class="option-add">' + this.options.addOptionText + '</a>');
         no_results_html.find("a.option-add").bind("click", __bind(function(evt) {
           return this.select_add_option(terms);
         }, this));

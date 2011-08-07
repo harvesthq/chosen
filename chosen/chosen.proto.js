@@ -15,13 +15,20 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = this;
   Chosen = (function() {
+    var default_options;
+    default_options = {
+      addOptionText: 'Add this item',
+      noResultsText: 'No results match',
+      selectOptionText: 'Select an Option',
+      selectOptionsText: 'Select Some Options'
+    };
     function Chosen(elmn, options) {
       this.set_default_values();
       this.form_field = elmn;
-      this.options = Object.extend({}, options);
+      this.options = Object.extend(default_options, options);
       this.is_multiple = this.form_field.multiple;
       this.is_rtl = this.form_field.hasClassName("chzn-rtl");
-      this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
+      this.default_text_default = this.form_field.multiple ? this.options.selectOptionsText : this.options.selectOptionText;
       this.set_up_html();
       this.register_observers();
       this.form_field.addClassName("chzn-done");
@@ -39,8 +46,9 @@
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
-      this.no_results_temp = new Template('<li class="no-results">No results match "<span>#{terms}</span>".#{add_item_link}</li>');
-      return this.new_option_html = new Template('<option value="#{terms}">#{terms}</option>');
+      this.no_results_temp = new Template('<li class="no-results">#{text} "<span>#{terms}</span>".#{add_item_link}</li>');
+      this.new_option_temp = new Template('<option value="#{terms}">#{terms}</option>');
+      return this.add_link_temp = new Template(' <a href="javascript:void(0);" class="option-add">#{text}</a>');
     };
     Chosen.prototype.set_up_html = function() {
       var base_template, container_props, dd_top, dd_width, sf_width;
@@ -549,9 +557,12 @@
       var add_item_link;
       add_item_link = '';
       if (this.options.addOption && !selected) {
-        add_item_link = ' <a href="javascript:void(0);" class="option-add">Add this item</a>';
+        add_item_link = this.add_link_temp.evaluate({
+          text: this.options.addOptionText
+        });
       }
       this.search_results.insert(this.no_results_temp.evaluate({
+        text: this.options.noResultsText,
         terms: terms,
         add_item_link: add_item_link
       }));
@@ -571,8 +582,10 @@
       }
     };
     Chosen.prototype.select_append_option = function(terms) {
-      var option;
-      option = this.new_option_html.evaluate({
+      /*
+            TODO Close options after adding
+          */      var option;
+      option = this.new_option_temp.evaluate({
         terms: terms
       });
       this.form_field.insert(option);

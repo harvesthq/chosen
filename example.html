@@ -1275,9 +1275,15 @@
     var selects, _i, _len, _results;
     selects = $$(".chzn-select");
     for (_i = 0, _len = selects.length; _i < _len; _i++) {
-      new Chosen(selects[_i], {addOption: function(term, callback){
-        callback.call(this, term);
-      }});
+      new Chosen(selects[_i], {
+        noResultsText: 'Geen resultaten voor',
+        addOptionText: 'Toevoegen',
+        selectOptionText: 'Selecteer een optie',
+        selectOptionsText: 'Selecteer opties',
+        addOption: function(term, callback){
+          callback.call(this, term);
+        }
+      });
     }
   });
 </script>

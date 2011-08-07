@@ -14,8 +14,15 @@ $.fn.extend({
 
 class Chosen
 
+  default_options = {
+    addOptionText: 'Add this item',
+    noResultsText: 'No results match',
+    selectOptionText: 'Select an Option',
+    selectOptionsText: 'Select Some Options',
+  }
+
   constructor: (elmn, options) ->
-    @options = $.extend({}, options)
+    @options = $.extend({}, default_options, options)
     this.set_default_values()
     
     @form_field = elmn
@@ -23,7 +30,7 @@ class Chosen
     @is_multiple = @form_field.multiple
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
 
-    @default_text_default = if @form_field.multiple then "Select Some Options" else "Select an Option"
+    @default_text_default = if @form_field.multiple then @options.selectOptionsText else @options.selectOptionText
 
     this.set_up_html()
     this.register_observers()
@@ -468,11 +475,11 @@ class Chosen
       this.result_do_highlight do_high if do_high?
   
   no_results: (terms, selected) ->
-    no_results_html = $('<li class="no-results">No results match "<span></span>".</li>')
+    no_results_html = $('<li class="no-results">' + @options.noResultsText + ' "<span></span>".</li>')
     no_results_html.find("span").first().html(terms)
     
     if @options.addOption and not selected
-      no_results_html.append(' <a href="javascript:void(0);" class="option-add">Add this item</a>')
+      no_results_html.append(' <a href="javascript:void(0);" class="option-add">' + @options.addOptionText + '</a>')
       no_results_html.find("a.option-add").bind "click", (evt) => this.select_add_option(terms)
     @search_results.append no_results_html
 

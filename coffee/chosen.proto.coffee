@@ -6,15 +6,23 @@ root = this
 
 class Chosen
 
+  default_options = {
+    addOptionText: 'Add this item',
+    noResultsText: 'No results match',
+    selectOptionText: 'Select an Option',
+    selectOptionsText: 'Select Some Options',
+  }
+  
   constructor: (elmn, options) ->
     this.set_default_values()
 
     @form_field = elmn
-    @options = Object.extend({}, options)
+    @options = Object.extend(default_options, options)
+    
     @is_multiple = @form_field.multiple
     @is_rtl = @form_field.hasClassName "chzn-rtl"
 
-    @default_text_default = if @form_field.multiple then "Select Some Options" else "Select an Option"
+    @default_text_default = if @form_field.multiple then @options.selectOptionsText else @options.selectOptionText
 
     this.set_up_html()
     this.register_observers()
@@ -35,8 +43,9 @@ class Chosen
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
-    @no_results_temp = new Template('<li class="no-results">No results match "<span>#{terms}</span>".#{add_item_link}</li>')
-    @new_option_html = new Template('<option value="#{terms}">#{terms}</option>')
+    @no_results_temp = new Template('<li class="no-results">#{text} "<span>#{terms}</span>".#{add_item_link}</li>')
+    @new_option_temp = new Template('<option value="#{terms}">#{terms}</option>')
+    @add_link_temp = new Template(' <a href="javascript:void(0);" class="option-add">#{text}</a>')
 
 
   set_up_html: ->
@@ -467,13 +476,14 @@ class Chosen
 
   no_results: (terms, selected) ->
     add_item_link = ''
-    if @options.addOption and not selected
-      add_item_link = ' <a href="javascript:void(0);" class="option-add">Add this item</a>'
-      
-    @search_results.insert @no_results_temp.evaluate( terms: terms, add_item_link: add_item_link )
     
     if @options.addOption and not selected
-      @search_results.down("a.option-add").observe "click", (evt) => this.select_add_option(terms) unless selected    
+      add_item_link = @add_link_temp.evaluate( text: @options.addOptionText )
+      
+    @search_results.insert @no_results_temp.evaluate( text: @options.noResultsText, terms: terms, add_item_link: add_item_link )
+    
+    if @options.addOption and not selected
+      @search_results.down("a.option-add").observe "click", (evt) => this.select_add_option(terms) unless selected
 
   select_add_option: ( terms ) ->
     if Object.isFunction(@options.addOption)
@@ -483,7 +493,11 @@ class Chosen
 
 
   select_append_option: ( terms ) ->
-    option = @new_option_html.evaluate( terms: terms )
+    ###
+      TODO Close options after adding
+    ###
+    
+    option = @new_option_temp.evaluate( terms: terms )
     @form_field.insert option
     Event.fire @form_field, "liszt:updated"
     this.result_select()
