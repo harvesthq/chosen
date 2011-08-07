@@ -16,16 +16,16 @@
   root = this;
   $ = jQuery;
   $.fn.extend({
-    chosen: function(data, options) {
+    chosen: function(options) {
       return $(this).each(function(input_field) {
         if (!($(this)).hasClass("chzn-done")) {
-          return new Chosen(this, data, options);
+          return new Chosen(this, options);
         }
       });
     }
   });
   Chosen = (function() {
-    function Chosen(elmn, data, options) {
+    function Chosen(elmn, options) {
       this.options = $.extend({}, options);
       this.set_default_values();
       this.form_field = elmn;

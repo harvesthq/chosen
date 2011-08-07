@@ -6,15 +6,15 @@ root = this
 $ = jQuery
 
 $.fn.extend({
-	chosen: (data, options) ->
+	chosen: (options) ->
 		$(this).each((input_field) ->
-			new Chosen(this, data, options) unless ($ this).hasClass "chzn-done"
+			new Chosen(this, options) unless ($ this).hasClass "chzn-done"
 		)
 }) 
 
 class Chosen
 
-	constructor: (elmn, data, options) ->
+	constructor: (elmn, options) ->
 		@options = $.extend({}, options)
 		this.set_default_values()
 		
