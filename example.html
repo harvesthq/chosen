@@ -1281,7 +1281,7 @@
         selectOptionText: 'Selecteer een optie',
         selectOptionsText: 'Selecteer opties',
         addOption: function(term, callback){
-          callback.call(this, term);
+          callback.call(this, {value: 'value='+term, text: term});
         }
       });
     }

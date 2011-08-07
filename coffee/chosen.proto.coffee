@@ -44,7 +44,7 @@ class Chosen
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @no_results_temp = new Template('<li class="no-results">#{text} "<span>#{terms}</span>".#{add_item_link}</li>')
-    @new_option_temp = new Template('<option value="#{terms}">#{terms}</option>')
+    @new_option_temp = new Template('<option value="#{value}">#{text}</option>')
     @add_link_temp = new Template(' <a href="javascript:void(0);" class="option-add">#{text}</a>')
 
 
@@ -489,15 +489,15 @@ class Chosen
     if Object.isFunction(@options.addOption)
       @options.addOption.call this, terms, this.select_append_option
     else
-      this.select_append_option( terms )
+      this.select_append_option( {value: terms, text: terms} )
 
 
-  select_append_option: ( terms ) ->
+  select_append_option: ( options ) ->
     ###
       TODO Close options after adding
     ###
     
-    option = @new_option_temp.evaluate( terms: terms )
+    option = @new_option_temp.evaluate( value: options.value, text: options.text )
     @form_field.insert option
     Event.fire @form_field, "liszt:updated"
     this.result_select()

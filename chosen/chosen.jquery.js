@@ -568,17 +568,20 @@
       if ($.isFunction(this.options.addOption)) {
         return this.options.addOption.call(this, terms, this.select_append_option);
       } else {
-        return this.select_append_option(terms);
+        return this.select_append_option({
+          value: terms,
+          text: terms
+        });
       }
     };
-    Chosen.prototype.select_append_option = function(terms) {
+    Chosen.prototype.select_append_option = function(options) {
       var option;
       option = $('<option />', {
-        value: terms
-      }).text(terms);
+        value: options.value
+      }).text(options.text);
       this.form_field_jq.append(option);
       this.form_field_jq.trigger("liszt:updated");
-      this.search_field.val(terms);
+      this.search_field.val(options.text);
       this.search_field.trigger("keyup");
       this.form_field_jq.trigger("change");
       return this.result_select();

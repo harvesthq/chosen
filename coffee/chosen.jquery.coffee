@@ -487,13 +487,13 @@ class Chosen
     if $.isFunction(@options.addOption)
       @options.addOption.call this, terms, this.select_append_option
     else
-      this.select_append_option( terms )
+      this.select_append_option( {value: terms, text: terms} )
 
-  select_append_option: ( terms ) ->
-    option = $('<option />', {value: terms}).text(terms)
+  select_append_option: ( options ) ->
+    option = $('<option />', {value: options.value} ).text( options.text )
     @form_field_jq.append option
     @form_field_jq.trigger "liszt:updated"
-    @search_field.val terms
+    @search_field.val options.text
     @search_field.trigger "keyup"
     this.form_field_jq.trigger "change"
     this.result_select()
