@@ -11,7 +11,8 @@
   /*
   Chosen source: generate output using 'cake build'
   Copyright (c) 2011 by Harvest
-  */  var Chosen, get_side_border_padding, root;
+  */
+  var Chosen, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = this;
   Chosen = (function() {
@@ -86,8 +87,8 @@
       return this.set_tab_index();
     };
     Chosen.prototype.register_observers = function() {
-      this.container.observe("click", __bind(function(evt) {
-        return this.container_click(evt);
+      this.container.observe("mousedown", __bind(function(evt) {
+        return this.container_mousedown(evt);
       }, this));
       this.container.observe("mouseenter", __bind(function(evt) {
         return this.mouse_enter(evt);
@@ -95,8 +96,8 @@
       this.container.observe("mouseleave", __bind(function(evt) {
         return this.mouse_leave(evt);
       }, this));
-      this.search_results.observe("click", __bind(function(evt) {
-        return this.search_results_click(evt);
+      this.search_results.observe("mouseup", __bind(function(evt) {
+        return this.search_results_mouseup(evt);
       }, this));
       this.search_results.observe("mouseover", __bind(function(evt) {
         return this.search_results_mouseover(evt);
@@ -129,8 +130,8 @@
         }, this));
       }
     };
-    Chosen.prototype.container_click = function(evt) {
-      if (evt && evt.type === "click") {
+    Chosen.prototype.container_mousedown = function(evt) {
+      if (evt && evt.type === "mousedown") {
         evt.stop();
       }
       if (!this.pending_destroy_click) {
@@ -156,7 +157,7 @@
     };
     Chosen.prototype.input_focus = function(evt) {
       if (!this.active_field) {
-        return setTimeout(this.container_click.bind(this), 50);
+        return setTimeout(this.container_mousedown.bind(this), 50);
       }
     };
     Chosen.prototype.input_blur = function(evt) {
@@ -340,7 +341,7 @@
         return this.search_field.removeClassName("default");
       }
     };
-    Chosen.prototype.search_results_click = function(evt) {
+    Chosen.prototype.search_results_mouseup = function(evt) {
       var target;
       target = evt.target.hasClassName("active-result") ? evt.target : evt.target.up(".active-result");
       if (target) {
