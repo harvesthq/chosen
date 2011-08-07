@@ -393,6 +393,7 @@ class Chosen
     this.no_results_clear()
 
     results = 0
+    selected = false
 
     searchText = if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
     regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
@@ -434,9 +435,11 @@ class Chosen
           else
             this.result_clear_highlight() if $(result_id) is @result_highlight
             this.result_deactivate $(result_id)
+        else if (@is_multiple and option.selected)
+          selected = true if regex.test option.html
 
     if results < 1 and searchText.length
-      this.no_results(searchText)
+      this.no_results(searchText, selected)
     else
       this.winnow_results_set_highlight()
 
@@ -460,14 +463,11 @@ class Chosen
         do_high = @search_results.down(".active-result")
 
       this.result_do_highlight do_high if do_high?
-  
-  no_results: (terms) ->
-    regex = new RegExp('^' + terms + '$', 'i')
-    selected = (option for option in @results_data when regex.test(option.value) and option.selected)
-    add_item_link = if selected.length == 0 then ' <a href="javascript:void(0);" class="option-add">Add this item</a>' else ''
+
+  no_results: (terms, selected) ->
+    add_item_link = if selected then '' else ' <a href="javascript:void(0);" class="option-add">Add this item</a>'
     @search_results.insert @no_results_temp.evaluate( terms: terms, add_item_link: add_item_link )
-    if selected.length == 0
-      @search_results.down("a.option-add").observe "click", (evt) => this.select_add_option(terms)
+    @search_results.down("a.option-add").observe "click", (evt) => this.select_add_option(terms) unless selected
 
   select_add_option: (terms) ->
     @form_field.insert @new_option_html.evaluate( terms: terms )
