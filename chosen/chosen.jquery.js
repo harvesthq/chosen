@@ -11,7 +11,8 @@
   /*
   Chosen source: generate output using 'cake build'
   Copyright (c) 2011 by Harvest
-  */  var $, Chosen, get_side_border_padding, root;
+  */
+  var $, Chosen, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = this;
   $ = jQuery;
@@ -25,15 +26,31 @@
     }
   });
   Chosen = (function() {
-    function Chosen(elmn) {
+    function Chosen(elmn, data, options) {
+      var tag, tags, val, _i, _len;
       this.set_default_values();
       this.form_field = elmn;
       this.form_field_jq = $(this.form_field);
-      this.is_multiple = this.form_field.multiple;
+      this.is_tag = this.form_field_jq.attr("type") === "text";
+      this.is_multiple = this.is_tag ? true : this.form_field.multiple;
       this.is_rtl = this.form_field_jq.hasClass("chzn-rtl");
-      this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
+      this.default_text_default = this.is_tag ? "Enter Tags" : (this.form_field.multiple ? "Select Some Options" : "Select an Option");
+      this.results_source = data != null ? data : null;
+      this.max_choices = this.is_multiple ? ((options != null) && 'max_choices' in options ? options.max_choices : 0) : 1;
       this.set_up_html();
       this.register_observers();
+      if (this.is_tag) {
+        val = elmn.value;
+        elmn.value = '';
+        if (val !== '') {
+          tags = val.split(',');
+          for (_i = 0, _len = tags.length; _i < _len; _i++) {
+            tag = tags[_i];
+            tag = unescape(tag);
+            this.choice_append(tag, tag);
+          }
+        }
+      }
       this.form_field_jq.addClass("chzn-done");
     }
     Chosen.prototype.set_default_values = function() {
@@ -48,10 +65,10 @@
       return this.choices = 0;
     };
     Chosen.prototype.set_up_html = function() {
-      var container_div, dd_top, dd_width, sf_width;
+      var container_div, dd_top, dd_width, response, sf_width, target, url;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/(:|\.)/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
-      this.f_width = this.form_field_jq.width();
+      this.f_width = this.form_field_jq.outerWidth();
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
       container_div = $("<div />", {
         id: this.container_id,
@@ -87,6 +104,38 @@
         this.search_field.css({
           "width": sf_width + "px"
         });
+      }
+      if (this.is_tag) {
+        this.container.prepend('<select id="' + this.container_id + '_shadow" name="' + this.form_field.name + '" style="display: none;" multiple="multiple"></select>');
+        this.form_field_jq = $('#' + this.container_id + '_shadow');
+        this.form_field = this.form_field_jq.get(0);
+        if (this.results_source != null) {
+          url = this.results_source;
+          response = this.results_update;
+          target = this;
+          this.search_field.keyup(function() {
+            if ($.trim(this.value) === '') {
+              return true;
+            }
+            if (this.xhr != null) {
+              this.xhr.abort();
+            }
+            this.xhr = $.ajax({
+              url: url,
+              dataType: "json",
+              data: {
+                query: this.value
+              },
+              success: function(data, status) {
+                return response.call(target, data);
+              },
+              error: function() {
+                return response.call(target, []);
+              }
+            });
+            return true;
+          });
+        }
       }
       this.results_build();
       return this.set_tab_index();
@@ -212,25 +261,53 @@
         return this.close_field();
       }
     };
-    Chosen.prototype.results_build = function() {
-      var content, data, startTime, _i, _len, _ref;
+    Chosen.prototype.results_build = function(results) {
+      var content, data, hash, i, opt, result, startTime, _i, _j, _len, _len2, _len3, _ref, _ref2;
       startTime = new Date();
       this.parsing = true;
-      this.results_data = root.SelectParser.select_to_array(this.form_field);
-      if (this.is_multiple && this.choices > 0) {
-        this.search_choices.find("li.search-choice").remove();
-        this.choices = 0;
-      } else if (!this.is_multiple) {
-        this.selected_item.find("span").text(this.default_text);
+      if (this.is_tag && (results != null)) {
+        hash = {};
+        _ref = this.form_field.options;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          opt = _ref[_i];
+          if (opt.selected) {
+            hash[opt.value] = true;
+          }
+        }
+        this.results_data = [];
+        for (i = 0, _len2 = results.length; i < _len2; i++) {
+          result = results[i];
+          this.results_data.push({
+            array_index: i,
+            options_index: i,
+            value: result.value,
+            text: result.text,
+            html: result.text,
+            selected: result.value in hash ? 1 : 0,
+            disabled: 0,
+            group_array_index: null
+          });
+        }
+      } else {
+        this.results_data = root.SelectParser.select_to_array(this.form_field);
+        if (this.is_multiple && this.choices > 0) {
+          this.search_choices.find("li.search-choice").remove();
+          this.choices = 0;
+        } else if (!this.is_multiple) {
+          this.selected_item.find("span").text(this.default_text);
+        }
       }
       content = '';
-      _ref = this.results_data;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        data = _ref[_i];
+      _ref2 = this.results_data;
+      for (_j = 0, _len3 = _ref2.length; _j < _len3; _j++) {
+        data = _ref2[_j];
         if (data.group) {
           content += this.result_add_group(data);
         } else if (!data.empty) {
           content += this.result_add_option(data);
+          if ((this.is_tag && (results != null)) || (this.max_choices > 0 && this.max_choices <= this.choices)) {
+            continue;
+          }
           if (data.selected && this.is_multiple) {
             this.choice_build(data);
           } else if (data.selected && !this.is_multiple) {
@@ -238,9 +315,14 @@
           }
         }
       }
-      this.show_search_field_default();
-      this.search_field_scale();
-      this.search_results.html(content);
+      if (this.is_tag && (results != null)) {
+        this.search_results.html(content);
+        this.results_show();
+      } else {
+        this.show_search_field_default();
+        this.search_field_scale();
+        this.search_results.html(content);
+      }
       return this.parsing = false;
     };
     Chosen.prototype.result_add_group = function(group) {
@@ -266,6 +348,11 @@
       } else {
         return "";
       }
+    };
+    Chosen.prototype.results_update = function(results) {
+      this.result_clear_highlight();
+      this.result_single_selected = null;
+      return this.results_build(results);
     };
     Chosen.prototype.results_update_field = function() {
       this.result_clear_highlight();
@@ -379,6 +466,56 @@
         return this.results_show();
       }
     };
+    Chosen.prototype.choice_append = function(text, value) {
+      var i, item, opt, result, txt, val, _i, _len, _len2, _ref, _ref2;
+      txt = text != null ? text : $.trim(this.search_field.val());
+      val = value != null ? value : txt;
+      if (txt.length < 1 || val.length < 1) {
+        return this.results_hide();
+      }
+      _ref = this.form_field.options;
+      for (i = 0, _len = _ref.length; i < _len; i++) {
+        opt = _ref[i];
+        if (opt.value === val) {
+          if (opt.selected) {
+            return this.results_hide();
+          } else {
+            break;
+          }
+        }
+      }
+      _ref2 = this.results_data;
+      for (_i = 0, _len2 = _ref2.length; _i < _len2; _i++) {
+        result = _ref2[_i];
+        if (result.value === val) {
+          result.selected = true;
+          break;
+        }
+      }
+      if (!this.max_choices || this.max_choices > this.choices) {
+        if (i === this.form_field.length) {
+          this.form_field.options[i] = new Option(txt, val);
+        }
+        this.form_field.options[i].selected = true;
+        item = {
+          array_index: i,
+          options_index: i,
+          value: val,
+          text: txt,
+          html: txt,
+          selected: 1,
+          disabled: 0,
+          group_array_index: null
+        };
+        this.choice_build(item);
+      } else {
+        alert('Maximum number of choices (' + this.max_choices + ') reached.');
+      }
+      this.results_hide();
+      this.search_field.val("");
+      this.form_field_jq.trigger("change");
+      return this.search_field_scale();
+    };
     Chosen.prototype.choice_build = function(item) {
       var choice_id, link;
       choice_id = this.container_id + "_c_" + item.array_index;
@@ -416,13 +553,21 @@
           this.result_single_selected = high;
         }
         position = high_id.substr(high_id.lastIndexOf("_") + 1);
-        item = this.results_data[position];
-        item.selected = true;
-        this.form_field.options[item.options_index].selected = true;
-        if (this.is_multiple) {
-          this.choice_build(item);
+        if (!this.max_choices || this.max_choices > this.choices) {
+          item = this.results_data[position];
+          item.selected = true;
+          if (this.is_tag) {
+            this.choice_append(item.text, item.value);
+          } else {
+            this.form_field.options[item.options_index].selected = true;
+            if (this.is_multiple) {
+              this.choice_build(item);
+            } else {
+              this.selected_item.find("span").first().text(item.text);
+            }
+          }
         } else {
-          this.selected_item.find("span").first().text(item.text);
+          alert('Maximum number of choices (' + this.max_choices + ') reached.');
         }
         this.results_hide();
         this.search_field.val("");
@@ -438,9 +583,13 @@
     };
     Chosen.prototype.result_deselect = function(pos) {
       var result, result_data;
-      result_data = this.results_data[pos];
-      result_data.selected = false;
-      this.form_field.options[result_data.options_index].selected = false;
+      if (this.is_tag) {
+        this.form_field.options[pos].selected = false;
+      } else {
+        result_data = this.results_data[pos];
+        result_data.selected = false;
+        this.form_field.options[result_data.options_index].selected = false;
+      }
       result = $("#" + this.container_id + "_o_" + pos);
       result.removeClass("result-selected").addClass("active-result").show();
       this.result_clear_highlight();
@@ -456,13 +605,12 @@
       }
     };
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, result_id, results, searchText, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref;
+      var found, option, part, parts, regex, result_id, results, searchText, startTime, startpos, text, _i, _j, _len, _len2, _ref;
       startTime = new Date();
       this.no_results_clear();
       results = 0;
       searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
-      regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      regex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       _ref = this.results_data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
@@ -489,7 +637,7 @@
             }
             if (found) {
               if (searchText.length) {
-                startpos = option.html.search(zregex);
+                startpos = option.html.search(regex);
                 text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
                 text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
               } else {
@@ -541,6 +689,9 @@
     };
     Chosen.prototype.no_results = function(terms) {
       var no_results_html;
+      if (this.is_tag) {
+        return this.results_hide();
+      }
       no_results_html = $('<li class="no-results">No results match "<span></span>"</li>');
       no_results_html.find("span").first().html(terms);
       return this.search_results.append(no_results_html);
@@ -613,6 +764,8 @@
           evt.preventDefault();
           if (this.results_showing) {
             return this.result_select();
+          } else if (this.is_tag) {
+            return this.choice_append();
           }
           break;
         case 27:

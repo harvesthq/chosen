@@ -14,18 +14,31 @@ $.fn.extend({
 
 class Chosen
 
-  constructor: (elmn) ->
+  constructor: (elmn, data, options) ->
     this.set_default_values()
     
     @form_field = elmn
     @form_field_jq = $ @form_field
-    @is_multiple = @form_field.multiple
+    @is_tag = @form_field_jq.attr("type") is "text"
+    @is_multiple = if @is_tag then true else @form_field.multiple
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
 
-    @default_text_default = if @form_field.multiple then "Select Some Options" else "Select an Option"
+    @default_text_default = if @is_tag then "Enter Tags" else (if @form_field.multiple then "Select Some Options" else "Select an Option")
+    @results_source = if data? then data else null
+    @max_choices = if @is_multiple then (if options? and 'max_choices' of options then options.max_choices else 0) else 1
 
     this.set_up_html()
     this.register_observers()
+
+    if @is_tag
+      val = elmn.value
+      elmn.value = ''
+      if val isnt ''
+        tags = val.split ','
+        for tag in tags
+          tag = unescape tag
+          @choice_append tag, tag
+       
     @form_field_jq.addClass "chzn-done"
 
   set_default_values: ->
@@ -42,7 +55,7 @@ class Chosen
     @container_id = if @form_field.id.length then @form_field.id.replace(/(:|\.)/g, '_') else this.generate_field_id()
     @container_id += "_chzn"
     
-    @f_width = @form_field_jq.width()
+    @f_width = @form_field_jq.outerWidth()
     
     @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
     
@@ -82,6 +95,32 @@ class Chosen
       sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
       @search_field.css( {"width" : sf_width + "px"} )
     
+    if @is_tag
+      @container.prepend '<select id="' + @container_id + '_shadow" name="' + @form_field.name + '" style="display: none;" multiple="multiple"></select>'
+      @form_field_jq = ($ '#' + @container_id + '_shadow')
+      @form_field = @form_field_jq.get(0)
+
+      if @results_source?
+        url = @results_source
+        response = @results_update
+        target = this
+
+        @search_field.keyup -> 
+          if $.trim(@value) is ''
+            return true
+
+          this.xhr.abort() if @.xhr?
+          @xhr = $.ajax {
+            url: url
+            dataType: "json"
+            data: { query: @value }
+            success: (data, status)->
+              response.call target, data
+            error: ->
+              response.call target, []
+          }
+          return true
+
     this.results_build()
     this.set_tab_index()
 
@@ -172,16 +211,35 @@ class Chosen
     else
       this.close_field()
     
-  results_build: ->
+  results_build: (results) ->
     startTime = new Date()
     @parsing = true
-    @results_data = root.SelectParser.select_to_array @form_field
 
-    if @is_multiple and @choices > 0
-      @search_choices.find("li.search-choice").remove()
-      @choices = 0
-    else if not @is_multiple
-      @selected_item.find("span").text @default_text
+    if @is_tag and results?
+      hash = {}
+      for opt in @form_field.options
+        hash[opt.value] = true if opt.selected
+      
+      @results_data = []
+      for result, i in results
+        @results_data.push {
+           array_index: i,
+           options_index: i,
+           value: result.value,
+           text: result.text,
+           html: result.text,
+           selected: if (result.value of hash) then 1 else 0,
+           disabled: 0,
+           group_array_index: null
+        }
+    else
+       @results_data = root.SelectParser.select_to_array @form_field
+
+       if @is_multiple and @choices > 0
+         @search_choices.find("li.search-choice").remove()
+         @choices = 0
+       else if not @is_multiple
+         @selected_item.find("span").text @default_text
 
     content = ''
     for data in @results_data
@@ -189,15 +247,21 @@ class Chosen
         content += this.result_add_group data
       else if !data.empty
         content += this.result_add_option data
+        continue if (@is_tag and results?) or (@max_choices > 0 and @max_choices <= @.choices)
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
           @selected_item.find("span").text data.text
 
-    this.show_search_field_default()
-    this.search_field_scale()
+    if @is_tag and results?
+      @search_results.html content
+      this.results_show()
+    else
+      this.show_search_field_default()
+      this.search_field_scale()
     
-    @search_results.html content
+      @search_results.html content
+
     @parsing = false
 
 
@@ -219,6 +283,11 @@ class Chosen
       '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>'
     else
       ""
+
+  results_update: (results) ->
+    this.result_clear_highlight()
+    @result_single_selected = null
+    this.results_build(results)
 
   results_update_field: ->
     this.result_clear_highlight()
@@ -314,6 +383,47 @@ class Chosen
     if( @active_field and not($(evt.target).hasClass "search-choice" or $(evt.target).parents('.search-choice').first) and not @results_showing )
       this.results_show()
 
+  choice_append: (text, value) ->
+    txt = if text? then text else $.trim(@search_field.val())
+    val = if value? then value else txt
+    return @results_hide() if txt.length < 1 or val.length < 1
+
+    for opt,i in @form_field.options
+      if opt.value is val
+        if opt.selected 
+          return @results_hide()
+        else
+          break
+
+    for result in @results_data
+      if result.value is val
+        result.selected = true
+        break
+
+    if !@max_choices or @max_choices > @choices
+      if i == @form_field.length
+        @form_field.options[i] = new Option(txt, val)
+      @form_field.options[i].selected = true
+
+      item = {
+        array_index: i,
+        options_index: i,
+        value: val,
+        text: txt,
+        html: txt,
+        selected: 1,
+        disabled: 0,
+        group_array_index: null
+      };
+      @choice_build(item);
+    else
+      alert 'Maximum number of choices (' + this.max_choices + ') reached.'
+
+    this.results_hide();
+    this.search_field.val("");
+    this.form_field_jq.trigger("change");
+    return this.search_field_scale();
+
   choice_build: (item) ->
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
@@ -350,15 +460,22 @@ class Chosen
         @result_single_selected = high
       
       position = high_id.substr(high_id.lastIndexOf("_") + 1 )
-      item = @results_data[position]
-      item.selected = true
 
-      @form_field.options[item.options_index].selected = true
+      if !@max_choices or @max_choices > @choices
+        item = @results_data[position]
+        item.selected = true
 
-      if @is_multiple
-        this.choice_build item
+        if @is_tag
+          this.choice_append(item.text, item.value)
+        else
+          @form_field.options[item.options_index].selected = true
+
+          if @is_multiple
+            this.choice_build item
+          else
+            @selected_item.find("span").first().text item.text
       else
-        @selected_item.find("span").first().text item.text
+        alert 'Maximum number of choices (' + this.max_choices + ') reached.';
 
       this.results_hide()
       @search_field.val ""
@@ -373,10 +490,14 @@ class Chosen
     el.removeClass("active-result").hide()
 
   result_deselect: (pos) ->
-    result_data = @results_data[pos]
-    result_data.selected = false
+    if @is_tag
+      @form_field.options[pos].selected = false
+    else
+      result_data = @results_data[pos]
+      result_data.selected = false
 
-    @form_field.options[result_data.options_index].selected = false
+      @form_field.options[result_data.options_index].selected = false
+
     result = $("#" + @container_id + "_o_" + pos)
     result.removeClass("result-selected").addClass("active-result").show()
 
@@ -399,8 +520,7 @@ class Chosen
     results = 0
 
     searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
-    regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    regex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
       if not option.disabled and not option.empty
@@ -424,7 +544,7 @@ class Chosen
 
           if found
             if searchText.length
-              startpos = option.html.search zregex
+              startpos = option.html.search regex
               text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
             else
@@ -464,6 +584,7 @@ class Chosen
       this.result_do_highlight do_high if do_high?
   
   no_results: (terms) ->
+    return this.results_hide() if @is_tag
     no_results_html = $('<li class="no-results">No results match "<span></span>"</li>')
     no_results_html.find("span").first().html(terms)
 
@@ -518,7 +639,10 @@ class Chosen
           this.results_search()
       when 13
         evt.preventDefault()
-        this.result_select() if this.results_showing
+        if this.results_showing
+          this.result_select()
+        else if @is_tag
+          this.choice_append()
       when 27
         this.results_hide() if @results_showing
       when 9, 38, 40, 16
