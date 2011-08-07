@@ -6,10 +6,11 @@ root = this
 
 class Chosen
 
-  constructor: (elmn) ->
+  constructor: (elmn, options) ->
     this.set_default_values()
-    
+
     @form_field = elmn
+    @options = Object.extend({}, options)
     @is_multiple = @form_field.multiple
     @is_rtl = @form_field.hasClassName "chzn-rtl"
 
@@ -465,14 +466,28 @@ class Chosen
       this.result_do_highlight do_high if do_high?
 
   no_results: (terms, selected) ->
-    add_item_link = if selected then '' else ' <a href="javascript:void(0);" class="option-add">Add this item</a>'
+    add_item_link = ''
+    if @options.addOption and not selected
+      add_item_link = ' <a href="javascript:void(0);" class="option-add">Add this item</a>'
+      
     @search_results.insert @no_results_temp.evaluate( terms: terms, add_item_link: add_item_link )
-    @search_results.down("a.option-add").observe "click", (evt) => this.select_add_option(terms) unless selected
+    
+    if @options.addOption and not selected
+      @search_results.down("a.option-add").observe "click", (evt) => this.select_add_option(terms) unless selected    
 
-  select_add_option: (terms) ->
-    @form_field.insert @new_option_html.evaluate( terms: terms )
+  select_add_option: ( terms ) ->
+    if Object.isFunction(@options.addOption)
+      @options.addOption.call this, terms, this.select_append_option
+    else
+      this.select_append_option( terms )
+
+
+  select_append_option: ( terms ) ->
+    option = @new_option_html.evaluate( terms: terms )
+    @form_field.insert option
     Event.fire @form_field, "liszt:updated"
     this.result_select()
+
 
   no_results_clear: ->
     nr = null
@@ -583,10 +598,6 @@ class Chosen
       @dropdown.setStyle({"top":  dd_top + "px"})
 
 root.Chosen = Chosen
-
-document.observe 'dom:loaded', (evt) ->
-  selects = $$(".chzn-select")
-  new Chosen select for select in selects
 
 get_side_border_padding = (elmt) ->
   layout = new Element.Layout(elmt)

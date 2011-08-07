@@ -1270,5 +1270,10 @@
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
   <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
-  <script type="text/javascript"> $(".chzn-select").chosen({addOption: true}); </script>
+  <script type="text/javascript">
+  $(".chzn-select").chosen({
+    addOption: function(term, callback){
+      callback.call(this, term);
+    }
+  }); </script>
 </body>

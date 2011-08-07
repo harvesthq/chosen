@@ -558,20 +558,18 @@
       return this.search_results.append(no_results_html);
     };
     Chosen.prototype.select_add_option = function(terms) {
-      var new_option_html;
       if ($.isFunction(this.options.addOption)) {
         return this.options.addOption.call(this, terms, this.select_append_option);
       } else {
-        new_option_html = $('<option />', {
-          value: terms
-        }).text(terms);
-        return this.select_append_option(new_option_html);
+        return this.select_append_option(terms);
       }
     };
-    Chosen.prototype.select_append_option = function(option) {
-      var terms;
+    Chosen.prototype.select_append_option = function(terms) {
+      var option;
+      option = $('<option />', {
+        value: terms
+      }).text(terms);
       this.form_field_jq.append(option);
-      terms = this.search_field.val();
       this.form_field_jq.trigger("liszt:updated");
       this.search_field.val(terms);
       this.search_field.trigger("keyup");

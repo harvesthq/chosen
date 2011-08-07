@@ -15,9 +15,10 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = this;
   Chosen = (function() {
-    function Chosen(elmn) {
+    function Chosen(elmn, options) {
       this.set_default_values();
       this.form_field = elmn;
+      this.options = Object.extend({}, options);
       this.is_multiple = this.form_field.multiple;
       this.is_rtl = this.form_field.hasClassName("chzn-rtl");
       this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
@@ -546,21 +547,35 @@
     };
     Chosen.prototype.no_results = function(terms, selected) {
       var add_item_link;
-      add_item_link = selected ? '' : ' <a href="javascript:void(0);" class="option-add">Add this item</a>';
+      add_item_link = '';
+      if (this.options.addOption && !selected) {
+        add_item_link = ' <a href="javascript:void(0);" class="option-add">Add this item</a>';
+      }
       this.search_results.insert(this.no_results_temp.evaluate({
         terms: terms,
         add_item_link: add_item_link
       }));
-      return this.search_results.down("a.option-add").observe("click", __bind(function(evt) {
-        if (!selected) {
-          return this.select_add_option(terms);
-        }
-      }, this));
+      if (this.options.addOption && !selected) {
+        return this.search_results.down("a.option-add").observe("click", __bind(function(evt) {
+          if (!selected) {
+            return this.select_add_option(terms);
+          }
+        }, this));
+      }
     };
     Chosen.prototype.select_add_option = function(terms) {
-      this.form_field.insert(this.new_option_html.evaluate({
+      if (Object.isFunction(this.options.addOption)) {
+        return this.options.addOption.call(this, terms, this.select_append_option);
+      } else {
+        return this.select_append_option(terms);
+      }
+    };
+    Chosen.prototype.select_append_option = function(terms) {
+      var option;
+      option = this.new_option_html.evaluate({
         terms: terms
-      }));
+      });
+      this.form_field.insert(option);
       Event.fire(this.form_field, "liszt:updated");
       return this.result_select();
     };
@@ -710,16 +725,6 @@
     return Chosen;
   })();
   root.Chosen = Chosen;
-  document.observe('dom:loaded', function(evt) {
-    var select, selects, _i, _len, _results;
-    selects = $$(".chzn-select");
-    _results = [];
-    for (_i = 0, _len = selects.length; _i < _len; _i++) {
-      select = selects[_i];
-      _results.push(new Chosen(select));
-    }
-    return _results;
-  });
   get_side_border_padding = function(elmt) {
     var layout, side_border_padding;
     layout = new Element.Layout(elmt);
