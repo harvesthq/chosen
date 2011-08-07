@@ -38,7 +38,8 @@
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
-      return this.no_results_temp = new Template('<li class="no-results">No results match "<span>#{terms}</span>"</li>');
+      this.no_results_temp = new Template('<li class="no-results">No results match "<span>#{terms}</span>".#{add_item_link}</li>');
+      return this.new_option_html = new Template('<option value="#{terms}">#{terms}</option>');
     };
     Chosen.prototype.set_up_html = function() {
       var base_template, container_props, dd_top, dd_width, sf_width;
@@ -539,9 +540,37 @@
       }
     };
     Chosen.prototype.no_results = function(terms) {
-      return this.search_results.insert(this.no_results_temp.evaluate({
+      var add_item_link, option, regex, selected;
+      regex = new RegExp('^' + terms + '$', 'i');
+      selected = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.results_data;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          option = _ref[_i];
+          if (regex.test(option.value) && option.selected) {
+            _results.push(option);
+          }
+        }
+        return _results;
+      }).call(this);
+      add_item_link = selected.length === 0 ? ' <a href="javascript:void(0);" class="option-add">Add this item</a>' : '';
+      this.search_results.insert(this.no_results_temp.evaluate({
+        terms: terms,
+        add_item_link: add_item_link
+      }));
+      if (selected.length === 0) {
+        return this.search_results.down("a.option-add").observe("click", __bind(function(evt) {
+          return this.select_add_option(terms);
+        }, this));
+      }
+    };
+    Chosen.prototype.select_add_option = function(terms) {
+      this.form_field.insert(this.new_option_html.evaluate({
         terms: terms
       }));
+      Event.fire(this.form_field, "liszt:updated");
+      return this.result_select();
     };
     Chosen.prototype.no_results_clear = function() {
       var nr, _results;

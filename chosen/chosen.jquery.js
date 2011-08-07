@@ -25,7 +25,8 @@
     }
   });
   Chosen = (function() {
-    function Chosen(elmn) {
+    function Chosen(elmn, data, options) {
+      this.options = $.extend({}, options);
       this.set_default_values();
       this.form_field = elmn;
       this.form_field_jq = $(this.form_field);
@@ -55,7 +56,7 @@
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
       container_div = $("<div />", {
         id: this.container_id,
-        "class": "chzn-container " + (this.is_rtl ? ' chzn-rtl' : void 0),
+        "class": "chzn-container " + (this.is_rtl ? 'chzn-rtl' : ''),
         style: 'width: ' + this.f_width + 'px;'
       });
       if (this.is_multiple) {
@@ -540,10 +541,52 @@
       }
     };
     Chosen.prototype.no_results = function(terms) {
-      var no_results_html;
+      var no_results_html, option, regex, selected;
       no_results_html = $('<li class="no-results">No results match "<span></span>"</li>');
       no_results_html.find("span").first().html(terms);
+      if (this.options.addOption) {
+        regex = new RegExp('^' + terms + '$', 'i');
+        selected = (function() {
+          var _i, _len, _ref, _results;
+          _ref = this.results_data;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            option = _ref[_i];
+            if (regex.test(option.value) && option.selected) {
+              _results.push(option);
+            }
+          }
+          return _results;
+        }).call(this);
+        if (selected.length === 0) {
+          no_results_html.append(' <a href="javascript:void(0);" class="option-add">Add this item</a>');
+          no_results_html.find("a.option-add").bind("click", __bind(function(evt) {
+            return this.select_add_option(terms);
+          }, this));
+        }
+      }
       return this.search_results.append(no_results_html);
+    };
+    Chosen.prototype.select_add_option = function(terms) {
+      var new_option_html;
+      if ($.isFunction(this.options.addOption)) {
+        return this.options.addOption.call(this, terms, this.select_append_option);
+      } else {
+        new_option_html = $('<option />', {
+          value: terms
+        }).text(terms);
+        return this.select_append_option(new_option_html);
+      }
+    };
+    Chosen.prototype.select_append_option = function(option) {
+      var terms;
+      this.form_field_jq.append(option);
+      terms = this.search_field.val();
+      this.form_field_jq.trigger("liszt:updated");
+      this.search_field.val(terms);
+      this.search_field.trigger("keyup");
+      this.form_field_jq.trigger("change");
+      return this.result_select();
     };
     Chosen.prototype.no_results_clear = function() {
       return this.search_results.find(".no-results").remove();
