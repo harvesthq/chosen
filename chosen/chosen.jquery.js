@@ -358,7 +358,7 @@
       target = $(evt.target).hasClass("active-result") ? $(evt.target) : $(evt.target).parents(".active-result").first();
       if (target.length) {
         this.result_highlight = target;
-        return this.result_select();
+        return this.result_select(evt);
       }
     };
     Chosen.prototype.search_results_mouseover = function(evt) {
@@ -403,7 +403,7 @@
       this.result_deselect(link.attr("rel"));
       return link.parents('li').first().remove();
     };
-    Chosen.prototype.result_select = function() {
+    Chosen.prototype.result_select = function(evt) {
       var high, high_id, item, position;
       if (this.result_highlight) {
         high = this.result_highlight;
@@ -424,7 +424,9 @@
         } else {
           this.selected_item.find("span").first().text(item.text);
         }
-        this.results_hide();
+        if (!evt.metaKey) {
+          this.results_hide();
+        }
         this.search_field.val("");
         this.form_field_jq.trigger("change");
         return this.search_field_scale();
@@ -612,7 +614,7 @@
         case 13:
           evt.preventDefault();
           if (this.results_showing) {
-            return this.result_select();
+            return this.result_select(evt);
           }
           break;
         case 27:
