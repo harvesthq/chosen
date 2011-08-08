@@ -11,12 +11,16 @@
   /*
   Chosen source: generate output using 'cake build'
   Copyright (c) 2011 by Harvest
-  */  var $, Chosen, get_side_border_padding, root;
+  */
+  var $, Chosen, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = this;
   $ = jQuery;
   $.fn.extend({
     chosen: function(data, options) {
+      if ($.browser === "msie" && ($.browser.version === "6.0" || $.browser.version === "7.0")) {
+        return this;
+      }
       return $(this).each(function(input_field) {
         if (!($(this)).hasClass("chzn-done")) {
           return new Chosen(this, data, options);
@@ -92,8 +96,8 @@
       return this.set_tab_index();
     };
     Chosen.prototype.register_observers = function() {
-      this.container.click(__bind(function(evt) {
-        return this.container_click(evt);
+      this.container.mousedown(__bind(function(evt) {
+        return this.container_mousedown(evt);
       }, this));
       this.container.mouseenter(__bind(function(evt) {
         return this.mouse_enter(evt);
@@ -101,8 +105,8 @@
       this.container.mouseleave(__bind(function(evt) {
         return this.mouse_leave(evt);
       }, this));
-      this.search_results.click(__bind(function(evt) {
-        return this.search_results_click(evt);
+      this.search_results.mouseup(__bind(function(evt) {
+        return this.search_results_mouseup(evt);
       }, this));
       this.search_results.mouseover(__bind(function(evt) {
         return this.search_results_mouseover(evt);
@@ -135,8 +139,8 @@
         }, this));
       }
     };
-    Chosen.prototype.container_click = function(evt) {
-      if (evt && evt.type === "click") {
+    Chosen.prototype.container_mousedown = function(evt) {
+      if (evt && evt.type === "mousedown") {
         evt.stopPropagation();
       }
       if (!this.pending_destroy_click) {
@@ -164,7 +168,7 @@
     Chosen.prototype.input_focus = function(evt) {
       if (!this.active_field) {
         return setTimeout((__bind(function() {
-          return this.container_click();
+          return this.container_mousedown();
         }, this)), 50);
       }
     };
@@ -353,7 +357,7 @@
         return this.search_field.removeClass("default");
       }
     };
-    Chosen.prototype.search_results_click = function(evt) {
+    Chosen.prototype.search_results_mouseup = function(evt) {
       var target;
       target = $(evt.target).hasClass("active-result") ? $(evt.target) : $(evt.target).parents(".active-result").first();
       if (target.length) {

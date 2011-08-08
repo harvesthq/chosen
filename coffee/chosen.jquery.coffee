@@ -7,6 +7,8 @@ $ = jQuery
 
 $.fn.extend({
   chosen: (data, options) ->
+    # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
+    return this if $.browser is "msie" and ($.browser.version is "6.0" or  $.browser.version is "7.0")
     $(this).each((input_field) ->
       new Chosen(this, data, options) unless ($ this).hasClass "chzn-done"
     )
@@ -87,11 +89,11 @@ class Chosen
 
 
   register_observers: ->
-    @container.click (evt) => this.container_click(evt)
+    @container.mousedown (evt) => this.container_mousedown(evt)
     @container.mouseenter (evt) => this.mouse_enter(evt)
     @container.mouseleave (evt) => this.mouse_leave(evt)
   
-    @search_results.click (evt) => this.search_results_click(evt)
+    @search_results.mouseup (evt) => this.search_results_mouseup(evt)
     @search_results.mouseover (evt) => this.search_results_mouseover(evt)
     @search_results.mouseout (evt) => this.search_results_mouseout(evt)
 
@@ -107,8 +109,8 @@ class Chosen
     else
       @selected_item.focus (evt) => this.activate_field(evt)
 
-  container_click: (evt) ->
-    if evt and evt.type is "click"
+  container_mousedown: (evt) ->
+    if evt and evt.type is "mousedown"
       evt.stopPropagation()
     if not @pending_destroy_click
       if not @active_field
@@ -127,7 +129,7 @@ class Chosen
   mouse_leave: -> @mouse_on_container = false
 
   input_focus: (evt) ->
-    setTimeout (=> this.container_click()), 50 unless @active_field
+    setTimeout (=> this.container_mousedown()), 50 unless @active_field
   
   input_blur: (evt) ->
     if not @mouse_on_container
@@ -295,7 +297,7 @@ class Chosen
       @search_field.val("")
       @search_field.removeClass "default"
 
-  search_results_click: (evt) ->
+  search_results_mouseup: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
     if target.length
       @result_highlight = target

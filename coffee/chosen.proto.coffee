@@ -81,11 +81,11 @@ class Chosen
 
 
   register_observers: ->
-    @container.observe "click", (evt) => this.container_click(evt)
+    @container.observe "mousedown", (evt) => this.container_mousedown(evt)
     @container.observe "mouseenter", (evt) => this.mouse_enter(evt)
     @container.observe "mouseleave", (evt) => this.mouse_leave(evt)
     
-    @search_results.observe "click", (evt) => this.search_results_click(evt)
+    @search_results.observe "mouseup", (evt) => this.search_results_mouseup(evt)
     @search_results.observe "mouseover", (evt) => this.search_results_mouseover(evt)
     @search_results.observe "mouseout", (evt) => this.search_results_mouseout(evt)
     
@@ -102,8 +102,8 @@ class Chosen
       @selected_item.observe "focus", (evt) => this.activate_field(evt)
 
 
-  container_click: (evt) ->
-    if evt and evt.type is "click"
+  container_mousedown: (evt) ->
+    if evt and evt.type is "mousedown"
       evt.stop()
     if not @pending_destroy_click
       if not @active_field
@@ -121,7 +121,7 @@ class Chosen
   mouse_leave: -> @mouse_on_container = false
 
   input_focus: (evt) ->
-    setTimeout this.container_click.bind(this), 50 unless @active_field
+    setTimeout this.container_mousedown.bind(this), 50 unless @active_field
   
   input_blur: (evt) ->
     if not @mouse_on_container
@@ -288,7 +288,7 @@ class Chosen
       @search_field.value = ""
       @search_field.removeClassName "default"
 
-  search_results_click: (evt) ->
+  search_results_mouseup: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
     if target
       @result_highlight = target
@@ -573,7 +573,16 @@ class Chosen
 
 root.Chosen = Chosen
 
+# Prototype does not support version numbers so we add it ourselves
+if Prototype.Browser.IE 
+  if /MSIE (\d+\.\d+);/.test(navigator.userAgent)
+    Prototype.BrowserFeatures['Version'] = new Number(RegExp.$1);
+
+
 document.observe 'dom:loaded', (evt) ->
+  # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
+  return if Prototype.Browser.IE and (Prototype.BrowserFeatures['Version'] is 6 or Prototype.BrowserFeatures['Version'] is 7)
+  
   selects = $$(".chzn-select")
   new Chosen select for select in selects
 
