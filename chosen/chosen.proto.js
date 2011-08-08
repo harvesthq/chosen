@@ -517,9 +517,6 @@
               this.result_deactivate($(result_id));
             }
           } else if (this.is_multiple && option.selected) {
-            if (regex.test(option.html)) {
-              selected = true;
-            }
             if (exactRegex.test(option.html)) {
               selected = true;
             }
