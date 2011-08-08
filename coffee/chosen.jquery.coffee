@@ -410,6 +410,7 @@ class Chosen
     searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
     regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    exactRegex = new RegExp('^' + searchText + '$', 'i')
 
     for option in @results_data
       if not option.disabled and not option.empty
@@ -447,8 +448,8 @@ class Chosen
           else
             this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
             this.result_deactivate $("#" + result_id)
-        else if (@is_multiple and option.selected)
-          selected = true if regex.test option.html
+        else if (@is_multiple and option.selected and exactRegex.test option.html)
+          selected = true
 
     if results < 1 and searchText.length
       this.no_results searchText, selected

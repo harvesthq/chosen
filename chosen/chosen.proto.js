@@ -462,7 +462,7 @@
       }
     };
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, result_id, results, searchText, selected, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref;
+      var exactRegex, found, option, part, parts, regex, result_id, results, searchText, selected, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref;
       startTime = new Date();
       this.no_results_clear();
       results = 0;
@@ -470,6 +470,7 @@
       searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
       regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      exactRegex = new RegExp('^' + searchText + '$', 'i');
       _ref = this.results_data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
@@ -517,6 +518,9 @@
             }
           } else if (this.is_multiple && option.selected) {
             if (regex.test(option.html)) {
+              selected = true;
+            }
+            if (exactRegex.test(option.html)) {
               selected = true;
             }
           }
