@@ -355,8 +355,7 @@ class Chosen
       else
         @selected_item.down("span").update(item.html)
 
-      if not evt.metaKey
-        this.results_hide()
+      this.results_hide() unless evt.metaKey and @is_multiple
 
       @search_field.value = ""
 
@@ -523,7 +522,7 @@ class Chosen
         this.result_select(evt) if this.results_showing
       when 27
         this.results_hide() if @results_showing
-      when 9, 38, 40, 16
+      when 9, 38, 40, 16, 91, 17
         # don't do anything on these keys
       else this.results_search()
 

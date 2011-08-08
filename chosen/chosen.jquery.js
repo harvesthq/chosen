@@ -424,7 +424,7 @@
         } else {
           this.selected_item.find("span").first().text(item.text);
         }
-        if (!evt.metaKey) {
+        if (!(evt.metaKey && this.is_multiple)) {
           this.results_hide();
         }
         this.search_field.val("");
@@ -626,6 +626,8 @@
         case 38:
         case 40:
         case 16:
+        case 91:
+        case 17:
           break;
         default:
           return this.results_search();

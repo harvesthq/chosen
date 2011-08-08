@@ -416,7 +416,7 @@
         } else {
           this.selected_item.down("span").update(item.html);
         }
-        if (!evt.metaKey) {
+        if (!(evt.metaKey && this.is_multiple)) {
           this.results_hide();
         }
         this.search_field.value = "";
@@ -633,6 +633,8 @@
         case 38:
         case 40:
         case 16:
+        case 91:
+        case 17:
           break;
         default:
           return this.results_search();

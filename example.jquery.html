@@ -50,6 +50,7 @@
   <link rel="stylesheet" href="chosen/chosen.css" />
 </head>
 <body>
+  <form>
   <div id="container">
     <h1>Chosen</h1>
     <p>Chosen is a JavaScript plugin for Prototype and jQuery that makes long, unwieldy select boxes much more user-friendly. For more information (including usage, explanation and faqs), check out the <a href="http://harvesthq.github.com/chosen/">online documentation</a>.</p>
@@ -1188,7 +1189,7 @@
       </div>
       <div>
         <em>Multiple Select with Groups</em>
-        <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select" tabindex="8">
+        <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select" id="test_me" name="test_me_form" tabindex="8">
           <option value=""></option>
           <option>American Black Bear</option>
           <option>Asiatic Black Bear</option>
@@ -1271,4 +1272,5 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
   <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
   <script type="text/javascript"> $(".chzn-select").chosen(); </script>
+  </form>
 </body>
