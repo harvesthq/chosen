@@ -11,8 +11,7 @@
   /*
   Chosen source: generate output using 'cake build'
   Copyright (c) 2011 by Harvest
-  */
-  var Chosen, get_side_border_padding, root;
+  */  var Chosen, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = this;
   Chosen = (function() {
@@ -454,7 +453,7 @@
       }
     };
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, result_id, results, searchText, selected, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref;
+      var exactRegex, found, option, part, parts, regex, result_id, results, searchText, selected, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref;
       startTime = new Date();
       this.no_results_clear();
       results = 0;
@@ -462,6 +461,7 @@
       searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
       regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      exactRegex = new RegExp('^' + searchText + '$', 'i');
       _ref = this.results_data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
@@ -508,7 +508,7 @@
               this.result_deactivate($(result_id));
             }
           } else if (this.is_multiple && option.selected) {
-            if (regex.test(option.html)) {
+            if (exactRegex.test(option.html)) {
               selected = true;
             }
           }
