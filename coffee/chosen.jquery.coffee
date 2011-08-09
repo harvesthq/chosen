@@ -493,10 +493,10 @@ class Chosen
       this.select_append_option( {value: terms, text: terms} )
 
   select_append_option: ( options ) ->
-    option = $('<option />', {value: options.value} ).text( options.text )
+    option = $('<option />', options )
     @form_field_jq.append option
     @form_field_jq.trigger "liszt:updated"
-    @search_field.val options.text
+    @search_field.val options.html
     @search_field.trigger "keyup"
     this.form_field_jq.trigger "change"
     this.result_select()

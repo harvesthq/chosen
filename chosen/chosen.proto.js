@@ -47,7 +47,7 @@
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
       this.no_results_temp = new Template('<li class="no-results">#{text} "<span>#{terms}</span>".#{add_item_link}</li>');
-      this.new_option_temp = new Template('<option value="#{value}">#{text}</option>');
+      this.new_option_temp = new Template('<option value="#{value}">#{html}</option>');
       return this.add_link_temp = new Template(' <a href="javascript:void(0);" class="option-add">#{text}</a>');
     };
     Chosen.prototype.set_up_html = function() {
@@ -589,10 +589,7 @@
       /*
             TODO Close options after adding
           */      var option;
-      option = this.new_option_temp.evaluate({
-        value: options.value,
-        text: options.text
-      });
+      option = this.new_option_temp.evaluate(options);
       this.form_field.insert(option);
       Event.fire(this.form_field, "liszt:updated");
       return this.result_select();

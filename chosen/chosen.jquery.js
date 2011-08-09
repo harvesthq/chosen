@@ -578,12 +578,10 @@
     };
     Chosen.prototype.select_append_option = function(options) {
       var option;
-      option = $('<option />', {
-        value: options.value
-      }).text(options.text);
+      option = $('<option />', options);
       this.form_field_jq.append(option);
       this.form_field_jq.trigger("liszt:updated");
-      this.search_field.val(options.text);
+      this.search_field.val(options.html);
       this.search_field.trigger("keyup");
       this.form_field_jq.trigger("change");
       return this.result_select();
