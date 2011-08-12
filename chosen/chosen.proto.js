@@ -11,7 +11,8 @@
   /*
   Chosen source: generate output using 'cake build'
   Copyright (c) 2011 by Harvest
-  */  var Chosen, get_side_border_padding, root;
+  */
+  var Chosen, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = this;
   Chosen = (function() {
@@ -103,6 +104,9 @@
       }, this));
       this.search_results.observe("mouseout", __bind(function(evt) {
         return this.search_results_mouseout(evt);
+      }, this));
+      this.search_results.observe("scroll", __bind(function(evt) {
+        return this.search_results_scroll(evt);
       }, this));
       this.form_field.observe("liszt:updated", __bind(function(evt) {
         return this.results_update_field(evt);
@@ -359,6 +363,10 @@
       if (evt.target.hasClassName('active-result') || evt.target.up('.active-result')) {
         return this.result_clear_highlight();
       }
+    };
+    Chosen.prototype.search_results_scroll = function(evt) {
+      document.stopObserving("click", this.click_test_action);
+      return document.observe("click", this.click_test_action);
     };
     Chosen.prototype.choices_click = function(evt) {
       evt.preventDefault();

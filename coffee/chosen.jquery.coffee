@@ -100,6 +100,7 @@ class Chosen
     @search_field.blur (evt) => this.input_blur(evt)
     @search_field.keyup (evt) => this.keyup_checker(evt)
     @search_field.keydown (evt) => this.keydown_checker(evt)
+    @search_results.scroll (evt) => this.search_results_scroll(evt)
 
     if @is_multiple
       @search_choices.click (evt) => this.choices_click(evt)
@@ -308,6 +309,9 @@ class Chosen
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
 
+  search_results_scroll: (evt) ->
+    $(document).unbind "click", @click_test_action
+    $(document).bind "click", @click_test_action
 
   choices_click: (evt) ->
     evt.preventDefault()
