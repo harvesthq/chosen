@@ -88,6 +88,7 @@ class Chosen
     @search_results.observe "click", (evt) => this.search_results_click(evt)
     @search_results.observe "mouseover", (evt) => this.search_results_mouseover(evt)
     @search_results.observe "mouseout", (evt) => this.search_results_mouseout(evt)
+    @search_results.observe "scroll", (evt) => this.search_results_scroll(evt)
     
     @form_field.observe "liszt:updated", (evt) => this.results_update_field(evt)
 
@@ -301,6 +302,9 @@ class Chosen
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
 
+  search_results_scroll: (evt) ->
+    document.stopObserving "click", @click_test_action
+    document.observe "click", @click_test_action
 
   choices_click: (evt) ->
     evt.preventDefault()
