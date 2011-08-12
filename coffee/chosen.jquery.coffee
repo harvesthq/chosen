@@ -88,6 +88,7 @@ class Chosen
 
   register_observers: ->
     @container.click (evt) => this.container_click(evt)
+    @container.focusin (evt) => this.container_click(evt) 
     @container.mouseenter (evt) => this.mouse_enter(evt)
     @container.mouseleave (evt) => this.mouse_leave(evt)
   
