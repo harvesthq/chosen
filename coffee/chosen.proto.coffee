@@ -1,13 +1,8 @@
 ###
-Chosen, a Select Box Enhancer for jQuery and Protoype
-by Patrick Filler for Harvest, http://getharvest.com
-
-Available for use under the MIT License, http://en.wikipedia.org/wiki/MIT_License
-
+Chosen source: generate output using 'cake build'
 Copyright (c) 2011 by Harvest
 ###
-
-root = exports ? this
+root = this
 
 class Chosen
 
@@ -16,11 +11,13 @@ class Chosen
     
     @form_field = elmn
     @is_multiple = @form_field.multiple
+    @is_rtl = @form_field.hasClassName "chzn-rtl"
 
     @default_text_default = if @form_field.multiple then "Select Some Options" else "Select an Option"
 
     this.set_up_html()
     this.register_observers()
+    @form_field.addClassName "chzn-done"
 
 
   set_default_values: ->
@@ -34,23 +31,23 @@ class Chosen
     @choices = 0
 
     # HTML Templates
-    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" /></div><ul class="chzn-results"></ul></div>')
-    @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
+    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
+    @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @no_results_temp = new Template('<li class="no-results">No results match "<span>#{terms}</span>"</li>')
 
 
   set_up_html: ->
-    @container_id = @form_field.identify().replace('.', '_') + "_chzn"
+    @container_id = @form_field.identify().replace(/(:|\.)/g, '_') + "_chzn"
     
     @f_width = if @form_field.getStyle("width") then parseInt @form_field.getStyle("width"), 10 else @form_field.getWidth()
     
     container_props =
       'id': @container_id
-      'class': 'chzn-container'
+      'class': "chzn-container #{ if @is_rtl then 'chzn-rtl' else '' }"
       'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
     
-    @default_text = if @form_field.readAttribute 'title' then @form_field.readAttribute 'title' else @default_text_default
+    @default_text = if @form_field.readAttribute 'data-placeholder' then @form_field.readAttribute 'data-placeholder' else @default_text_default
     
     base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
@@ -172,7 +169,7 @@ class Chosen
   results_build: ->
     startTime = new Date()
     @parsing = true
-    @results_data = SelectParser.select_to_array @form_field
+    @results_data = root.SelectParser.select_to_array @form_field
 
     if @is_multiple and @choices > 0
       @search_choices.select("li.search-choice").invoke("remove")
@@ -358,8 +355,7 @@ class Chosen
       else
         @selected_item.down("span").update(item.html)
 
-      if not evt.metaKey
-        this.results_hide()
+      this.results_hide() unless evt.metaKey and @is_multiple
 
       @search_field.value = ""
 
@@ -456,9 +452,14 @@ class Chosen
 
   winnow_results_set_highlight: ->
     if not @result_highlight
-      do_high = @search_results.down(".active-result")
-      if(do_high)
-        this.result_do_highlight do_high
+
+      if not @is_multiple
+        do_high = @search_results.down(".result-selected")
+
+      if not do_high?
+        do_high = @search_results.down(".active-result")
+
+      this.result_do_highlight do_high if do_high?
   
   no_results: (terms) ->
     @search_results.insert @no_results_temp.evaluate( terms: terms )
@@ -521,7 +522,7 @@ class Chosen
         this.result_select(evt) if this.results_showing
       when 27
         this.results_hide() if @results_showing
-      when 9, 38, 40, 16
+      when 9, 38, 40, 16, 91, 17
         # don't do anything on these keys
       else this.results_search()
 
@@ -582,55 +583,3 @@ get_side_border_padding = (elmt) ->
   side_border_padding = layout.get("border-left") + layout.get("border-right") + layout.get("padding-left") + layout.get("padding-right")
 
 root.get_side_border_padding = get_side_border_padding
-
-root = exports ? this
-
-class SelectParser
-  
-  constructor: ->
-    @options_index = 0
-    @parsed = []
-
-  add_node: (child) ->
-    if child.nodeName is "OPTGROUP"
-      this.add_group child
-    else
-      this.add_option child
-
-  add_group: (group) ->
-    group_position = @parsed.length
-    @parsed.push
-      array_index: group_position
-      group: true
-      label: group.label
-      children: 0
-      disabled: group.disabled
-    this.add_option( option, group_position, group.disabled ) for option in group.childNodes
-
-  add_option: (option, group_position, group_disabled) ->
-    if option.nodeName is "OPTION"
-      if option.text != ""
-        if group_position?
-          @parsed[group_position].children += 1
-        @parsed.push
-          array_index: @parsed.length
-          options_index: @options_index
-          value: option.value
-          text: option.text
-          html: option.innerHTML
-          selected: option.selected
-          disabled: if group_disabled is true then group_disabled else option.disabled
-          group_array_index: group_position
-      else
-        @parsed.push
-          array_index: @parsed.length
-          options_index: @options_index
-          empty: true
-      @options_index += 1
-
-SelectParser.select_to_array = (select) ->
-  parser = new SelectParser()
-  parser.add_node( child ) for child in select.childNodes
-  parser.parsed
-  
-root.SelectParser = SelectParser
