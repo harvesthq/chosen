@@ -693,8 +693,16 @@
     return Chosen;
   })();
   root.Chosen = Chosen;
+  if (Prototype.Browser.IE) {
+    if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
+      Prototype.BrowserFeatures['Version'] = new Number(RegExp.$1);
+    }
+  }
   document.observe('dom:loaded', function(evt) {
     var select, selects, _i, _len, _results;
+    if (Prototype.Browser.IE && (Prototype.BrowserFeatures['Version'] === 6 || Prototype.BrowserFeatures['Version'] === 7)) {
+      return;
+    }
     selects = $$(".chzn-select");
     _results = [];
     for (_i = 0, _len = selects.length; _i < _len; _i++) {
