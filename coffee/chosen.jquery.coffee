@@ -93,7 +93,7 @@ class Chosen
   set_up_sortable: ->
     if @is_multiple && @form_field_jq.data 'sortable' 
         @search_choices.sortable items: "li:not(.search-field)"
-        @search_choices.disableSelection
+        @search_choices.disableSelection()
 
   register_observers: ->
     @container.mousedown (evt) => this.container_mousedown(evt)
