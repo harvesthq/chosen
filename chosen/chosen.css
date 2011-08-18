@@ -1,6 +1,5 @@
 /* @group Base */
 select.chzn-select {
-  visibility: hidden;
   height: 28px !important;
   min-height: 28px !important;
 }

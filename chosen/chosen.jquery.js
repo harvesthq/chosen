@@ -67,6 +67,9 @@
       var add_search, container_div, dd_top, dd_width, sf_width;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/(:|\.)/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
+      this.form_field_jq.css({
+        "visibility": "hidden"
+      });
       this.f_width = this.form_field_jq.width();
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
       container_div = $("<div />", {
