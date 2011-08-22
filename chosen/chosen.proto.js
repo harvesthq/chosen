@@ -20,6 +20,7 @@
       this.form_field = elmn;
       this.is_multiple = this.form_field.multiple;
       this.is_rtl = this.form_field.hasClassName("chzn-rtl");
+      this.allow_new_options = this.form_field.hasClassName("chzn-add");
       this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
       this.set_up_html();
       this.register_observers();
@@ -38,7 +39,9 @@
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
-      return this.no_results_temp = new Template('<li class="no-results">No results match "<span>#{terms}</span>"</li>');
+      this.no_results_temp = new Template('<li class="no-results">No results match "<span>#{terms}</span>".#{add_item_link}</li>');
+      this.new_option_temp = new Template('<option value="#{value}">#{value}</option>');
+      return this.add_link_temp = new Template(' <a href="javascript:void(0);" class="option-add">#{text}</a>');
     };
     Chosen.prototype.set_up_html = function() {
       var base_template, container_props, dd_top, dd_width, sf_width;
@@ -456,6 +459,7 @@
       startTime = new Date();
       this.no_results_clear();
       results = 0;
+      selected=false;
       searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
       regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
@@ -539,9 +543,40 @@
       }
     };
     Chosen.prototype.no_results = function(terms) {
-      return this.search_results.insert(this.no_results_temp.evaluate({
-        terms: terms
+      var add_item_link;
+      add_item_link = '';
+      if (this.allow_new_options) {
+          add_item_link = this.add_link_temp.evaluate({
+            text: 'Add this item'
+          });
+      }
+
+      this.search_results.insert(this.no_results_temp.evaluate({
+        text: "No results match",
+        terms: terms,
+        add_item_link: add_item_link
       }));
+
+      if (this.allow_new_options) {
+        return this.search_results.down("a.option-add").observe("click", __bind(function(evt) {
+            return this.select_add_option(terms);
+        }, this));
+      }
+    };
+    Chosen.prototype.select_add_option = function(terms) {
+        return this.select_append_option({
+          value: terms,
+          text: terms
+        });
+    };
+    Chosen.prototype.select_append_option = function(options) {
+    /*
+    TODO Close options after adding
+    */ var option;
+      option = this.new_option_temp.evaluate(options);
+      this.form_field.insert(option);
+      Event.fire(this.form_field, "liszt:updated");
+      return this.result_select();
     };
     Chosen.prototype.no_results_clear = function() {
       var nr, _results;
