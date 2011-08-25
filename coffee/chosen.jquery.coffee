@@ -25,8 +25,10 @@ class Chosen
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
 
     @default_text_default = if @form_field.multiple then "Select Some Options" else "Select an Option"
+    @addmore_text_default = if @form_field.multiple then "Add More+" else ""
 
     this.set_up_html()
+    this.set_up_sortable()
     this.register_observers()
     @form_field_jq.addClass "chzn-done"
 
@@ -47,6 +49,7 @@ class Chosen
     @f_width = @form_field_jq.width()
     
     @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
+    @addmore_text = if @form_field_jq.data 'addmore-placeholder' then @form_field_jq.data 'addmore-placeholder' else @addmore_text_default
     
     container_div = ($ "<div />", {
       id: @container_id
@@ -87,6 +90,10 @@ class Chosen
     this.results_build()
     this.set_tab_index()
 
+  set_up_sortable: ->
+    if @is_multiple && @form_field_jq.data 'sortable' 
+        @search_choices.sortable items: "li:not(.search-field)"
+        @search_choices.disableSelection()
 
   register_observers: ->
     @container.mousedown (evt) => this.container_mousedown(evt)
@@ -290,8 +297,8 @@ class Chosen
         @search_field.attr "tabindex", -1
 
   show_search_field_default: ->
-    if @is_multiple and @choices < 1 and not @active_field
-      @search_field.val(@default_text)
+    if @is_multiple and not @active_field
+      @search_field.val(if @choices < 1 then @default_text else @addmore_text)
       @search_field.addClass "default"
     else
       @search_field.val("")
