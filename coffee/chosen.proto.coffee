@@ -14,6 +14,7 @@ class Chosen
     @is_rtl = @form_field.hasClassName "chzn-rtl"
 
     @default_text_default = if @form_field.multiple then "Select Some Options" else "Select an Option"
+    @no_match_text_default = "No results match"
 
     this.set_up_html()
     this.register_observers()
@@ -34,7 +35,6 @@ class Chosen
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
-    @no_results_temp = new Template('<li class="no-results">No results match "<span>#{terms}</span>"</li>')
 
 
   set_up_html: ->
@@ -48,6 +48,8 @@ class Chosen
       'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
     
     @default_text = if @form_field.readAttribute 'data-placeholder' then @form_field.readAttribute 'data-placeholder' else @default_text_default
+    @no_match_text = if @form_field.readAttribute 'data-nomatch' then @form_field.readAttribute 'data-nomatch' else @no_match_text_default
+    @no_results_temp = new Template('<li class="no-results">' + @no_match_text + ' "<span>#{terms}</span>"</li>')
     
     base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
