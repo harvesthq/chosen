@@ -25,6 +25,7 @@ class Chosen
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
 
     @default_text_default = if @form_field.multiple then "Select Some Options" else "Select an Option"
+    @no_match_text_default = "No results match"
 
     this.set_up_html()
     this.register_observers()
@@ -47,6 +48,7 @@ class Chosen
     @f_width = @form_field_jq.width()
     
     @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
+    @no_match_text = if @form_field_jq.data 'nomatch' then @form_field_jq.data 'nomatch' else @no_match_text_default
     
     container_div = ($ "<div />", {
       id: @container_id
@@ -467,7 +469,7 @@ class Chosen
       this.result_do_highlight do_high if do_high?
   
   no_results: (terms) ->
-    no_results_html = $('<li class="no-results">No results match "<span></span>"</li>')
+    no_results_html = $('<li class="no-results">' + @no_match_text + ' "<span></span>"</li>')
     no_results_html.find("span").first().html(terms)
 
     @search_results.append no_results_html
