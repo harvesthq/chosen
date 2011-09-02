@@ -31,7 +31,7 @@ class Chosen
     @choices = 0
 
     # HTML Templates
-    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
+    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><abbr class="chzn-empty-now"></abbr><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @no_results_temp = new Template('<li class="no-results">No results match "<span>#{terms}</span>"</li>')
@@ -111,6 +111,10 @@ class Chosen
         document.observe "click", @click_test_action
         this.results_show()
       else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chzn-single"))
+        if evt.target.hasClassName 'chzn-empty-now'        
+          @form_field.findElement('option:first').writeAttribute 'selected', true
+          Event.fire @form_field, "liszt:updated"
+          
         this.results_toggle()
 
       this.activate_field()
