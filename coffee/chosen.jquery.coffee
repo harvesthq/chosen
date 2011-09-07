@@ -8,7 +8,7 @@ $ = jQuery
 $.fn.extend({
   chosen: (data, options) ->
     # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
-    return this if $.browser is "msie" and ($.browser.version is "6.0" or  $.browser.version is "7.0")
+    return this if $.browser is "msie" and $.browser.version is "6.0"
     $(this).each((input_field) ->
       new Chosen(this, data, options) unless ($ this).hasClass "chzn-done"
     )
@@ -48,7 +48,7 @@ class Chosen
     
     @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
     
-    container_div = ($ "<div />", {
+    container_div = $('<div />').attr({
       id: @container_id
       class: "chzn-container #{ if @is_rtl then 'chzn-rtl' else '' }"
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
@@ -62,25 +62,25 @@ class Chosen
     @form_field_jq.hide().after container_div
     @container = ($ '#' + @container_id)
     @container.addClass( "chzn-container-" + (if @is_multiple then "multi" else "single") )
-    @dropdown = @container.find('div.chzn-drop').first()
+    @dropdown = @container.find('div.chzn-drop').eq(0)
     
     dd_top = @container.height()
     dd_width = (@f_width - get_side_border_padding(@dropdown))
     
     @dropdown.css({"width": dd_width  + "px", "top": dd_top + "px"})
 
-    @search_field = @container.find('input').first()
-    @search_results = @container.find('ul.chzn-results').first()
+    @search_field = @container.find('input').eq(0)
+    @search_results = @container.find('ul.chzn-results').eq(0)
     this.search_field_scale()
 
-    @search_no_results = @container.find('li.no-results').first()
+    @search_no_results = @container.find('li.no-results').eq(0)
     
     if @is_multiple
-      @search_choices = @container.find('ul.chzn-choices').first()
-      @search_container = @container.find('li.search-field').first()
+      @search_choices = @container.find('ul.chzn-choices').eq(0)
+      @search_container = @container.find('li.search-field').eq(0)
     else
-      @search_container = @container.find('div.chzn-search').first()
-      @selected_item = @container.find('.chzn-single').first()
+      @search_container = @container.find('div.chzn-search').eq(0)
+      @selected_item = @container.find('.chzn-single').eq(0)
       sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
       @search_field.css( {"width" : sf_width + "px"} )
     
@@ -298,17 +298,17 @@ class Chosen
       @search_field.removeClass "default"
 
   search_results_mouseup: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").eq(0)
     if target.length
       @result_highlight = target
       this.result_select(evt)
 
   search_results_mouseover: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").eq(0)
     this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
-    this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
+    this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').eq(0)
 
 
   choices_click: (evt) ->
@@ -320,7 +320,7 @@ class Chosen
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
     @search_container.before  '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
-    link = $('#' + choice_id).find("a").first()
+    link = $('#' + choice_id).find("a").eq(0)
     link.click (evt) => this.choice_destroy_link_click(evt)
 
   choice_destroy_link_click: (evt) ->
@@ -335,7 +335,7 @@ class Chosen
     this.results_hide() if @is_multiple and @choices > 0 and @search_field.val().length < 1
 
     this.result_deselect (link.attr "rel")
-    link.parents('li').first().remove()
+    link.parents('li').eq(0).remove()
 
   result_select: (evt) ->
     if @result_highlight
@@ -360,7 +360,7 @@ class Chosen
       if @is_multiple
         this.choice_build item
       else
-        @selected_item.find("span").first().text item.text
+        @selected_item.find("span").eq(0).text item.text
 
       this.results_hide() unless evt.metaKey and @is_multiple
 
@@ -462,13 +462,13 @@ class Chosen
     if not @result_highlight
 
       selected_results = if not @is_multiple then @search_results.find(".result-selected") else []
-      do_high = if selected_results.length then selected_results.first() else @search_results.find(".active-result").first()
+      do_high = if selected_results.length then selected_results.eq(0) else @search_results.find(".active-result").eq(0)
 
       this.result_do_highlight do_high if do_high?
   
   no_results: (terms) ->
     no_results_html = $('<li class="no-results">No results match "<span></span>"</li>')
-    no_results_html.find("span").first().html(terms)
+    no_results_html.find("span").eq(0).html(terms)
 
     @search_results.append no_results_html
   
@@ -477,10 +477,10 @@ class Chosen
 
   keydown_arrow: ->
     if not @result_highlight
-      first_active = @search_results.find("li.active-result").first()
+      first_active = @search_results.find("li.active-result").eq(0)
       this.result_do_highlight $(first_active) if first_active
     else if @results_showing
-      next_sib = @result_highlight.nextAll("li.active-result").first()
+      next_sib = @result_highlight.nextAll("li.active-result").eq(0)
       this.result_do_highlight next_sib if next_sib
     this.results_show() if not @results_showing
 
@@ -491,14 +491,14 @@ class Chosen
       prev_sibs = @result_highlight.prevAll("li.active-result")
       
       if prev_sibs.length
-        this.result_do_highlight prev_sibs.first()
+        this.result_do_highlight prev_sibs.eq(0)
       else
         this.results_hide() if @choices > 0
         this.result_clear_highlight()
 
   keydown_backstroke: ->
     if @pending_backstroke
-      this.choice_destroy @pending_backstroke.find("a").first()
+      this.choice_destroy @pending_backstroke.find("a").eq(0)
       this.clear_backstroke()
     else
       @pending_backstroke = @search_container.siblings("li.search-choice").last()
@@ -565,7 +565,7 @@ class Chosen
       for style in styles
         style_block += style + ":" + @search_field.css(style) + ";"
       
-      div = $('<div />', { 'style' : style_block })
+      div = $('<div />').attr({'style': style_block})
       div.text @search_field.val()
       $('body').append div
 
