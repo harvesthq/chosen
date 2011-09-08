@@ -16,23 +16,24 @@
   root = this;
   $ = jQuery;
   $.fn.extend({
-    chosen: function(data, options) {
+    chosen: function(options) {
       if ($.browser === "msie" && ($.browser.version === "6.0" || $.browser.version === "7.0")) {
         return this;
       }
       return $(this).each(function(input_field) {
-        if (!($(this)).hasClass("chzn-done")) {
-          return new Chosen(this, data, options);
+        if (!($(this)).hasClass("chzn-done") || options.replace === true) {
+          return new Chosen(this, options);
         }
       });
     }
   });
   Chosen = (function() {
-    function Chosen(elmn) {
+    function Chosen(elmn, options) {
       this.set_default_values();
       this.form_field = elmn;
       this.form_field_jq = $(this.form_field);
       this.is_multiple = this.form_field.multiple;
+      this.replace = (options !== undefined) ? options.replace : null;
       this.is_rtl = this.form_field_jq.hasClass("chzn-rtl");
       this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
       this.disabled = $(elmn).attr('disabled');
@@ -55,6 +56,7 @@
       var container_div, dd_top, dd_width, sf_width;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/(:|\.)/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
+	  this.replace === true && $('#'+this.container_id).remove();
       this.f_width = this.form_field_jq.width();
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
       if (this.disabled ) {
