@@ -16,25 +16,27 @@
   root = this;
   $ = jQuery;
   $.fn.extend({
-    chosen: function(data, options) {
+    chosen: function(options) {
       if ($.browser === "msie" && ($.browser.version === "6.0" || $.browser.version === "7.0")) {
         return this;
       }
       return $(this).each(function(input_field) {
-        if (!($(this)).hasClass("chzn-done")) {
-          return new Chosen(this, data, options);
+        if (!($(this)).hasClass("chzn-done") || (options && options.replace === true)) {
+          return new Chosen(this, options);
         }
       });
     }
   });
   Chosen = (function() {
-    function Chosen(elmn) {
+    function Chosen(elmn, options) {
       this.set_default_values();
       this.form_field = elmn;
       this.form_field_jq = $(this.form_field);
       this.is_multiple = this.form_field.multiple;
+      this.replace = (options !== undefined) ? options.replace : null;
       this.is_rtl = this.form_field_jq.hasClass("chzn-rtl");
       this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
+      this.disabled = $(elmn).attr('disabled');
       this.set_up_html();
       this.register_observers();
       this.form_field_jq.addClass("chzn-done");
@@ -54,13 +56,14 @@
       var container_div, dd_top, dd_width, sf_width;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/(:|\.)/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
+	  this.replace === true && $('#'+this.container_id).remove();
       this.f_width = this.form_field_jq.width();
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
-      container_div = $("<div />", {
-        id: this.container_id,
-        "class": "chzn-container " + (this.is_rtl ? 'chzn-rtl' : ''),
-        style: 'width: ' + this.f_width + 'px;'
-      });
+      if (this.disabled) {
+        container_div = $("<div />", { id: this.container_id, "class": "chzn-container chzn-disabled " + (this.is_rtl ? ' chzn-rtl' : ''), style: 'width: ' + this.f_width + 'px;'});
+      } else {	
+        container_div = $("<div />", { id: this.container_id, "class": "chzn-container " + (this.is_rtl ? ' chzn-rtl' : ''), style: 'width: ' + this.f_width + 'px;'});
+      }
       if (this.is_multiple) {
         container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       } else {
@@ -139,6 +142,9 @@
       }
     };
     Chosen.prototype.container_mousedown = function(evt) {
+	  if (this.disabled) {
+        return false;	
+	  }
       if (evt && evt.type === "mousedown") {
         evt.stopPropagation();
       }
@@ -165,6 +171,9 @@
       return this.mouse_on_container = false;
     };
     Chosen.prototype.input_focus = function(evt) {
+	  if (this.disabled) {
+        return false;	
+	  }
       if (!this.active_field) {
         return setTimeout((__bind(function() {
           return this.container_mousedown();
