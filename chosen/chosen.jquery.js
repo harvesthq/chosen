@@ -35,6 +35,7 @@
       this.is_multiple = this.form_field.multiple;
       this.is_rtl = this.form_field_jq.hasClass("chzn-rtl");
       this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
+      this.disabled = $(elmn).attr('disabled');
       this.set_up_html();
       this.register_observers();
       this.form_field_jq.addClass("chzn-done");
@@ -56,11 +57,11 @@
       this.container_id += "_chzn";
       this.f_width = this.form_field_jq.width();
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
-      container_div = $("<div />", {
-        id: this.container_id,
-        "class": "chzn-container " + (this.is_rtl ? 'chzn-rtl' : ''),
-        style: 'width: ' + this.f_width + 'px;'
-      });
+      if (this.disabled ) {
+        container_div = $("<div />", { id: this.container_id, "class": "chzn-container chzn-disabled " + (this.is_rtl ? ' chzn-rtl' : ''), style: 'width: ' + this.f_width + 'px;'});
+      } else {	
+        container_div = $("<div />", { id: this.container_id, "class": "chzn-container " + (this.is_rtl ? ' chzn-rtl' : ''), style: 'width: ' + this.f_width + 'px;'});
+      }
       if (this.is_multiple) {
         container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       } else {
@@ -139,6 +140,9 @@
       }
     };
     Chosen.prototype.container_mousedown = function(evt) {
+	  if (this.disabled) {
+        return false;	
+	  }
       if (evt && evt.type === "mousedown") {
         evt.stopPropagation();
       }
@@ -165,6 +169,9 @@
       return this.mouse_on_container = false;
     };
     Chosen.prototype.input_focus = function(evt) {
+	  if (this.disabled) {
+        return false;	
+	  }
       if (!this.active_field) {
         return setTimeout((__bind(function() {
           return this.container_mousedown();
