@@ -253,6 +253,9 @@
 .chzn-container-multi .chzn-drop .result-selected {
   display: none;
 }
+.chzn-container.chzn-disabled {
+  opacity:0.5 !important;
+}
 /* @end */
 
 /* @group Active  */
