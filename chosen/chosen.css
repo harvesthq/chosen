@@ -256,6 +256,9 @@
 .chzn-container.chzn-disabled {
   opacity:0.5 !important;
 }
+.chzn-container.chzn-disabled a.chzn-single {
+  cursor:default;
+}
 /* @end */
 
 /* @group Active  */
