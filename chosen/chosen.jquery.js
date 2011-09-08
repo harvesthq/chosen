@@ -21,7 +21,7 @@
         return this;
       }
       return $(this).each(function(input_field) {
-        if (!($(this)).hasClass("chzn-done") || options.replace === true) {
+        if (!($(this)).hasClass("chzn-done") || (options && options.replace === true)) {
           return new Chosen(this, options);
         }
       });
@@ -59,7 +59,7 @@
 	  this.replace === true && $('#'+this.container_id).remove();
       this.f_width = this.form_field_jq.width();
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
-      if (this.disabled ) {
+      if (this.disabled) {
         container_div = $("<div />", { id: this.container_id, "class": "chzn-container chzn-disabled " + (this.is_rtl ? ' chzn-rtl' : ''), style: 'width: ' + this.f_width + 'px;'});
       } else {	
         container_div = $("<div />", { id: this.container_id, "class": "chzn-container " + (this.is_rtl ? ' chzn-rtl' : ''), style: 'width: ' + this.f_width + 'px;'});
