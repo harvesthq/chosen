@@ -29,7 +29,10 @@
   });
   Chosen = (function() {
     function Chosen(elmn, options) {
-      this.options = options || {};
+      if (options == null) {
+        options = {};
+      }
+      this.options = options;
       this.set_default_values();
       this.form_field = elmn;
       this.form_field_jq = $(this.form_field);

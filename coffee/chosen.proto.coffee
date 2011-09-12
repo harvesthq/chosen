@@ -6,8 +6,8 @@ root = this
 
 class Chosen
 
-  constructor: (elmn, options) ->
-    @options = options or {}
+  constructor: (elmn, options={}) ->
+    @options = options
 
     this.set_default_values()
     
