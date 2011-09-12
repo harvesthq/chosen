@@ -44,7 +44,7 @@ class Chosen
     @container_id = if @form_field.id.length then @form_field.id.replace(/(:|\.)/g, '_') else this.generate_field_id()
     @container_id += "_chzn"
     
-    @f_width = @form_field_jq.width()
+    @f_width = @form_field_jq.outerWidth()
     
     @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
     
