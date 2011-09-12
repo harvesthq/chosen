@@ -6,18 +6,17 @@ root = this
 $ = jQuery
 
 $.fn.extend({
-  chosen: (data, options) ->
-    # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
+  chosen: (options) ->
     return this if $.browser is "msie" and ($.browser.version is "6.0" or  $.browser.version is "7.0")
     $(this).each((input_field) ->
-      new Chosen(this, data, options) unless ($ this).hasClass "chzn-done"
+      new Chosen(this, options) unless ($ this).hasClass "chzn-done"
     )
 }) 
 
 class Chosen
 
-  constructor: (elmn) ->
-    this.set_default_values()
+  constructor: (elmn, options) ->
+    this.set_default_values(options or {})
     
     @form_field = elmn
     @form_field_jq = $ @form_field
@@ -30,7 +29,7 @@ class Chosen
     this.register_observers()
     @form_field_jq.addClass "chzn-done"
 
-  set_default_values: ->
+  set_default_values: (options) ->
     
     @click_test_action = (evt) => this.test_active_click(evt)
     @active_field = false
@@ -39,6 +38,7 @@ class Chosen
     @result_highlighted = null
     @result_single_selected = null
     @choices = 0
+    @results_none_found = options.no_results_text or "No results match"
 
   set_up_html: ->
     @container_id = if @form_field.id.length then @form_field.id.replace(/(:|\.)/g, '_') else this.generate_field_id()
@@ -467,7 +467,7 @@ class Chosen
       this.result_do_highlight do_high if do_high?
   
   no_results: (terms) ->
-    no_results_html = $('<li class="no-results">No results match "<span></span>"</li>')
+    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
     no_results_html.find("span").first().html(terms)
 
     @search_results.append no_results_html
