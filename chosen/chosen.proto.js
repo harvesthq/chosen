@@ -700,19 +700,6 @@
       Prototype.BrowserFeatures['Version'] = new Number(RegExp.$1);
     }
   }
-  document.observe('dom:loaded', function(evt) {
-    var select, selects, _i, _len, _results;
-    if (Prototype.Browser.IE && (Prototype.BrowserFeatures['Version'] === 6 || Prototype.BrowserFeatures['Version'] === 7)) {
-      return;
-    }
-    selects = $$(".chzn-select");
-    _results = [];
-    for (_i = 0, _len = selects.length; _i < _len; _i++) {
-      select = selects[_i];
-      _results.push(new Chosen(select));
-    }
-    return _results;
-  });
   get_side_border_padding = function(elmt) {
     var layout, side_border_padding;
     layout = new Element.Layout(elmt);

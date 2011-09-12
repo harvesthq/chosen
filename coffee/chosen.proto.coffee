@@ -584,13 +584,6 @@ if Prototype.Browser.IE
     Prototype.BrowserFeatures['Version'] = new Number(RegExp.$1);
 
 
-document.observe 'dom:loaded', (evt) ->
-  # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
-  return if Prototype.Browser.IE and (Prototype.BrowserFeatures['Version'] is 6 or Prototype.BrowserFeatures['Version'] is 7)
-  
-  selects = $$(".chzn-select")
-  new Chosen select for select in selects
-
 get_side_border_padding = (elmt) ->
   layout = new Element.Layout(elmt)
   side_border_padding = layout.get("border-left") + layout.get("border-right") + layout.get("padding-left") + layout.get("padding-right")
