@@ -11,20 +11,15 @@
   /*
   Chosen source: generate output using 'cake build'
   Copyright (c) 2011 by Harvest
-  */
-  var $, Chosen, get_side_border_padding, root;
+  */  var $, Chosen, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = this;
   $ = jQuery;
   $.fn.extend({
-<<<<<<< HEAD
-    chosen: function(data, options) {
+    chosen: function(options) {
       if ($.browser === "msie" && ($.browser.version === "6.0" || $.browser.version === "7.0")) {
         return this;
       }
-=======
-    chosen: function(options) {
->>>>>>> f9674e7db221f119f1f5fb8e33a277c3b37ee013
       return $(this).each(function(input_field) {
         if (!($(this)).hasClass("chzn-done")) {
           return new Chosen(this, options);
@@ -34,7 +29,8 @@
   });
   Chosen = (function() {
     function Chosen(elmn, options) {
-      this.set_default_values(options || {});
+      this.options = options || {};
+      this.set_default_values();
       this.form_field = elmn;
       this.form_field_jq = $(this.form_field);
       this.is_multiple = this.form_field.multiple;
@@ -44,7 +40,7 @@
       this.register_observers();
       this.form_field_jq.addClass("chzn-done");
     }
-    Chosen.prototype.set_default_values = function(options) {
+    Chosen.prototype.set_default_values = function() {
       this.click_test_action = __bind(function(evt) {
         return this.test_active_click(evt);
       }, this);
@@ -54,7 +50,7 @@
       this.result_highlighted = null;
       this.result_single_selected = null;
       this.choices = 0;
-      return this.results_none_found = options.no_results_text || "No results match";
+      return this.results_none_found = this.options.no_results_text || "No results match";
     };
     Chosen.prototype.set_up_html = function() {
       var container_div, dd_top, dd_width, sf_width;

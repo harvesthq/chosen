@@ -16,7 +16,8 @@ $.fn.extend({
 class Chosen
 
   constructor: (elmn, options) ->
-    this.set_default_values(options or {})
+    @options = options or {}
+    this.set_default_values()
     
     @form_field = elmn
     @form_field_jq = $ @form_field
@@ -29,7 +30,7 @@ class Chosen
     this.register_observers()
     @form_field_jq.addClass "chzn-done"
 
-  set_default_values: (options) ->
+  set_default_values: ->
     
     @click_test_action = (evt) => this.test_active_click(evt)
     @active_field = false
@@ -38,7 +39,7 @@ class Chosen
     @result_highlighted = null
     @result_single_selected = null
     @choices = 0
-    @results_none_found = options.no_results_text or "No results match"
+    @results_none_found = @options.no_results_text or "No results match"
 
   set_up_html: ->
     @container_id = if @form_field.id.length then @form_field.id.replace(/(:|\.)/g, '_') else this.generate_field_id()
