@@ -45,7 +45,7 @@ ol ul li, ul ul li { list-style-type: circle; margin: 0 0 .25em 1em; }
 li > p { margin-top: .25em; }
 
 div.side-by-side { width: 100%; margin-bottom: 1em; }
-div.side-by-side > div { float: left; width: 50%; }
+div.side-by-side > div { float: left; width: 49%; }
 div.side-by-side > div > em { margin-bottom: 10px; display: block; }
 
 .faqs em { display: block; }
