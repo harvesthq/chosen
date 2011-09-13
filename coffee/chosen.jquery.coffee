@@ -58,7 +58,7 @@ class Chosen
     if @is_multiple
       container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
     else
-      container_div.html '<a href="javascript:void(0)" class="chzn-single"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
+      container_div.html '<a href="javascript:void(0)" class="chzn-single"><abbr class="chzn-empty-now"></abbr><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
 
     @form_field_jq.hide().after container_div
     @container = ($ '#' + @container_id)
@@ -119,6 +119,10 @@ class Chosen
         $(document).click @click_test_action
         this.results_show()
       else if not @is_multiple and evt and ($(evt.target) is @selected_item || $(evt.target).parents("a.chzn-single").length)
+        if $(evt.target).hasClass 'chzn-empty-now'        
+          @form_field_jq.find('option:first').attr 'selected', true
+          @form_field_jq.trigger 'liszt:updated'
+        
         evt.preventDefault()
         this.results_toggle()
 
@@ -260,6 +264,10 @@ class Chosen
   results_show: ->
     if not @is_multiple
       @selected_item.addClass "chzn-single-with-drop"
+      
+      if @form_field_jq.find('option:first').val() == '' and @form_field_jq.find('option:selected').text() != ''
+        @selected_item.find('.chzn-empty-now').show()
+        
       if @result_single_selected
         this.result_do_highlight( @result_single_selected )
 
@@ -277,6 +285,7 @@ class Chosen
     this.result_clear_highlight()
     @dropdown.css {"left":"-9000px"}
     @results_showing = false
+    @selected_item.find('.chzn-empty-now').hide()
 
 
   set_tab_index: (el) ->

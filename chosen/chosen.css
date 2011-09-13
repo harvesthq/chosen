@@ -21,6 +21,18 @@
 }
 /* @end */
 
+.chzn-empty-now {
+  background: url('chosen-sprite.png') no-repeat -50px 0;
+  display: none;
+  width: 16px;
+  height: 8px;
+  float: left;
+  margin: 9px 0;
+}
+.chzn-empty-now:hover {
+  background-position: -50px -9px;
+}
+
 /* @group Single Chosen */
 .chzn-container-single .chzn-single {
   background-color: #fff;
