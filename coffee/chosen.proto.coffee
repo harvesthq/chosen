@@ -257,7 +257,7 @@ class Chosen
       if @result_single_selected
         this.result_do_highlight( @result_single_selected )
 
-    dd_top = if @is_multiple then @container.getHeight() else (@container.getHeight() - 1)
+    dd_top = if @is_multiple then @search_choices.getHeight() else (@search_choices.getHeight() - 1)
     @dropdown.setStyle {"top":  dd_top + "px", "left":0}
     @results_showing = true
 
