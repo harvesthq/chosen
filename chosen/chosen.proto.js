@@ -11,7 +11,8 @@
   /*
   Chosen source: generate output using 'cake build'
   Copyright (c) 2011 by Harvest
-  */  var Chosen, get_side_border_padding, root;
+  */
+  var Chosen, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = this;
   Chosen = (function() {
@@ -74,7 +75,6 @@
       });
       this.search_field = this.container.down('input');
       this.search_results = this.container.down('ul.chzn-results');
-      this.search_field_scale();
       this.search_no_results = this.container.down('li.no-results');
       if (this.is_multiple) {
         this.search_choices = this.container.down('ul.chzn-choices');
@@ -87,6 +87,7 @@
           "width": sf_width + "px"
         });
       }
+      this.search_field_scale();
       this.results_build();
       return this.set_tab_index();
     };
@@ -303,7 +304,7 @@
           this.result_do_highlight(this.result_single_selected);
         }
       }
-      dd_top = this.is_multiple ? this.container.getHeight() : this.container.getHeight() - 1;
+      dd_top = this.is_multiple ? this.search_choices.getHeight() : this.search_choices.getHeight() - 1;
       this.dropdown.setStyle({
         "top": dd_top + "px",
         "left": 0
@@ -689,7 +690,7 @@
         this.search_field.setStyle({
           'width': w + 'px'
         });
-        dd_top = this.container.getHeight();
+        dd_top = this.search_choices.getHeight();
         return this.dropdown.setStyle({
           "top": dd_top + "px"
         });
