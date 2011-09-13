@@ -67,7 +67,6 @@ class Chosen
 
     @search_field = @container.down('input')
     @search_results = @container.down('ul.chzn-results')
-    this.search_field_scale()
 
     @search_no_results = @container.down('li.no-results')
     
@@ -80,6 +79,7 @@ class Chosen
       sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
       @search_field.setStyle( {"width" : sf_width + "px"} )
     
+    this.search_field_scale()
     this.results_build()
     this.set_tab_index()
 
@@ -573,7 +573,7 @@ class Chosen
 
       @search_field.setStyle({'width': w + 'px'})
 
-      dd_top = @container.getHeight()
+      dd_top = @search_choices.getHeight()
       @dropdown.setStyle({"top":  dd_top + "px"})
 
 root.Chosen = Chosen
