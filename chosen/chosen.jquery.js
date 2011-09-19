@@ -28,10 +28,10 @@
     }
   });
   Chosen = (function() {
-    function Chosen(elmn, options) {
-      this.options = options || {};
+    function Chosen(form_field, options) {
+      this.form_field = form_field;
+      this.options = options != null ? options : {};
       this.set_default_values();
-      this.form_field = elmn;
       this.form_field_jq = $(this.form_field);
       this.is_multiple = this.form_field.multiple;
       this.is_rtl = this.form_field_jq.hasClass("chzn-rtl");
@@ -539,7 +539,7 @@
     Chosen.prototype.winnow_results_set_highlight = function() {
       var do_high, selected_results;
       if (!this.result_highlight) {
-        selected_results = !this.is_multiple ? this.search_results.find(".result-selected") : [];
+        selected_results = !this.is_multiple ? this.search_results.find(".result-selected.active-result") : [];
         do_high = selected_results.length ? selected_results.first() : this.search_results.find(".active-result").first();
         if (do_high != null) {
           return this.result_do_highlight(do_high);
