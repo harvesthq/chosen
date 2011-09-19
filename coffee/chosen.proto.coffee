@@ -6,12 +6,10 @@ root = this
 
 class Chosen
 
-  constructor: (elmn, options={}) ->
-    @options = options
+  constructor: (@form_field, @options={}) ->
 
     this.set_default_values()
     
-    @form_field = elmn
     @is_multiple = @form_field.multiple
     @is_rtl = @form_field.hasClassName "chzn-rtl"
 

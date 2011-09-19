@@ -15,11 +15,9 @@ $.fn.extend({
 
 class Chosen
 
-  constructor: (elmn, options={}) ->
-    @options = options
+  constructor: (@form_field, @options={}) ->
     this.set_default_values()
     
-    @form_field = elmn
     @form_field_jq = $ @form_field
     @is_multiple = @form_field.multiple
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"

@@ -11,17 +11,15 @@
   /*
   Chosen source: generate output using 'cake build'
   Copyright (c) 2011 by Harvest
-  */  var Chosen, get_side_border_padding, root;
+  */
+  var Chosen, get_side_border_padding, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = this;
   Chosen = (function() {
-    function Chosen(elmn, options) {
-      if (options == null) {
-        options = {};
-      }
-      this.options = options;
+    function Chosen(form_field, options) {
+      this.form_field = form_field;
+      this.options = options != null ? options : {};
       this.set_default_values();
-      this.form_field = elmn;
       this.is_multiple = this.form_field.multiple;
       this.is_rtl = this.form_field.hasClassName("chzn-rtl");
       this.default_text_default = this.form_field.multiple ? "Select Some Options" : "Select an Option";
