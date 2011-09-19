@@ -460,7 +460,7 @@ class Chosen
   winnow_results_set_highlight: ->
     if not @result_highlight
 
-      selected_results = if not @is_multiple then @search_results.find(".result-selected") else []
+      selected_results = if not @is_multiple then @search_results.find(".result-selected.active-result") else []
       do_high = if selected_results.length then selected_results.first() else @search_results.find(".active-result").first()
 
       this.result_do_highlight do_high if do_high?

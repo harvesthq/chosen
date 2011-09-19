@@ -456,7 +456,7 @@ class Chosen
     if not @result_highlight
 
       if not @is_multiple
-        do_high = @search_results.down(".result-selected")
+        do_high = @search_results.down(".result-selected.active-result")
 
       if not do_high?
         do_high = @search_results.down(".active-result")
