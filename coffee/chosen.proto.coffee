@@ -539,6 +539,7 @@ class Chosen
       when 8
         @backstroke_length = this.search_field.value.length
       when 9
+        this.result_select(evt) if this.results_showing and not @is_multiple
         @mouse_on_container = false
       when 13
         evt.preventDefault()
