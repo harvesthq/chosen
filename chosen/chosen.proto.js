@@ -51,7 +51,7 @@
       this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
       container_props = {
         'id': this.container_id,
-        'class': "chzn-container " + (this.is_rtl ? 'chzn-rtl' : ''),
+        'class': "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
         'style': 'width: ' + this.f_width + 'px'
       };
       this.default_text = this.form_field.readAttribute('data-placeholder') ? this.form_field.readAttribute('data-placeholder') : this.default_text_default;
