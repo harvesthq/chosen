@@ -23,6 +23,7 @@ class Chosen
   set_default_values: ->
     
     @click_test_action = (evt) => this.test_active_click(evt)
+    @activate_action = (evt) => this.activate_field(evt)
     @active_field = false
     @mouse_on_container = false
     @results_showing = false
@@ -100,24 +101,33 @@ class Chosen
     if @is_multiple
       @search_choices.observe "click", (evt) => this.choices_click(evt)
       @search_field.observe "focus", (evt) => this.input_focus(evt)
-    else
-      @selected_item.observe "focus", (evt) => this.activate_field(evt)
 
+  search_field_disabled: ->
+    @is_disabled = @form_field.disabled
+    if(@is_disabled)
+      @container.addClassName 'chzn-disabled'
+      @search_field.disabled = true
+      @selected_item.stopObserving "focus", @activate_action if !@is_multiple
+    else
+      @container.removeClassName 'chzn-disabled'
+      @search_field.disabled = false
+      @selected_item.observe "focus", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
-    if evt and evt.type is "mousedown"
-      evt.stop()
-    if not @pending_destroy_click
-      if not @active_field
-        @search_field.clear() if @is_multiple
-        document.observe "click", @click_test_action
-        this.results_show()
-      else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chzn-single"))
-        this.results_toggle()
+    if !@is_disabled
+      if evt and evt.type is "mousedown"
+        evt.stop()
+      if not @pending_destroy_click
+        if not @active_field
+          @search_field.clear() if @is_multiple
+          document.observe "click", @click_test_action
+          this.results_show()
+        else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chzn-single"))
+          this.results_toggle()
 
-      this.activate_field()
-    else
-      @pending_destroy_click = false
+        this.activate_field()
+      else
+        @pending_destroy_click = false
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
@@ -190,6 +200,7 @@ class Chosen
         else if data.selected and not @is_multiple
           @selected_item.down("span").update( data.html )
 
+    this.search_field_disabled()
     this.show_search_field_default()
     this.search_field_scale()
     

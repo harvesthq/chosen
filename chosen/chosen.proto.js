@@ -30,6 +30,9 @@
       this.click_test_action = __bind(function(evt) {
         return this.test_active_click(evt);
       }, this);
+      this.activate_action = __bind(function(evt) {
+        return this.activate_field(evt);
+      }, this);
       this.active_field = false;
       this.mouse_on_container = false;
       this.results_showing = false;
@@ -125,29 +128,43 @@
         return this.search_field.observe("focus", __bind(function(evt) {
           return this.input_focus(evt);
         }, this));
+      }
+    };
+    Chosen.prototype.search_field_disabled = function() {
+      this.is_disabled = this.form_field.disabled;
+      if (this.is_disabled) {
+        this.container.addClassName('chzn-disabled');
+        this.search_field.disabled = true;
+        if (!this.is_multiple) {
+          return this.selected_item.stopObserving("focus", this.activate_action);
+        }
       } else {
-        return this.selected_item.observe("focus", __bind(function(evt) {
-          return this.activate_field(evt);
-        }, this));
+        this.container.removeClassName('chzn-disabled');
+        this.search_field.disabled = false;
+        if (!this.is_multiple) {
+          return this.selected_item.observe("focus", this.activate_action);
+        }
       }
     };
     Chosen.prototype.container_mousedown = function(evt) {
-      if (evt && evt.type === "mousedown") {
-        evt.stop();
-      }
-      if (!this.pending_destroy_click) {
-        if (!this.active_field) {
-          if (this.is_multiple) {
-            this.search_field.clear();
-          }
-          document.observe("click", this.click_test_action);
-          this.results_show();
-        } else if (!this.is_multiple && evt && (evt.target === this.selected_item || evt.target.up("a.chzn-single"))) {
-          this.results_toggle();
+      if (!this.is_disabled) {
+        if (evt && evt.type === "mousedown") {
+          evt.stop();
         }
-        return this.activate_field();
-      } else {
-        return this.pending_destroy_click = false;
+        if (!this.pending_destroy_click) {
+          if (!this.active_field) {
+            if (this.is_multiple) {
+              this.search_field.clear();
+            }
+            document.observe("click", this.click_test_action);
+            this.results_show();
+          } else if (!this.is_multiple && evt && (evt.target === this.selected_item || evt.target.up("a.chzn-single"))) {
+            this.results_toggle();
+          }
+          return this.activate_field();
+        } else {
+          return this.pending_destroy_click = false;
+        }
       }
     };
     Chosen.prototype.mouse_enter = function() {
@@ -229,6 +246,7 @@
           }
         }
       }
+      this.search_field_disabled();
       this.show_search_field_default();
       this.search_field_scale();
       this.search_results.update(content);
