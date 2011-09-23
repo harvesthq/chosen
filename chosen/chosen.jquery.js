@@ -414,8 +414,12 @@
     };
     Chosen.prototype.choice_destroy_link_click = function(evt) {
       evt.preventDefault();
-      this.pending_destroy_click = true;
-      return this.choice_destroy($(evt.target));
+      if (!this.is_disabled) {
+        this.pending_destroy_click = true;
+        return this.choice_destroy($(evt.target));
+      } else {
+        return evt.stopPropagation;
+      }
     };
     Chosen.prototype.choice_destroy = function(link) {
       this.choices -= 1;

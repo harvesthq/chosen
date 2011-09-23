@@ -311,6 +311,9 @@
 .chzn-disabled .chzn-single {
   cursor: default;
 }
+.chzn-disabled .chzn-choices .search-choice .search-choice-close {
+  cursor: default;
+}
 
 /* @group Right to Left */
 .chzn-rtl { direction:rtl;text-align: right; }

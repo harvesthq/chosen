@@ -333,8 +333,9 @@ class Chosen
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
-    @pending_destroy_click = true
-    this.choice_destroy evt.target
+    if not @is_disabled
+      @pending_destroy_click = true
+      this.choice_destroy evt.target
 
   choice_destroy: (link) ->
     @choices -= 1
