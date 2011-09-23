@@ -145,8 +145,9 @@
         this.container.addClass('chzn-disabled');
         this.search_field.attr('disabled', true);
         if (!this.is_multiple) {
-          return this.selected_item.unbind("focus", this.activate_action);
+          this.selected_item.unbind("focus", this.activate_action);
         }
+        return this.close_field();
       } else {
         this.container.removeClass('chzn-disabled');
         this.search_field.attr('disabled', false);

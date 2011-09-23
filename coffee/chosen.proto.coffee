@@ -108,6 +108,7 @@ class Chosen
       @container.addClassName 'chzn-disabled'
       @search_field.disabled = true
       @selected_item.stopObserving "focus", @activate_action if !@is_multiple
+      this.close_field()
     else
       @container.removeClassName 'chzn-disabled'
       @search_field.disabled = false
