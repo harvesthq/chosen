@@ -352,12 +352,13 @@ class Chosen
       high = @result_highlight
       this.result_clear_highlight()
 
-      high.addClassName("result-selected")
-      
       if @is_multiple
         this.result_deactivate high
       else
+        @search_results.descendants(".result-selected").invoke "removeClassName", "result-selected"
         @result_single_selected = high
+      
+      high.addClassName("result-selected")
         
       position = high.id.substr(high.id.lastIndexOf("_") + 1 )
       item = @results_data[position]

@@ -424,12 +424,13 @@
       if (this.result_highlight) {
         high = this.result_highlight;
         this.result_clear_highlight();
-        high.addClassName("result-selected");
         if (this.is_multiple) {
           this.result_deactivate(high);
         } else {
+          this.search_results.descendants(".result-selected").invoke("removeClassName", "result-selected");
           this.result_single_selected = high;
         }
+        high.addClassName("result-selected");
         position = high.id.substr(high.id.lastIndexOf("_") + 1);
         item = this.results_data[position];
         item.selected = true;

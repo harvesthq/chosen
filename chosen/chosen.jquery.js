@@ -437,12 +437,13 @@
         high = this.result_highlight;
         high_id = high.attr("id");
         this.result_clear_highlight();
-        high.addClass("result-selected");
         if (this.is_multiple) {
           this.result_deactivate(high);
         } else {
+          this.search_results.find(".result-selected").removeClass("result-selected");
           this.result_single_selected = high;
         }
+        high.addClass("result-selected");
         position = high_id.substr(high_id.lastIndexOf("_") + 1);
         item = this.results_data[position];
         item.selected = true;
