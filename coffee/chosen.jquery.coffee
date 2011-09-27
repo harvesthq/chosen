@@ -363,6 +363,7 @@ class Chosen
     @selected_item.find("span").text @default_text
     this.show_search_field_default()
     $(evt.target).remove();
+    this.results_hide() if @active_field
 
   result_select: (evt) ->
     if @result_highlight

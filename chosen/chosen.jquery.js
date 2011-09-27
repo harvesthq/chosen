@@ -446,7 +446,10 @@
       this.form_field.options[0].selected = true;
       this.selected_item.find("span").text(this.default_text);
       this.show_search_field_default();
-      return $(evt.target).remove();
+      $(evt.target).remove();
+      if (this.active_field) {
+        return this.results_hide();
+      }
     };
     Chosen.prototype.result_select = function(evt) {
       var high, high_id, item, position;

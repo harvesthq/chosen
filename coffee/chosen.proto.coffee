@@ -357,7 +357,8 @@ class Chosen
     @form_field.options[0].selected = true
     @selected_item.down("span").update(@default_text)
     this.show_search_field_default()
-    evt.target.remove();
+    evt.target.remove()
+    this.results_hide() if @active_field
   
   result_select: (evt) ->
     if @result_highlight
