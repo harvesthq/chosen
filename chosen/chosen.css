@@ -57,6 +57,16 @@
   -ms-text-overflow: ellipsis;
   text-overflow: ellipsis;
 }
+.chzn-container-single .chzn-single abbr {
+  display: block;
+  position: absolute;
+  right: 26px;
+  top: 9px;
+  width: 8px;
+  height: 9px;
+  font-size: 1px;
+  background: url(chosen-sprite.png) right top no-repeat;
+}
 .chzn-container-single .chzn-single div {
   -webkit-border-radius: 0 4px 4px 0;
   -moz-border-radius   : 0 4px 4px 0;

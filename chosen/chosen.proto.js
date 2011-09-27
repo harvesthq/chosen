@@ -38,6 +38,7 @@
       this.results_showing = false;
       this.result_highlighted = null;
       this.result_single_selected = null;
+      this.allow_single_deselect = this.options.allow_single_deselect || false;
       this.choices = 0;
       this.results_none_found = this.options.no_results_text || "No results match";
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
@@ -94,6 +95,9 @@
       this.container.observe("mousedown", __bind(function(evt) {
         return this.container_mousedown(evt);
       }, this));
+      this.container.observe("mouseup", __bind(function(evt) {
+        return this.container_mouseup(evt);
+      }, this));
       this.container.observe("mouseenter", __bind(function(evt) {
         return this.mouse_enter(evt);
       }, this));
@@ -148,11 +152,13 @@
       }
     };
     Chosen.prototype.container_mousedown = function(evt) {
+      var target;
       if (!this.is_disabled) {
+        target = evt.target;
         if (evt && evt.type === "mousedown") {
           evt.stop();
         }
-        if (!this.pending_destroy_click) {
+        if (!this.pending_destroy_click && target.nodeName !== "ABBR") {
           if (!this.active_field) {
             if (this.is_multiple) {
               this.search_field.clear();
@@ -166,6 +172,11 @@
         } else {
           return this.pending_destroy_click = false;
         }
+      }
+    };
+    Chosen.prototype.container_mouseup = function(evt) {
+      if (evt.target.nodeName === "ABBR") {
+        return this.results_reset(evt);
       }
     };
     Chosen.prototype.mouse_enter = function() {
@@ -419,6 +430,12 @@
       this.result_deselect(link.readAttribute("rel"));
       return link.up('li').remove();
     };
+    Chosen.prototype.results_reset = function(evt) {
+      this.form_field.options[0].selected = true;
+      this.selected_item.down("span").update(this.default_text);
+      this.show_search_field_default();
+      return evt.target.remove();
+    };
     Chosen.prototype.result_select = function(evt) {
       var high, item, position;
       if (this.result_highlight) {
@@ -439,6 +456,11 @@
           this.choice_build(item);
         } else {
           this.selected_item.down("span").update(item.html);
+          if (this.allow_single_deselect) {
+            this.selected_item.down("span").insert({
+              after: "<abbr></abbr>"
+            });
+          }
         }
         if (!(evt.metaKey && this.is_multiple)) {
           this.results_hide();

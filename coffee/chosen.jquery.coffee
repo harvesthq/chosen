@@ -37,6 +37,7 @@ class Chosen
     @results_showing = false
     @result_highlighted = null
     @result_single_selected = null
+    @allow_single_deselect = @options.allow_single_deselect || false
     @choices = 0
     @results_none_found = @options.no_results_text or "No results match"
 
@@ -90,6 +91,7 @@ class Chosen
 
   register_observers: ->
     @container.mousedown (evt) => this.container_mousedown(evt)
+    @container.mouseup (evt) => this.container_mouseup(evt)
     @container.mouseenter (evt) => this.mouse_enter(evt)
     @container.mouseleave (evt) => this.mouse_leave(evt)
   
@@ -121,9 +123,10 @@ class Chosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
+      target = evt.target
       if evt and evt.type is "mousedown"
         evt.stopPropagation()
-      if not @pending_destroy_click
+      if not @pending_destroy_click and target.nodeName != "ABBR"
         if not @active_field
           @search_field.val "" if @is_multiple
           $(document).click @click_test_action
@@ -135,6 +138,9 @@ class Chosen
         this.activate_field()
       else
         @pending_destroy_click = false
+
+  container_mouseup: (evt) ->
+    this.results_reset(evt) if evt.target.nodeName is "ABBR"
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
@@ -352,6 +358,12 @@ class Chosen
     this.result_deselect (link.attr "rel")
     link.parents('li').first().remove()
 
+  results_reset: (evt) ->
+    @form_field.options[0].selected = true
+    @selected_item.find("span").text @default_text
+    this.show_search_field_default()
+    $(evt.target).remove();
+
   result_select: (evt) ->
     if @result_highlight
       high = @result_highlight
@@ -377,6 +389,7 @@ class Chosen
         this.choice_build item
       else
         @selected_item.find("span").first().text item.text
+        @selected_item.find("span").first().after "<abbr></abbr>" if @allow_single_deselect
 
       this.results_hide() unless evt.metaKey and @is_multiple
 
