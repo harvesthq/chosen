@@ -364,6 +364,7 @@ class Chosen
     @selected_item.find("span").text @default_text
     this.show_search_field_default()
     $(evt.target).remove();
+    @form_field_jq.trigger "change"
     this.results_hide() if @active_field
 
   result_select: (evt) ->

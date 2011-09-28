@@ -440,6 +440,9 @@
       this.selected_item.down("span").update(this.default_text);
       this.show_search_field_default();
       evt.target.remove();
+      if (typeof Event.simulate === 'function') {
+        this.form_field.simulate("change");
+      }
       if (this.active_field) {
         return this.results_hide();
       }

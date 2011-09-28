@@ -359,6 +359,7 @@ class Chosen
     @selected_item.down("span").update(@default_text)
     this.show_search_field_default()
     evt.target.remove()
+    @form_field.simulate("change") if typeof Event.simulate is 'function'
     this.results_hide() if @active_field
   
   result_select: (evt) ->
