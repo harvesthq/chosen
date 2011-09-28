@@ -152,13 +152,13 @@
       }
     };
     Chosen.prototype.container_mousedown = function(evt) {
-      var target;
+      var target_node;
       if (!this.is_disabled) {
-        target = evt.target;
+        target_node = evt != null ? evt.target.nodeName : null;
         if (evt && evt.type === "mousedown") {
           evt.stop();
         }
-        if (!this.pending_destroy_click && target.nodeName !== "ABBR") {
+        if (!this.pending_destroy_click && target_node !== "ABBR") {
           if (!this.active_field) {
             if (this.is_multiple) {
               this.search_field.clear();

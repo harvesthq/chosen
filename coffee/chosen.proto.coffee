@@ -118,10 +118,10 @@ class Chosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
-      target = evt.target
+      target_node =  if evt? then evt.target.nodeName else null
       if evt and evt.type is "mousedown"
         evt.stop()
-      if not @pending_destroy_click and target.nodeName != "ABBR"
+      if not @pending_destroy_click and target_node != "ABBR"
         if not @active_field
           @search_field.clear() if @is_multiple
           document.observe "click", @click_test_action

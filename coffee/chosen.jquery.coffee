@@ -123,10 +123,10 @@ class Chosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
-      target = evt.target
+      target_node =  if evt? then evt.target.nodeName else null
       if evt and evt.type is "mousedown"
         evt.stopPropagation()
-      if not @pending_destroy_click and target.nodeName != "ABBR"
+      if not @pending_destroy_click and target_node != "ABBR"
         if not @active_field
           @search_field.val "" if @is_multiple
           $(document).click @click_test_action
