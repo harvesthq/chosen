@@ -1217,6 +1217,24 @@
       </code>
     </div>
 
+    <h2>Allow Deselect on Single Selects</h2>
+    <div class="side-by-side clearfix">
+      <p>When a single select box isn't a required field, you can set <code>allow_single_deselect: true</code> and Chosen will add a UI element for option deselection. This will only work if the first option has blank text.</p>
+      <div class="side-by-side clearfix">
+        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select-deselect" tabindex="7">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option selected>Sloth Bear</option>
+          <option>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option>Spectacled Bear</option>
+        </select>
+      </div>
+    </div>
+
     <h2>Right to Left Support</h2>
     <div class="side-by-side clearfix">
       <p>Chosen supports right to left select boxes too. just add <code>"chzn-rtl"</code> in addition to <code>"chzn-select"</code> to your select tags and you are good to go.</p>
@@ -1289,6 +1307,11 @@
     for (_i = 0, _len = selects.length; _i < _len; _i++) {
       select = selects[_i];
       _results.push(new Chosen(select));
+    }
+    deselects = $$(".chzn-select-deselect");
+    for (_i = 0, _len = deselects.length; _i < _len; _i++) {
+      select = deselects[_i];
+      _results.push(new Chosen(select,{allow_single_deselect:true}));
     }
     return _results;
   });
