@@ -57,6 +57,19 @@
   -ms-text-overflow: ellipsis;
   text-overflow: ellipsis;
 }
+.chzn-container-single .chzn-single abbr {
+  display: block;
+  position: absolute;
+  right: 26px;
+  top: 8px;
+  width: 12px;
+  height: 13px;
+  font-size: 1px;
+  background: url(chosen-sprite.png) right top no-repeat;
+}
+.chzn-container-single .chzn-single abbr:hover {
+  background-position: right -11px;
+}
 .chzn-container-single .chzn-single div {
   -webkit-border-radius: 0 4px 4px 0;
   -moz-border-radius   : 0 4px 4px 0;
@@ -191,18 +204,18 @@
 .chzn-container-multi .chzn-choices .search-choice .search-choice-close {
   display: block;
   position: absolute;
-  right: 5px;
-  top: 6px;
-  width: 8px;
-  height: 9px;
+  right: 3px;
+  top: 4px;
+  width: 12px;
+  height: 13px;
   font-size: 1px;
   background: url(chosen-sprite.png) right top no-repeat;
 }
 .chzn-container-multi .chzn-choices .search-choice .search-choice-close:hover {
-  background-position: right -9px;
+  background-position: right -11px;
 }
 .chzn-container-multi .chzn-choices .search-choice-focus .search-choice-close {
-  background-position: right -9px;
+  background-position: right -11px;
 }
 /* @end */
 
@@ -309,6 +322,9 @@
   opacity:0.5 !important;
 }
 .chzn-disabled .chzn-single {
+  cursor: default;
+}
+.chzn-disabled .chzn-choices .search-choice .search-choice-close {
   cursor: default;
 }
 

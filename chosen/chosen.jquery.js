@@ -52,6 +52,7 @@
       this.results_showing = false;
       this.result_highlighted = null;
       this.result_single_selected = null;
+      this.allow_single_deselect = (this.options.allow_single_deselect != null) && this.form_field.options[0].text === "" ? this.options.allow_single_deselect : false;
       this.choices = 0;
       return this.results_none_found = this.options.no_results_text || "No results match";
     };
@@ -103,6 +104,9 @@
       this.container.mousedown(__bind(function(evt) {
         return this.container_mousedown(evt);
       }, this));
+      this.container.mouseup(__bind(function(evt) {
+        return this.container_mouseup(evt);
+      }, this));
       this.container.mouseenter(__bind(function(evt) {
         return this.mouse_enter(evt);
       }, this));
@@ -145,8 +149,9 @@
         this.container.addClass('chzn-disabled');
         this.search_field.attr('disabled', true);
         if (!this.is_multiple) {
-          return this.selected_item.unbind("focus", this.activate_action);
+          this.selected_item.unbind("focus", this.activate_action);
         }
+        return this.close_field();
       } else {
         this.container.removeClass('chzn-disabled');
         this.search_field.attr('disabled', false);
@@ -156,11 +161,13 @@
       }
     };
     Chosen.prototype.container_mousedown = function(evt) {
+      var target_node;
       if (!this.is_disabled) {
+        target_node = evt != null ? evt.target.nodeName : null;
         if (evt && evt.type === "mousedown") {
           evt.stopPropagation();
         }
-        if (!this.pending_destroy_click) {
+        if (!this.pending_destroy_click && target_node !== "ABBR") {
           if (!this.active_field) {
             if (this.is_multiple) {
               this.search_field.val("");
@@ -175,6 +182,11 @@
         } else {
           return this.pending_destroy_click = false;
         }
+      }
+    };
+    Chosen.prototype.container_mouseup = function(evt) {
+      if (evt.target.nodeName === "ABBR") {
+        return this.results_reset(evt);
       }
     };
     Chosen.prototype.mouse_enter = function() {
@@ -257,6 +269,9 @@
             this.choice_build(data);
           } else if (data.selected && !this.is_multiple) {
             this.selected_item.find("span").text(data.text);
+            if (this.allow_single_deselect) {
+              this.selected_item.find("span").first().after("<abbr></abbr>");
+            }
           }
         }
       }
@@ -414,8 +429,12 @@
     };
     Chosen.prototype.choice_destroy_link_click = function(evt) {
       evt.preventDefault();
-      this.pending_destroy_click = true;
-      return this.choice_destroy($(evt.target));
+      if (!this.is_disabled) {
+        this.pending_destroy_click = true;
+        return this.choice_destroy($(evt.target));
+      } else {
+        return evt.stopPropagation;
+      }
     };
     Chosen.prototype.choice_destroy = function(link) {
       this.choices -= 1;
@@ -426,18 +445,29 @@
       this.result_deselect(link.attr("rel"));
       return link.parents('li').first().remove();
     };
+    Chosen.prototype.results_reset = function(evt) {
+      this.form_field.options[0].selected = true;
+      this.selected_item.find("span").text(this.default_text);
+      this.show_search_field_default();
+      $(evt.target).remove();
+      this.form_field_jq.trigger("change");
+      if (this.active_field) {
+        return this.results_hide();
+      }
+    };
     Chosen.prototype.result_select = function(evt) {
       var high, high_id, item, position;
       if (this.result_highlight) {
         high = this.result_highlight;
         high_id = high.attr("id");
         this.result_clear_highlight();
-        high.addClass("result-selected");
         if (this.is_multiple) {
           this.result_deactivate(high);
         } else {
+          this.search_results.find(".result-selected").removeClass("result-selected");
           this.result_single_selected = high;
         }
+        high.addClass("result-selected");
         position = high_id.substr(high_id.lastIndexOf("_") + 1);
         item = this.results_data[position];
         item.selected = true;
@@ -446,6 +476,9 @@
           this.choice_build(item);
         } else {
           this.selected_item.find("span").first().text(item.text);
+          if (this.allow_single_deselect) {
+            this.selected_item.find("span").first().after("<abbr></abbr>");
+          }
         }
         if (!(evt.metaKey && this.is_multiple)) {
           this.results_hide();
