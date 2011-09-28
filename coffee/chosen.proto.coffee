@@ -29,6 +29,7 @@ class Chosen
     @results_showing = false
     @result_highlighted = null
     @result_single_selected = null
+    @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0].text == "" then @options.allow_single_deselect else false
     @choices = 0
 
     @results_none_found = @options.no_results_text or "No results match"
@@ -85,6 +86,7 @@ class Chosen
 
   register_observers: ->
     @container.observe "mousedown", (evt) => this.container_mousedown(evt)
+    @container.observe "mouseup", (evt) => this.container_mouseup(evt)
     @container.observe "mouseenter", (evt) => this.mouse_enter(evt)
     @container.observe "mouseleave", (evt) => this.mouse_leave(evt)
     
@@ -116,9 +118,10 @@ class Chosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
+      target_node =  if evt? then evt.target.nodeName else null
       if evt and evt.type is "mousedown"
         evt.stop()
-      if not @pending_destroy_click
+      if not @pending_destroy_click and target_node != "ABBR"
         if not @active_field
           @search_field.clear() if @is_multiple
           document.observe "click", @click_test_action
@@ -129,6 +132,9 @@ class Chosen
         this.activate_field()
       else
         @pending_destroy_click = false
+  
+  container_mouseup: (evt) ->
+    this.results_reset(evt) if evt.target.nodeName is "ABBR"
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
@@ -347,6 +353,13 @@ class Chosen
     this.result_deselect link.readAttribute("rel")
     link.up('li').remove()
 
+  results_reset: (evt) ->
+    @form_field.options[0].selected = true
+    @selected_item.down("span").update(@default_text)
+    this.show_search_field_default()
+    evt.target.remove()
+    this.results_hide() if @active_field
+  
   result_select: (evt) ->
     if @result_highlight
       high = @result_highlight
@@ -370,6 +383,7 @@ class Chosen
         this.choice_build item
       else
         @selected_item.down("span").update(item.html)
+        @selected_item.down("span").insert { after: "<abbr></abbr>" } if @allow_single_deselect
 
       this.results_hide() unless evt.metaKey and @is_multiple
 
