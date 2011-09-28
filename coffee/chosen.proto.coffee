@@ -29,7 +29,7 @@ class Chosen
     @results_showing = false
     @result_highlighted = null
     @result_single_selected = null
-    @allow_single_deselect = @options.allow_single_deselect || false
+    @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0].text == "" then @options.allow_single_deselect else false
     @choices = 0
 
     @results_none_found = @options.no_results_text or "No results match"
