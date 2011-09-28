@@ -212,6 +212,7 @@ class Chosen
           this.choice_build data
         else if data.selected and not @is_multiple
           @selected_item.find("span").text data.text
+          @selected_item.find("span").first().after "<abbr></abbr>" if @allow_single_deselect
 
     this.search_field_disabled()
     this.show_search_field_default()

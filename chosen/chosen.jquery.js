@@ -269,6 +269,9 @@
             this.choice_build(data);
           } else if (data.selected && !this.is_multiple) {
             this.selected_item.find("span").text(data.text);
+            if (this.allow_single_deselect) {
+              this.selected_item.find("span").first().after("<abbr></abbr>");
+            }
           }
         }
       }

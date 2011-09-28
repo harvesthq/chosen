@@ -255,6 +255,11 @@
             this.choice_build(data);
           } else if (data.selected && !this.is_multiple) {
             this.selected_item.down("span").update(data.html);
+            if (this.allow_single_deselect) {
+              this.selected_item.down("span").insert({
+                after: "<abbr></abbr>"
+              });
+            }
           }
         }
       }

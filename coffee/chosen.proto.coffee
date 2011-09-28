@@ -206,6 +206,7 @@ class Chosen
           this.choice_build data
         else if data.selected and not @is_multiple
           @selected_item.down("span").update( data.html )
+          @selected_item.down("span").insert { after: "<abbr></abbr>" } if @allow_single_deselect
 
     this.search_field_disabled()
     this.show_search_field_default()
