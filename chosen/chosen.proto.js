@@ -278,7 +278,7 @@
       }
     };
     Chosen.prototype.result_add_option = function(option) {
-      var classes;
+      var classes, style;
       if (!option.disabled) {
         option.dom_id = this.container_id + "_o_" + option.array_index;
         classes = option.selected && this.is_multiple ? [] : ["active-result"];
@@ -291,7 +291,8 @@
         if (option.classes !== "") {
           classes.push(option.classes);
         }
-        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>';
+        style = option.style.cssText !== "" ? " style=\"" + option.style + "\"" : "";
+        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' + style + '>' + option.html + '</li>';
       } else {
         return "";
       }
@@ -812,7 +813,8 @@
             selected: option.selected,
             disabled: group_disabled === true ? group_disabled : option.disabled,
             group_array_index: group_position,
-            classes: option.className
+            classes: option.className,
+            style: option.style.cssText
           });
         } else {
           this.parsed.push({

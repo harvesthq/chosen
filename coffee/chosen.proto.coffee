@@ -231,8 +231,10 @@ class Chosen
       classes.push "result-selected" if option.selected
       classes.push "group-option" if option.group_array_index?
       classes.push option.classes if option.classes != ""
+        
+      style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
       
-      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>'
+      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + option.html + '</li>'
     else
       ""
 
