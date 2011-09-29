@@ -123,10 +123,10 @@ class Chosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
-      target_node =  if evt? then evt.target.nodeName else null
+      target_closelink =  if evt? then ($ evt.target).hasClass "search-choice-close" else false
       if evt and evt.type is "mousedown"
         evt.stopPropagation()
-      if not @pending_destroy_click and target_node != "ABBR"
+      if not @pending_destroy_click and not target_closelink
         if not @active_field
           @search_field.val "" if @is_multiple
           $(document).click @click_test_action
@@ -212,7 +212,7 @@ class Chosen
           this.choice_build data
         else if data.selected and not @is_multiple
           @selected_item.find("span").text data.text
-          @selected_item.find("span").first().after "<abbr></abbr>" if @allow_single_deselect
+          @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" if @allow_single_deselect
 
     this.search_field_disabled()
     this.show_search_field_default()
@@ -392,7 +392,7 @@ class Chosen
         this.choice_build item
       else
         @selected_item.find("span").first().text item.text
-        @selected_item.find("span").first().after "<abbr></abbr>" if @allow_single_deselect
+        @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" if @allow_single_deselect
 
       this.results_hide() unless evt.metaKey and @is_multiple
 

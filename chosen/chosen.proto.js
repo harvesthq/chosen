@@ -152,13 +152,13 @@
       }
     };
     Chosen.prototype.container_mousedown = function(evt) {
-      var target_node;
+      var target_closelink;
       if (!this.is_disabled) {
-        target_node = evt != null ? evt.target.nodeName : null;
+        target_closelink = evt != null ? evt.target.hasClassName("search-choice-close") : false;
         if (evt && evt.type === "mousedown") {
           evt.stop();
         }
-        if (!this.pending_destroy_click && target_node !== "ABBR") {
+        if (!this.pending_destroy_click && !target_closelink) {
           if (!this.active_field) {
             if (this.is_multiple) {
               this.search_field.clear();
@@ -257,7 +257,7 @@
             this.selected_item.down("span").update(data.html);
             if (this.allow_single_deselect) {
               this.selected_item.down("span").insert({
-                after: "<abbr></abbr>"
+                after: "<abbr class=\"search-choice-close\"></abbr>"
               });
             }
           }
@@ -469,7 +469,7 @@
           this.selected_item.down("span").update(item.html);
           if (this.allow_single_deselect) {
             this.selected_item.down("span").insert({
-              after: "<abbr></abbr>"
+              after: "<abbr class=\"search-choice-close\"></abbr>"
             });
           }
         }
