@@ -489,10 +489,10 @@
       }
     };
     Chosen.prototype.result_activate = function(el) {
-      return el.addClass("active-result").show();
+      return el.addClass("active-result");
     };
     Chosen.prototype.result_deactivate = function(el) {
-      return el.removeClass("active-result").hide();
+      return el.removeClass("active-result");
     };
     Chosen.prototype.result_deselect = function(pos) {
       var result, result_data;

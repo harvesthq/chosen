@@ -395,10 +395,10 @@ class Chosen
       this.search_field_scale()
 
   result_activate: (el) ->
-    el.addClassName("active-result").show()
+    el.addClassName("active-result")
 
   result_deactivate: (el) ->
-    el.removeClassName("active-result").hide()
+    el.removeClassName("active-result")
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]

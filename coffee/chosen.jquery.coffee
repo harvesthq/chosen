@@ -402,10 +402,10 @@ class Chosen
       this.search_field_scale()
 
   result_activate: (el) ->
-    el.addClass("active-result").show()
+    el.addClass("active-result")
 
   result_deactivate: (el) ->
-    el.removeClass("active-result").hide()
+    el.removeClass("active-result")
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]
