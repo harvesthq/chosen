@@ -300,6 +300,9 @@
         if (option.group_array_index != null) {
           classes.push("group-option");
         }
+        if (option.classes !== "") {
+          classes.push(option.classes);
+        }
         return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>';
       } else {
         return "";
@@ -819,7 +822,8 @@
             html: option.innerHTML,
             selected: option.selected,
             disabled: group_disabled === true ? group_disabled : option.disabled,
-            group_array_index: group_position
+            group_array_index: group_position,
+            classes: option.className
           });
         } else {
           this.parsed.push({
