@@ -30,6 +30,7 @@ class Chosen
     @result_highlighted = null
     @result_single_selected = null
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0].text == "" then @options.allow_single_deselect else false
+    @disable_search_threshold = @options.disable_search_threshold || 0
     @choices = 0
 
     @results_none_found = @options.no_results_text or "No results match"
@@ -58,6 +59,7 @@ class Chosen
     @form_field.hide().insert({ after: base_template })
     @container = $(@container_id)
     @container.addClassName( "chzn-container-" + (if @is_multiple then "multi" else "single") )
+    @container.addClassName "chzn-container-single-nosearch" if not @is_multiple and @form_field.options.length <= @disable_search_threshold
     @dropdown = @container.down('div.chzn-drop')
     
     dd_top = @container.getHeight()

@@ -101,6 +101,7 @@
 }
 .chzn-container-single .chzn-search {
   padding: 3px 4px;
+  position: relative;
   margin: 0;
   white-space: nowrap;
 }
@@ -129,6 +130,11 @@
   background-clip        : padding-box;
 }
 /* @end */
+
+.chzn-container-single-nosearch .chzn-search input {
+  position: absolute;
+  left: -9000px;
+}
 
 /* @group Multi Chosen */
 .chzn-container-multi .chzn-choices {

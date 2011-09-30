@@ -39,6 +39,7 @@
       this.result_highlighted = null;
       this.result_single_selected = null;
       this.allow_single_deselect = (this.options.allow_single_deselect != null) && this.form_field.options[0].text === "" ? this.options.allow_single_deselect : false;
+      this.disable_search_threshold = this.options.disable_search_threshold || 0;
       this.choices = 0;
       this.results_none_found = this.options.no_results_text || "No results match";
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
@@ -66,6 +67,9 @@
       });
       this.container = $(this.container_id);
       this.container.addClassName("chzn-container-" + (this.is_multiple ? "multi" : "single"));
+      if (!this.is_multiple && this.form_field.options.length <= this.disable_search_threshold) {
+        this.container.addClassName("chzn-container-single-nosearch");
+      }
       this.dropdown = this.container.down('div.chzn-drop');
       dd_top = this.container.getHeight();
       dd_width = this.f_width - get_side_border_padding(this.dropdown);
