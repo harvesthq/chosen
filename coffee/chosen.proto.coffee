@@ -19,7 +19,7 @@ class Chosen extends AbstractChosen
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
-    @no_results_temp = new Template('<li class="no-results">No results match "<span>#{terms}</span>"</li>')
+    @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
     @container_id = @form_field.identify().replace(/(:|\.)/g, '_') + "_chzn"
@@ -28,7 +28,7 @@ class Chosen extends AbstractChosen
     
     container_props =
       'id': @container_id
-      'class': "chzn-container #{ if @is_rtl then 'chzn-rtl' else '' }"
+      'class': "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
       'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
     
     @default_text = if @form_field.readAttribute 'data-placeholder' then @form_field.readAttribute 'data-placeholder' else @default_text_default
@@ -38,6 +38,7 @@ class Chosen extends AbstractChosen
     @form_field.hide().insert({ after: base_template })
     @container = $(@container_id)
     @container.addClassName( "chzn-container-" + (if @is_multiple then "multi" else "single") )
+    @container.addClassName "chzn-container-single-nosearch" if not @is_multiple and @form_field.options.length <= @disable_search_threshold
     @dropdown = @container.down('div.chzn-drop')
     
     dd_top = @container.getHeight()
@@ -65,6 +66,7 @@ class Chosen extends AbstractChosen
 
   register_observers: ->
     @container.observe "mousedown", (evt) => this.container_mousedown(evt)
+    @container.observe "mouseup", (evt) => this.container_mouseup(evt)
     @container.observe "mouseenter", (evt) => this.mouse_enter(evt)
     @container.observe "mouseleave", (evt) => this.mouse_leave(evt)
     
@@ -81,23 +83,38 @@ class Chosen extends AbstractChosen
     if @is_multiple
       @search_choices.observe "click", (evt) => this.choices_click(evt)
       @search_field.observe "focus", (evt) => this.input_focus(evt)
+
+  search_field_disabled: ->
+    @is_disabled = @form_field.disabled
+    if(@is_disabled)
+      @container.addClassName 'chzn-disabled'
+      @search_field.disabled = true
+      @selected_item.stopObserving "focus", @activate_action if !@is_multiple
+      this.close_field()
     else
-      @selected_item.observe "focus", (evt) => this.activate_field(evt)
+      @container.removeClassName 'chzn-disabled'
+      @search_field.disabled = false
+      @selected_item.observe "focus", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
-    if evt and evt.type is "mousedown"
-      evt.stop()
-    if not @pending_destroy_click
-      if not @active_field
-        @search_field.clear() if @is_multiple
-        document.observe "click", @click_test_action
-        this.results_show()
-      else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chzn-single"))
-        this.results_toggle()
+    if !@is_disabled
+      target_closelink =  if evt? then evt.target.hasClassName "search-choice-close" else false
+      if evt and evt.type is "mousedown"
+        evt.stop()
+      if not @pending_destroy_click and not target_closelink
+        if not @active_field
+          @search_field.clear() if @is_multiple
+          document.observe "click", @click_test_action
+          this.results_show()
+        else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chzn-single"))
+          this.results_toggle()
 
-      this.activate_field()
-    else
-      @pending_destroy_click = false
+        this.activate_field()
+      else
+        @pending_destroy_click = false
+  
+  container_mouseup: (evt) ->
+    this.results_reset(evt) if evt.target.nodeName is "ABBR"
 
   blur_test: (evt) ->
     this.close_field() if not @active_field and @container.hasClassName("chzn-container-active")
@@ -158,7 +175,9 @@ class Chosen extends AbstractChosen
           this.choice_build data
         else if data.selected and not @is_multiple
           @selected_item.down("span").update( data.html )
+          @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } if @allow_single_deselect
 
+    this.search_field_disabled()
     this.show_search_field_default()
     this.search_field_scale()
     
@@ -268,8 +287,9 @@ class Chosen extends AbstractChosen
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
-    @pending_destroy_click = true
-    this.choice_destroy evt.target
+    if not @is_disabled
+      @pending_destroy_click = true
+      this.choice_destroy evt.target
 
   choice_destroy: (link) ->
     @choices -= 1
@@ -280,17 +300,26 @@ class Chosen extends AbstractChosen
     this.result_deselect link.readAttribute("rel")
     link.up('li').remove()
 
+  results_reset: (evt) ->
+    @form_field.options[0].selected = true
+    @selected_item.down("span").update(@default_text)
+    this.show_search_field_default()
+    evt.target.remove()
+    @form_field.simulate("change") if typeof Event.simulate is 'function'
+    this.results_hide() if @active_field
+  
   result_select: (evt) ->
     if @result_highlight
       high = @result_highlight
       this.result_clear_highlight()
 
-      high.addClassName("result-selected")
-      
       if @is_multiple
         this.result_deactivate high
       else
+        @search_results.descendants(".result-selected").invoke "removeClassName", "result-selected"
         @result_single_selected = high
+      
+      high.addClassName("result-selected")
         
       position = high.id.substr(high.id.lastIndexOf("_") + 1 )
       item = @results_data[position]
@@ -302,6 +331,7 @@ class Chosen extends AbstractChosen
         this.choice_build item
       else
         @selected_item.down("span").update(item.html)
+        @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } if @allow_single_deselect
 
       this.results_hide() unless evt.metaKey and @is_multiple
 
@@ -311,10 +341,10 @@ class Chosen extends AbstractChosen
       this.search_field_scale()
 
   result_activate: (el) ->
-    el.addClassName("active-result").show()
+    el.addClassName("active-result")
 
   result_deactivate: (el) ->
-    el.removeClassName("active-result").hide()
+    el.removeClassName("active-result")
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]
@@ -396,7 +426,7 @@ class Chosen extends AbstractChosen
     if not @result_highlight
 
       if not @is_multiple
-        do_high = @search_results.down(".result-selected")
+        do_high = @search_results.down(".result-selected.active-result")
 
       if not do_high?
         do_high = @search_results.down(".active-result")
@@ -499,13 +529,6 @@ if Prototype.Browser.IE
   if /MSIE (\d+\.\d+);/.test(navigator.userAgent)
     Prototype.BrowserFeatures['Version'] = new Number(RegExp.$1);
 
-
-document.observe 'dom:loaded', (evt) ->
-  # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
-  return if Prototype.Browser.IE and (Prototype.BrowserFeatures['Version'] is 6 or Prototype.BrowserFeatures['Version'] is 7)
-  
-  selects = $$(".chzn-select")
-  new Chosen select for select in selects
 
 get_side_border_padding = (elmt) ->
   layout = new Element.Layout(elmt)

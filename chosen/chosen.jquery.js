@@ -1,7 +1,7 @@
 // Chosen, a Select Box Enhancer for jQuery and Protoype
 // by Patrick Filler for Harvest, http://getharvest.com
 // 
-// Version 0.9.1
+// Version 0.9.5
 // Full source at https://github.com/harvesthq/chosen
 // Copyright (c) 2011 Harvest http://getharvest.com
 
@@ -53,7 +53,9 @@
             html: option.innerHTML,
             selected: option.selected,
             disabled: group_disabled === true ? group_disabled : option.disabled,
-            group_array_index: group_position
+            group_array_index: group_position,
+            classes: option.className,
+            style: option.style.cssText
           });
         } else {
           this.parsed.push({
@@ -83,13 +85,15 @@
   /*
   Chosen source: generate output using 'cake build'
   Copyright (c) 2011 by Harvest
-  */  var AbstractChosen, root;
+  */
+  var AbstractChosen, root;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   root = this;
   AbstractChosen = (function() {
-    function AbstractChosen(elmn) {
+    function AbstractChosen(form_field, options) {
+      this.form_field = form_field;
+      this.options = options != null ? options : {};
       this.set_default_values();
-      this.form_field = elmn;
       this.is_multiple = this.form_field.multiple;
       this.default_text_default = this.is_multiple ? "Select Some Options" : "Select an Option";
       this.setup();
@@ -101,12 +105,18 @@
       this.click_test_action = __bind(function(evt) {
         return this.test_active_click(evt);
       }, this);
+      this.activate_action = __bind(function(evt) {
+        return this.activate_field(evt);
+      }, this);
       this.active_field = false;
       this.mouse_on_container = false;
       this.results_showing = false;
       this.result_highlighted = null;
       this.result_single_selected = null;
-      return this.choices = 0;
+      this.allow_single_deselect = (this.options.allow_single_deselect != null) && this.form_field.options[0].text === "" ? this.options.allow_single_deselect : false;
+      this.disable_search_threshold = this.options.disable_search_threshold || 0;
+      this.choices = 0;
+      return this.results_none_found = this.options.no_results_text || "No results match";
     };
     AbstractChosen.prototype.mouse_enter = function() {
       return this.mouse_on_container = true;
@@ -130,7 +140,7 @@
       }
     };
     AbstractChosen.prototype.result_add_option = function(option) {
-      var classes;
+      var classes, style;
       if (!option.disabled) {
         option.dom_id = this.container_id + "_o_" + option.array_index;
         classes = option.selected && this.is_multiple ? [] : ["active-result"];
@@ -140,7 +150,11 @@
         if (option.group_array_index != null) {
           classes.push("group-option");
         }
-        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>';
+        if (option.classes !== "") {
+          classes.push(option.classes);
+        }
+        style = option.style.cssText !== "" ? " style=\"" + option.style + "\"" : "";
+        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' + style + '>' + option.html + '</li>';
       } else {
         return "";
       }
@@ -219,7 +233,8 @@
   /*
   Chosen source: generate output using 'cake build'
   Copyright (c) 2011 by Harvest
-  */  var $, Chosen, get_side_border_padding, root;
+  */
+  var $, Chosen, get_side_border_padding, root;
   var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -231,13 +246,13 @@
   root = this;
   $ = jQuery;
   $.fn.extend({
-    chosen: function(data, options) {
+    chosen: function(options) {
       if ($.browser === "msie" && ($.browser.version === "6.0" || $.browser.version === "7.0")) {
         return this;
       }
       return $(this).each(function(input_field) {
         if (!($(this)).hasClass("chzn-done")) {
-          return new Chosen(this, data, options);
+          return new Chosen(this, options);
         }
       });
     }
@@ -258,11 +273,11 @@
       var container_div, dd_top, dd_width, sf_width;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/(:|\.)/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
-      this.f_width = this.form_field_jq.width();
+      this.f_width = this.form_field_jq.outerWidth();
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
       container_div = $("<div />", {
         id: this.container_id,
-        "class": "chzn-container " + (this.is_rtl ? 'chzn-rtl' : ''),
+        "class": "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
         style: 'width: ' + this.f_width + 'px;'
       });
       if (this.is_multiple) {
@@ -273,6 +288,9 @@
       this.form_field_jq.hide().after(container_div);
       this.container = $('#' + this.container_id);
       this.container.addClass("chzn-container-" + (this.is_multiple ? "multi" : "single"));
+      if (!this.is_multiple && this.form_field.options.length <= this.disable_search_threshold) {
+        this.container.addClass("chzn-container-single-nosearch");
+      }
       this.dropdown = this.container.find('div.chzn-drop').first();
       dd_top = this.container.height();
       dd_width = this.f_width - get_side_border_padding(this.dropdown);
@@ -301,6 +319,9 @@
     Chosen.prototype.register_observers = function() {
       this.container.mousedown(__bind(function(evt) {
         return this.container_mousedown(evt);
+      }, this));
+      this.container.mouseup(__bind(function(evt) {
+        return this.container_mouseup(evt);
       }, this));
       this.container.mouseenter(__bind(function(evt) {
         return this.mouse_enter(evt);
@@ -336,30 +357,52 @@
         return this.search_field.focus(__bind(function(evt) {
           return this.input_focus(evt);
         }, this));
+      }
+    };
+    Chosen.prototype.search_field_disabled = function() {
+      this.is_disabled = this.form_field_jq.attr('disabled');
+      if (this.is_disabled) {
+        this.container.addClass('chzn-disabled');
+        this.search_field.attr('disabled', true);
+        if (!this.is_multiple) {
+          this.selected_item.unbind("focus", this.activate_action);
+        }
+        return this.close_field();
       } else {
-        return this.selected_item.focus(__bind(function(evt) {
-          return this.activate_field(evt);
-        }, this));
+        this.container.removeClass('chzn-disabled');
+        this.search_field.attr('disabled', false);
+        if (!this.is_multiple) {
+          return this.selected_item.bind("focus", this.activate_action);
+        }
       }
     };
     Chosen.prototype.container_mousedown = function(evt) {
-      if (evt && evt.type === "mousedown") {
-        evt.stopPropagation();
-      }
-      if (!this.pending_destroy_click) {
-        if (!this.active_field) {
-          if (this.is_multiple) {
-            this.search_field.val("");
-          }
-          $(document).click(this.click_test_action);
-          this.results_show();
-        } else if (!this.is_multiple && evt && ($(evt.target) === this.selected_item || $(evt.target).parents("a.chzn-single").length)) {
-          evt.preventDefault();
-          this.results_toggle();
+      var target_closelink;
+      if (!this.is_disabled) {
+        target_closelink = evt != null ? ($(evt.target)).hasClass("search-choice-close") : false;
+        if (evt && evt.type === "mousedown") {
+          evt.stopPropagation();
         }
-        return this.activate_field();
-      } else {
-        return this.pending_destroy_click = false;
+        if (!this.pending_destroy_click && !target_closelink) {
+          if (!this.active_field) {
+            if (this.is_multiple) {
+              this.search_field.val("");
+            }
+            $(document).click(this.click_test_action);
+            this.results_show();
+          } else if (!this.is_multiple && evt && ($(evt.target) === this.selected_item || $(evt.target).parents("a.chzn-single").length)) {
+            evt.preventDefault();
+            this.results_toggle();
+          }
+          return this.activate_field();
+        } else {
+          return this.pending_destroy_click = false;
+        }
+      }
+    };
+    Chosen.prototype.container_mouseup = function(evt) {
+      if (evt.target.nodeName === "ABBR") {
+        return this.results_reset(evt);
       }
     };
     Chosen.prototype.blur_test = function(evt) {
@@ -421,9 +464,13 @@
             this.choice_build(data);
           } else if (data.selected && !this.is_multiple) {
             this.selected_item.find("span").text(data.text);
+            if (this.allow_single_deselect) {
+              this.selected_item.find("span").first().after("<abbr class=\"search-choice-close\"></abbr>");
+            }
           }
         }
       }
+      this.search_field_disabled();
       this.show_search_field_default();
       this.search_field_scale();
       this.search_results.html(content);
@@ -549,8 +596,12 @@
     };
     Chosen.prototype.choice_destroy_link_click = function(evt) {
       evt.preventDefault();
-      this.pending_destroy_click = true;
-      return this.choice_destroy($(evt.target));
+      if (!this.is_disabled) {
+        this.pending_destroy_click = true;
+        return this.choice_destroy($(evt.target));
+      } else {
+        return evt.stopPropagation;
+      }
     };
     Chosen.prototype.choice_destroy = function(link) {
       this.choices -= 1;
@@ -561,18 +612,29 @@
       this.result_deselect(link.attr("rel"));
       return link.parents('li').first().remove();
     };
+    Chosen.prototype.results_reset = function(evt) {
+      this.form_field.options[0].selected = true;
+      this.selected_item.find("span").text(this.default_text);
+      this.show_search_field_default();
+      $(evt.target).remove();
+      this.form_field_jq.trigger("change");
+      if (this.active_field) {
+        return this.results_hide();
+      }
+    };
     Chosen.prototype.result_select = function(evt) {
       var high, high_id, item, position;
       if (this.result_highlight) {
         high = this.result_highlight;
         high_id = high.attr("id");
         this.result_clear_highlight();
-        high.addClass("result-selected");
         if (this.is_multiple) {
           this.result_deactivate(high);
         } else {
+          this.search_results.find(".result-selected").removeClass("result-selected");
           this.result_single_selected = high;
         }
+        high.addClass("result-selected");
         position = high_id.substr(high_id.lastIndexOf("_") + 1);
         item = this.results_data[position];
         item.selected = true;
@@ -581,6 +643,9 @@
           this.choice_build(item);
         } else {
           this.selected_item.find("span").first().text(item.text);
+          if (this.allow_single_deselect) {
+            this.selected_item.find("span").first().after("<abbr class=\"search-choice-close\"></abbr>");
+          }
         }
         if (!(evt.metaKey && this.is_multiple)) {
           this.results_hide();
@@ -591,10 +656,10 @@
       }
     };
     Chosen.prototype.result_activate = function(el) {
-      return el.addClass("active-result").show();
+      return el.addClass("active-result");
     };
     Chosen.prototype.result_deactivate = function(el) {
-      return el.removeClass("active-result").hide();
+      return el.removeClass("active-result");
     };
     Chosen.prototype.result_deselect = function(pos) {
       var result, result_data;
@@ -685,7 +750,7 @@
     Chosen.prototype.winnow_results_set_highlight = function() {
       var do_high, selected_results;
       if (!this.result_highlight) {
-        selected_results = !this.is_multiple ? this.search_results.find(".result-selected") : [];
+        selected_results = !this.is_multiple ? this.search_results.find(".result-selected.active-result") : [];
         do_high = selected_results.length ? selected_results.first() : this.search_results.find(".active-result").first();
         if (do_high != null) {
           return this.result_do_highlight(do_high);
@@ -694,7 +759,7 @@
     };
     Chosen.prototype.no_results = function(terms) {
       var no_results_html;
-      no_results_html = $('<li class="no-results">No results match "<span></span>"</li>');
+      no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"</li>');
       no_results_html.find("span").first().html(terms);
       return this.search_results.append(no_results_html);
     };

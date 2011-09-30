@@ -1188,7 +1188,7 @@
         </select>
       </div>
       <div>
-        <em>Multiple Select with Groups</em>
+        <em>Multiple Select</em>
         <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select" id="test_me" name="test_me_form" tabindex="8">
           <option value=""></option>
           <option>American Black Bear</option>
@@ -1208,6 +1208,32 @@
       <p>Chosen automatically sets the default field text ("Choose a country...") by reading the select element's data-placeholder value. If no data-placeholder value is present, it will default to "Select Some Option" or "Select Some Options" depending on whether the select is single or multiple. You can change these elements in the plugin js file as you see fit.</p>
       <code>&lt;select <strong>data-placeholder="Choose a country..."</strong> style="width:350px;" multiple class="chzn-select"&gt;</code>
       <p><strong>Note:</strong> on single selects, the first element is assumed to be selected by the browser. To take advantage of the default text support, you will need to include a blank option as the first element of your select list.</p>
+    </div>
+    
+    <h2>No Results Text Support</h2>
+    <div class="side-by-side clearfix">
+      <p>Setting the "No results" search text is as easy as passing an option when you create Chosen:</p>
+      <code>
+        $(".chzn-select").chosen({no_results_text: "No results matched"});
+      </code>
+    </div>
+    
+    <h2>Allow Deselect on Single Selects</h2>
+    <div class="side-by-side clearfix">
+      <p>When a single select box isn't a required field, you can set <code>allow_single_deselect: true</code> and Chosen will add a UI element for option deselection. This will only work if the first option has blank text.</p>
+      <div class="side-by-side clearfix">
+        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select-deselect" tabindex="7">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option selected>Sloth Bear</option>
+          <option>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option>Spectacled Bear</option>
+        </select>
+      </div>
     </div>
 
     <h2>Right to Left Support</h2>
@@ -1269,8 +1295,8 @@
     </ol>
     
   </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
   <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
-  <script type="text/javascript"> $(".chzn-select").chosen(); </script>
+  <script type="text/javascript"> $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true}); </script>
   </form>
 </body>

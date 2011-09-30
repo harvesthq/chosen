@@ -6,10 +6,9 @@ root = this
 
 class AbstractChosen
 
-  constructor: (elmn) ->
+  constructor: (@form_field, @options={}) ->
     this.set_default_values()
     
-    @form_field = elmn
     @is_multiple = @form_field.multiple
     @default_text_default = if @is_multiple then "Select Some Options" else "Select an Option"
 
@@ -22,12 +21,16 @@ class AbstractChosen
 
   set_default_values: ->
     @click_test_action = (evt) => this.test_active_click(evt)
+    @activate_action = (evt) => this.activate_field(evt)
     @active_field = false
     @mouse_on_container = false
     @results_showing = false
     @result_highlighted = null
     @result_single_selected = null
+    @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0].text == "" then @options.allow_single_deselect else false
+    @disable_search_threshold = @options.disable_search_threshold || 0
     @choices = 0
+    @results_none_found = @options.no_results_text or "No results match"
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
@@ -43,12 +46,15 @@ class AbstractChosen
   result_add_option: (option) ->
     if not option.disabled
       option.dom_id = @container_id + "_o_" + option.array_index
-      
+
       classes = if option.selected and @is_multiple then [] else ["active-result"]
       classes.push "result-selected" if option.selected
       classes.push "group-option" if option.group_array_index?
-      
-      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>'
+      classes.push option.classes if option.classes != ""
+
+      style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
+
+      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + option.html + '</li>'
     else
       ""
 
