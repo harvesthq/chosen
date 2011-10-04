@@ -247,7 +247,7 @@
   $ = jQuery;
   $.fn.extend({
     chosen: function(options) {
-      if ($.browser === "msie" && ($.browser.version === "6.0" || $.browser.version === "7.0")) {
+      if ($.browser.msie && ($.browser.version === "6.0" || $.browser.version === "7.0")) {
         return this;
       }
       return $(this).each(function(input_field) {

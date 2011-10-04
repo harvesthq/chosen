@@ -7,7 +7,7 @@ $ = jQuery
 
 $.fn.extend({
   chosen: (options) ->
-    return this if $.browser is "msie" and ($.browser.version is "6.0" or  $.browser.version is "7.0")
+    return this if $.browser.msie and ($.browser.version is "6.0" or  $.browser.version is "7.0")
     $(this).each((input_field) ->
       new Chosen(this, options) unless ($ this).hasClass "chzn-done"
     )
