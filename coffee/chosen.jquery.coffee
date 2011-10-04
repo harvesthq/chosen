@@ -7,7 +7,8 @@ $ = jQuery
 
 $.fn.extend({
   chosen: (options) ->
-    return this if $.browser is "msie" and ($.browser.version is "6.0" or  $.browser.version is "7.0")
+    # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
+    return this if $.browser.msie and ($.browser.version is "6.0" or  $.browser.version is "7.0")
     $(this).each((input_field) ->
       new Chosen(this, options) unless ($ this).hasClass "chzn-done"
     )
