@@ -184,7 +184,7 @@ class Chosen extends AbstractChosen
           this.choice_build data
         else if data.selected and not @is_multiple
           @selected_item.find("span").text data.text
-          @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" if @allow_single_deselect
+          this.single_deselect_control_build() if @allow_single_deselect
 
     this.search_field_disabled()
     this.show_search_field_default()
@@ -341,8 +341,8 @@ class Chosen extends AbstractChosen
         this.choice_build item
       else
         @selected_item.find("span").first().text item.text
-        @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" if @allow_single_deselect
-
+        this.single_deselect_control_build() if @allow_single_deselect
+      
       this.results_hide() unless evt.metaKey and @is_multiple
 
       @search_field.val ""
@@ -369,6 +369,9 @@ class Chosen extends AbstractChosen
 
     @form_field_jq.trigger "change"
     this.search_field_scale()
+
+  single_deselect_control_build: ->
+    @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" if @allow_single_deselect and @selected_item.find("abbr").length < 1
 
   winnow_results: ->
     startTime = new Date()

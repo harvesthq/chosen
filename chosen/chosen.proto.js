@@ -458,9 +458,7 @@
           } else if (data.selected && !this.is_multiple) {
             this.selected_item.down("span").update(data.html);
             if (this.allow_single_deselect) {
-              this.selected_item.down("span").insert({
-                after: "<abbr class=\"search-choice-close\"></abbr>"
-              });
+              this.single_deselect_control_build();
             }
           }
         }
@@ -642,9 +640,7 @@
         } else {
           this.selected_item.down("span").update(item.html);
           if (this.allow_single_deselect) {
-            this.selected_item.down("span").insert({
-              after: "<abbr class=\"search-choice-close\"></abbr>"
-            });
+            this.single_deselect_control_build();
           }
         }
         if (!(evt.metaKey && this.is_multiple)) {
@@ -676,6 +672,13 @@
         this.form_field.simulate("change");
       }
       return this.search_field_scale();
+    };
+    Chosen.prototype.single_deselect_control_build = function() {
+      if (this.allow_single_deselect && !this.selected_item.down("abbr")) {
+        return this.selected_item.down("span").insert({
+          after: "<abbr class=\"search-choice-close\"></abbr>"
+        });
+      }
     };
     Chosen.prototype.winnow_results = function() {
       var found, option, part, parts, regex, result_id, results, searchText, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref;

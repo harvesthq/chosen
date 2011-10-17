@@ -175,7 +175,7 @@ class Chosen extends AbstractChosen
           this.choice_build data
         else if data.selected and not @is_multiple
           @selected_item.down("span").update( data.html )
-          @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } if @allow_single_deselect
+          this.single_deselect_control_build() if @allow_single_deselect
 
     this.search_field_disabled()
     this.show_search_field_default()
@@ -331,7 +331,7 @@ class Chosen extends AbstractChosen
         this.choice_build item
       else
         @selected_item.down("span").update(item.html)
-        @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } if @allow_single_deselect
+        this.single_deselect_control_build() if @allow_single_deselect
 
       this.results_hide() unless evt.metaKey and @is_multiple
 
@@ -359,6 +359,9 @@ class Chosen extends AbstractChosen
 
     @form_field.simulate("change") if typeof Event.simulate is 'function'
     this.search_field_scale()
+    
+  single_deselect_control_build: ->
+    @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } if @allow_single_deselect and not @selected_item.down("abbr")
 
   winnow_results: ->
     startTime = new Date()
