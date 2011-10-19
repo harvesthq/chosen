@@ -397,7 +397,7 @@ class Chosen
     results = 0
 
     searchText = if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
-	regexAnchor = if @options.search_contains then "" else "^"
+    regexAnchor = if @options.search_contains then "" else "^"
     regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
