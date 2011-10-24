@@ -1203,6 +1203,32 @@
       </div>
     </div>
 
+   <h2>"Add New" Support</h2>
+   <div class="clearfix">
+     <p>Chosen allows you to have a "Add New" option with custom text and callback. If the callback is set the "Add New" option will be displayed</p>
+     <p>
+     <code>
+        $(".chzn-select").chosen({new_item_text: "Add New",new_item_callback:function(){alert("A new item has been added!")}});
+     </code>
+     </p>
+     <div>
+       <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select-add-new" tabindex="9">
+         <option value=""></option>
+         <option>American Black Bear</option>
+         <option>Asiatic Black Bear</option>
+         <option>Brown Bear</option>
+         <option>Giant Panda</option>
+         <option selected>Sloth Bear</option>
+         <option disabled>Sun Bear</option>
+         <option selected>Polar Bear</option>
+         <option disabled>Spectacled Bear</option>
+       </select>
+       </div>
+     </div>
+
+
+
+
     <h2>Default Text Support</h2>
     <div class="side-by-side clearfix">
       <p>Chosen automatically sets the default field text ("Choose a country...") by reading the select element's data-placeholder value. If no data-placeholder value is present, it will default to "Select Some Option" or "Select Some Options" depending on whether the select is single or multiple. You can change these elements in the plugin js file as you see fit.</p>
@@ -1297,6 +1323,6 @@
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
   <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
-  <script type="text/javascript"> $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true}); </script>
+  <script type="text/javascript"> $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true});; $(".chzn-select-add-new").chosen({new_item_text: "Add New",new_item_callback:function(){alert("A new item has been added!")}});  </script>
   </form>
 </body>

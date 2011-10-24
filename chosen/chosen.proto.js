@@ -116,7 +116,8 @@
       this.allow_single_deselect = (this.options.allow_single_deselect != null) && this.form_field.options[0].text === "" ? this.options.allow_single_deselect : false;
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
       this.choices = 0;
-      return this.results_none_found = this.options.no_results_text || "No results match";
+      this.results_none_found = this.options.no_results_text || "No results match";
+      return this.new_item_text = this.options.new_item_text || "Add New";
     };
     AbstractChosen.prototype.mouse_enter = function() {
       return this.mouse_on_container = true;
