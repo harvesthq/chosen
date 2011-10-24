@@ -43,4 +43,4 @@ If you're interested, you can find the recipes in Cakefile.
 ### Notable Forks
 
 - [Chosen for MooTools](https://github.com/julesjanssen/chosen), by Jules Janssen
-- [Chosen Drupal 7 Module](https://github.com/Polzme/chosen), by Pol Dell'Aiera
+- [Chosen Drupal 7 Module](http://drupal.org/project/chosen), by Pol Dell'Aiera, Arshad Chummun, Bart Feenstra, Kálmán Hosszu, etc.
