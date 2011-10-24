@@ -70,7 +70,7 @@ class Chosen extends AbstractChosen
     
     this.results_build()
     this.set_tab_index()
-
+    @form_field_jq.trigger("liszt:ready", {chosen: this})
 
   register_observers: ->
     @container.mousedown (evt) => this.container_mousedown(evt)

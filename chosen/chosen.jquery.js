@@ -314,7 +314,10 @@
         });
       }
       this.results_build();
-      return this.set_tab_index();
+      this.set_tab_index();
+      return this.form_field_jq.trigger("liszt:ready", {
+        chosen: this
+      });
     };
     Chosen.prototype.register_observers = function() {
       this.container.mousedown(__bind(function(evt) {
