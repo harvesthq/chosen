@@ -831,6 +831,9 @@
           this.backstroke_length = this.search_field.val().length;
           break;
         case 9:
+          if (this.results_showing && !this.is_multiple) {
+            this.result_select(evt);
+          }
           this.mouse_on_container = false;
           break;
         case 13:

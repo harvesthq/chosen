@@ -841,16 +841,24 @@
       }
       switch (stroke) {
         case 8:
-          return this.backstroke_length = this.search_field.value.length;
+          this.backstroke_length = this.search_field.value.length;
+          break;
         case 9:
-          return this.mouse_on_container = false;
+          if (this.results_showing && !this.is_multiple) {
+            this.result_select(evt);
+          }
+          this.mouse_on_container = false;
+          break;
         case 13:
-          return evt.preventDefault();
+          evt.preventDefault();
+          break;
         case 38:
           evt.preventDefault();
-          return this.keyup_arrow();
+          this.keyup_arrow();
+          break;
         case 40:
-          return this.keydown_arrow();
+          this.keydown_arrow();
+          break;
       }
     };
     Chosen.prototype.search_field_scale = function() {

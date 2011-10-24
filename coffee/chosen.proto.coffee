@@ -490,15 +490,21 @@ class Chosen extends AbstractChosen
     switch stroke
       when 8
         @backstroke_length = this.search_field.value.length
+        break
       when 9
+        this.result_select(evt) if this.results_showing and not @is_multiple
         @mouse_on_container = false
+        break
       when 13
         evt.preventDefault()
+        break
       when 38
         evt.preventDefault()
         this.keyup_arrow()
+        break
       when 40
         this.keydown_arrow()
+        break
 
   search_field_scale: ->
     if @is_multiple
