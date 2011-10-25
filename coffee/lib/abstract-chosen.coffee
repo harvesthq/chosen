@@ -88,7 +88,7 @@ class AbstractChosen
           this.results_search()
       when 13
         evt.preventDefault()
-        this.result_select(evt) if this.results_showing
+        this.result_select(evt) if this.results_showing || this.options.allow_option_creation
       when 27
         this.results_hide() if @results_showing
       when 9, 38, 40, 16, 91, 17
