@@ -635,7 +635,7 @@
         high = this.result_highlight;
         high_id = high.attr("id");
         if (high.hasClass("new-result")) {
-          this.options.new_item_callback();
+          this.options.new_item_callback(evt);
           return;
         }
         this.result_clear_highlight();

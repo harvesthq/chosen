@@ -328,7 +328,7 @@ class Chosen extends AbstractChosen
       high_id = high.attr "id"
      
       if high.hasClass "new-result"
-        @options.new_item_callback()
+        @options.new_item_callback(evt)
         return
  
       this.result_clear_highlight()
