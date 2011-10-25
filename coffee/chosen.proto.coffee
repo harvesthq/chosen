@@ -29,7 +29,7 @@ class Chosen extends AbstractChosen
     container_props =
       'id': @container_id
       'class': "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
-      'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
+      'width': if @options.flexWidth then null else @f_width
     
     @default_text = if @form_field.readAttribute 'data-placeholder' then @form_field.readAttribute 'data-placeholder' else @default_text_default
     
@@ -44,7 +44,7 @@ class Chosen extends AbstractChosen
     dd_top = @container.getHeight()
     dd_width = (@f_width - get_side_border_padding(@dropdown))
     
-    @dropdown.setStyle({"width": dd_width  + "px", "top": dd_top + "px"})
+    @dropdown.setStyle({"top": dd_top + "px"})
 
     @search_field = @container.down('input')
     @search_results = @container.down('ul.chzn-results')

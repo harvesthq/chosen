@@ -138,6 +138,7 @@
 
 /* @group Multi Chosen */
 .chzn-container-multi .chzn-choices {
+  width: 100%;
   background-color: #fff;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
   background-image: -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
@@ -222,6 +223,9 @@
 }
 .chzn-container-multi .chzn-choices .search-choice-focus .search-choice-close {
   background-position: right -11px;
+}
+.chzn-container-multi .chzn-drop {
+  width: 100%;
 }
 /* @end */
 
