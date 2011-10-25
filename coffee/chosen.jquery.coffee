@@ -175,6 +175,10 @@ class Chosen extends AbstractChosen
       @selected_item.find("span").text @default_text
 
     content = ''
+    
+    if @options.new_item_callback != undefined
+      content += "<li class=\"active-result new-result\">#{ @new_item_text }</li>"
+    
     for data in @results_data
       if data.group
         content += this.result_add_group data
@@ -318,9 +322,15 @@ class Chosen extends AbstractChosen
 
   result_select: (evt) ->
     if @result_highlight
+
+      
       high = @result_highlight
       high_id = high.attr "id"
-      
+     
+      if high.hasClass "new-result"
+        @options.new_item_callback(evt)
+        return
+ 
       this.result_clear_highlight()
 
       if @is_multiple
