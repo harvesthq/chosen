@@ -18,6 +18,7 @@ class Chosen extends AbstractChosen
 
   setup: ->
     @form_field_jq = $ @form_field
+    @allows_new_values = $(this.form_field).attr('data-allows-new-values') # JBL START, END
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
 
   finish_setup: ->
@@ -349,6 +350,8 @@ class Chosen extends AbstractChosen
 
       @form_field_jq.trigger "change"
       this.search_field_scale()
+    else if @allows_new_values # JBL START
+      this.add_and_select_new_value(this, this.search_field.val()) # JBL END
 
   result_activate: (el) ->
     el.addClass("active-result")
@@ -445,13 +448,40 @@ class Chosen extends AbstractChosen
       this.result_do_highlight do_high if do_high?
   
   no_results: (terms) ->
-    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
+    # JBL START
+    button_html = ''
+    if this.allows_new_values
+      button_html = '<button style="font-size:9px;margin:0;margin-top:-4px;height:17px;float:right">Add</button>'
+    no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"' + button_html + '</li>')
+    #no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
+    # JBL END
     no_results_html.find("span").first().html(terms)
+
+    # JBL START
+    if this.allows_new_values
+      that = this
+      no_results_html.find("button").first().click( (evt) ->
+        that.add_and_select_new_value(that, terms)
+        return false
+        )
+    # JBL END
 
     @search_results.append no_results_html
   
   no_results_clear: ->
     @search_results.find(".no-results").remove()
+
+  # JBL START
+  add_and_select_new_value: (that, terms) ->
+    $(that.form_field).append('<option value="' + terms + '">' + terms + '</option>')
+    searchText = that.search_field.val()
+    that.results_build()
+    that.search_field.val(searchText)
+    that.results_show()
+    that.results_search()
+    that.result_select( $(that.form_field.options).last() )
+    that.close_field()
+  # JBL END
 
   keydown_arrow: ->
     if not @result_highlight
