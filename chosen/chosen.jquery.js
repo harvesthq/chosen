@@ -778,7 +778,7 @@
       no_results_html.find("span").first().html(terms);
       if (this.allows_new_values) {
         that = this;
-        no_results_html.find("button").first().click(function(evt) {
+        no_results_html.find(".chzn-add-button").first().click(function(evt) {
           that.add_and_select_new_value(that, terms);
           return false;
         });

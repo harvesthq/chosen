@@ -460,7 +460,7 @@ class Chosen extends AbstractChosen
     # JBL START
     if this.allows_new_values
       that = this
-      no_results_html.find("button").first().click( (evt) ->
+      no_results_html.find(".chzn-add-button").first().click( (evt) ->
         that.add_and_select_new_value(that, terms)
         return false
         )
