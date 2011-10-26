@@ -1,46 +1,8 @@
-# Chosen
+# Fork of Chosen
 
-Chosen is a library for making long, unwieldy select boxes more user friendly.
+Chosen is a great library for turning vanilla 'select' tags into autocompleter-like boxes that are searchable and browsable.  This fork adds a new twist by allowing these UI elements to accept new values from the user.
 
-- jQuery support: 1.4+
-- Prototype support: 1.7+
+### See it in action
 
-For documentation, usage, and examples, see:  
-http://harvesthq.github.com/chosen
+<http://jimlindstrom.com/extendable_select/example.html>
 
-### Contributing to Chosen
-
-Contributions and pull requests are very welcome. Please follow these guidelines when submitting new code.
-
-1. Make all changes in Coffeescript files, **not** JavaScript files.
-2. For feature changes, update both jQuery *and* Prototype versions
-3. Use 'cake build' to generate Chosen's JavaScript file and minified version.
-4. Don't touch the VERSION file
-5. Submit a Pull Request using GitHub.
-
-### Using CoffeeScript & Cake
-
-First, make sure you have the proper CoffeeScript / Cake set-up in place.
-
-1. Install Coffeescript: the [CoffeeScript documentation](http://jashkenas.github.com/coffee-script/) provides easy-to-follow instructions.
-2. Install UglifyJS: <code>npm -g install uglify-js</code>
-3. Verify that your $NODE_PATH is properly configured using <code>echo $NODE_PATH</code>
-
-Once you're configured, building the JavasScript from the command line is easy:
-
-    cake build                # build Chosen from source
-    cake watch                # watch coffee/ for changes and build Chosen
-    
-If you're interested, you can find the recipes in Cakefile.
-
-
-### Chosen Credits
-
-- Built by [Harvest](http://www.getharvest.com/)
-- Concept and development by [Patrick Filler](http://www.patrickfiller.com/)
-- Design and CSS by [Matthew Lettini](http://matthewlettini.com/)
-
-### Notable Forks
-
-- [Chosen for MooTools](https://github.com/julesjanssen/chosen), by Jules Janssen
-- [Chosen Drupal 7 Module](http://drupal.org/project/chosen), by Pol Dell'Aiera, Arshad Chummun, Bart Feenstra, Kálmán Hosszu, etc.
