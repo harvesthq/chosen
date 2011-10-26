@@ -1,3 +1,16 @@
+.chzn-add-button {
+  float: right;
+  margin: 0;
+  margin-top: -4px;
+  margin-right: -5px;
+  width: 14px;
+  height: 14px;
+  background: url(chosen_add.png) top left no-repeat; /* FIXME: need to pre-load this image */
+}
+.chzn-add-button:hover {
+  background: url(chosen_add_hover.png) top left no-repeat; /* FIXME: need to pre-load this image */
+}
+
 /* @group Base */
 .chzn-container {
   font-size: 13px;

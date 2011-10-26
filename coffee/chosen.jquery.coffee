@@ -451,7 +451,7 @@ class Chosen extends AbstractChosen
     # JBL START
     button_html = ''
     if this.allows_new_values
-      button_html = '<button style="font-size:9px;margin:0;margin-top:-4px;height:17px;float:right">Add</button>'
+      button_html = '<div class="chzn-add-button"></div>'
     no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"' + button_html + '</li>')
     #no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
     # JBL END
