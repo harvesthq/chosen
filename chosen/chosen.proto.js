@@ -256,11 +256,17 @@
       return this.form_field.addClassName("chzn-done");
     };
     Chosen.prototype.set_default_values = function() {
+      var button_html;
       Chosen.__super__.set_default_values.call(this);
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
-      return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
+      this.allows_new_values = this.form_field.readAttribute('data-allows-new-values');
+      button_html = '';
+      if (this.allows_new_values) {
+        button_html = '<div class="chzn-add-button"></div>';
+      }
+      return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"' + button_html + '</li>');
     };
     Chosen.prototype.set_up_html = function() {
       var base_template, container_props, dd_top, dd_width, sf_width;
@@ -654,6 +660,8 @@
           this.form_field.simulate("change");
         }
         return this.search_field_scale();
+      } else if (this.allows_new_values) {
+        return this.add_and_select_new_value(this, this.search_field.getValue());
       }
     };
     Chosen.prototype.result_activate = function(el) {
@@ -771,9 +779,31 @@
       }
     };
     Chosen.prototype.no_results = function(terms) {
-      return this.search_results.insert(this.no_results_temp.evaluate({
+      var that;
+      this.search_results.insert(this.no_results_temp.evaluate({
         terms: terms
       }));
+      if (this.allows_new_values) {
+        that = this;
+        return this.search_results.down(".chzn-add-button").observe("click", __bind(function(evt) {
+          that.add_and_select_new_value(that, terms);
+          return false;
+        }, this));
+      }
+    };
+    Chosen.prototype.add_and_select_new_value = function(that, terms) {
+      var new_option, searchText;
+      new_option = new Template('<option value="' + terms + '">' + terms + '</option>');
+      that.form_field.insert({
+        bottom: new_option.evaluate()
+      });
+      searchText = that.search_field.getValue();
+      that.results_build();
+      that.search_field.setValue(searchText);
+      that.results_show();
+      that.results_search();
+      that.result_select(that.form_field.options[that.form_field.options.length - 1]);
+      return that.close_field();
     };
     Chosen.prototype.no_results_clear = function() {
       var nr, _results;
