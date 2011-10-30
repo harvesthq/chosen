@@ -93,15 +93,15 @@ class Chosen extends AbstractChosen
       @search_field.focus (evt) => this.input_focus(evt)
 
   search_field_disabled: ->
-    @is_disabled = @form_field_jq.attr 'disabled'
+    @is_disabled = @form_field_jq.prop 'disabled'
     if(@is_disabled)
       @container.addClass 'chzn-disabled'
-      @search_field.attr 'disabled', true
+      @search_field.prop 'disabled', true
       @selected_item.unbind "focus", @activate_action if !@is_multiple
       this.close_field()
     else
       @container.removeClass 'chzn-disabled'
-      @search_field.attr 'disabled', false
+      @search_field.prop 'disabled', false
       @selected_item.bind "focus", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
