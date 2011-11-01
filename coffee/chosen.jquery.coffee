@@ -45,7 +45,6 @@ class Chosen extends AbstractChosen
     @form_field_jq.hide().after container_div
     @container = ($ '#' + @container_id)
     @container.addClass( "chzn-container-" + (if @is_multiple then "multi" else "single") )
-    @container.addClass "chzn-container-single-nosearch" if not @is_multiple and @form_field.options.length <= @disable_search_threshold
     @dropdown = @container.find('div.chzn-drop').first()
     
     dd_top = @container.height()
@@ -173,6 +172,10 @@ class Chosen extends AbstractChosen
       @choices = 0
     else if not @is_multiple
       @selected_item.find("span").text @default_text
+      if @form_field.options.length <= @disable_search_threshold
+        @container.addClass "chzn-container-single-nosearch"
+      else
+        @container.removeClass "chzn-container-single-nosearch"
 
     content = ''
     for data in @results_data
