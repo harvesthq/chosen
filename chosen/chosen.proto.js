@@ -666,6 +666,9 @@
           }).update(new_option));
           this.results_update_field(evt);
         }
+        if (typeof Event.simulate === 'function') {
+          this.form_field.simulate("change");
+        }
         this.search_field.value = "";
         return this.results_hide();
       }
@@ -711,14 +714,15 @@
       }
     };
     Chosen.prototype.winnow_results = function() {
-      var found, fregex, option, part, parts, regex, result_id, results, searchText, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref;
+      var found, fregex, option, part, parts, regex, result_id, results, searchText, startTime, startpos, text, textToSearch, zregex, _i, _j, _len, _len2, _ref;
       startTime = new Date();
       this.no_results_clear();
       results = 0;
-      searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
-      regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      fregex = new RegExp("^" + (searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]}/g, "\\$&")) + "$", 'i');
+      searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
+      textToSearch = searchText.replace(/[\-\[\]\{\}\(\)\*\+\?\.,\\\^\$\|\#\s]/g, "\\$&");
+      regex = new RegExp('^' + textToSearch, 'i');
+      zregex = new RegExp(textToSearch, 'i');
+      fregex = new RegExp("^" + textToSearch + "$", 'i');
       _ref = this.results_data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];

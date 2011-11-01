@@ -355,6 +355,7 @@ class Chosen extends AbstractChosen
       if @allow_creation(new_option)
         $('<option>', {selected: true, value: new_option}).text(new_option).appendTo(@form_field_jq)
         @results_update_field(evt)
+      @form_field_jq.trigger "change"
       @search_field.val("")
       @results_hide()
 
@@ -396,9 +397,10 @@ class Chosen extends AbstractChosen
     results = 0
 
     searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
-    regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    fregex = new RegExp("^#{searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]}/g, "\\$&")}$", 'i')
+    textToSearch = searchText.replace(/[\-\[\]\{\}\(\)\*\+\?\.,\\\^\$\|\#\s]/g, "\\$&")
+    regex = new RegExp('^' + textToSearch, 'i')
+    zregex = new RegExp(textToSearch, 'i')
+    fregex = new RegExp("^" + textToSearch + "$", 'i')
 
     for option in @results_data
       if not option.disabled and not option.empty
