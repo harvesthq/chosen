@@ -193,7 +193,7 @@
           break;
         case 13:
           evt.preventDefault();
-          if (this.results_showing) {
+          if (this.results_showing || this.options.allow_option_creation) {
             return this.result_select(evt);
           }
           break;
@@ -623,7 +623,7 @@
       }
     };
     Chosen.prototype.result_select = function(evt) {
-      var high, item, position;
+      var high, item, new_option, position;
       if (this.result_highlight) {
         high = this.result_highlight;
         this.result_clear_highlight();
@@ -654,6 +654,36 @@
           this.form_field.simulate("change");
         }
         return this.search_field_scale();
+      } else if (this.options.allow_option_creation) {
+        new_option = this.search_field.value;
+        if (!new_option) {
+          return;
+        }
+        if (this.allow_creation(new_option)) {
+          this.form_field.insert(Element('option', {
+            selected: true,
+            value: new_option
+          }).update(new_option));
+          this.results_update_field(evt);
+        }
+        if (typeof Event.simulate === 'function') {
+          this.form_field.simulate("change");
+        }
+        this.search_field.value = "";
+        return this.results_hide();
+      }
+    };
+    Chosen.prototype.allow_creation = function(new_option) {
+      var matches;
+      if (this.is_multiple) {
+        matches = this.search_choices.getElementsBySelector("li.search-choice span").select(function(el) {
+          console.debug(el);
+          return el.innerHTML.toLowerCase() === new_option.toLowerCase();
+        });
+        console.debug(matches);
+        return !matches.length;
+      } else {
+        return this.selected_item.getElementsBySelector('span').innerHTML.toLowerCase() !== new_option.toLowerCase();
       }
     };
     Chosen.prototype.result_activate = function(el) {
@@ -684,13 +714,15 @@
       }
     };
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, result_id, results, searchText, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref;
+      var found, fregex, option, part, parts, regex, result_id, results, searchText, startTime, startpos, text, textToSearch, zregex, _i, _j, _len, _len2, _ref;
       startTime = new Date();
       this.no_results_clear();
       results = 0;
-      searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
-      regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
+      textToSearch = searchText.replace(/[\-\[\]\{\}\(\)\*\+\?\.,\\\^\$\|\#\s]/g, "\\$&");
+      regex = new RegExp('^' + textToSearch, 'i');
+      zregex = new RegExp(textToSearch, 'i');
+      fregex = new RegExp("^" + textToSearch + "$", 'i');
       _ref = this.results_data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
@@ -700,7 +732,11 @@
           } else if (!(this.is_multiple && option.selected)) {
             found = false;
             result_id = option.dom_id;
-            if (regex.test(option.html)) {
+            if (this.options.allow_option_creation && searchText && fregex.test(option.html)) {
+              found = true;
+              results += 1;
+              this.result_do_highlight($(option.dom_id));
+            } else if (regex.test(option.html)) {
               found = true;
               results += 1;
             } else if (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0) {
@@ -740,8 +776,11 @@
         }
       }
       if (results < 1 && searchText.length) {
-        return this.no_results(searchText);
-      } else {
+        this.no_results(searchText);
+        if (this.options.allow_option_creation && this.is_multiple) {
+          return this.results_hide();
+        }
+      } else if (!this.options.allow_option_creation) {
         return this.winnow_results_set_highlight();
       }
     };
@@ -771,6 +810,9 @@
       }
     };
     Chosen.prototype.no_results = function(terms) {
+      if (!this.is_multiple && this.options.allow_option_creation) {
+        return;
+      }
       return this.search_results.insert(this.no_results_temp.evaluate({
         terms: terms
       }));
