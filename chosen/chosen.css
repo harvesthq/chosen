@@ -101,8 +101,10 @@
 }
 .chzn-container-single .chzn-search {
   padding: 3px 4px;
+  position: relative;
   margin: 0;
   white-space: nowrap;
+  z-index: 1010;
 }
 .chzn-container-single .chzn-search input {
   background: #fff url('chosen-sprite.png') no-repeat 100% -22px;
@@ -110,7 +112,6 @@
   background: url('chosen-sprite.png') no-repeat 100% -22px, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
   background: url('chosen-sprite.png') no-repeat 100% -22px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
   background: url('chosen-sprite.png') no-repeat 100% -22px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
-  background: url('chosen-sprite.png') no-repeat 100% -22px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   background: url('chosen-sprite.png') no-repeat 100% -22px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   background: url('chosen-sprite.png') no-repeat 100% -22px, linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   margin: 1px 0;
@@ -129,6 +130,11 @@
   background-clip        : padding-box;
 }
 /* @end */
+
+.chzn-container-single-nosearch .chzn-search input {
+  position: absolute;
+  left: -9000px;
+}
 
 /* @group Multi Chosen */
 .chzn-container-multi .chzn-choices {
@@ -354,7 +360,6 @@
   background: url('chosen-sprite.png') no-repeat -38px -22px, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);  
   background: url('chosen-sprite.png') no-repeat -38px -22px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
   background: url('chosen-sprite.png') no-repeat -38px -22px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
-  background: url('chosen-sprite.png') no-repeat -38px -22px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   background: url('chosen-sprite.png') no-repeat -38px -22px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   background: url('chosen-sprite.png') no-repeat -38px -22px, linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   padding: 4px 5px 4px 20px;
