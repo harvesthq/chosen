@@ -13,7 +13,12 @@
   Copyright (c) 2011 by Harvest
   */
   var $, Chosen, get_side_border_padding, root;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __indexOf = Array.prototype.indexOf || function(item) {
+    for (var i = 0, l = this.length; i < l; i++) {
+      if (this[i] === item) return i;
+    }
+    return -1;
+  };
   root = this;
   $ = jQuery;
   $.fn.extend({
@@ -22,10 +27,12 @@
         var newChosen;
         if (!($(this)).hasClass("chzn-done")) {
           newChosen = new Chosen(this, data, options);
-          return this.chosen = newChosen;
+          this.chosen = newChosen;
+          return this.chosen.copy_classes();
         } else {
           if (this.chosen != null) {
-            return this.chosen.check_and_set_width();
+            this.chosen.check_and_set_width();
+            return this.chosen.copy_classes();
           }
         }
       });
@@ -33,6 +40,7 @@
   });
   Chosen = (function() {
     function Chosen(elmn, data, options) {
+      this.copy_classes = __bind(this.copy_classes, this);
       var params;
       params = typeof options === 'object' ? options : typeof data === 'object' ? data : {};
       this.form_field = elmn;
@@ -46,7 +54,7 @@
       this.form_field_jq.addClass("chzn-done");
     }
     Chosen.prototype.set_default_values = function(options) {
-      var data_search_enabled;
+      var classes, data_search_enabled, klass, reserved_classes, _i, _len;
       this.click_test_action = __bind(function(evt) {
         return this.test_active_click(evt);
       }, this);
@@ -60,6 +68,17 @@
       } else {
         data_search_enabled = this.form_field_jq.data('search-enabled');
         this.search_enabled = data_search_enabled != null ? data_search_enabled : true;
+      }
+      this.reserved_classes = ['chzn-done', 'chzn-rtl', 'chzn-select'];
+      if (options.reserved_classes && typeof options.reserved_classes === 'object') {
+        classes = options.reserved_classes;
+      } else {
+        reserved_classes = (this.form_field_jq.data('reserved-classes')) || '';
+        classes = reserved_classes.split(" ");
+      }
+      for (_i = 0, _len = classes.length; _i < _len; _i++) {
+        klass = classes[_i];
+        this.reserved_classes.push(klass);
       }
       return this.choices = 0;
     };
@@ -118,6 +137,7 @@
       if (this.form_field_jq.attr("disabled") && !this.container.hasClass("chzn-disabled")) {
         this.container.addClass("chzn-disabled");
       }
+      this.original_classes = this.container.attr('class').split(' ');
       this.results_build();
       return this.set_tab_index();
     };
@@ -140,6 +160,22 @@
         "width": sf_width + "px"
       });
       return this.form_field_jq.hide();
+    };
+    Chosen.prototype.copy_classes = function() {
+      var form_field_classes, klass, _i, _j, _len, _len2, _ref, _results;
+      this.container.attr('class', '');
+      _ref = this.original_classes;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        klass = _ref[_i];
+        this.container.addClass(klass);
+      }
+      form_field_classes = this.form_field_jq.attr('class').split(' ');
+      _results = [];
+      for (_j = 0, _len2 = form_field_classes.length; _j < _len2; _j++) {
+        klass = form_field_classes[_j];
+        _results.push(__indexOf.call(this.reserved_classes, klass) < 0 ? this.container.addClass(klass) : void 0);
+      }
+      return _results;
     };
     Chosen.prototype.register_observers = function() {
       this.container.click(__bind(function(evt) {

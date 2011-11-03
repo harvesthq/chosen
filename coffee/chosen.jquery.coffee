@@ -11,9 +11,11 @@ $.fn.extend({
       unless ($ this).hasClass "chzn-done"
         newChosen = new Chosen(this, data, options)
         this.chosen = newChosen
+        this.chosen.copy_classes()
       else
         if this.chosen?
           this.chosen.check_and_set_width()
+          this.chosen.copy_classes()
     )
 })
 
@@ -43,7 +45,6 @@ class Chosen
     @form_field_jq.addClass "chzn-done"
 
   set_default_values: (options) ->
-
     @click_test_action = (evt) => this.test_active_click(evt)
     @active_field = false
     @mouse_on_container = false
@@ -55,6 +56,15 @@ class Chosen
     else
       data_search_enabled = @form_field_jq.data 'search-enabled'
       @search_enabled = if data_search_enabled? then data_search_enabled else true
+
+    @reserved_classes = ['chzn-done', 'chzn-rtl', 'chzn-select']
+    if options.reserved_classes && typeof options.reserved_classes is 'object'
+      classes = options.reserved_classes
+    else
+      reserved_classes = (@form_field_jq.data 'reserved-classes') || ''
+      classes = reserved_classes.split(" ")
+    for klass in classes
+      @reserved_classes.push(klass)
 
     @choices = 0
 
@@ -72,6 +82,7 @@ class Chosen
       class: "chzn-container #{ if @is_rtl then 'chzn-rtl' else '' }"
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
     })
+
 
     if @is_multiple
       container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
@@ -113,6 +124,8 @@ class Chosen
     if @form_field_jq.attr("disabled") && !@container.hasClass("chzn-disabled")
       @container.addClass("chzn-disabled")
 
+    @original_classes = @container.attr('class').split(' ')
+
     this.results_build()
     this.set_tab_index()
 
@@ -126,6 +139,14 @@ class Chosen
     sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
     @search_field.css( {"width" : sf_width + "px"} )
     @form_field_jq.hide()
+
+  copy_classes: =>
+    @container.attr('class', '')
+    for klass in @original_classes
+      @container.addClass(klass)
+    form_field_classes = @form_field_jq.attr('class').split(' ')
+    for klass in form_field_classes
+      @container.addClass(klass) unless klass in @reserved_classes
 
   register_observers: ->
     @container.click (evt) => this.container_click(evt)
