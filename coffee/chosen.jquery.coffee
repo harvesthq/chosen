@@ -389,10 +389,11 @@ class Chosen extends AbstractChosen
     for option in @results_data
       if not option.disabled and not option.empty
         if option.group
-          $('#' + option.dom_id).hide()
+          $('#' + option.dom_id).css('display', 'none')
         else if not (@is_multiple and option.selected)
           found = false
           result_id = option.dom_id
+          result = $("#" + result_id)
           
           if regex.test option.html
             found = true
@@ -414,15 +415,15 @@ class Chosen extends AbstractChosen
             else
               text = option.html
 
-            $("#" + result_id).html text if $("#" + result_id).html != text
+            result.html text if result.html != text
 
-            this.result_activate $("#" + result_id)
+            this.result_activate result
 
-            $("#" + @results_data[option.group_array_index].dom_id).show() if option.group_array_index?
+            $("#" + @results_data[option.group_array_index].dom_id).css('display', 'auto') if option.group_array_index?
           else
             this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
-            this.result_deactivate $("#" + result_id)
-    
+            this.result_deactivate result
+
     if results < 1 and searchText.length
       this.no_results searchText
     else
@@ -435,7 +436,7 @@ class Chosen extends AbstractChosen
     for li in lis
       li = $(li)
       if li.hasClass "group-result"
-        li.show()
+        li.css('display', 'auto')
       else if not @is_multiple or not li.hasClass "result-selected"
         this.result_activate li
 
