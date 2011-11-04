@@ -414,9 +414,8 @@ class Chosen extends AbstractChosen
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
             else
               text = option.html
-
-            result.html text if result.html != text
-
+            
+            result.html(text)
             this.result_activate result
 
             $("#" + @results_data[option.group_array_index].dom_id).css('display', 'auto') if option.group_array_index?

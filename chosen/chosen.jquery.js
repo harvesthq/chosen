@@ -724,9 +724,7 @@
               } else {
                 text = option.html;
               }
-              if (result.html !== text) {
-                result.html(text);
-              }
+              result.html(text);
               this.result_activate(result);
               if (option.group_array_index != null) {
                 $("#" + this.results_data[option.group_array_index].dom_id).css('display', 'auto');
