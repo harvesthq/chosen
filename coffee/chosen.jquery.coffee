@@ -163,7 +163,6 @@ class Chosen extends AbstractChosen
       this.close_field()
     
   results_build: ->
-    startTime = new Date()
     @parsing = true
     @results_data = root.SelectParser.select_to_array @form_field
 
@@ -377,7 +376,6 @@ class Chosen extends AbstractChosen
     @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" if @allow_single_deselect and @selected_item.find("abbr").length < 1
 
   winnow_results: ->
-    startTime = new Date()
     this.no_results_clear()
     
     results = 0

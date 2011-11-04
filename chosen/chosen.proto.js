@@ -435,8 +435,7 @@
       }
     };
     Chosen.prototype.results_build = function() {
-      var content, data, startTime, _i, _len, _ref;
-      startTime = new Date();
+      var content, data, _i, _len, _ref;
       this.parsing = true;
       this.results_data = root.SelectParser.select_to_array(this.form_field);
       if (this.is_multiple && this.choices > 0) {
@@ -686,8 +685,7 @@
       }
     };
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, result_id, results, searchText, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref;
-      startTime = new Date();
+      var found, option, part, parts, regex, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len2, _ref;
       this.no_results_clear();
       results = 0;
       searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
