@@ -684,7 +684,7 @@
       }
     };
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, result_id, results, searchText, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref;
+      var found, option, part, parts, regex, result, result_id, results, searchText, startTime, startpos, text, zregex, _i, _j, _len, _len2, _ref;
       startTime = new Date();
       this.no_results_clear();
       results = 0;
@@ -696,10 +696,11 @@
         option = _ref[_i];
         if (!option.disabled && !option.empty) {
           if (option.group) {
-            $('#' + option.dom_id).hide();
+            $('#' + option.dom_id).css('display', 'none');
           } else if (!(this.is_multiple && option.selected)) {
             found = false;
             result_id = option.dom_id;
+            result = $("#" + result_id);
             if (regex.test(option.html)) {
               found = true;
               results += 1;
@@ -723,18 +724,18 @@
               } else {
                 text = option.html;
               }
-              if ($("#" + result_id).html !== text) {
-                $("#" + result_id).html(text);
+              if (result.html !== text) {
+                result.html(text);
               }
-              this.result_activate($("#" + result_id));
+              this.result_activate(result);
               if (option.group_array_index != null) {
-                $("#" + this.results_data[option.group_array_index].dom_id).show();
+                $("#" + this.results_data[option.group_array_index].dom_id).css('display', 'auto');
               }
             } else {
               if (this.result_highlight && result_id === this.result_highlight.attr('id')) {
                 this.result_clear_highlight();
               }
-              this.result_deactivate($("#" + result_id));
+              this.result_deactivate(result);
             }
           }
         }
@@ -753,7 +754,7 @@
       for (_i = 0, _len = lis.length; _i < _len; _i++) {
         li = lis[_i];
         li = $(li);
-        _results.push(li.hasClass("group-result") ? li.show() : !this.is_multiple || !li.hasClass("result-selected") ? this.result_activate(li) : void 0);
+        _results.push(li.hasClass("group-result") ? li.css('display', 'auto') : !this.is_multiple || !li.hasClass("result-selected") ? this.result_activate(li) : void 0);
       }
       return _results;
     };
