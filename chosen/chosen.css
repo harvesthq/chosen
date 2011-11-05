@@ -5,10 +5,10 @@
   margin-right: -5px;
   width: 14px;
   height: 14px;
-  background: url(chosen_add.png) top left no-repeat; /* FIXME: need to pre-load this image */
+  background: url('chosen-sprite.png') no-repeat 0px -46px;
 }
 .chzn-add-button:hover {
-  background: url(chosen_add_hover.png) top left no-repeat; /* FIXME: need to pre-load this image */
+  background: url('chosen-sprite.png') no-repeat -15px -46px;
 }
 
 /* @group Base */
