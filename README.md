@@ -36,7 +36,7 @@ If you're interested, you can find the recipes in Cakefile.
 
 ### Chosen Credits
 
-- Built by [Harvest](http://www.getharvest.com/)
+- Built by [Harvest](http://www.getharvest.com/). Want to work on projects like this? [We’re hiring](http://www.getharvest.com/careers)!
 - Concept and development by [Patrick Filler](http://www.patrickfiller.com/)
 - Design and CSS by [Matthew Lettini](http://matthewlettini.com/)
 
