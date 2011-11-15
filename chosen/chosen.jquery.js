@@ -725,7 +725,7 @@
               result.html(text);
               this.result_activate(result);
               if (option.group_array_index != null) {
-                $("#" + this.results_data[option.group_array_index].dom_id).css('display', 'auto');
+                $("#" + this.results_data[option.group_array_index].dom_id).css('display', 'list-item');
               }
             } else {
               if (this.result_highlight && result_id === this.result_highlight.attr('id')) {

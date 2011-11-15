@@ -407,7 +407,7 @@ class Chosen extends AbstractChosen
 
             this.result_activate $(result_id)
 
-            $(@results_data[option.group_array_index].dom_id).show() if option.group_array_index?
+            $(@results_data[option.group_array_index].dom_id).setStyle({display: 'list-item'}) if option.group_array_index?
           else
             this.result_clear_highlight() if $(result_id) is @result_highlight
             this.result_deactivate $(result_id)

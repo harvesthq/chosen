@@ -728,7 +728,9 @@
               }
               this.result_activate($(result_id));
               if (option.group_array_index != null) {
-                $(this.results_data[option.group_array_index].dom_id).show();
+                $(this.results_data[option.group_array_index].dom_id).setStyle({
+                  display: 'list-item'
+                });
               }
             } else {
               if ($(result_id) === this.result_highlight) {
