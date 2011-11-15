@@ -113,7 +113,7 @@ class Chosen extends AbstractChosen
           @search_field.val "" if @is_multiple
           $(document).click @click_test_action
           this.results_show()
-        else if not @is_multiple and evt and ($(evt.target) is @selected_item || $(evt.target).parents("a.chzn-single").length)
+        else if not @is_multiple and evt and (($(evt.target)[0] == @selected_item[0]) || $(evt.target).parents("a.chzn-single").length)
           evt.preventDefault()
           this.results_toggle()
 
