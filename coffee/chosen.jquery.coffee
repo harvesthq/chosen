@@ -152,7 +152,6 @@ class Chosen extends AbstractChosen
     @container.addClass "chzn-container-active"
     @active_field = true
 
-    @search_field.val(@search_field.val())
     @search_field.focus()
 
 

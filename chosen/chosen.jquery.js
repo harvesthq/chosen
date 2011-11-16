@@ -431,7 +431,6 @@
       }
       this.container.addClass("chzn-container-active");
       this.active_field = true;
-      this.search_field.val(this.search_field.val());
       return this.search_field.focus();
     };
     Chosen.prototype.test_active_click = function(evt) {
