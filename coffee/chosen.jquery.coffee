@@ -244,6 +244,7 @@ class Chosen extends AbstractChosen
   results_hide: ->
     @selected_item.removeClass "chzn-single-with-drop" unless @is_multiple
     this.result_clear_highlight()
+    @form_field_jq.trigger "blur"
     @dropdown.css {"left":"-9000px"}
     @results_showing = false
 
