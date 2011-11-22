@@ -586,7 +586,6 @@
     };
     Chosen.prototype.search_results_mouseup = function(evt) {
       var target;
-      return false;
       target = $(evt.target).hasClass("active-result") ? $(evt.target) : $(evt.target).parents(".active-result").first();
       if (target.length) {
         this.result_highlight = target;
@@ -827,17 +826,10 @@
     };
     Chosen.prototype.select_append_option = function(options) {
       var option;
-      option = $('<option />', options);
+      option = $('<option />', options).attr('selected', 'selected');
       this.form_field_jq.append(option);
       this.form_field_jq.trigger("liszt:updated");
-      return setTimeout((__bind(function() {
-        this.input_focus();
-        return setTimeout((__bind(function() {
-          this.search_field.val(options.text);
-          this.search_field.trigger("keyup");
-          return this.result_select();
-        }, this)), 10);
-      }, this)), 10);
+      return this.search_field.trigger('focus');
     };
     Chosen.prototype.no_results_clear = function() {
       return this.search_results.find(".no-results").remove();
