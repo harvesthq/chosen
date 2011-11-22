@@ -34,6 +34,8 @@ class SelectParser
           selected: option.selected
           disabled: if group_disabled is true then group_disabled else option.disabled
           group_array_index: group_position
+          classes: option.className
+          style: option.style.cssText
       else
         @parsed.push
           array_index: @parsed.length

@@ -50,10 +50,9 @@
   <link rel="stylesheet" href="chosen/chosen.css" />
 </head>
 <body>
-  <form>
   <div id="container">
     <h1>Chosen</h1>
-    <p>Chosen is a JavaScript plugin for Prototype and jQuery that makes long, unwieldy select boxes much more user-friendly. For more information (including usage, explanation and faqs), check out the <a href="http://harvesthq.github.com/chosen/">online documentation</a>.</p>
+    <p>Chosen is a JavaScript plugin for jQuery and  Prototype that makes long, unwieldy select boxes much more user-friendly. For more information (including usage, explanation and faqs), check out the <a href="http://harvesthq.github.com/chosen/">online documentation</a>.</p>
     
     <h2>Standard Select</h2>
     <div class="side-by-side clearfix">
@@ -955,7 +954,7 @@
           <option value="Moldova, Republic of">Moldova, Republic of</option> 
           <option value="Monaco">Monaco</option> 
           <option value="Mongolia">Mongolia</option> 
-          <option value="Montenegro">Montenegro</option>
+          <option value="Montenegro">Montenegro</option> 
           <option value="Montserrat">Montserrat</option> 
           <option value="Morocco">Morocco</option> 
           <option value="Mozambique">Mozambique</option> 
@@ -1057,7 +1056,7 @@
         </select>
       </div>
     </div>
-    
+
     <h2>&lt;optgroup&gt; Support</h2>
     <div class="side-by-side clearfix">
       <div>
@@ -1169,7 +1168,7 @@
         </select>
       </div>
     </div>
-
+    
     <h2>Selected and Disabled Support</h2>
     <div class="side-by-side clearfix">
       <p>Chosen automatically highlights selected options and removes disabled options.</p>
@@ -1189,7 +1188,7 @@
       </div>
       <div>
         <em>Multiple Select</em>
-        <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select" id="test_me" name="test_me_form" tabindex="8">
+        <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select" tabindex="8">
           <option value=""></option>
           <option>American Black Bear</option>
           <option>Asiatic Black Bear</option>
@@ -1209,15 +1208,15 @@
       <code>&lt;select <strong>data-placeholder="Choose a country..."</strong> style="width:350px;" multiple class="chzn-select"&gt;</code>
       <p><strong>Note:</strong> on single selects, the first element is assumed to be selected by the browser. To take advantage of the default text support, you will need to include a blank option as the first element of your select list.</p>
     </div>
-    
+
     <h2>No Results Text Support</h2>
     <div class="side-by-side clearfix">
       <p>Setting the "No results" search text is as easy as passing an option when you create Chosen:</p>
       <code>
-        $(".chzn-select").chosen({no_results_text: "No results matched"});
+        New Chosen($("chzn_select_field"),{no_results_text: "No results matched"});
       </code>
     </div>
-    
+
     <h2>Allow Deselect on Single Selects</h2>
     <div class="side-by-side clearfix">
       <p>When a single select box isn't a required field, you can set <code>allow_single_deselect: true</code> and Chosen will add a UI element for option deselection. This will only work if the first option has blank text.</p>
@@ -1265,7 +1264,7 @@
         </select>
       </div>
     </div>
-
+        
     <h2>Change / Update Events</h2>
     <div class="side-by-side clearfix">
       <ul>
@@ -1286,17 +1285,35 @@
       </ul>
     </div>
 
-    <h2>Setup (for jQuery)</h2>
+    <h2>Setup (for Prototype)</h2>
     <p>Using Chosen is easy as can be.</p>
     <ol>
       <li>Download the plugin and copy the chosen files to your app.</li>
-      <li>Activate the plugin on the select boxes of your choice: <code>$(".chzn-select").chosen()</code></li>
+      <li>Activate the plugin by creating a new instance of Chosen: New Chosen(<em>some_form_field</em>);</li>
       <li><a href="http://youtu.be/pS-RsIzb78U?t=57s">Disco</a>.</li>
     </ol>
     
   </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
-  <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
-  <script type="text/javascript"> $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true}); </script>
-  </form>
+  <script src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js" type="text/javascript"></script>
+  <script src="chosen/chosen.proto.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  document.observe('dom:loaded', function(evt) {
+    var select, selects, _i, _len, _results;
+    if (Prototype.Browser.IE && (Prototype.BrowserFeatures['Version'] === 6 || Prototype.BrowserFeatures['Version'] === 7)) {
+      return;
+    }
+    selects = $$(".chzn-select");
+    _results = [];
+    for (_i = 0, _len = selects.length; _i < _len; _i++) {
+      select = selects[_i];
+      _results.push(new Chosen(select));
+    }
+    deselects = $$(".chzn-select-deselect");
+    for (_i = 0, _len = deselects.length; _i < _len; _i++) {
+      select = deselects[_i];
+      _results.push(new Chosen(select,{allow_single_deselect:true}));
+    }
+    return _results;
+  });
+  </script>
 </body>
