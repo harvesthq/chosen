@@ -116,8 +116,9 @@
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
       this.choices = 0;
       this.results_none_found = this.options.no_results_text || "No results match";
-      this.add_option = this.options.add_option || false;
-      return this.add_option_text = this.options.add_option_text || "Add option";
+      this.create_option = this.options.create_option || false;
+      this.persistent_create_option = this.options.persistent_create_option || false;
+      return this.create_option_text = this.options.create_option_text || "Add option";
     };
     AbstractChosen.prototype.mouse_enter = function() {
       return this.mouse_on_container = true;
@@ -585,6 +586,7 @@
     };
     Chosen.prototype.search_results_mouseup = function(evt) {
       var target;
+      return false;
       target = $(evt.target).hasClass("active-result") ? $(evt.target) : $(evt.target).parents(".active-result").first();
       if (target.length) {
         this.result_highlight = target;
@@ -672,7 +674,7 @@
             this.single_deselect_control_build();
           }
         }
-        if (!(evt.metaKey && this.is_multiple)) {
+        if (!((evt && evt.metaKey) && this.is_multiple)) {
           this.results_hide();
         }
         this.search_field.val("");
@@ -704,12 +706,15 @@
       }
     };
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, result, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len2, _ref;
+      var eregex, exact_result, found, option, part, parts, regex, result, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len2, _ref;
       this.no_results_clear();
+      this.create_option_clear();
       results = 0;
       searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
       regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      eregex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&") + '$', 'i');
+      exact_result = false;
       _ref = this.results_data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
@@ -723,6 +728,9 @@
             if (regex.test(option.html)) {
               found = true;
               results += 1;
+              if (eregex.test(option.html)) {
+                exact_result = true;
+              }
             } else if (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0) {
               parts = option.html.replace(/\[|\]/g, "").split(" ");
               if (parts.length) {
@@ -760,6 +768,9 @@
       if (results < 1 && searchText.length) {
         return this.no_results(searchText);
       } else {
+        if (this.create_option && !exact_result && this.persistent_create_option && searchText.length) {
+          this.show_create_option(searchText);
+        }
         return this.winnow_results_set_highlight();
       }
     };
@@ -789,17 +800,24 @@
       var no_results_html;
       no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"</li>');
       no_results_html.find("span").first().html(terms);
-      if (this.add_option) {
-        no_results_html.append(' <a href="javascript:void(0);" class="option-add">' + this.add_option_text + '</a>');
-        no_results_html.find("a.option-add").bind("click", __bind(function(evt) {
-          return this.select_add_option(terms);
-        }, this));
+      this.search_results.append(no_results_html);
+      if (this.create_option) {
+        return this.show_create_option(terms);
       }
-      return this.search_results.append(no_results_html);
     };
-    Chosen.prototype.select_add_option = function(terms) {
-      if ($.isFunction(this.add_option)) {
-        return this.add_option.call(this, terms, this.select_append_option);
+    Chosen.prototype.show_create_option = function(terms) {
+      var create_option_html;
+      create_option_html = $('<li class="create-option"><a href="javascript:void(0);">' + this.create_option_text + '</a>: "' + terms + '"</li>').bind("click", __bind(function(evt) {
+        return this.select_create_option(terms);
+      }, this));
+      return this.search_results.append(create_option_html);
+    };
+    Chosen.prototype.create_option_clear = function() {
+      return this.search_results.find(".create-option").remove();
+    };
+    Chosen.prototype.select_create_option = function(terms) {
+      if ($.isFunction(this.create_option)) {
+        return this.create_option.call(this, terms, this.select_append_option);
       } else {
         return this.select_append_option({
           value: terms,
@@ -812,10 +830,14 @@
       option = $('<option />', options);
       this.form_field_jq.append(option);
       this.form_field_jq.trigger("liszt:updated");
-      this.search_field.val(options.html);
-      this.search_field.trigger("keyup");
-      this.form_field_jq.trigger("change");
-      return this.result_select();
+      return setTimeout((__bind(function() {
+        this.input_focus();
+        return setTimeout((__bind(function() {
+          this.search_field.val(options.text);
+          this.search_field.trigger("keyup");
+          return this.result_select();
+        }, this)), 10);
+      }, this)), 10);
     };
     Chosen.prototype.no_results_clear = function() {
       return this.search_results.find(".no-results").remove();

@@ -116,8 +116,9 @@
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
       this.choices = 0;
       this.results_none_found = this.options.no_results_text || "No results match";
-      this.add_option = this.options.add_option || false;
-      return this.add_option_text = this.options.add_option_text || "Add option";
+      this.create_option = this.options.create_option || false;
+      this.persistent_create_option = this.options.persistent_create_option || false;
+      return this.create_option_text = this.options.create_option_text || "Add option";
     };
     AbstractChosen.prototype.mouse_enter = function() {
       return this.mouse_on_container = true;
