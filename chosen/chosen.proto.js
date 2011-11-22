@@ -260,7 +260,9 @@
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
-      return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
+      this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>".#{add_item_link}</li>');
+      this.new_option_temp = new Template('<option value="#{value}">#{html}</option>');
+      return this.add_link_temp = new Template(' <a href="javascript:void(0);" class="option-add">' + this.add_option_text + '</a>');
     };
     Chosen.prototype.set_up_html = function() {
       var base_template, container_props, dd_top, dd_width, sf_width;
@@ -772,10 +774,42 @@
         }
       }
     };
-    Chosen.prototype.no_results = function(terms) {
-      return this.search_results.insert(this.no_results_temp.evaluate({
-        terms: terms
+    Chosen.prototype.no_results = function(terms, selected) {
+      var add_item_link;
+      add_item_link = '';
+      if (this.add_option && !selected) {
+        add_item_link = this.add_link_temp.evaluate();
+      }
+      this.search_results.insert(this.no_results_temp.evaluate({
+        terms: terms,
+        add_item_link: add_item_link
       }));
+      if (this.options.addOption && !selected) {
+        return this.search_results.down("a.option-add").observe("click", __bind(function(evt) {
+          if (!selected) {
+            return this.select_add_option(terms);
+          }
+        }, this));
+      }
+    };
+    Chosen.prototype.select_add_option = function(terms) {
+      if (Object.isFunction(this.add_option)) {
+        return this.add_option.call(this, terms, this.select_append_option);
+      } else {
+        return this.select_append_option({
+          value: terms,
+          text: terms
+        });
+      }
+    };
+    Chosen.prototype.select_append_option = function(options) {
+      /*
+            TODO Close options after adding
+          */      var option;
+      option = this.new_option_temp.evaluate(options);
+      this.form_field.insert(option);
+      Event.fire(this.form_field, "liszt:updated");
+      return this.result_select();
     };
     Chosen.prototype.no_results_clear = function() {
       var nr, _results;
