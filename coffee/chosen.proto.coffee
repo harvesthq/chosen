@@ -17,6 +17,7 @@ class Chosen extends AbstractChosen
     
     # HTML Templates
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
+    @single_no_search_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
@@ -33,8 +34,14 @@ class Chosen extends AbstractChosen
     
     @default_text = if @form_field.readAttribute 'data-placeholder' then @form_field.readAttribute 'data-placeholder' else @default_text_default
     
-    base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
-
+    if @is_multiple
+      base_template = new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) )
+    else
+      if @show_search
+        base_template = new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
+      else
+        base_template = new Element('div', container_props).update( @single_no_search_temp.evaluate({ "default":@default_text }) )
+    
     @form_field.hide().insert({ after: base_template })
     @container = $(@container_id)
     @container.addClassName( "chzn-container-" + (if @is_multiple then "multi" else "single") )
@@ -57,8 +64,9 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.down('div.chzn-search')
       @selected_item = @container.down('.chzn-single')
-      sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
-      @search_field.setStyle( {"width" : sf_width + "px"} )
+      if @search_container? and @search_field?
+        sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
+        @search_field.setStyle( {"width" : sf_width + "px"} )
     
     this.results_build()
     this.set_tab_index()
@@ -76,15 +84,17 @@ class Chosen extends AbstractChosen
     
     @form_field.observe "liszt:updated", (evt) => this.results_update_field(evt)
 
-    @search_field.observe "blur", (evt) => this.input_blur(evt)
-    @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
-    @search_field.observe "keydown", (evt) => this.keydown_checker(evt)
+    if @show_search
+      @search_field.observe "blur", (evt) => this.input_blur(evt)
+      @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
+      @search_field.observe "keydown", (evt) => this.keydown_checker(evt)
 
     if @is_multiple
       @search_choices.observe "click", (evt) => this.choices_click(evt)
       @search_field.observe "focus", (evt) => this.input_focus(evt)
 
   search_field_disabled: ->
+    return if not @search_field?
     @is_disabled = @form_field.disabled
     if(@is_disabled)
       @container.addClassName 'chzn-disabled'
@@ -137,15 +147,16 @@ class Chosen extends AbstractChosen
     this.search_field_scale()
 
   activate_field: ->
-    if not @is_multiple and not @active_field
+    if not @is_multiple and not @active_field and @show_search
       @search_field.tabIndex = @selected_item.tabIndex
       @selected_item.tabIndex = -1
 
     @container.addClassName "chzn-container-active"
     @active_field = true
 
-    @search_field.value = @search_field.value
-    @search_field.focus()
+    if @show_search
+      @search_field.value = @search_field.value
+      @search_field.focus()
 
 
   test_active_click: (evt) ->
@@ -227,8 +238,9 @@ class Chosen extends AbstractChosen
     @dropdown.setStyle {"top":  dd_top + "px", "left":0}
     @results_showing = true
 
-    @search_field.focus()
-    @search_field.value = @search_field.value
+    if @show_search
+      @search_field.focus()
+      @search_field.value = @search_field.value
 
     this.winnow_results()
 
@@ -248,13 +260,13 @@ class Chosen extends AbstractChosen
         @search_field.tabIndex = ti
       else
         @selected_item.tabIndex = ti
-        @search_field.tabIndex = -1
+        @search_field.tabIndex = -1 if @show_search
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
       @search_field.value = @default_text
       @search_field.addClassName "default"
-    else
+    else if @show_search
       @search_field.value = ""
       @search_field.removeClassName "default"
 
@@ -338,10 +350,10 @@ class Chosen extends AbstractChosen
 
       this.results_hide() unless evt.metaKey and @is_multiple
 
-      @search_field.value = ""
+      @search_field.value = "" if @show_search
 
       @form_field.simulate("change") if typeof Event.simulate is 'function'
-      this.search_field_scale()
+      this.search_field_scale() if @show_search
 
   result_activate: (el) ->
     el.addClassName("active-result")
@@ -371,7 +383,7 @@ class Chosen extends AbstractChosen
 
     results = 0
 
-    searchText = if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
+    searchText = if @show_search is false or @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
     regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
