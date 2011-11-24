@@ -24,6 +24,7 @@ class AbstractChosen
     @activate_action = (evt) => this.activate_field(evt)
     @active_field = false
     @mouse_on_container = false
+    @show_search = @options.show_search ? true
     @results_showing = false
     @result_highlighted = null
     @result_single_selected = null

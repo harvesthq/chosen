@@ -1170,6 +1170,19 @@
       </div>
     </div>
 
+    <h2>Disable Search field</h2>
+    <div class="side-by-side clearfix">
+      <p>If have a small Select (like "Yes", "Perhaps", "No") you perhaps like to disable the search field.</p>
+      <div>
+        <em>Single Select</em>
+        <select data-placeholder="Will you date me?" style="width:350px;" class="chzn-select-no-search" tabindex="7">
+          <option>Yes</option>
+          <option selected>Perhaps</option>
+          <option>No</option>
+        </select>
+      </div>
+    </div>
+
     <h2>Selected and Disabled Support</h2>
     <div class="side-by-side clearfix">
       <p>Chosen automatically highlights selected options and removes disabled options.</p>
@@ -1297,6 +1310,10 @@
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
   <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
-  <script type="text/javascript"> $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true}); </script>
+  <script type="text/javascript">
+    $(".chzn-select").chosen();
+    $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+    $(".chzn-select-no-search").chosen({show_search:false});
+  </script>
   </form>
 </body>
