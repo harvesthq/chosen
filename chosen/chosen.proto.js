@@ -336,7 +336,7 @@
       } else {
         this.search_container = this.container.down('div.chzn-search');
         this.selected_item = this.container.down('.chzn-single');
-        if ((this.search_container != null) && (this.search_field != null)) {
+        if (this.show_search) {
           sf_width = dd_width - get_side_border_padding(this.search_container) - get_side_border_padding(this.search_field);
           this.search_field.setStyle({
             "width": sf_width + "px"
@@ -398,7 +398,7 @@
     };
 
     Chosen.prototype.search_field_disabled = function() {
-      if (!(this.search_field != null)) return;
+      if (!this.show_search) return;
       this.is_disabled = this.form_field.disabled;
       if (this.is_disabled) {
         this.container.addClassName('chzn-disabled');
@@ -448,7 +448,7 @@
 
     Chosen.prototype.close_field = function() {
       document.stopObserving("click", this.click_test_action);
-      if (!this.is_multiple) {
+      if (!this.is_multiple && this.show_search) {
         this.selected_item.tabIndex = this.search_field.tabIndex;
         this.search_field.tabIndex = -1;
       }
@@ -806,6 +806,7 @@
 
     Chosen.prototype.winnow_results_clear = function() {
       var li, lis, _i, _len, _results;
+      if (!this.show_search) return;
       this.search_field.clear();
       lis = this.search_results.select("li");
       _results = [];

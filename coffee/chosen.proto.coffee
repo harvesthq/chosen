@@ -64,7 +64,7 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.down('div.chzn-search')
       @selected_item = @container.down('.chzn-single')
-      if @search_container? and @search_field?
+      if @show_search
         sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
         @search_field.setStyle( {"width" : sf_width + "px"} )
     
@@ -94,7 +94,7 @@ class Chosen extends AbstractChosen
       @search_field.observe "focus", (evt) => this.input_focus(evt)
 
   search_field_disabled: ->
-    return if not @search_field?
+    return if not @show_search
     @is_disabled = @form_field.disabled
     if(@is_disabled)
       @container.addClassName 'chzn-disabled'
@@ -132,7 +132,7 @@ class Chosen extends AbstractChosen
   close_field: ->
     document.stopObserving "click", @click_test_action
     
-    if not @is_multiple
+    if not @is_multiple and @show_search
       @selected_item.tabIndex = @search_field.tabIndex
       @search_field.tabIndex = -1
     
@@ -430,6 +430,8 @@ class Chosen extends AbstractChosen
       this.winnow_results_set_highlight()
 
   winnow_results_clear: ->
+    return if not @show_search
+    
     @search_field.clear()
     lis = @search_results.select("li")
 
