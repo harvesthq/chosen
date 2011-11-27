@@ -105,8 +105,8 @@
     function AbstractChosen(form_field, options) {
       this.form_field = form_field;
       this.options = options != null ? options : {};
-      this.set_default_values();
       this.is_multiple = this.form_field.multiple;
+      this.set_default_values();
       this.default_text_default = this.is_multiple ? "Select Some Options" : "Select an Option";
       this.setup();
       this.set_up_html();
@@ -115,7 +115,6 @@
     }
 
     AbstractChosen.prototype.set_default_values = function() {
-      var _ref;
       var _this = this;
       this.click_test_action = function(evt) {
         return _this.test_active_click(evt);
@@ -125,7 +124,7 @@
       };
       this.active_field = false;
       this.mouse_on_container = false;
-      this.show_search = (_ref = this.options.show_search) != null ? _ref : true;
+      this.show_search = !this.is_multiple && (this.options.show_search != null) ? this.options.show_search : true;
       this.results_showing = false;
       this.result_highlighted = null;
       this.result_single_selected = null;
@@ -402,14 +401,14 @@
       this.is_disabled = this.form_field.disabled;
       if (this.is_disabled) {
         this.container.addClassName('chzn-disabled');
-        this.search_field.disabled = true;
+        if (this.show_search) this.search_field.disabled = true;
         if (!this.is_multiple) {
           this.selected_item.stopObserving("focus", this.activate_action);
         }
         return this.close_field();
       } else {
         this.container.removeClassName('chzn-disabled');
-        this.search_field.disabled = false;
+        if (this.show_search) this.search_field.disabled = false;
         if (!this.is_multiple) {
           return this.selected_item.observe("focus", this.activate_action);
         }
@@ -592,9 +591,11 @@
         this.form_field.tabIndex = -1;
         if (this.is_multiple) {
           return this.search_field.tabIndex = ti;
-        } else {
+        } else if (this.show_search) {
           this.selected_item.tabIndex = ti;
           if (this.show_search) return this.search_field.tabIndex = -1;
+        } else {
+          return this.selected_item.tabIndex = ti;
         }
       }
     };
@@ -746,7 +747,7 @@
       var found, option, part, parts, regex, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len2, _ref;
       this.no_results_clear();
       results = 0;
-      searchText = this.show_search === false || this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
+      searchText = !this.show_search || this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
       regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       _ref = this.results_data;

@@ -105,8 +105,8 @@
     function AbstractChosen(form_field, options) {
       this.form_field = form_field;
       this.options = options != null ? options : {};
-      this.set_default_values();
       this.is_multiple = this.form_field.multiple;
+      this.set_default_values();
       this.default_text_default = this.is_multiple ? "Select Some Options" : "Select an Option";
       this.setup();
       this.set_up_html();
@@ -115,7 +115,6 @@
     }
 
     AbstractChosen.prototype.set_default_values = function() {
-      var _ref;
       var _this = this;
       this.click_test_action = function(evt) {
         return _this.test_active_click(evt);
@@ -125,7 +124,7 @@
       };
       this.active_field = false;
       this.mouse_on_container = false;
-      this.show_search = (_ref = this.options.show_search) != null ? _ref : true;
+      this.show_search = !this.is_multiple && (this.options.show_search != null) ? this.options.show_search : true;
       this.results_showing = false;
       this.result_highlighted = null;
       this.result_single_selected = null;

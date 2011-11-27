@@ -96,14 +96,14 @@ class Chosen extends AbstractChosen
   search_field_disabled: ->
     return if not @show_search
     @is_disabled = @form_field.disabled
-    if(@is_disabled)
+    if @is_disabled
       @container.addClassName 'chzn-disabled'
-      @search_field.disabled = true
+      @search_field.disabled = true if @show_search
       @selected_item.stopObserving "focus", @activate_action if !@is_multiple
       this.close_field()
     else
       @container.removeClassName 'chzn-disabled'
-      @search_field.disabled = false
+      @search_field.disabled = false if @show_search
       @selected_item.observe "focus", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
@@ -258,9 +258,11 @@ class Chosen extends AbstractChosen
 
       if @is_multiple
         @search_field.tabIndex = ti
-      else
+      else if @show_search
         @selected_item.tabIndex = ti
         @search_field.tabIndex = -1 if @show_search
+      else
+        @selected_item.tabIndex = ti
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
@@ -383,7 +385,7 @@ class Chosen extends AbstractChosen
 
     results = 0
 
-    searchText = if @show_search is false or @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
+    searchText = if not @show_search or @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
     regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
