@@ -31,7 +31,7 @@ class DataParser
           value: option.value
           text: option.text
           html: option.text
-          selected: if option.selected? then option.selected else null
+          selected: option.selected 
           disabled: if group_disabled is true then group_disabled else option.disabled
           group_array_index: group_position
           classes: option.className

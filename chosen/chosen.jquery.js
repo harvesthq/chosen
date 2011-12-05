@@ -136,7 +136,7 @@
             value: option.value,
             text: option.text,
             html: option.text,
-            selected: option.selected != null ? option.selected : null,
+            selected: option.selected,
             disabled: group_disabled === true ? group_disabled : option.disabled,
             group_array_index: group_position,
             classes: option.className,

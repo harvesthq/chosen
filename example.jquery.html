@@ -1288,10 +1288,11 @@
 
     <h2>Build from Data Source</h2>
     <div class="side-by-side clearfix">
-      <p>Chosen can be built from an array of JavaScript objects with the
+      <p>Chosen can be built from an array of JavaScript objects. It uses a regualar input[type=text] for storing the selected value</p>
       following format:</p>
       <div>
         <em>Data with options</em>
+        <p><code>&lt;input class="chzn-from-data" ... &gt;</code></p>
         <input class="chzn-from-data" data-placeholder="Choose a Country..." style="width:350px;" tabindex="11">
 <pre><code>
 var animals = [
@@ -1301,22 +1302,28 @@ var animals = [
   },
   {
     text: "Hippopotamus",
-    value: "hippopotamus"
+    value: "hippopotamus",
+    selected: true
   },
   {
     text: "Walrus",
     value: "walrus"
+    disabled: true
   }
 ];
 $(".chzn-from-data")
-  .chosen({data: animals})
+  .chosen({
+    <strong>data: animals</strong>
+  })
   .change(function() {
     alert(this.value)
   });
 </code></pre>
+        <p>In the above example the <strong>Walrus</strong> option disabled and <strong>Hippopotamus</strong> option is pre-selected</p>
       </div>
       <div>
         <em>Data with grouped options</em>
+        <p><code>&lt;input class="chzn-from-data-group" ... &gt;</code></p>
         <input class="chzn-from-data-group" data-placeholder="Choose a Country..." style="width:350px;" tabindex="10">
 <pre><code>
 var countries = [
@@ -1344,7 +1351,9 @@ var countries = [
   }
 ];
 $(".chzn-from-data-group")
-  .chosen({data: countries})
+  .chosen({
+    <strong>data: countries</strong>
+  })
   .change(function() {
     alert(this.value)
   });
@@ -1398,11 +1407,13 @@ $(".chzn-from-data-group")
       },
       {
         text: "Hippopotamus",
-        value: "hippopotamus"
+        value: "hippopotamus",
+        selected: true
       },
       {
         text: "Walrus",
-        value: "walrus"
+        value: "walrus",
+        disabled: true
       }
     ];
     $(".chzn-from-data-group")
