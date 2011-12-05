@@ -12,6 +12,7 @@ CoffeeScript     = require 'coffee-script'
 javascripts = {
   'chosen/chosen.jquery.js': [
     'coffee/lib/select-parser.coffee'
+    'coffee/lib/data-parser.coffee'
     'coffee/lib/abstract-chosen.coffee'
     'coffee/chosen.jquery.coffee'
   ]

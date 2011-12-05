@@ -1286,6 +1286,73 @@
       </ul>
     </div>
 
+    <h2>Build from Data Source</h2>
+    <div class="side-by-side clearfix">
+      <p>Chosen can be built from an array of JavaScript objects with the
+      following format:</p>
+      <div>
+        <em>Data with options</em>
+        <input class="chzn-from-data" data-placeholder="Choose a Country..." style="width:350px;" tabindex="11">
+<pre><code>
+var animals = [
+  {
+    text: "African Bush Elephant",
+    value : "african-bush-elephant"
+  },
+  {
+    text: "Hippopotamus",
+    value: "hippopotamus"
+  },
+  {
+    text: "Walrus",
+    value: "walrus"
+  }
+];
+$(".chzn-from-data")
+  .chosen({data: animals})
+  .change(function() {
+    alert(this.value)
+  });
+</code></pre>
+      </div>
+      <div>
+        <em>Data with grouped options</em>
+        <input class="chzn-from-data-group" data-placeholder="Choose a Country..." style="width:350px;" tabindex="10">
+<pre><code>
+var countries = [
+  {
+    label: "Europe",
+    options: [
+      {
+        value: "sweden",
+        text : "Sweden"
+      },
+      {
+        value: "united-kingdom",
+        text: "United Kingdom"
+      }
+    ]
+  },
+  {
+    label: "Asia",
+    options: [
+      {
+        text: "China",
+        value : "china"
+      }
+    ]
+  }
+];
+$(".chzn-from-data-group")
+  .chosen({data: countries})
+  .change(function() {
+    alert(this.value)
+  });
+</code></pre>
+      </div>
+    </div>
+
+
     <h2>Setup (for jQuery)</h2>
     <p>Using Chosen is easy as can be.</p>
     <ol>
@@ -1295,8 +1362,55 @@
     </ol>
     
   </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
   <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
-  <script type="text/javascript"> $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true}); </script>
+  <script> 
+    $(".chzn-select").chosen();
+    $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+    var countries = [
+      {
+        label: "Europe",
+        options: [
+          {
+            value: "sweden",
+            text : "Sweden"
+          },
+          {
+            value: "united-kingdom",
+            text: "United Kingdom"
+          }
+        ]
+      },
+      {
+        label: "Asia",
+        options: [
+          {
+            text: "China",
+            value : "china"
+          }
+        ]
+      }
+    ];
+    var animals = [
+      {
+        text: "African Bush Elephant",
+        value : "african-bush-elephant"
+      },
+      {
+        text: "Hippopotamus",
+        value: "hippopotamus"
+      },
+      {
+        text: "Walrus",
+        value: "walrus"
+      }
+    ];
+    $(".chzn-from-data-group")
+      .chosen({data: countries})
+      .change(function() { alert(this.value)});
+    $(".chzn-from-data")
+      .chosen({data: animals})
+      .change(function() { alert(this.value)});
+  </script>
   </form>
 </body>
