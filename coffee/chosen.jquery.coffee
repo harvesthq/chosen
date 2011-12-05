@@ -164,14 +164,19 @@ class Chosen extends AbstractChosen
     
   results_build: ->
     @parsing = true
-    @results_data = root.SelectParser.select_to_array @form_field
+    if @data_source?
+      @results_data = root.DataParser.data_to_array @data_source
+      data_length = @data_source.length
+    else
+      @results_data = root.SelectParser.select_to_array @form_field
+      data_length = @form_field.options.length
 
     if @is_multiple and @choices > 0
       @search_choices.find("li.search-choice").remove()
       @choices = 0
     else if not @is_multiple
       @selected_item.find("span").text @default_text
-      if @form_field.options.length <= @disable_search_threshold
+      if data_length <= @disable_search_threshold
         @container.addClass "chzn-container-single-nosearch"
       else
         @container.removeClass "chzn-container-single-nosearch"
@@ -337,7 +342,10 @@ class Chosen extends AbstractChosen
       item = @results_data[position]
       item.selected = true
 
-      @form_field.options[item.options_index].selected = true
+      if @data_source
+        @form_field_jq.val item.value
+      else
+        @form_field.options[item.options_index].selected = true
 
       if @is_multiple
         this.choice_build item

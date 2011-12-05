@@ -8,15 +8,13 @@ class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
     this.set_default_values()
-    
+
     @is_multiple = @form_field.multiple
     @default_text_default = if @is_multiple then "Select Some Options" else "Select an Option"
 
     this.setup()
-
     this.set_up_html()
     this.register_observers()
-
     this.finish_setup()
 
   set_default_values: ->
@@ -31,13 +29,14 @@ class AbstractChosen
     @disable_search_threshold = @options.disable_search_threshold || 0
     @choices = 0
     @results_none_found = @options.no_results_text or "No results match"
+    @data_source = if @options.data? then @options.data else null
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
 
   input_focus: (evt) ->
     setTimeout (=> this.container_mousedown()), 50 unless @active_field
-  
+
   input_blur: (evt) ->
     if not @mouse_on_container
       @active_field = false
