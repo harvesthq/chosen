@@ -222,7 +222,7 @@
 /* @group Results */
 .chzn-container .chzn-results {
   margin: 0 4px 4px 0;
-  max-height: 190px;
+  max-height: 240px;
   padding: 0 0 0 4px;
   position: relative;
   overflow-x: hidden;
