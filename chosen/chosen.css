@@ -23,29 +23,32 @@
 
 /* @group Single Chosen */
 .chzn-container-single .chzn-single {
-  background-color: #fff;
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.5, white));
-  background-image: -webkit-linear-gradient(center bottom, #eeeeee 0%, white 50%);
-  background-image: -moz-linear-gradient(center bottom, #eeeeee 0%, white 50%);
-  background-image: -o-linear-gradient(top, #eeeeee 0%,#ffffff 50%);
-  background-image: -ms-linear-gradient(top, #eeeeee 0%,#ffffff 50%);
+  background-color: #ffffff;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f4f4f4), color-stop(0.48, #eeeeee), color-stop(0.5, #f6f6f6), color-stop(0.8, #ffffff));
+  background-image: -webkit-linear-gradient(center bottom, #f4f4f4 0%, #eeeeee 48%, #f6f6f6 50%, #ffffff 80%);
+  background-image: -moz-linear-gradient(center bottom, #f4f4f4 0%, #eeeeee 48%, #f6f6f6 50%, #ffffff 80%);
+  background-image: -o-linear-gradient(top, #f4f4f4 0%, #eeeeee 48%, #f6f6f6 50%, #ffffff 80%);
+  background-image: -ms-linear-gradient(top, #f4f4f4 0%, #eeeeee 48%, #f6f6f6 50%, #ffffff 80%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 );
-  background-image: linear-gradient(top, #eeeeee 0%,#ffffff 50%);
-  -webkit-border-radius: 4px;
-  -moz-border-radius   : 4px;
-  border-radius        : 4px;
+  background-image: linear-gradient(top, #f4f4f4 0%, #eeeeee 48%, #f6f6f6 50%, #ffffff 80%);
+  -webkit-border-radius: 5px;
+  -moz-border-radius   : 5px;
+  border-radius        : 5px;
   -moz-background-clip   : padding;
   -webkit-background-clip: padding-box;
   background-clip        : padding-box;
-  border: 1px solid #aaa;
+  border: 1px solid #aaaaaa;
+  -webkit-box-shadow: 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1);
+  -moz-box-shadow   : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1);
+  box-shadow        : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1);
   display: block;
   overflow: hidden;
   white-space: nowrap;
   position: relative;
-  height: 26px;
-  line-height: 26px;
+  height: 23px;
+  line-height: 23px;
   padding: 0 0 0 8px;
-  color: #444;
+  color: #444444;
   text-decoration: none;
 }
 .chzn-container-single .chzn-single span {
@@ -61,7 +64,7 @@
   display: block;
   position: absolute;
   right: 26px;
-  top: 8px;
+  top: 6px;
   width: 12px;
   height: 13px;
   font-size: 1px;
@@ -71,21 +74,6 @@
   background-position: right -11px;
 }
 .chzn-container-single .chzn-single div {
-  -webkit-border-radius: 0 4px 4px 0;
-  -moz-border-radius   : 0 4px 4px 0;
-  border-radius        : 0 4px 4px 0;
-  -moz-background-clip   : padding;
-  -webkit-background-clip: padding-box;
-  background-clip        : padding-box;
-  background: #ccc;
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc), color-stop(0.6, #eee));
-  background-image: -webkit-linear-gradient(center bottom, #ccc 0%, #eee 60%);
-  background-image: -moz-linear-gradient(center bottom, #ccc 0%, #eee 60%);
-  background-image: -o-linear-gradient(bottom, #ccc 0%, #eee 60%);
-  background-image: -ms-linear-gradient(top, #cccccc 0%,#eeeeee 60%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#eeeeee',GradientType=0 );
-  background-image: linear-gradient(top, #cccccc 0%,#eeeeee 60%);
-  border-left: 1px solid #aaa;
   position: absolute;
   right: 0;
   top: 0;
@@ -94,7 +82,7 @@
   width: 18px;
 }
 .chzn-container-single .chzn-single div b {
-  background: url('chosen-sprite.png') no-repeat 0 1px;
+  background: url('chosen-sprite.png') no-repeat 0 0;
   display: block;
   width: 100%;
   height: 100%;
@@ -341,13 +329,8 @@
 .chzn-rtl { direction:rtl;text-align: right; }
 .chzn-rtl .chzn-single { padding-left: 0; padding-right: 8px; }
 .chzn-rtl .chzn-single span { margin-left: 26px; margin-right: 0; }
-.chzn-rtl .chzn-single div { 
-  left: 0; right: auto; 
-  border-left: none; border-right: 1px solid #aaaaaa;
-  -webkit-border-radius: 4px 0 0 4px;
-  -moz-border-radius   : 4px 0 0 4px;
-  border-radius        : 4px 0 0 4px; 
-}
+.chzn-rtl .chzn-single div { left: 2px; right: auto; }
+
 .chzn-rtl .chzn-choices li { float: right; }
 .chzn-rtl .chzn-choices .search-choice { padding: 3px 6px 3px 19px; margin: 3px 5px 3px 0; }
 .chzn-rtl .chzn-choices .search-choice .search-choice-close { left: 5px; right: auto; background-position: right top;}
