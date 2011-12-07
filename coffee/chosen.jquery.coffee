@@ -399,8 +399,7 @@ class Chosen extends AbstractChosen
             found = true
             results += 1
           else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
+            parts = option.html.replace(@skip_characters, "").split(" ")
             if parts.length
               for part in parts
                 if regex.test part
