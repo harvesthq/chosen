@@ -276,6 +276,29 @@
 .chzn-container-multi .chzn-drop .result-selected {
   display: none;
 }
+.chzn-container .chzn-results-scroll {
+  background: white;
+  margin: 0px 4px;
+  position: absolute;
+  text-align: center;
+  width: 321px; /* This should by dynamic with js */
+  z-index: 1;
+}
+.chzn-container .chzn-results-scroll span {
+  display: inline-block;
+  height: 17px;
+  text-indent: -5000px;
+  width: 9px;
+}
+.chzn-container .chzn-results-scroll-down {
+  bottom: 0;
+}
+.chzn-container .chzn-results-scroll-down span {
+  background: url('chosen-sprite.png') no-repeat -4px -3px;
+}
+.chzn-container .chzn-results-scroll-up span {
+  background: url('chosen-sprite.png') no-repeat -22px -3px;
+}
 /* @end */
 
 /* @group Active  */
