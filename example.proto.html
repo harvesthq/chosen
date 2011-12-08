@@ -1168,6 +1168,20 @@
         </select>
       </div>
     </div>
+     
+    <h2>Disable Search field</h2>
+    <div class="side-by-side clearfix">
+      <p>If you have a small Select (like "Yes", "Perhaps", "No") and would like to disable the search field, you can.</p>
+      <div>
+        <em>Single Select</em>
+        <select data-placeholder="Will you date me?" style="width:350px;" class="chzn-select-no-search" tabindex="7">
+          <option value=""></option>
+          <option>Yes</option>
+          <option selected>Perhaps</option>
+          <option>No</option>
+        </select>
+      </div>
+    </div>
     
     <h2>Selected and Disabled Support</h2>
     <div class="side-by-side clearfix">
@@ -1312,6 +1326,11 @@
     for (_i = 0, _len = deselects.length; _i < _len; _i++) {
       select = deselects[_i];
       _results.push(new Chosen(select,{allow_single_deselect:true}));
+    }
+    no_search = $$(".chzn-select-no-search");
+    for (_i = 0, _len = no_search.length; _i < _len; _i++) {
+      select = no_search[_i];
+      _results.push(new Chosen(select,{show_search:false}));
     }
     return _results;
   });

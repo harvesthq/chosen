@@ -7,9 +7,9 @@ root = this
 class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
+    @is_multiple = @form_field.multiple
     this.set_default_values()
     
-    @is_multiple = @form_field.multiple
     @default_text_default = if @is_multiple then "Select Some Options" else "Select an Option"
 
     this.setup()
@@ -24,6 +24,7 @@ class AbstractChosen
     @activate_action = (evt) => this.activate_field(evt)
     @active_field = false
     @mouse_on_container = false
+    @show_search = if not @is_multiple and @options.show_search? then @options.show_search else true
     @results_showing = false
     @result_highlighted = null
     @result_single_selected = null
