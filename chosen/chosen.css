@@ -18,6 +18,7 @@
   -o-box-shadow     : 0 4px 5px rgba(0,0,0,.15);
   box-shadow        : 0 4px 5px rgba(0,0,0,.15);
   z-index: 999;
+  width:100%;
 }
 /* @end */
 
@@ -47,6 +48,7 @@
   padding: 0 0 0 8px;
   color: #444;
   text-decoration: none;
+  margin-right:-2px;
 }
 .chzn-container-single .chzn-single span {
   margin-right: 26px;
@@ -100,11 +102,13 @@
   height: 100%;
 }
 .chzn-container-single .chzn-search {
-  padding: 3px 4px;
-  position: relative;
+  position: absolute;
   margin: 0;
   white-space: nowrap;
   z-index: 1010;
+  height:25px;
+  left:4px;
+  right:4px;
 }
 .chzn-container-single .chzn-search input {
   background: #fff url('chosen-sprite.png') no-repeat 100% -22px;
@@ -120,6 +124,12 @@
   border: 1px solid #aaa;
   font-family: sans-serif;
   font-size: 1em;
+  width:100%;
+  box-sizing: border-box; /* css3 rec */
+  -moz-box-sizing: border-box; /* ff2 */
+  -ms-box-sizing: border-box; /* ie8 */
+  -webkit-box-sizing: border-box; /* safari3 */
+  -khtml-box-sizing: border-box; /* konqueror */  
 }
 .chzn-container-single .chzn-drop {
   -webkit-border-radius: 0 0 4px 4px;
@@ -135,9 +145,17 @@
   position: absolute;
   left: -9000px;
 }
-
+.chzn-container-single .chzn-drop .chzn-results { 
+  margin: 28px 4px 4px 0;
+  max-height: 190px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0 0 0 4px;
+  position: relative;
+}
 /* @group Multi Chosen */
 .chzn-container-multi .chzn-choices {
+  width: 100%;
   background-color: #fff;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
   background-image: -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
@@ -222,6 +240,9 @@
 }
 .chzn-container-multi .chzn-choices .search-choice-focus .search-choice-close {
   background-position: right -11px;
+}
+.chzn-container-multi .chzn-drop {
+  width: 100%;
 }
 /* @end */
 
@@ -351,6 +372,9 @@
 .chzn-rtl .chzn-single abbr {
   left: 26px;
   right: auto;
+}
+.chzn-rtl.chzn-container-multi .chzn-drop { 
+  margin-left: -2px;
 }
 .chzn-rtl .chzn-choices li { float: right; }
 .chzn-rtl .chzn-choices .search-choice { padding: 3px 6px 3px 19px; margin: 3px 5px 3px 0; }
