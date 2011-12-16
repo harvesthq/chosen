@@ -34,7 +34,7 @@ class Chosen extends AbstractChosen
     container_div = ($ "<div />", {
       id: @container_id
       class: "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
-      width: if @options.width then @options.width else "#{@f_width}px"
+      width: this.fixup_width(if @options.width then @options.width else @f_width)
     })
     
     if @is_multiple

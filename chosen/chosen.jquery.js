@@ -225,6 +225,14 @@
       rand = Math.floor(Math.random() * chars.length);
       return newchar = chars.substring(rand, rand + 1);
     };
+    AbstractChosen.prototype.fixup_width = function(width) {
+      var format_regex;
+      format_regex = new RegExp('(px|em|ex|%|in|cm|mm|pt|pc)$', 'i');
+      if (!format_regex.test(width)) {
+        return "" + width + "px";
+      }
+      return width;
+    };
     return AbstractChosen;
   })();
   root.AbstractChosen = AbstractChosen;
@@ -278,7 +286,7 @@
       container_div = $("<div />", {
         id: this.container_id,
         "class": "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
-        width: this.options.width ? this.options.width : "" + this.f_width + "px"
+        width: this.fixup_width(this.options.width ? this.options.width : this.f_width)
       });
       if (this.is_multiple) {
         container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');

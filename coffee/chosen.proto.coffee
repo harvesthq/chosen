@@ -26,7 +26,7 @@ class Chosen extends AbstractChosen
     
     @f_width = if @form_field.getStyle("width") then parseInt @form_field.getStyle("width"), 10 else @form_field.getWidth()
     
-    container_width = if @options.width then @options.width else "#{@f_width}px"
+    container_width = this.fixup_width(if @options.width then @options.width else @f_width)
     container_props =
       'id': @container_id
       'class': "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"

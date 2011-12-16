@@ -225,6 +225,14 @@
       rand = Math.floor(Math.random() * chars.length);
       return newchar = chars.substring(rand, rand + 1);
     };
+    AbstractChosen.prototype.fixup_width = function(width) {
+      var format_regex;
+      format_regex = new RegExp('(px|em|ex|%|in|cm|mm|pt|pc)$', 'i');
+      if (!format_regex.test(width)) {
+        return "" + width + "px";
+      }
+      return width;
+    };
     return AbstractChosen;
   })();
   root.AbstractChosen = AbstractChosen;
@@ -266,7 +274,7 @@
       var base_template, container_props, container_width, dd_top, dd_width;
       this.container_id = this.form_field.identify().replace(/(:|\.)/g, '_') + "_chzn";
       this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
-      container_width = this.options.width ? this.options.width : "" + this.f_width + "px";
+      container_width = this.fixup_width(this.options.width ? this.options.width : this.f_width);
       container_props = {
         'id': this.container_id,
         'class': "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
