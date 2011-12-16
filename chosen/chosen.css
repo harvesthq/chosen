@@ -146,12 +146,7 @@
   left: -9000px;
 }
 .chzn-container-single .chzn-drop .chzn-results { 
-  margin: 28px 4px 4px 0;
-  max-height: 190px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 0 0 0 4px;
-  position: relative;
+  margin-top: 28px;
 }
 /* @group Multi Chosen */
 .chzn-container-multi .chzn-choices {
@@ -240,9 +235,6 @@
 }
 .chzn-container-multi .chzn-choices .search-choice-focus .search-choice-close {
   background-position: right -11px;
-}
-.chzn-container-multi .chzn-drop {
-  width: 100%;
 }
 /* @end */
 
