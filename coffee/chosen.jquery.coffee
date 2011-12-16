@@ -46,11 +46,7 @@ class Chosen extends AbstractChosen
     @container = ($ '#' + @container_id)
     @container.addClass( "chzn-container-" + (if @is_multiple then "multi" else "single") )
     @dropdown = @container.find('div.chzn-drop').first()
-    
-    dd_top = @container.height()
-    dd_width = (@f_width - get_side_border_padding(@dropdown))
-    
-    @dropdown.css({"top": dd_top + "px"})
+    @dropdown.css({"top": "#{@container.height()}px"})
 
     @search_field = @container.find('input').first()
     @search_results = @container.find('ul.chzn-results').first()
@@ -532,9 +528,7 @@ class Chosen extends AbstractChosen
         w = @f_width - 10
 
       @search_field.css({'width': w + 'px'})
-
-      dd_top = @container.height()
-      @dropdown.css({"top":  dd_top + "px"})
+      @dropdown.css({"top": "#{@container.height()}px"})
   
   generate_random_id: ->
     string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()

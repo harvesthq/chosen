@@ -40,11 +40,7 @@ class Chosen extends AbstractChosen
     @container = $(@container_id)
     @container.addClassName( "chzn-container-" + (if @is_multiple then "multi" else "single") )
     @dropdown = @container.down('div.chzn-drop')
-    
-    dd_top = @container.getHeight()
-    dd_width = (@f_width - get_side_border_padding(@dropdown))
-    
-    @dropdown.setStyle({"top": dd_top + "px"})
+    @dropdown.setStyle({"top": "#{@container.getHeight()}px"})
 
     @search_field = @container.down('input')
     @search_results = @container.down('ul.chzn-results')
@@ -528,9 +524,7 @@ class Chosen extends AbstractChosen
         w = @f_width - 10
 
       @search_field.setStyle({'width': w + 'px'})
-
-      dd_top = @container.getHeight()
-      @dropdown.setStyle({"top":  dd_top + "px"})
+      @dropdown.setStyle({"top":  "#{@container.getHeight()}px"})
 
 root.Chosen = Chosen
 

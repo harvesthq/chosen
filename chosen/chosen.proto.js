@@ -271,7 +271,7 @@
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
     };
     Chosen.prototype.set_up_html = function() {
-      var base_template, container_props, container_width, dd_top, dd_width;
+      var base_template, container_props, container_width;
       this.container_id = this.form_field.identify().replace(/(:|\.)/g, '_') + "_chzn";
       this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
       container_width = this.fixup_width(this.options.width ? this.options.width : this.f_width);
@@ -292,10 +292,8 @@
       this.container = $(this.container_id);
       this.container.addClassName("chzn-container-" + (this.is_multiple ? "multi" : "single"));
       this.dropdown = this.container.down('div.chzn-drop');
-      dd_top = this.container.getHeight();
-      dd_width = this.f_width - get_side_border_padding(this.dropdown);
       this.dropdown.setStyle({
-        "top": dd_top + "px"
+        "top": "" + (this.container.getHeight()) + "px"
       });
       this.search_field = this.container.down('input');
       this.search_results = this.container.down('ul.chzn-results');
@@ -871,7 +869,7 @@
       }
     };
     Chosen.prototype.search_field_scale = function() {
-      var dd_top, div, h, style, style_block, styles, w, _i, _len;
+      var div, h, style, style_block, styles, w, _i, _len;
       if (this.is_multiple) {
         h = 0;
         w = 0;
@@ -893,9 +891,8 @@
         this.search_field.setStyle({
           'width': w + 'px'
         });
-        dd_top = this.container.getHeight();
         return this.dropdown.setStyle({
-          "top": dd_top + "px"
+          "top": "" + (this.container.getHeight()) + "px"
         });
       }
     };
