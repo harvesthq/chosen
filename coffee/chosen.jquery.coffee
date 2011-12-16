@@ -31,10 +31,11 @@ class Chosen extends AbstractChosen
     
     @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
     
+    container_width = this.fixup_width(if @options.width then @options.width else @f_width)
     container_div = ($ "<div />", {
       id: @container_id
       class: "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
-      width: this.fixup_width(if @options.width then @options.width else @f_width)
+      style: "width:#{container_width};"
     })
     
     if @is_multiple

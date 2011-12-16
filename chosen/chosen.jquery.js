@@ -278,15 +278,16 @@
       return this.form_field_jq.addClass("chzn-done");
     };
     Chosen.prototype.set_up_html = function() {
-      var container_div;
+      var container_div, container_width;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/(:|\.)/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
       this.f_width = this.form_field_jq.outerWidth();
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
+      container_width = this.fixup_width(this.options.width ? this.options.width : this.f_width);
       container_div = $("<div />", {
         id: this.container_id,
         "class": "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
-        width: this.fixup_width(this.options.width ? this.options.width : this.f_width)
+        style: "width:" + container_width + ";"
       });
       if (this.is_multiple) {
         container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
