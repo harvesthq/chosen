@@ -308,7 +308,7 @@
       </div>
       <div>
         <em>Into This</em>        
-        <select data-placeholder="Choose a Country..." class="chzn-select" style="width:350px;" tabindex="2">
+        <select data-placeholder="Choose a Country..." class="chzn-select-create-option" style="width:350px;" tabindex="2">
           <option value=""></option> 
           <option value="United States">United States</option> 
           <option value="United Kingdom">United Kingdom</option> 
@@ -1297,6 +1297,11 @@
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
   <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
-  <script type="text/javascript"> $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true}); </script>
+  <script type="text/javascript">
+    $(".chzn-select").chosen();
+    $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+    $(".chzn-select-create-option").chosen({create_option: true,
+           persistent_create_option: true});
+  </script>
   </form>
 </body>
