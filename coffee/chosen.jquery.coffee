@@ -202,7 +202,24 @@ class Chosen extends AbstractChosen
       '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
     else
       ""
-  
+
+  result_add_option: (option) ->
+    if not option.disabled
+      option.dom_id = @container_id + "_o_" + option.array_index
+
+      classes = if option.selected and @is_multiple then [] else ["active-result"]
+      classes.push "result-selected" if option.selected
+      classes.push "group-option" if option.group_array_index?
+
+      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>'
+    else
+      ""
+
+  results_update_field: ->
+    this.result_clear_highlight()
+    @result_single_selected = null
+    this.results_build()
+
   result_do_highlight: (el) ->
     if el.length
       this.result_clear_highlight()
@@ -279,7 +296,6 @@ class Chosen extends AbstractChosen
 
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
-
 
   choices_click: (evt) ->
     evt.preventDefault()
@@ -377,13 +393,17 @@ class Chosen extends AbstractChosen
 
   winnow_results: ->
     this.no_results_clear()
+    this.create_option_clear()
     
     results = 0
 
     searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
     regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-
+    eregex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&") + '$', 'i')
+    
+    exact_result = false
+    
     for option in @results_data
       if not option.disabled and not option.empty
         if option.group
@@ -396,6 +416,10 @@ class Chosen extends AbstractChosen
           if regex.test option.html
             found = true
             results += 1
+            if eregex.test option.html
+              exact_result = true
+            
+            
           else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
             parts = option.html.replace(/\[|\]/g, "").split(" ")
@@ -424,6 +448,7 @@ class Chosen extends AbstractChosen
     if results < 1 and searchText.length
       this.no_results searchText
     else
+      this.show_create_option( searchText ) if @create_option and not exact_result and @persistent_create_option and searchText.length
       this.winnow_results_set_highlight()
 
   winnow_results_clear: ->
@@ -445,11 +470,34 @@ class Chosen extends AbstractChosen
 
       this.result_do_highlight do_high if do_high?
   
-  no_results: (terms) ->
+  no_results: (terms, selected) ->
     no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
     no_results_html.find("span").first().html(terms)
-
+    
     @search_results.append no_results_html
+    
+    if @create_option #and not selected
+      this.show_create_option( terms )
+
+  show_create_option: (terms) ->
+    create_option_html = $('<li class="create-option"><a href="javascript:void(0);">' + @create_option_text + '</a>: "' + terms + '"</li>').bind "click", (evt) => this.select_create_option(terms)
+    @search_results.append create_option_html
+    
+  create_option_clear: ->
+    @search_results.find(".create-option").remove()
+    
+  select_create_option: (terms) ->
+    if $.isFunction(@create_option)
+      @create_option.call this, terms, this.select_append_option
+    else
+      this.select_append_option {value: terms, text: terms}
+
+  select_append_option: ( options ) ->
+    option = $('<option />', options ).attr('selected', 'selected')
+    @form_field_jq.append option
+    @form_field_jq.trigger "liszt:updated"
+    #@active_field = false
+    @search_field.trigger('focus')
   
   no_results_clear: ->
     @search_results.find(".no-results").remove()
