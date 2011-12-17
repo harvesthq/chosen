@@ -125,11 +125,17 @@
   font-family: sans-serif;
   font-size: 1em;
   width:100%;
-  box-sizing: border-box; /* css3 rec */
-  -moz-box-sizing: border-box; /* ff2 */
-  -ms-box-sizing: border-box; /* ie8 */
-  -webkit-box-sizing: border-box; /* safari3 */
-  -khtml-box-sizing: border-box; /* konqueror */  
+  /* 
+    Force border-box on inputs so that % widths fit the parent
+    search container without overlap because of margin/padding.
+    
+    More Info : http://www.quirksmode.org/css/box.html
+  */
+  -moz-box-sizing: border-box;    /* firefox */
+  -ms-box-sizing: border-box;     /* ie */
+  -webkit-box-sizing: border-box; /* webkit */
+  -khtml-box-sizing: border-box;  /* konqueror */
+  box-sizing: border-box;         /* css3 */
 }
 .chzn-container-single .chzn-drop {
   -webkit-border-radius: 0 0 4px 4px;
