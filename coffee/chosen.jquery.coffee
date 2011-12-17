@@ -220,7 +220,6 @@ class Chosen extends AbstractChosen
     @result_single_selected = null
     this.results_build()
 
-  
   result_do_highlight: (el) ->
     if el.length
       this.result_clear_highlight()
@@ -362,7 +361,7 @@ class Chosen extends AbstractChosen
         @selected_item.find("span").first().text item.text
         this.single_deselect_control_build() if @allow_single_deselect
       
-      this.results_hide() unless (evt and evt.metaKey) and @is_multiple
+      this.results_hide() unless evt.metaKey and @is_multiple
 
       @search_field.val ""
 
