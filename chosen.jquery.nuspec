@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>chosen.jquery</id>
+    <version>$version$</version>
+    <title />
+    <authors>Harvest</authors>
+    <owners />
+    <licenseUrl>https://github.com/harvesthq/chosen/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/harvesthq/chosen</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Chosen is a JavaScript plugin that makes long, unwieldy select boxes much more user-friendly. It is currently available in both jQuery and Prototype flavors.</description>
+    <copyright>Copyright (c) 2011 by Harvest</copyright>
+    <language>en-US</language>
+    <tags>jquery plugins</tags>
+    <dependencies>
+        <dependency id="chosen" version="$version$" />
+        <dependency id="jquery" version="1.4.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="chosen\chosen.jquery.js" target="content\Scripts\chosen.jquery.js" />
+    <file src="chosen\chosen.jquery.min.js" target="content\Scripts\chosen.jquery.min.js" />
+  </files>
+</package>
