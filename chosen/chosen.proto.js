@@ -741,7 +741,7 @@ Copyright (c) 2011 by Harvest
             if (regex.test(option.html)) {
               found = true;
               results += 1;
-            } else if (option.html.indexOf(this.search_separator) >= 0 || option.html.indexOf("[") === 0) {
+            } else if ((this.search_separator.test && this.search_separator.test(option.html)) || option.html.indexOf(this.search_separator) >= 0 || option.html.indexOf("[") === 0) {
               parts = option.html.replace(/\[|\]/g, "").split(this.search_separator);
               if (parts.length) {
                 for (_j = 0, _len2 = parts.length; _j < _len2; _j++) {
