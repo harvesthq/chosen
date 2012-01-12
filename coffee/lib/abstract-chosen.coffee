@@ -105,4 +105,10 @@ class AbstractChosen
     rand = Math.floor(Math.random() * chars.length)
     newchar = chars.substring rand, rand+1
 
+  # Fixup a width string by adding px if no format is specified.
+  fixup_width: (width) ->
+    format_regex = new RegExp('(px|em|ex|%|in|cm|mm|pt|pc)$', 'i')
+    return "#{width}px" if not format_regex.test width
+    return width
+
 root.AbstractChosen = AbstractChosen

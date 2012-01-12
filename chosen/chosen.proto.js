@@ -225,6 +225,14 @@
       rand = Math.floor(Math.random() * chars.length);
       return newchar = chars.substring(rand, rand + 1);
     };
+    AbstractChosen.prototype.fixup_width = function(width) {
+      var format_regex;
+      format_regex = new RegExp('(px|em|ex|%|in|cm|mm|pt|pc)$', 'i');
+      if (!format_regex.test(width)) {
+        return "" + width + "px";
+      }
+      return width;
+    };
     return AbstractChosen;
   })();
   root.AbstractChosen = AbstractChosen;
@@ -263,13 +271,14 @@
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
     };
     Chosen.prototype.set_up_html = function() {
-      var base_template, container_props, dd_top, dd_width, sf_width;
+      var base_template, container_props, container_width;
       this.container_id = this.form_field.identify().replace(/(:|\.)/g, '_') + "_chzn";
       this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
+      container_width = this.fixup_width(this.options.width ? this.options.width : this.f_width);
       container_props = {
         'id': this.container_id,
         'class': "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
-        'style': 'width: ' + this.f_width + 'px'
+        'style': "width:" + container_width + ";"
       };
       this.default_text = this.form_field.readAttribute('data-placeholder') ? this.form_field.readAttribute('data-placeholder') : this.default_text_default;
       base_template = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
@@ -283,11 +292,8 @@
       this.container = $(this.container_id);
       this.container.addClassName("chzn-container-" + (this.is_multiple ? "multi" : "single"));
       this.dropdown = this.container.down('div.chzn-drop');
-      dd_top = this.container.getHeight();
-      dd_width = this.f_width - get_side_border_padding(this.dropdown);
       this.dropdown.setStyle({
-        "width": dd_width + "px",
-        "top": dd_top + "px"
+        "top": "" + (this.container.getHeight()) + "px"
       });
       this.search_field = this.container.down('input');
       this.search_results = this.container.down('ul.chzn-results');
@@ -299,10 +305,6 @@
       } else {
         this.search_container = this.container.down('div.chzn-search');
         this.selected_item = this.container.down('.chzn-single');
-        sf_width = dd_width - get_side_border_padding(this.search_container) - get_side_border_padding(this.search_field);
-        this.search_field.setStyle({
-          "width": sf_width + "px"
-        });
       }
       this.results_build();
       this.set_tab_index();
@@ -867,7 +869,7 @@
       }
     };
     Chosen.prototype.search_field_scale = function() {
-      var dd_top, div, h, style, style_block, styles, w, _i, _len;
+      var div, h, style, style_block, styles, w, _i, _len;
       if (this.is_multiple) {
         h = 0;
         w = 0;
@@ -889,9 +891,8 @@
         this.search_field.setStyle({
           'width': w + 'px'
         });
-        dd_top = this.container.getHeight();
         return this.dropdown.setStyle({
-          "top": dd_top + "px"
+          "top": "" + (this.container.getHeight()) + "px"
         });
       }
     };

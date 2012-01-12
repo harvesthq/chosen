@@ -31,10 +31,11 @@ class Chosen extends AbstractChosen
     
     @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
     
+    container_width = this.fixup_width(if @options.width then @options.width else @f_width)
     container_div = ($ "<div />", {
       id: @container_id
       class: "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
-      style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
+      style: "width:#{container_width};"
     })
     
     if @is_multiple
@@ -46,11 +47,7 @@ class Chosen extends AbstractChosen
     @container = ($ '#' + @container_id)
     @container.addClass( "chzn-container-" + (if @is_multiple then "multi" else "single") )
     @dropdown = @container.find('div.chzn-drop').first()
-    
-    dd_top = @container.height()
-    dd_width = (@f_width - get_side_border_padding(@dropdown))
-    
-    @dropdown.css({"width": dd_width  + "px", "top": dd_top + "px"})
+    @dropdown.css({"top": "#{@container.height()}px"})
 
     @search_field = @container.find('input').first()
     @search_results = @container.find('ul.chzn-results').first()
@@ -64,8 +61,6 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.find('div.chzn-search').first()
       @selected_item = @container.find('.chzn-single').first()
-      sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
-      @search_field.css( {"width" : sf_width + "px"} )
     
     this.results_build()
     this.set_tab_index()
@@ -534,9 +529,7 @@ class Chosen extends AbstractChosen
         w = @f_width - 10
 
       @search_field.css({'width': w + 'px'})
-
-      dd_top = @container.height()
-      @dropdown.css({"top":  dd_top + "px"})
+      @dropdown.css({"top": "#{@container.height()}px"})
   
   generate_random_id: ->
     string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()

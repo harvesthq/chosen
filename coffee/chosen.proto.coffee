@@ -26,10 +26,11 @@ class Chosen extends AbstractChosen
     
     @f_width = if @form_field.getStyle("width") then parseInt @form_field.getStyle("width"), 10 else @form_field.getWidth()
     
+    container_width = this.fixup_width(if @options.width then @options.width else @f_width)
     container_props =
       'id': @container_id
       'class': "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
-      'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
+      'style': "width:#{container_width};"
     
     @default_text = if @form_field.readAttribute 'data-placeholder' then @form_field.readAttribute 'data-placeholder' else @default_text_default
     
@@ -39,11 +40,7 @@ class Chosen extends AbstractChosen
     @container = $(@container_id)
     @container.addClassName( "chzn-container-" + (if @is_multiple then "multi" else "single") )
     @dropdown = @container.down('div.chzn-drop')
-    
-    dd_top = @container.getHeight()
-    dd_width = (@f_width - get_side_border_padding(@dropdown))
-    
-    @dropdown.setStyle({"width": dd_width  + "px", "top": dd_top + "px"})
+    @dropdown.setStyle({"top": "#{@container.getHeight()}px"})
 
     @search_field = @container.down('input')
     @search_results = @container.down('ul.chzn-results')
@@ -57,8 +54,6 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.down('div.chzn-search')
       @selected_item = @container.down('.chzn-single')
-      sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
-      @search_field.setStyle( {"width" : sf_width + "px"} )
     
     this.results_build()
     this.set_tab_index()
@@ -529,9 +524,7 @@ class Chosen extends AbstractChosen
         w = @f_width - 10
 
       @search_field.setStyle({'width': w + 'px'})
-
-      dd_top = @container.getHeight()
-      @dropdown.setStyle({"top":  dd_top + "px"})
+      @dropdown.setStyle({"top":  "#{@container.getHeight()}px"})
 
 root.Chosen = Chosen
 

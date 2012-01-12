@@ -225,6 +225,14 @@
       rand = Math.floor(Math.random() * chars.length);
       return newchar = chars.substring(rand, rand + 1);
     };
+    AbstractChosen.prototype.fixup_width = function(width) {
+      var format_regex;
+      format_regex = new RegExp('(px|em|ex|%|in|cm|mm|pt|pc)$', 'i');
+      if (!format_regex.test(width)) {
+        return "" + width + "px";
+      }
+      return width;
+    };
     return AbstractChosen;
   })();
   root.AbstractChosen = AbstractChosen;
@@ -270,15 +278,16 @@
       return this.form_field_jq.addClass("chzn-done");
     };
     Chosen.prototype.set_up_html = function() {
-      var container_div, dd_top, dd_width, sf_width;
+      var container_div, container_width;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/(:|\.)/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
       this.f_width = this.form_field_jq.outerWidth();
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
+      container_width = this.fixup_width(this.options.width ? this.options.width : this.f_width);
       container_div = $("<div />", {
         id: this.container_id,
         "class": "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
-        style: 'width: ' + this.f_width + 'px;'
+        style: "width:" + container_width + ";"
       });
       if (this.is_multiple) {
         container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
@@ -289,11 +298,8 @@
       this.container = $('#' + this.container_id);
       this.container.addClass("chzn-container-" + (this.is_multiple ? "multi" : "single"));
       this.dropdown = this.container.find('div.chzn-drop').first();
-      dd_top = this.container.height();
-      dd_width = this.f_width - get_side_border_padding(this.dropdown);
       this.dropdown.css({
-        "width": dd_width + "px",
-        "top": dd_top + "px"
+        "top": "" + (this.container.height()) + "px"
       });
       this.search_field = this.container.find('input').first();
       this.search_results = this.container.find('ul.chzn-results').first();
@@ -305,10 +311,6 @@
       } else {
         this.search_container = this.container.find('div.chzn-search').first();
         this.selected_item = this.container.find('.chzn-single').first();
-        sf_width = dd_width - get_side_border_padding(this.search_container) - get_side_border_padding(this.search_field);
-        this.search_field.css({
-          "width": sf_width + "px"
-        });
       }
       this.results_build();
       this.set_tab_index();
@@ -851,7 +853,7 @@
       }
     };
     Chosen.prototype.search_field_scale = function() {
-      var dd_top, div, h, style, style_block, styles, w, _i, _len;
+      var div, h, style, style_block, styles, w, _i, _len;
       if (this.is_multiple) {
         h = 0;
         w = 0;
@@ -874,9 +876,8 @@
         this.search_field.css({
           'width': w + 'px'
         });
-        dd_top = this.container.height();
         return this.dropdown.css({
-          "top": dd_top + "px"
+          "top": "" + (this.container.height()) + "px"
         });
       }
     };
