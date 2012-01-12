@@ -24,7 +24,7 @@ First, make sure you have the proper CoffeeScript / Cake set-up in place.
 
 1. Install Coffeescript: the [CoffeeScript documentation](http://jashkenas.github.com/coffee-script/) provides easy-to-follow instructions.
 2. Install UglifyJS: <code>npm -g install uglify-js</code>
-3. Verify that your $NODE_PATH is properly configured using <code>echo $NODE_PATH</code>
+3. Verify that your $NODE_PATH is properly configured using <code>echo $NODE_PATH</code>; e.g. /usr/lib/node_modules
 
 Once you're configured, building the JavasScript from the command line is easy:
 

@@ -90,6 +90,8 @@ class Chosen extends AbstractChosen
     if @is_multiple
       @search_choices.click (evt) => this.choices_click(evt)
       @search_field.focus (evt) => this.input_focus(evt)
+    else
+      @container.click (evt) => evt.preventDefault() # gobble click of anchor
 
   search_field_disabled: ->
     @is_disabled = @form_field_jq[0].disabled
