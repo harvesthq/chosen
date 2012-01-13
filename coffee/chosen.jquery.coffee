@@ -27,14 +27,13 @@ class Chosen extends AbstractChosen
     @container_id = if @form_field.id.length then @form_field.id.replace(/(:|\.)/g, '_') else this.generate_field_id()
     @container_id += "_chzn"
     
-    @f_width = @form_field_jq.outerWidth()
-    
-    @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
+    @width = @options.width or (@form_field_jq.outerWidth() + 'px')
+    @default_text = @form_field_jq.data 'placeholder' or @default_text_default
     
     container_div = ($ "<div />", {
       id: @container_id
       class: "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
-      style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
+      style: 'width: ' + @width
     })
     
     if @is_multiple
@@ -48,9 +47,8 @@ class Chosen extends AbstractChosen
     @dropdown = @container.find('div.chzn-drop').first()
     
     dd_top = @container.height()
-    dd_width = (@f_width - get_side_border_padding(@dropdown))
     
-    @dropdown.css({"width": dd_width  + "px", "top": dd_top + "px"})
+    @dropdown.css({"top": dd_top + "px"})
 
     @search_field = @container.find('input').first()
     @search_results = @container.find('ul.chzn-results').first()
@@ -64,12 +62,25 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.find('div.chzn-search').first()
       @selected_item = @container.find('.chzn-single').first()
-      sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
-      @search_field.css( {"width" : sf_width + "px"} )
     
     this.results_build()
     this.set_tab_index()
     @form_field_jq.trigger("liszt:ready", {chosen: this})
+
+  set_dropdown_width: ->
+    containerWidth = @container.outerWidth()
+    borderPaddingFromDropdown = get_side_border_padding(@dropdown)
+    width = containerWidth - borderPaddingFromDropdown
+    @dropdown.css({'width': width})
+
+  set_search_field_width: ->
+    return if @is_multiple
+    dropdownWidth = @dropdown.outerWidth()
+    borderPaddingFromSearchContainer = get_side_border_padding(@search_container)
+    borderPaddingFromDropdown = get_side_border_padding(@dropdown)
+    borderPaddingFromSearchField = get_side_border_padding(@search_field)
+    width = dropdownWidth - borderPaddingFromSearchContainer - borderPaddingFromDropdown - borderPaddingFromSearchField
+    @search_field.css({'width': width})
 
   register_observers: ->
     @container.mousedown (evt) => this.container_mousedown(evt)
@@ -107,9 +118,11 @@ class Chosen extends AbstractChosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
-      target_closelink =  if evt? then ($ evt.target).hasClass "search-choice-close" else false
+      set_dropdown_width()
+      set_search_field_width()
       if evt and evt.type is "mousedown"
         evt.stopPropagation()
+      target_closelink =  if evt? then ($ evt.target).hasClass "search-choice-close" else false
       if not @pending_destroy_click and not target_closelink
         if not @active_field
           @search_field.val "" if @is_multiple
@@ -531,9 +544,6 @@ class Chosen extends AbstractChosen
 
       w = div.width() + 25
       div.remove()
-
-      if( w > @f_width-10 )
-        w = @f_width - 10
 
       @search_field.css({'width': w + 'px'})
 
