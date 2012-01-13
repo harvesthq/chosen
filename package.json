@@ -1,7 +1,7 @@
 {
   "author": "harvest",
   "name": "chosen",
-  "version": "0.9.5-35-g880a30d",
+  "version": "0.9.6",
   "description": "Chosen is a JavaScript plugin that makes long, unwieldy select boxes much more user-friendly. It is currently available in both jQuery and Prototype flavors.",
   "repository": {
     "type": "git",
@@ -10,9 +10,9 @@
   "engines": {
     "node": ">=0.4.0"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "coffee-script": ">= 1.2.0",
     "uglify-js": ">= 1.2.3"
-  },
-  "devDependencies": {}
+  }
 }
