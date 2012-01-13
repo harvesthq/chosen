@@ -146,14 +146,20 @@
   background-clip        : padding-box;
 }
 /* @end */
-
-.chzn-container-single-nosearch .chzn-search input {
+.chzn-container-single-nosearch .chzn-search, .chzn-container-single-nosearch .chzn-search input {
   position: absolute;
   left: -9000px;
+  right: 9000px;
 }
+
 .chzn-container-single .chzn-drop .chzn-results { 
   margin-top: 28px;
 }
+
+.chzn-container-single-nosearch .chzn-drop .chzn-results {
+  margin-top:4px;
+}
+
 /* @group Multi Chosen */
 .chzn-container-multi .chzn-choices {
   width: 100%;

@@ -1203,6 +1203,28 @@
       </div>
     </div>
 
+    <h2>Hide Search on Single Select</h2>
+    <div class="side-by-side clearfix">
+      <p>The disable_search_threshold option can be specified to hide the search input on single selects if there are fewer than (n) options.</p>
+      <code>
+        $(".chzn-select").chosen({disable_search_threshold: 10});
+      </code>
+      <p></p>
+      <div>
+        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select-no-single" tabindex="9">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option selected>Sloth Bear</option>
+          <option disabled>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option disabled>Spectacled Bear</option>
+        </select>
+      </div>
+    </div>
+    
     <h2>Default Text Support</h2>
     <div class="side-by-side clearfix">
       <p>Chosen automatically sets the default field text ("Choose a country...") by reading the select element's data-placeholder value. If no data-placeholder value is present, it will default to "Select Some Option" or "Select Some Options" depending on whether the select is single or multiple. You can change these elements in the plugin js file as you see fit.</p>
@@ -1214,15 +1236,44 @@
     <div class="side-by-side clearfix">
       <p>Setting the "No results" search text is as easy as passing an option when you create Chosen:</p>
       <code>
-        $(".chzn-select").chosen({no_results_text: "No results matched"});
+        $(".chzn-select").chosen({no_results_text: "Oops, nothing found!"});
       </code>
+      <p></p>
+      <div>
+        <em>Single Select</em>
+        <select data-placeholder="Type 'C' to view" style="width:350px;" class="chzn-select-no-results" tabindex="10">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option>Sloth Bear</option>
+          <option>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option>Spectacled Bear</option>
+        </select>
+      </div>
+      <div>
+        <em>Multiple Select</em>
+        <select data-placeholder="Type 'C' to view" style="width:350px;" multiple class="chzn-select-no-results" tabindex="11">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option>Sloth Bear</option>
+          <option>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option>Spectacled Bear</option>
+        </select>
+      </div>      
     </div>
     
     <h2>Allow Deselect on Single Selects</h2>
     <div class="side-by-side clearfix">
       <p>When a single select box isn't a required field, you can set <code>allow_single_deselect: true</code> and Chosen will add a UI element for option deselection. This will only work if the first option has blank text.</p>
       <div class="side-by-side clearfix">
-        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select-deselect" tabindex="7">
+        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select-deselect" tabindex="12">
           <option value=""></option>
           <option>American Black Bear</option>
           <option>Asiatic Black Bear</option>
@@ -1242,7 +1293,7 @@
       <p><code>&lt;select class="chzn-select <strong>chzn-rtl</strong>"&gt;</code></p>
       <div>
         <em>Single right to left select</em>
-        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select chzn-rtl" tabindex="9">
+        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select chzn-rtl" tabindex="13">
           <option value=""></option>
           <option>American Black Bear</option>
           <option>Asiatic Black Bear</option>
@@ -1254,7 +1305,7 @@
       </div>
       <div>
         <em>Multiple right to left select</em>
-        <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select  chzn-rtl" tabindex="10">
+        <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select  chzn-rtl" tabindex="14">
           <option value=""></option>
           <option>American Black Bear</option>
           <option>Asiatic Black Bear</option>
@@ -1287,12 +1338,42 @@
     </div>
 
     <h2>Custom Width Support</h2>
-    <p>Using a custom width with Chosen is as easy as passing an option when you create Chosen:</p>
-    <ul>
-      <li><strong>Resize to parent width</strong> : <code>$(".chzn-select").chosen({width: "100%"});</code></li>
-      <li><strong>Specify width in em</strong> : <code>$(".chzn-select").chosen({width: "40em"});</code></li>
-      <li><strong>Default to px if unspecified</strong> : <code>$(".chzn-select").chosen({width: 200});</code></li>
-    </ul>
+    <div class="side-by-side clearfix">
+      <p>Using a custom width with Chosen is as easy as passing an option when you create Chosen:</p>
+      <code>
+        $(".chzn-select").chosen({width: "95%"});
+      </code>
+      <p></p>
+      <div>
+        <em>Single Select</em>
+        <select data-placeholder="Your Favorite Types of Bear" class="chzn-select-width" tabindex="11">
+          <option value=""></option>
+          <option selected>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option>Sloth Bear</option>
+          <option>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option>Spectacled Bear</option>
+        </select>
+      </div>
+      <div>
+        <em>Multiple Select</em>
+        <select data-placeholder="Your Favorite Types of Bear" multiple class="chzn-select-width" tabindex="12">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option selected>Giant Panda</option>
+          <option>Sloth Bear</option>
+          <option>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option>Spectacled Bear</option>
+        </select>
+      </div>
+    </div>
+
     
     <h2>Setup (for jQuery)</h2>
     <p>Using Chosen is easy as can be.</p>
@@ -1305,6 +1386,18 @@
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
   <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
-  <script type="text/javascript"> $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true}); </script>
+  <script type="text/javascript"> 
+    var config = {
+      '.chzn-select'           : {},
+      '.chzn-select-deselect'  : {allow_single_deselect:true},
+      '.chzn-select-no-single' : {disable_search_threshold:10},
+      '.chzn-select-no-results': {no_results_text:'Oops, nothing found!'},
+      '.chzn-select-width'     : {width:"95%"}
+    }
+    for (var selector in config) {
+      $(selector).chosen(config[selector]);
+    }
+  </script>
   </form>
 </body>
+</html>
