@@ -118,8 +118,8 @@ class Chosen extends AbstractChosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
-      set_dropdown_width()
-      set_search_field_width()
+      this.set_dropdown_width()
+      this.set_search_field_width()
       if evt and evt.type is "mousedown"
         evt.stopPropagation()
       target_closelink =  if evt? then ($ evt.target).hasClass "search-choice-close" else false
