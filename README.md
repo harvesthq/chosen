@@ -47,3 +47,4 @@ If you're interested, you can find the recipes in Cakefile.
 
 - [Chosen for MooTools](https://github.com/julesjanssen/chosen), by Jules Janssen
 - [Chosen Drupal 7 Module](http://drupal.org/project/chosen), by Pol Dell'Aiera, Arshad Chummun, Bart Feenstra, Kálmán Hosszu, etc.
+- [Chosen CakePHP Plugin](https://github.com/paulredmond/chosen-cakephp), by Paul Redmond
