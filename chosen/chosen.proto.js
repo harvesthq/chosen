@@ -441,6 +441,7 @@ Copyright (c) 2011 by Harvest
       }
       this.active_field = false;
       this.results_hide();
+      if (Event.simulate) Event.simulate(this.form_field, "blur");
       this.container.removeClassName("chzn-container-active");
       this.winnow_results_clear();
       this.clear_backstroke();
@@ -453,6 +454,7 @@ Copyright (c) 2011 by Harvest
         this.search_field.tabIndex = this.selected_item.tabIndex;
         this.selected_item.tabIndex = -1;
       }
+      if (Event.simulate) Event.simulate(this.form_field, "focus");
       this.container.addClassName("chzn-container-active");
       this.active_field = true;
       this.search_field.value = this.search_field.value;

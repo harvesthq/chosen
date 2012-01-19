@@ -1316,4 +1316,36 @@
     return _results;
   });
   </script>
+  <script src="http://protolicious.googlecode.com/svn/trunk/src/event.simulate.js"></script>
+	<script type="text/javascript">
+	(function($) {
+		document.observe('dom:loaded',function() {
+			
+			var snitch = new Element('div', { id: 'focus-snitch' });
+			document.body.appendChild(snitch);
+			document.head.appendChild(new Element('style').update('#focus-snitch {\
+					position: fixed;\
+					top: 10px;\
+					left: 10px;\
+					height: 20px;\
+					width: 200px;\
+					background: rgba(255,255,255,.8);\
+					border: 1px solid black;\
+				}'));
+			
+			$$('select').forEach(function(sel) {
+				sel.onfocus = function() {
+					snitch.update('Select got focus');
+				};
+				sel.onblur = function() {
+					snitch.update('Select lost focus');
+					setTimeout(function() {
+						snitch.update('');
+					}, 1000);
+				};
+			});
+		});
+	})(Prototype);
+	</script>
+  </form>
 </body>

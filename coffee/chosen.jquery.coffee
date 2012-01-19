@@ -139,6 +139,7 @@ class Chosen extends AbstractChosen
     @active_field = false
     this.results_hide()
 
+    @form_field_jq.trigger "blur"
     @container.removeClass "chzn-container-active"
     this.winnow_results_clear()
     this.clear_backstroke()
@@ -151,6 +152,7 @@ class Chosen extends AbstractChosen
       @search_field.attr "tabindex", (@selected_item.attr "tabindex")
       @selected_item.attr "tabindex", -1
 
+    @form_field_jq.trigger "focus"
     @container.addClass "chzn-container-active"
     @active_field = true
 
