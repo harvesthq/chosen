@@ -115,6 +115,7 @@
       this.result_single_selected = null;
       this.allow_single_deselect = (this.options.allow_single_deselect != null) && (this.form_field.options[0] != null) && this.form_field.options[0].text === "" ? this.options.allow_single_deselect : false;
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
+      this.show_default_text_always = this.options.show_default_text_always || false;
       this.choices = 0;
       return this.results_none_found = this.options.no_results_text || "No results match";
     };
@@ -390,7 +391,7 @@
         if (!this.pending_destroy_click && !target_closelink) {
           if (!this.active_field) {
             if (this.is_multiple) {
-              this.search_field.val("");
+				      this.search_field.val("");
             }
             $(document).click(this.click_test_action);
             this.results_show();
@@ -562,7 +563,7 @@
         this.search_field.val(this.default_text);
         return this.search_field.addClass("default");
       } else {
-        this.search_field.val("");
+		    this.show_default_text_always ?  this.search_field.val(this.default_text) : this.search_field.val("");
         return this.search_field.removeClass("default");
       }
     };
@@ -658,7 +659,7 @@
         if (!(evt.metaKey && this.is_multiple)) {
           this.results_hide();
         }
-        this.search_field.val("");
+        this.show_default_text_always ?  this.search_field.val(this.default_text) : this.search_field.val("");
         this.form_field_jq.trigger("change");
         return this.search_field_scale();
       }
