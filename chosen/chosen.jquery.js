@@ -299,9 +299,10 @@ Copyright (c) 2011 by Harvest
       this.container_id += "_chzn";
       this.f_width = this.form_field_jq.outerWidth();
       this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
+      this.container_classes = this.form_field_jq.attr('class');
       container_div = $("<div />", {
         id: this.container_id,
-        "class": "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
+        "class": "chzn-container " + this.container_classes + (this.is_rtl ? ' chzn-rtl' : ''),
         style: 'width: ' + this.f_width + 'px;'
       });
       if (this.is_multiple) {
