@@ -35,7 +35,7 @@ p { margin: 0 0 .7em; max-width: 700px; }
 h2 { border-bottom: 1px solid #ccc; font-size: 1.2em; margin: 3em 0 1em 0; font-weight: bold;}
 h3 { font-weight: bold; }
 
-h2.intro { border-bottom: none; font-size: 1em; font-weight: normal; }
+h2.intro { border-bottom: none; font-size: 1em; font-weight: normal; margin-top:0; }
 
 ul li { list-style: disc; margin-left: 1em; margin-bottom: 1.25em; }
 ol li { margin-left: 1.25em; }
