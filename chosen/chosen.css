@@ -193,8 +193,6 @@
   padding: 3px 20px 3px 5px;
   margin: 3px 0 3px 5px;
   position: relative;
-}
-.chzn-container-multi .chzn-choices .search-choice span {
   cursor: default;
 }
 .chzn-container-multi .chzn-choices .search-choice-focus {
