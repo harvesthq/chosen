@@ -257,7 +257,10 @@ class Chosen extends AbstractChosen
       @search_field.value = @default_text
       @search_field.addClassName "default"
     else
-      @search_field.value = ""
+      if @show_default_text_always 
+        @search_field.value = @default_text 
+      else 
+        @search_field.value = ""
       @search_field.removeClassName "default"
 
   search_results_mouseup: (evt) ->
@@ -340,7 +343,10 @@ class Chosen extends AbstractChosen
 
       this.results_hide() unless evt.metaKey and @is_multiple
 
-      @search_field.value = ""
+      if @show_default_text_always 
+        @search_field.value = @default_text 
+      else 
+        @search_field.value = ""
 
       @form_field.simulate("change") if typeof Event.simulate is 'function'
       this.search_field_scale()
