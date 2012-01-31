@@ -77,7 +77,8 @@ task 'build', 'build Chosen from source', build = (cb) ->
         write_chosen_javascript javascript.replace(/\.js$/,'.min.js'), (
           uglify.gen_code uglify.ast_squeeze uglify.ast_mangle parser.parse code
         )
-    cb() if typeof cb is 'function'
+    package_npm () ->
+      cb() if typeof cb is 'function'
   catch e
     print_error e, file_name, file_contents
  
@@ -93,6 +94,17 @@ task 'watch', 'watch coffee/ for changes and build Chosen', ->
           console.log "Saw change in #{file}"
           invoke 'build'
     )(file)
+
+task 'package_npm', 'generate the package.json file for npm', package_npm = (cb) ->
+  try
+    package_file = 'package.json'
+    package = JSON.parse("#{fs.readFileSync package_file}")
+    package['version'] = version()
+    fs.writeFileSync package_file, JSON.stringify(package, null, 2)
+    console.log "Wrote #{package_file}"
+    cb() if typeof cb is 'function'
+  catch e
+    print_error e, package_file
 
 run = (cmd, args, cb, err_cb) ->
   exec "#{cmd} #{args.join(' ')}", (err, stdout, stderr) ->
