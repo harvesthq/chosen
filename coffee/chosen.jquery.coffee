@@ -159,6 +159,7 @@ class Chosen extends AbstractChosen
 
 
   test_active_click: (evt) ->
+    evt.preventDefault()
     if $(evt.target).parents('#' + @container_id).length
       @active_field = true
     else
