@@ -367,6 +367,9 @@ Copyright (c) 2011 by Harvest
       this.form_field_jq.bind("liszt:updated", function(evt) {
         return _this.results_update_field(evt);
       });
+      this.form_field_jq.bind("search", function(evt) {
+        return _this.results_search();
+      });
       this.search_field.blur(function(evt) {
         return _this.input_blur(evt);
       });
