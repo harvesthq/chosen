@@ -345,6 +345,25 @@ class Chosen extends AbstractChosen
       @form_field.simulate("change") if typeof Event.simulate is 'function'
       this.search_field_scale()
 
+  result_add_option: (option) ->
+    if not option.disabled
+      option.dom_id = @container_id + "_o_" + option.array_index
+
+      $li = new Element('li', {'id': option.dom_id})
+      $li.setStyle(option.style)
+      $li.innerHTML = option.html
+      if option.selected
+        $li.addClassName "active-result" if @is_multiple
+        $li.addClassName "result-selected"
+      $li.addClassName "group-option" if option.group_array_index?
+      $li.addClassName option.classes if option.classes != ""
+
+      $container = new Element('div')
+      $container.appendChild($li)
+      return $container.innerHTML
+    else
+      ""
+
   result_activate: (el) ->
     el.addClassName("active-result")
 
