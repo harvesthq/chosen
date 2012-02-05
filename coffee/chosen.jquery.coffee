@@ -354,6 +354,22 @@ class Chosen extends AbstractChosen
       @form_field_jq.trigger "change"
       this.search_field_scale()
 
+  result_add_option: (option) ->
+    if not option.disabled
+      option.dom_id = @container_id + "_o_" + option.array_index
+
+      $li = $('<li id="' + option.dom_id + '">' + option.html + '</li>')
+      $li.attr('style', option.style)
+      if option.selected
+        $li.addClass "active-result" if @is_multiple
+        $li.addClass "result-selected"
+      $li.addClass "group-option" if option.group_array_index?
+      $li.addClass option.classes if option.classes != ""
+
+      $('<div></div>').append($li).html()
+    else
+      ""
+
   result_activate: (el) ->
     el.addClass("active-result")
 
