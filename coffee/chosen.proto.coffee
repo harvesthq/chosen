@@ -362,7 +362,7 @@ class Chosen extends AbstractChosen
     this.result_clear_highlight()
     this.winnow_results()
 
-    @form_field.simulate("change") if typeof Event.simulate is 'function'
+    @form_field.simulate("change", {deselected: @form_field.options[result_data.options_index].value}) if typeof Event.simulate is 'function'
     this.search_field_scale()
     
   single_deselect_control_build: ->

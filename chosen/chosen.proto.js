@@ -713,7 +713,11 @@ Copyright (c) 2011 by Harvest
       result.removeClassName("result-selected").addClassName("active-result").show();
       this.result_clear_highlight();
       this.winnow_results();
-      if (typeof Event.simulate === 'function') this.form_field.simulate("change");
+      if (typeof Event.simulate === 'function') {
+        this.form_field.simulate("change", {
+          deselected: this.form_field.options[result_data.options_index].value
+        });
+      }
       return this.search_field_scale();
     };
 

@@ -714,7 +714,9 @@ Copyright (c) 2011 by Harvest
       result.removeClass("result-selected").addClass("active-result").show();
       this.result_clear_highlight();
       this.winnow_results();
-      this.form_field_jq.trigger("change");
+      this.form_field_jq.trigger("change", {
+        deselected: this.form_field.options[result_data.options_index].value
+      });
       return this.search_field_scale();
     };
 
