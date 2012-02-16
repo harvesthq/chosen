@@ -351,7 +351,7 @@ class Chosen extends AbstractChosen
 
       @search_field.val ""
 
-      @form_field_jq.trigger "change"
+      @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value}
       this.search_field_scale()
 
   result_activate: (el) ->

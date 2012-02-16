@@ -342,7 +342,7 @@ class Chosen extends AbstractChosen
 
       @search_field.value = ""
 
-      @form_field.simulate("change") if typeof Event.simulate is 'function'
+      @form_field.simulate("change", {'selected': @form_field.options[item.options_index].value}) if typeof Event.simulate is 'function'
       this.search_field_scale()
 
   result_activate: (el) ->
