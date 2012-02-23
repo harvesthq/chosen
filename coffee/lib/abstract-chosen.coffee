@@ -8,9 +8,6 @@ class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
     this.set_default_values()
-    
-    @is_multiple = @form_field.multiple
-    @default_text_default = if @is_multiple then "Select Some Options" else "Select an Option"
 
     this.setup()
 
@@ -20,6 +17,9 @@ class AbstractChosen
     this.finish_setup()
 
   set_default_values: ->
+    @is_multiple = @form_field.multiple
+    @default_text_default = if @is_multiple then "Select Some Options" else "Select an Option"
+    
     @click_test_action = (evt) => this.test_active_click(evt)
     @activate_action = (evt) => this.activate_field(evt)
     @active_field = false
@@ -29,6 +29,8 @@ class AbstractChosen
     @result_single_selected = null
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
     @disable_search_threshold = @options.disable_search_threshold || 0
+    @enable_select_all = if @options.enable_select_all? and @is_multiple then @options.enable_select_all else false
+    console.log @enable_select_all
     @choices = 0
     @results_none_found = @options.no_results_text or "No results match"
 
@@ -95,6 +97,8 @@ class AbstractChosen
       when 9, 38, 40, 16, 91, 17
         # don't do anything on these keys
       else this.results_search()
+    
+    this.select_all_toggle() if @enable_select_all
 
   generate_field_id: ->
     new_id = this.generate_random_id()

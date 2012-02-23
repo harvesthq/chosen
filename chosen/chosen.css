@@ -387,3 +387,7 @@
   direction: rtl;
 }
 /* @end */
+
+/* @group Select all options */
+.chzn-select-all { background: #f8f8f8; border-top: 1px solid #ededed; color: #346f9b; cursor:pointer; display: block; font-size: 12px; font-weight: bold; padding: 5px 6px; text-align: center; text-decoration: none; }
+/* @end */

@@ -106,8 +106,6 @@ Copyright (c) 2011 by Harvest
       this.form_field = form_field;
       this.options = options != null ? options : {};
       this.set_default_values();
-      this.is_multiple = this.form_field.multiple;
-      this.default_text_default = this.is_multiple ? "Select Some Options" : "Select an Option";
       this.setup();
       this.set_up_html();
       this.register_observers();
@@ -116,6 +114,8 @@ Copyright (c) 2011 by Harvest
 
     AbstractChosen.prototype.set_default_values = function() {
       var _this = this;
+      this.is_multiple = this.form_field.multiple;
+      this.default_text_default = this.is_multiple ? "Select Some Options" : "Select an Option";
       this.click_test_action = function(evt) {
         return _this.test_active_click(evt);
       };
@@ -129,6 +129,8 @@ Copyright (c) 2011 by Harvest
       this.result_single_selected = null;
       this.allow_single_deselect = (this.options.allow_single_deselect != null) && (this.form_field.options[0] != null) && this.form_field.options[0].text === "" ? this.options.allow_single_deselect : false;
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
+      this.enable_select_all = (this.options.enable_select_all != null) && this.is_multiple ? this.options.enable_select_all : false;
+      console.log(this.enable_select_all);
       this.choices = 0;
       return this.results_none_found = this.options.no_results_text || "No results match";
     };
@@ -204,15 +206,15 @@ Copyright (c) 2011 by Harvest
       switch (stroke) {
         case 8:
           if (this.is_multiple && this.backstroke_length < 1 && this.choices > 0) {
-            return this.keydown_backstroke();
+            this.keydown_backstroke();
           } else if (!this.pending_backstroke) {
             this.result_clear_highlight();
-            return this.results_search();
+            this.results_search();
           }
           break;
         case 13:
           evt.preventDefault();
-          if (this.results_showing) return this.result_select(evt);
+          if (this.results_showing) this.result_select(evt);
           break;
         case 27:
           if (this.results_showing) this.results_hide();
@@ -225,8 +227,9 @@ Copyright (c) 2011 by Harvest
         case 17:
           break;
         default:
-          return this.results_search();
+          this.results_search();
       }
+      if (this.enable_select_all) return this.select_all_toggle();
     };
 
     AbstractChosen.prototype.generate_field_id = function() {
@@ -313,6 +316,7 @@ Copyright (c) 2011 by Harvest
       this.container = $('#' + this.container_id);
       this.container.addClass("chzn-container-" + (this.is_multiple ? "multi" : "single"));
       this.dropdown = this.container.find('div.chzn-drop').first();
+      if (this.enable_select_all) this.select_all_setup();
       dd_top = this.container.height();
       dd_width = this.f_width - get_side_border_padding(this.dropdown);
       this.dropdown.css({
@@ -560,7 +564,8 @@ Copyright (c) 2011 by Harvest
       this.results_showing = true;
       this.search_field.focus();
       this.search_field.val(this.search_field.val());
-      return this.winnow_results();
+      this.winnow_results();
+      if (this.enable_select_all) return this.select_all_toggle();
     };
 
     Chosen.prototype.results_hide = function() {
@@ -572,6 +577,49 @@ Copyright (c) 2011 by Harvest
         "left": "-9000px"
       });
       return this.results_showing = false;
+    };
+
+    Chosen.prototype.select_all_setup = function() {
+      var select_all_temp,
+        _this = this;
+      select_all_temp = $("<a />", {
+        "class": "chzn-select-all"
+      }).html("Select all options");
+      this.dropdown.append(select_all_temp);
+      this.select_all_link = this.dropdown.find(".chzn-select-all").first();
+      return this.select_all_link.click(function(evt) {
+        return _this.select_all_options(evt);
+      });
+    };
+
+    Chosen.prototype.select_all_options = function(evt) {
+      var option, options, _i, _len;
+      evt.preventDefault();
+      options = this.form_field_jq.find("option");
+      for (_i = 0, _len = options.length; _i < _len; _i++) {
+        option = options[_i];
+        if (!option.disabled) option.selected = true;
+      }
+      this.form_field_jq.trigger("liszt:updated");
+      return this.select_all_disable();
+    };
+
+    Chosen.prototype.select_all_disable = function() {
+      return this.select_all_link.hide();
+    };
+
+    Chosen.prototype.select_all_enable = function() {
+      return this.select_all_link.show();
+    };
+
+    Chosen.prototype.select_all_toggle = function() {
+      var actives;
+      actives = this.search_results.find("li.active-result");
+      if (!actives.length || this.search_field.val().length) {
+        return this.select_all_disable();
+      } else {
+        return this.select_all_enable();
+      }
     };
 
     Chosen.prototype.set_tab_index = function(el) {

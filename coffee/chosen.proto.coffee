@@ -20,6 +20,7 @@ class Chosen extends AbstractChosen
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
+    @select_all_temp = new Template('<a href="javascript:void(0)" class="chzn-select-all">#{copy}</a>')
 
   set_up_html: ->
     @container_id = @form_field.identify().replace(/(:|\.)/g, '_') + "_chzn"
@@ -34,11 +35,13 @@ class Chosen extends AbstractChosen
     @default_text = if @form_field.readAttribute 'data-placeholder' then @form_field.readAttribute 'data-placeholder' else @default_text_default
     
     base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
-
+    
     @form_field.hide().insert({ after: base_template })
     @container = $(@container_id)
     @container.addClassName( "chzn-container-" + (if @is_multiple then "multi" else "single") )
     @dropdown = @container.down('div.chzn-drop')
+
+    this.select_all_setup() if @enable_select_all
     
     dd_top = @container.getHeight()
     dd_width = (@f_width - get_side_border_padding(@dropdown))
@@ -233,6 +236,7 @@ class Chosen extends AbstractChosen
     @search_field.value = @search_field.value
 
     this.winnow_results()
+    this.select_all_toggle() if @enable_select_all
 
   results_hide: ->
     @selected_item.removeClassName('chzn-single-with-drop') unless @is_multiple
@@ -240,6 +244,30 @@ class Chosen extends AbstractChosen
     @dropdown.setStyle({"left":"-9000px"})
     @results_showing = false
 
+  select_all_setup: ->
+    @dropdown.insert(@select_all_temp.evaluate({ "copy": "Select all options" }))
+    @select_all_link = @dropdown.down(".chzn-select-all")
+    @select_all_link.observe("click", (evt) => this.select_all_options(evt))
+
+  select_all_options: (evt) ->
+    evt.stop()
+    @form_field.select("option").each (option) ->
+      option.selected = true if not option.disabled
+    @form_field.fire("liszt:updated")
+    this.select_all_disable()
+  
+  select_all_disable: ->
+    @select_all_link.hide()
+  
+  select_all_enable: ->
+    @select_all_link.show()
+    
+  select_all_toggle: ->
+    actives = @search_results.select("li.active-result")
+    if not actives.length or @search_field.value.length
+      this.select_all_disable()
+    else
+      this.select_all_enable()
 
   set_tab_index: (el) ->
     if @form_field.tabIndex

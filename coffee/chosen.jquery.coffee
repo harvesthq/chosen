@@ -47,6 +47,8 @@ class Chosen extends AbstractChosen
     @container.addClass( "chzn-container-" + (if @is_multiple then "multi" else "single") )
     @dropdown = @container.find('div.chzn-drop').first()
     
+    this.select_all_setup() if @enable_select_all
+    
     dd_top = @container.height()
     dd_width = (@f_width - get_side_border_padding(@dropdown))
     
@@ -242,6 +244,7 @@ class Chosen extends AbstractChosen
     @search_field.val @search_field.val()
 
     this.winnow_results()
+    this.select_all_toggle() if @enable_select_all
 
   results_hide: ->
     @selected_item.removeClass "chzn-single-with-drop" unless @is_multiple
@@ -249,6 +252,33 @@ class Chosen extends AbstractChosen
     @dropdown.css {"left":"-9000px"}
     @results_showing = false
 
+  select_all_setup: ->
+    select_all_temp = $("<a />", { class: "chzn-select-all" }).html("Select all options")
+    @dropdown.append(select_all_temp)
+    @select_all_link = @dropdown.find(".chzn-select-all").first()
+    @select_all_link.click((evt) => this.select_all_options(evt))
+
+  select_all_options: (evt) ->
+    evt.preventDefault()
+    
+    options = @form_field_jq.find("option")
+    for option in options
+      option.selected = true if not option.disabled
+    @form_field_jq.trigger("liszt:updated")
+    this.select_all_disable()
+
+  select_all_disable: ->
+    @select_all_link.hide()
+
+  select_all_enable: ->
+    @select_all_link.show()
+
+  select_all_toggle: ->
+    actives = @search_results.find("li.active-result")
+    if not actives.length or @search_field.val().length
+      this.select_all_disable()
+    else
+      this.select_all_enable()
 
   set_tab_index: (el) ->
     if @form_field_jq.attr "tabindex"
