@@ -424,28 +424,22 @@ class Chosen extends AbstractChosen
       if not option.disabled and not option.empty
         if option.group
           $('#' + option.dom_id).css('display', 'none')
+
+          option.search_match = this.winnow_search_match(regex, option.label)
+          text = if searchText.length and option.search_match then this.winnow_search_highlight_match(zregex, option.label, searchText.length) else option.label
+
+          $('#' + option.dom_id).html(text)
+          if option.search_match
+            results += 1
         else if not (@is_multiple and option.selected)
-          found = false
+          found = this.winnow_search_match(regex, option.html)
+          results += 1 if found
           result_id = option.dom_id
           result = $("#" + result_id)
 
-          if regex.test option.html
-            found = true
-            results += 1
-          else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  found = true
-                  results += 1
-
-          if found
-            if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
-              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+          if found or (option.group_array_index? && @results_data[option.group_array_index].search_match)
+            if searchText.length and found
+              text = this.winnow_search_highlight_match(zregex, option.html, searchText.length)
             else
               text = option.html
 

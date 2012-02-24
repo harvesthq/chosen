@@ -231,6 +231,32 @@ Copyright (c) 2011 by Harvest
       }
     };
 
+    AbstractChosen.prototype.winnow_search_match = function(regex, optionText) {
+      var found, part, parts, _i, _len;
+      found = false;
+      if (regex.test(optionText)) {
+        found = true;
+      } else if (this.enable_split_word_search && (optionText.indexOf(" ") >= 0 || optionText.indexOf("[") === 0)) {
+        parts = optionText.replace(/\[|\]/g, "").split(" ");
+        if (parts.length) {
+          for (_i = 0, _len = parts.length; _i < _len; _i++) {
+            part = parts[_i];
+            if (regex.test(part)) {
+              found = true;
+            }
+          }
+        }
+      }
+      return found;
+    };
+
+    AbstractChosen.prototype.winnow_search_highlight_match = function(regex, optionText, searchTextLength) {
+      var startpos, text;
+      startpos = optionText.search(regex);
+      text = optionText.substr(0, startpos + searchTextLength) + '</em>' + optionText.substr(startpos + searchTextLength);
+      return text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
+    };
+
     AbstractChosen.prototype.keyup_checker = function(evt) {
       var stroke, _ref;
       stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
@@ -331,7 +357,7 @@ Copyright (c) 2011 by Harvest
     __extends(Chosen, _super);
 
     function Chosen() {
-      return Chosen.__super__.constructor.apply(this, arguments);
+      Chosen.__super__.constructor.apply(this, arguments);
     }
 
     Chosen.prototype.setup = function() {
@@ -841,7 +867,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, regexAnchor, result, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref;
+      var found, option, regex, regexAnchor, result, result_id, results, searchText, text, zregex, _i, _len, _ref;
       this.no_results_clear();
       results = 0;
       searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
@@ -854,30 +880,22 @@ Copyright (c) 2011 by Harvest
         if (!option.disabled && !option.empty) {
           if (option.group) {
             $('#' + option.dom_id).css('display', 'none');
+            option.search_match = this.winnow_search_match(regex, option.label);
+            text = searchText.length && option.search_match ? this.winnow_search_highlight_match(zregex, option.label, searchText.length) : option.label;
+            $('#' + option.dom_id).html(text);
+            if (option.search_match) {
+              results += 1;
+            }
           } else if (!(this.is_multiple && option.selected)) {
-            found = false;
+            found = this.winnow_search_match(regex, option.html);
+            if (found) {
+              results += 1;
+            }
             result_id = option.dom_id;
             result = $("#" + result_id);
-            if (regex.test(option.html)) {
-              found = true;
-              results += 1;
-            } else if (this.enable_split_word_search && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {
-              parts = option.html.replace(/\[|\]/g, "").split(" ");
-              if (parts.length) {
-                for (_j = 0, _len1 = parts.length; _j < _len1; _j++) {
-                  part = parts[_j];
-                  if (regex.test(part)) {
-                    found = true;
-                    results += 1;
-                  }
-                }
-              }
-            }
-            if (found) {
-              if (searchText.length) {
-                startpos = option.html.search(zregex);
-                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
-                text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
+            if (found || ((option.group_array_index != null) && this.results_data[option.group_array_index].search_match)) {
+              if (searchText.length && found) {
+                text = this.winnow_search_highlight_match(zregex, option.html, searchText.length);
               } else {
                 text = option.html;
               }
