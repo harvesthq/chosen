@@ -373,35 +373,23 @@ class Chosen extends AbstractChosen
 
     results = 0
 
-    searchText = if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
-    regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    @searchText = if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
+    @regex = new RegExp('^' + @searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    @zregex = new RegExp(@searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
       if not option.disabled and not option.empty
         if option.group
-          $(option.dom_id).hide()
+          results += 1 if this.winnow_option_group(option)
         else if not (@is_multiple and option.selected)
-          found = false
+          found = this.winnow_search_match(@regex, option.html)
+          results += 1 if found
+
           result_id = option.dom_id
           
-          if regex.test option.html
-            found = true
-            results += 1
-          else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  found = true
-                  results += 1
-
-          if found
-            if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
-              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+          if found or (option.group_array_index? && @results_data[option.group_array_index].search_match)
+            if @searchText.length and found
+              text = this.winnow_search_highlight_match(@zregex, option.html, @searchText.length)
             else
               text = option.html
 
@@ -414,10 +402,18 @@ class Chosen extends AbstractChosen
             this.result_clear_highlight() if $(result_id) is @result_highlight
             this.result_deactivate $(result_id)
 
-    if results < 1 and searchText.length
-      this.no_results(searchText)
+    if results < 1 and @searchText.length
+      this.no_results(@searchText)
     else
       this.winnow_results_set_highlight()
+
+  winnow_option_group: (group) ->
+    $("#{group.dom_id}").hide()
+    
+    group.search_match = this.winnow_search_match(@regex, group.label)
+    
+    text = if @searchText.length and group.search_match then this.winnow_search_highlight_match(@zregex, group.label, @searchText.length) else group.label
+    $("#{group.dom_id}").update(text)
 
   winnow_results_clear: ->
     @search_field.clear()

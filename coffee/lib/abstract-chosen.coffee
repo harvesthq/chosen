@@ -75,6 +75,24 @@ class AbstractChosen
     else
       this.results_show()
 
+  winnow_search_match: (regex, optionText) ->
+    found = false
+    if regex.test optionText
+      found = true
+    else if optionText.indexOf(" ") >= 0 or optionText.indexOf("[") == 0
+      #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
+      parts = optionText.replace(/\[|\]/g, "").split(" ")
+      if parts.length
+        for part in parts
+          if regex.test part
+            found = true
+    return found
+
+  winnow_search_highlight_match: (regex, optionText, searchTextLength) ->
+    startpos = optionText.search regex
+    text = optionText.substr(0, startpos + searchTextLength) + '</em>' + optionText.substr(startpos + searchTextLength)
+    text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
     this.search_field_scale()
