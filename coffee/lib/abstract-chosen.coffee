@@ -9,7 +9,7 @@ class AbstractChosen
   constructor: (@form_field, @options={}) ->
     this.set_default_values()
     
-    @is_multiple = @form_field.multiple
+    @is_multiple = if @options.allow_multiple_select? and @options.allow_multiple_select is true then @form_field.multiple else false
     @default_text_default = if @is_multiple then "Select Some Options" else "Select an Option"
 
     this.setup()
