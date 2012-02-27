@@ -261,9 +261,20 @@ class Chosen extends AbstractChosen
       @search_field.removeClassName "default"
 
   search_results_mouseup: (evt) ->
-    target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
-    if target
-      @result_highlight = target
+    
+    group = if evt.target.hasClassName("group-result") then evt.target else evt.target.up(".group-result")
+    if group
+      possible_children = group.nextSiblings()
+      for child in possible_children
+        if child.hasClassName("active-result")
+          @result_highlight = $(child)
+          this.result_select({metaKey: null})
+        else if child.hasClassName("group-result")
+          return false
+          
+    option = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
+    if option
+      @result_highlight = option
       this.result_select(evt)
 
   search_results_mouseover: (evt) ->
@@ -380,14 +391,15 @@ class Chosen extends AbstractChosen
     for option in @results_data
       if not option.disabled and not option.empty
         if option.group
-          results += 1 if this.winnow_option_group(option)
+          this.winnow_option_group(option)
         else if not (@is_multiple and option.selected)
           found = this.winnow_search_match(@regex, option.html)
-          results += 1 if found
-
+          
           result_id = option.dom_id
           
           if found or (option.group_array_index? && @results_data[option.group_array_index].search_match)
+            results += 1
+            
             if @searchText.length and found
               text = this.winnow_search_highlight_match(@zregex, option.html, @searchText.length)
             else

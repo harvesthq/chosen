@@ -270,9 +270,16 @@ class Chosen extends AbstractChosen
       @search_field.removeClass "default"
 
   search_results_mouseup: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    if target.length
-      @result_highlight = target
+    group = if $(evt.target).hasClass "group-result" then $(evt.target) else $(evt.target).parents(".group-result").first()
+    if group.length
+      children = group.nextUntil(".group-result", ".active-result")
+      for child in children
+        @result_highlight = $(child)
+        this.result_select({metaKey: null})
+    
+    option = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+    if option.length
+      @result_highlight = option
       this.result_select(evt)
 
   search_results_mouseover: (evt) ->
@@ -389,15 +396,16 @@ class Chosen extends AbstractChosen
     for option in @results_data
       if not option.disabled and not option.empty
         if option.group
-          results += 1 if this.winnow_option_group(option)
+          this.winnow_option_group(option)
         else if not (@is_multiple and option.selected)
           found = this.winnow_search_match(@regex, option.html)
-          results += 1 if found
           
           result_id = option.dom_id
           result = $("#" + result_id)
 
           if found or (option.group_array_index? && @results_data[option.group_array_index].search_match)
+            results += 1
+            
             if @searchText.length and found
               text = this.winnow_search_highlight_match(@zregex, option.html, @searchText.length)
             else
@@ -420,8 +428,8 @@ class Chosen extends AbstractChosen
     $('#' + group.dom_id).css('display', 'none')
     
     group.search_match = this.winnow_search_match(@regex, group.label)
+      
     text = if @searchText.length and group.search_match then this.winnow_search_highlight_match(@zregex, group.label, @searchText.length) else group.label
-
     $("##{group.dom_id}").html(text)
 
     return group.search_match
