@@ -265,6 +265,7 @@ class Chosen extends AbstractChosen
     for option in options
       option.selected = true if not option.disabled
     @form_field_jq.trigger("liszt:updated")
+    @form_field_jq.trigger("liszt:selectall")
     this.select_all_disable()
 
   select_all_disable: ->

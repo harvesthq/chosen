@@ -254,6 +254,7 @@ class Chosen extends AbstractChosen
     @form_field.select("option").each (option) ->
       option.selected = true if not option.disabled
     @form_field.fire("liszt:updated")
+    @form_field.fire("liszt:selectall")
     this.select_all_disable()
   
   select_all_disable: ->

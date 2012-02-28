@@ -601,6 +601,7 @@ Copyright (c) 2011 by Harvest
         if (!option.disabled) option.selected = true;
       }
       this.form_field_jq.trigger("liszt:updated");
+      this.form_field_jq.trigger("liszt:selectall");
       return this.select_all_disable();
     };
 
