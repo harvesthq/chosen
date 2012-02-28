@@ -270,12 +270,13 @@ class Chosen extends AbstractChosen
       @search_field.removeClass "default"
 
   search_results_mouseup: (evt) ->
-    group = if $(evt.target).hasClass "group-result" then $(evt.target) else $(evt.target).parents(".group-result").first()
-    if group.length
-      children = group.nextUntil(".group-result", ".active-result")
-      for child in children
-        @result_highlight = $(child)
-        this.result_select({metaKey: null})
+    if @enable_group_select
+      group = if $(evt.target).hasClass "group-result" then $(evt.target) else $(evt.target).parents(".group-result").first()
+      if group.length
+        children = group.nextUntil(".group-result", ".active-result")
+        for child in children
+          @result_highlight = $(child)
+          this.result_select({metaKey: null})
     
     option = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
     if option.length

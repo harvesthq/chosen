@@ -261,16 +261,16 @@ class Chosen extends AbstractChosen
       @search_field.removeClassName "default"
 
   search_results_mouseup: (evt) ->
-    
-    group = if evt.target.hasClassName("group-result") then evt.target else evt.target.up(".group-result")
-    if group
-      possible_children = group.nextSiblings()
-      for child in possible_children
-        if child.hasClassName("active-result")
-          @result_highlight = $(child)
-          this.result_select({metaKey: null})
-        else if child.hasClassName("group-result")
-          return false
+    if @enable_group_select
+      group = if evt.target.hasClassName("group-result") then evt.target else evt.target.up(".group-result")
+      if group
+        possible_children = group.nextSiblings()
+        for child in possible_children
+          if child.hasClassName("active-result")
+            @result_highlight = $(child)
+            this.result_select({metaKey: null})
+          else if child.hasClassName("group-result")
+            return false
           
     option = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
     if option

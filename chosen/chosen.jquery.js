@@ -127,6 +127,7 @@ Copyright (c) 2011 by Harvest
       this.results_showing = false;
       this.result_highlighted = null;
       this.result_single_selected = null;
+      this.enable_group_select = this.options.enable_group_select || false;
       this.allow_single_deselect = (this.options.allow_single_deselect != null) && (this.form_field.options[0] != null) && this.form_field.options[0].text === "" ? this.options.allow_single_deselect : false;
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
       this.choices = 0;
@@ -624,15 +625,17 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.search_results_mouseup = function(evt) {
       var child, children, group, option, _i, _len;
-      group = $(evt.target).hasClass("group-result") ? $(evt.target) : $(evt.target).parents(".group-result").first();
-      if (group.length) {
-        children = group.nextUntil(".group-result", ".active-result");
-        for (_i = 0, _len = children.length; _i < _len; _i++) {
-          child = children[_i];
-          this.result_highlight = $(child);
-          this.result_select({
-            metaKey: null
-          });
+      if (this.enable_group_select) {
+        group = $(evt.target).hasClass("group-result") ? $(evt.target) : $(evt.target).parents(".group-result").first();
+        if (group.length) {
+          children = group.nextUntil(".group-result", ".active-result");
+          for (_i = 0, _len = children.length; _i < _len; _i++) {
+            child = children[_i];
+            this.result_highlight = $(child);
+            this.result_select({
+              metaKey: null
+            });
+          }
         }
       }
       option = $(evt.target).hasClass("active-result") ? $(evt.target) : $(evt.target).parents(".active-result").first();
