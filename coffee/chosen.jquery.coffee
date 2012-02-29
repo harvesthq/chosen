@@ -414,11 +414,10 @@ class Chosen extends AbstractChosen
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
             else
               text = option.html
-            
+
             result.html(text)
             this.result_activate result
 
-            $("#" + @results_data[option.group_array_index].dom_id).css('display', 'list-item') if option.group_array_index?
           else
             this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
             this.result_deactivate result
