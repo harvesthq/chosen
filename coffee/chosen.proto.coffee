@@ -398,18 +398,18 @@ class Chosen extends AbstractChosen
                   results += 1
 
           if found
-            if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
-              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-            else
-              text = option.html
-
-            $(result_id).update text if $(result_id).innerHTML != text
-
             this.result_activate $(result_id)
 
-            $(@results_data[option.group_array_index].dom_id).setStyle({display: 'list-item'}) if option.group_array_index?
+            if @highlight_matched_text
+              if searchText.length
+                startpos = option.html.search zregex
+                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
+                text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+              else
+                text = option.html
+
+              $(result_id).update text if $(result_id).innerHTML != text
+
           else
             this.result_clear_highlight() if $(result_id) is @result_highlight
             this.result_deactivate $(result_id)
