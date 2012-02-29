@@ -31,6 +31,7 @@ class AbstractChosen
     @disable_search_threshold = @options.disable_search_threshold || 0
     @choices = 0
     @results_none_found = @options.no_results_text or "No results match"
+    @higlight_matched_text = @options.highlight_matched_text or true
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
