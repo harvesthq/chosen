@@ -256,6 +256,7 @@ class Chosen extends AbstractChosen
     @form_field.fire("liszt:updated")
     @form_field.fire("liszt:selectall")
     this.select_all_disable()
+    this.results_hide()
   
   select_all_disable: ->
     @select_all_link.hide()

@@ -592,7 +592,8 @@ Copyright (c) 2011 by Harvest
       });
       this.form_field.fire("liszt:updated");
       this.form_field.fire("liszt:selectall");
-      return this.select_all_disable();
+      this.select_all_disable();
+      return this.results_hide();
     };
 
     Chosen.prototype.select_all_disable = function() {

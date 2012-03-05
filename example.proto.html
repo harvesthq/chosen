@@ -1306,7 +1306,7 @@
     _results = [];
     for (_i = 0, _len = selects.length; _i < _len; _i++) {
       select = selects[_i];
-      _results.push(new Chosen(select));
+      _results.push(new Chosen(select, {enable_select_all: true}));
     }
     deselects = $$(".chzn-select-deselect");
     for (_i = 0, _len = deselects.length; _i < _len; _i++) {
