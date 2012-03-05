@@ -504,6 +504,12 @@ Copyright (c) 2011 by Harvest
           }
         }
       }
+
+      if(this.options.add_new_options)
+      {
+        content += '<li class="new-option" style="display: none;"></li>';
+      }
+
       this.search_field_disabled();
       this.show_search_field_default();
       this.search_field_scale();
@@ -670,6 +676,23 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.result_select = function(evt) {
       var high, high_id, item, position;
       if (this.result_highlight) {
+        if(this.options.add_new_options) {
+          var new_option_html =  $('<option value="' + this.result_highlight.html() + '">' + this.result_highlight.html() + '</option>');
+          this.form_field_jq.append(new_option_html);
+          this.results_data.push({
+            array_index: this.results_data.length,
+            options_index: this.form_field.options.length - 1,
+            value: new_option_html.val(),
+            text: new_option_html.html(),
+            html: new_option_html.html(),
+            selected: false,
+            disabled: false,
+            group_array_index: 0,
+            classes: '',
+            style: ''
+          });
+        }
+
         high = this.result_highlight;
         high_id = high.attr("id");
         this.result_clear_highlight();
@@ -814,10 +837,22 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.no_results = function(terms) {
-      var no_results_html;
-      no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"</li>');
-      no_results_html.find("span").first().html(terms);
-      return this.search_results.append(no_results_html);
+      if( this.options.add_new_options )
+      {
+        var new_option_html = this.search_results.find('.new-option');
+        new_option_html.html(terms).addClass('active-result').show();
+        var last_id = new_option_html.siblings().last().attr('id');
+        var new_id = last_id.substr(last_id.lastIndexOf("_") + 1);
+        new_option_html.attr('id', this.container_id + "_o_" + (parseInt(new_id)+1));
+
+      }
+      else
+      {
+        var no_results_html;
+        no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"</li>');
+        no_results_html.find("span").first().html(terms);
+        return this.search_results.append(no_results_html);        
+      }
     };
 
     Chosen.prototype.no_results_clear = function() {
