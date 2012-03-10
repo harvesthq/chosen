@@ -167,11 +167,8 @@ class Chosen extends AbstractChosen
   results_build: ->
     @parsing = true
     @results_data = root.SelectParser.select_to_array @form_field
-    @trie = new InfixTrie(@infix_search, @case_sensitive_search);
 
-    for option in @results_data
-      if option.html
-        @trie.add(option.html, option.options_index)
+    this.build_trie()
 
     if @is_multiple and @choices > 0
       @search_choices.find("li.search-choice").remove()

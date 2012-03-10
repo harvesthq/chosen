@@ -121,4 +121,13 @@ class AbstractChosen
     rand = Math.floor(Math.random() * chars.length)
     newchar = chars.substring rand, rand+1
 
+  build_trie: ->
+    @trie = new InfixTrie(@infix_search, @case_sensitive_search);
+
+    for option in @results_data
+      if option.html
+        @trie.add(option.html, option.options_index)
+
+    true
+
 root.AbstractChosen = AbstractChosen
