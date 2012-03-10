@@ -394,8 +394,7 @@ class Chosen extends AbstractChosen
           found = false
           result_id = option.dom_id
           result = $("#" + result_id)
-          
-          if regex.test option.html
+          if searchText.length == 0 || regex.test option.html
             found = true
             results += 1
           else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
@@ -415,7 +414,9 @@ class Chosen extends AbstractChosen
             else
               text = option.html
             
-            result.html(text)
+            if result.html() != text
+              result.html(text)
+
             this.result_activate result
 
             $("#" + @results_data[option.group_array_index].dom_id).css('display', 'list-item') if option.group_array_index?
