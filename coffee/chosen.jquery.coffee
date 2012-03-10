@@ -29,7 +29,7 @@ class Chosen extends AbstractChosen
     
     @f_width = @form_field_jq.outerWidth()
 
-    @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
+    @default_text = if @form_field_jq.attr 'data-placeholder' then @form_field_jq.attr 'data-placeholder' else @default_text_default
     
     container_div = $("<div />").attr({
       id: @container_id
