@@ -8,7 +8,7 @@ class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
     this.set_default_values()
-    
+
     @is_multiple = @form_field.multiple
     @default_text_default = if @is_multiple then "Select Some Options" else "Select an Option"
 
@@ -31,6 +31,8 @@ class AbstractChosen
     @disable_search_threshold = @options.disable_search_threshold || 0
     @choices = 0
     @results_none_found = @options.no_results_text or "No results match"
+    @infix_search = @options.infix_search
+    @case_sensitive_search = @options._case_sensitive_search
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
@@ -68,6 +70,19 @@ class AbstractChosen
       this.results_hide()
     else
       this.results_show()
+
+  results_filter: (key) ->
+    rc = []
+    result = @trie.find(key)
+
+    index = result.matches.length
+    while index--
+      tritem = result.matches[index]
+      index_b = tritem.length
+      while index_b--
+        rc.push(tritem[index_b])
+
+    rc
 
   results_search: (evt) ->
     if @results_showing

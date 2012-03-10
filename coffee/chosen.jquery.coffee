@@ -28,7 +28,7 @@ class Chosen extends AbstractChosen
     @container_id += "_chzn"
     
     @f_width = @form_field_jq.outerWidth()
-    
+
     @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
     
     container_div = $("<div />").attr({
@@ -167,6 +167,11 @@ class Chosen extends AbstractChosen
   results_build: ->
     @parsing = true
     @results_data = root.SelectParser.select_to_array @form_field
+    @trie = new InfixTrie(@infix_search, @case_sensitive_search);
+
+    for option in @results_data
+      if option.html
+        @trie.add(option.html, option.options_index)
 
     if @is_multiple and @choices > 0
       @search_choices.find("li.search-choice").remove()
@@ -379,12 +384,14 @@ class Chosen extends AbstractChosen
 
   winnow_results: ->
     this.no_results_clear()
-    
+
     results = 0
 
     searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
-    regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+
+    if searchText.length
+      matches = @results_filter(searchText)
+      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
       if not option.disabled and not option.empty
@@ -394,17 +401,10 @@ class Chosen extends AbstractChosen
           found = false
           result_id = option.dom_id
           result = $("#" + result_id)
-          if searchText.length == 0 || regex.test option.html
+
+          if searchText.length is 0 or option.options_index in matches
             found = true
             results += 1
-          else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  found = true
-                  results += 1
 
           if found
             if searchText.length

@@ -160,6 +160,12 @@ class Chosen extends AbstractChosen
     @parsing = true
     @results_data = root.SelectParser.select_to_array @form_field
 
+    @trie = new InfixTrie(@infix_search, @case_sensitive_search);
+
+    for option in @results_data
+      if option.html
+        @trie.add(option.html, option.options_index)
+
     if @is_multiple and @choices > 0
       @search_choices.select("li.search-choice").invoke("remove")
       @choices = 0
@@ -374,8 +380,9 @@ class Chosen extends AbstractChosen
     results = 0
 
     searchText = if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
-    regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    if searchText.length
+      matches = @results_filter(searchText)
+      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
       if not option.disabled and not option.empty
@@ -384,18 +391,10 @@ class Chosen extends AbstractChosen
         else if not (@is_multiple and option.selected)
           found = false
           result_id = option.dom_id
-          
-          if regex.test option.html
+
+          if searchText.length is 0 or option.options_index in matches
             found = true
             results += 1
-          else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  found = true
-                  results += 1
 
           if found
             if searchText.length
