@@ -157,18 +157,20 @@ class Chosen extends AbstractChosen
     @search_field.val(@search_field.val())
     @search_field.focus()
 
-
   test_active_click: (evt) ->
     if $(evt.target).parents('#' + @container_id).length
       @active_field = true
     else
       this.close_field()
-    
+
+  init_dom_refs: ->
+    for data in @results_data
+      if data.dom_id then data.dom_ref = $('#' + data.dom_id)
+
   results_build: ->
     @parsing = true
+    @trie = new InfixTrie(@infix_search, @case_sensitive_search);
     @results_data = root.SelectParser.select_to_array @form_field
-
-    this.build_trie()
 
     if @is_multiple and @choices > 0
       @search_choices.find("li.search-choice").remove()
@@ -181,15 +183,16 @@ class Chosen extends AbstractChosen
         @container.removeClass "chzn-container-single-nosearch"
 
     content = ''
-    for data in @results_data
-      if data.group
-        content += this.result_add_group data
-      else if !data.empty
-        content += this.result_add_option data
-        if data.selected and @is_multiple
-          this.choice_build data
-        else if data.selected and not @is_multiple
-          @selected_item.find("span").text data.text
+    for option in @results_data
+      if option.group
+        content += this.result_add_group option
+      else if !option.empty
+        @trie.add(option.html, option.options_index)
+        content += this.result_add_option option
+        if option.selected and @is_multiple
+          this.choice_build option
+        else if option.selected and not @is_multiple
+          @selected_item.find("span").text option.text
           this.single_deselect_control_build() if @allow_single_deselect
 
     this.search_field_disabled()
@@ -197,12 +200,12 @@ class Chosen extends AbstractChosen
     this.search_field_scale()
     
     @search_results.html content
+    this.init_dom_refs()
     @parsing = false
-
 
   result_add_group: (group) ->
     if not group.disabled
-      group.dom_id = @container_id + "_g_" + group.array_index
+      group.dom_id = this.option_get_dom_id(group)
       '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
     else
       ""
@@ -326,27 +329,27 @@ class Chosen extends AbstractChosen
     if @result_highlight
       high = @result_highlight
       high_id = high.attr "id"
-      
+
+      position = high_id.substr(high_id.lastIndexOf("_") + 1 )
+      option = @results_data[position]
+      option.selected = true
+
       this.result_clear_highlight()
 
       if @is_multiple
-        this.result_deactivate high
+        this.result_set_active_state option, false
       else
         @search_results.find(".result-selected").removeClass "result-selected"
         @result_single_selected = high
       
       high.addClass "result-selected"
-      
-      position = high_id.substr(high_id.lastIndexOf("_") + 1 )
-      item = @results_data[position]
-      item.selected = true
 
-      @form_field.options[item.options_index].selected = true
+      @form_field.options[option.options_index].selected = true
 
       if @is_multiple
-        this.choice_build item
+        this.choice_build option
       else
-        @selected_item.find("span").filter(':first').text item.text
+        @selected_item.find("span").filter(':first').text option.text
         this.single_deselect_control_build() if @allow_single_deselect
       
       this.results_hide() unless evt.metaKey and @is_multiple
@@ -356,19 +359,20 @@ class Chosen extends AbstractChosen
       @form_field_jq.trigger "change"
       this.search_field_scale()
 
-  result_activate: (el) ->
-    el.addClass("active-result")
+  result_set_active_state: (option, active) ->
+    if option.active != active
+      option.active = active
+      option.dom_ref[if active then 'addClass' else 'removeClass']("active-result")
 
-  result_deactivate: (el) ->
-    el.removeClass("active-result")
+    true
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]
     result_data.selected = false
 
     @form_field.options[result_data.options_index].selected = false
-    result = $("#" + @container_id + "_o_" + pos)
-    result.removeClass("result-selected").addClass("active-result").show()
+    @result_set_active_state result_data.dom_ref, true
+    result_data.dom_ref.removeClass("result-selected").show()
 
     this.result_clear_highlight()
     this.winnow_results()
@@ -387,39 +391,38 @@ class Chosen extends AbstractChosen
     searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
 
     if searchText.length
-      matches = @results_filter(searchText)
+      matches = this.results_filter(searchText)
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
       if not option.disabled and not option.empty
         if option.group
-          $('#' + option.dom_id).css('display', 'none')
+          option.dom_ref.css('display', 'none')
         else if not (@is_multiple and option.selected)
           found = false
-          result_id = option.dom_id
-          result = $("#" + result_id)
 
           if searchText.length is 0 or option.options_index in matches
             found = true
             results += 1
 
           if found
+            text = option.original_html
+
             if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
+              startpos = text.search zregex
+              text = text.substr(0, startpos + searchText.length) + '</em>' + text.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-            else
-              text = option.html
-            
-            if result.html() != text
-              result.html(text)
 
-            this.result_activate result
+            if text != option.html
+              option.html = text
+              option.dom_ref.html(this.result_get_html(option))
 
-            $("#" + @results_data[option.group_array_index].dom_id).css('display', 'list-item') if option.group_array_index?
+            this.result_set_active_state option, true
+
+            @results_data[option.group_array_index].dom_ref.css('display', 'list-item') if option.group_array_index?
           else
-            this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
-            this.result_deactivate result
+            this.result_clear_highlight() if @result_highlight and option.dom_id is @result_highlight.attr 'id'
+            this.result_set_active_state option, false
 
     if results < 1 and searchText.length
       this.no_results searchText
@@ -428,14 +431,13 @@ class Chosen extends AbstractChosen
 
   winnow_results_clear: ->
     @search_field.val ""
-    lis = @search_results.find("li")
 
-    for li in lis
-      li = $(li)
-      if li.hasClass "group-result"
-        li.css('display', 'auto')
-      else if not @is_multiple or not li.hasClass "result-selected"
-        this.result_activate li
+    for option in @results_data
+      if not option.empty
+        if option.dom_ref.hasClass "group-result"
+          option.dom_ref.css('display', 'auto')
+        else if not @is_multiple or not option.dom_ref.hasClass "result-selected"
+          this.result_set_active_state option, true
 
   winnow_results_set_highlight: ->
     if not @result_highlight
