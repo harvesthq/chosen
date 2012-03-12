@@ -408,7 +408,7 @@ Copyright (c) 2011 by Harvest
       var target_closelink;
       if (!this.is_disabled) {
         target_closelink = evt != null ? evt.target.hasClassName("search-choice-close") : false;
-        if (evt && evt.type === "mousedown") evt.stop();
+        if (evt && evt.type === "mousedown" && !this.results_showing) evt.stop();
         if (!this.pending_destroy_click && !target_closelink) {
           if (!this.active_field) {
             if (this.is_multiple) this.search_field.clear();
