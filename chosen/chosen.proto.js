@@ -819,6 +819,9 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.no_results = function(terms) {
+      if (this.options.no_results_callback) {
+        this.options.no_results_callback(this.no_results_temp, terms);
+      }
       return this.search_results.insert(this.no_results_temp.evaluate({
         terms: terms
       }));

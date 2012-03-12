@@ -450,6 +450,8 @@ class Chosen extends AbstractChosen
   no_results: (terms) ->
     no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
     no_results_html.find("span").first().html(terms)
+    if @options.no_results_callback
+       @options.no_results_callback(no_results_html, terms)
 
     @search_results.append no_results_html
   
