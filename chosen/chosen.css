@@ -51,6 +51,9 @@
   color: #444444;
   text-decoration: none;
 }
+.chzn-container-single .chzn-default {
+	color: #999;
+}
 .chzn-container-single .chzn-single span {
   margin-right: 26px;
   display: block;
