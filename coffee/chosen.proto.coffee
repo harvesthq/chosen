@@ -179,7 +179,7 @@ class Chosen extends AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          @selected_item.down("span").update( data.html )
+          @selected_item.removeClassName("chzn-default").down("span").update( data.html )
           this.single_deselect_control_build() if @allow_single_deselect
 
     this.search_field_disabled()
@@ -308,7 +308,7 @@ class Chosen extends AbstractChosen
   results_reset: (evt) ->
     @form_field.options[0].selected = true
     @selected_item.down("span").update(@default_text)
-    @container.down(".chzn-single").addClassName("chzn-default")
+    @selected_item.addClassName("chzn-default") if not @is_multiple
     this.show_search_field_default()
     evt.target.remove()
     @form_field.simulate("change") if typeof Event.simulate is 'function'
@@ -323,10 +323,10 @@ class Chosen extends AbstractChosen
         this.result_deactivate high
       else
         @search_results.descendants(".result-selected").invoke "removeClassName", "result-selected"
+        @selected_item.removeClassName("chzn-default")
         @result_single_selected = high
       
       high.addClassName("result-selected")
-      @container.down(".chzn-single").removeClassName("chzn-default")
         
       position = high.id.substr(high.id.lastIndexOf("_") + 1 )
       item = @results_data[position]
