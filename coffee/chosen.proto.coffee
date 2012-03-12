@@ -131,6 +131,8 @@ class Chosen extends AbstractChosen
     @active_field = false
     this.results_hide()
 
+    if Event.simulate
+      Event.simulate @form_field, "blur"
     @container.removeClassName "chzn-container-active"
     this.winnow_results_clear()
     this.clear_backstroke()
@@ -143,6 +145,8 @@ class Chosen extends AbstractChosen
       @search_field.tabIndex = @selected_item.tabIndex
       @selected_item.tabIndex = -1
 
+    if Event.simulate
+      Event.simulate @form_field, "focus"
     @container.addClassName "chzn-container-active"
     @active_field = true
 

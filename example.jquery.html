@@ -1298,5 +1298,36 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
   <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
   <script type="text/javascript"> $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true}); </script>
+	<script type="text/javascript">
+	(function($) {
+		$(document).ready(function() {
+			
+			var $snitch = $('<div id="focus-snitch"></div>');
+			$snitch.appendTo(document.body);
+			$('<style>\
+				#focus-snitch {\
+					position: fixed;\
+					top: 10px;\
+					left: 10px;\
+					height: 20px;\
+					width: 200px;\
+					background: rgba(255,255,255,.8);\
+					border: 1px solid black;\
+				}\
+			</style>').appendTo(document.head);
+			
+			$('select')
+				.focus(function() {
+					$snitch.html('Select got focus');
+				})
+				.blur(function() {
+					$snitch.html('Select lost focus');
+					setTimeout(function() {
+						$snitch.html('');
+					}, 1000);
+				});
+		});
+	})(jQuery);
+	</script>
   </form>
 </body>
