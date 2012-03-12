@@ -16,7 +16,7 @@ class Chosen extends AbstractChosen
     super()
     
     # HTML Templates
-    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
+    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
@@ -308,6 +308,7 @@ class Chosen extends AbstractChosen
   results_reset: (evt) ->
     @form_field.options[0].selected = true
     @selected_item.down("span").update(@default_text)
+    @container.down(".chzn-single").addClassName("chzn-default")
     this.show_search_field_default()
     evt.target.remove()
     @form_field.simulate("change") if typeof Event.simulate is 'function'
@@ -325,6 +326,7 @@ class Chosen extends AbstractChosen
         @result_single_selected = high
       
       high.addClassName("result-selected")
+      @container.down(".chzn-single").removeClassName("chzn-default")
         
       position = high.id.substr(high.id.lastIndexOf("_") + 1 )
       item = @results_data[position]

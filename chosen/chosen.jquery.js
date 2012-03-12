@@ -307,7 +307,7 @@ Copyright (c) 2011 by Harvest
       if (this.is_multiple) {
         container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       } else {
-        container_div.html('<a href="javascript:void(0)" class="chzn-single"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
+        container_div.html('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       }
       this.form_field_jq.hide().after(container_div);
       this.container = $('#' + this.container_id);
@@ -661,6 +661,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.results_reset = function(evt) {
       this.form_field.options[0].selected = true;
       this.selected_item.find("span").text(this.default_text);
+      this.container.find(".chzn-single").addClass("chzn-default");
       this.show_search_field_default();
       $(evt.target).remove();
       this.form_field_jq.trigger("change");
@@ -680,6 +681,7 @@ Copyright (c) 2011 by Harvest
           this.result_single_selected = high;
         }
         high.addClass("result-selected");
+        this.container.find(".chzn-single").removeClass("chzn-default");
         position = high_id.substr(high_id.lastIndexOf("_") + 1);
         item = this.results_data[position];
         item.selected = true;
