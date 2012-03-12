@@ -8,7 +8,7 @@ class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
     this.set_default_values()
-    
+
     @is_multiple = @form_field.multiple
     @default_text_default = if @is_multiple then "Select Some Options" else "Select an Option"
 
@@ -31,6 +31,8 @@ class AbstractChosen
     @disable_search_threshold = @options.disable_search_threshold || 0
     @choices = 0
     @results_none_found = @options.no_results_text or "No results match"
+    @infix_search = @options.infix_search
+    @case_sensitive_search = @options.case_sensitive_search
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
@@ -43,9 +45,16 @@ class AbstractChosen
       @active_field = false
       setTimeout (=> this.blur_test()), 100
 
+  result_get_html: (option) ->
+    return option.html
+
+  option_get_dom_id: (option) ->
+    divider = if option.group then '_g_' else '_o_'
+    @container_id + divider + option.array_index
+
   result_add_option: (option) ->
     if not option.disabled
-      option.dom_id = @container_id + "_o_" + option.array_index
+      option.dom_id = this.option_get_dom_id(option)
 
       classes = if option.selected and @is_multiple then [] else ["active-result"]
       classes.push "result-selected" if option.selected
@@ -54,7 +63,7 @@ class AbstractChosen
 
       style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
 
-      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + option.html + '</li>'
+      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + @result_get_html(option) + '</li>'
     else
       ""
 
@@ -68,6 +77,19 @@ class AbstractChosen
       this.results_hide()
     else
       this.results_show()
+
+  results_filter: (key) ->
+    rc = []
+    result = @trie.find(key)
+
+    index = result.matches.length
+    while index--
+      tritem = result.matches[index]
+      index_b = tritem.length
+      while index_b--
+        rc.push(tritem[index_b])
+
+    rc
 
   results_search: (evt) ->
     if @results_showing
