@@ -24,6 +24,7 @@ class AbstractChosen
     @activate_action = (evt) => this.activate_field(evt)
     @active_field = false
     @mouse_on_container = false
+    @pending_destroy_click = false
     @results_showing = false
     @result_highlighted = null
     @result_single_selected = null
@@ -40,7 +41,7 @@ class AbstractChosen
     setTimeout (=> this.container_mousedown()), 50 unless @active_field
   
   input_blur: (evt) ->
-    if not @mouse_on_container
+    if not @mouse_on_container or @pending_destroy_click
       @active_field = false
       setTimeout (=> this.blur_test()), 100
 
