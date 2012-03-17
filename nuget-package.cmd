@@ -1,5 +1,5 @@
 @echo off
-set version=0.9.6-alpha1-880a30d
+set version=0.9.8
 NuGet pack chosen.nuspec -Properties version=%version%
 NuGet pack chosen.jquery.nuspec -Properties version=%version%
 @pause
