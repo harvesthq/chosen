@@ -29,6 +29,7 @@ class AbstractChosen
     @result_single_selected = null
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
     @disable_search_threshold = @options.disable_search_threshold || 0
+    @search_contains = @options.search_contains || false
     @choices = 0
     @results_none_found = @options.no_results_text or "No results match"
 
@@ -91,6 +92,7 @@ class AbstractChosen
         this.result_select(evt) if this.results_showing
       when 27
         this.results_hide() if @results_showing
+        return true
       when 9, 38, 40, 16, 91, 17
         # don't do anything on these keys
       else this.results_search()

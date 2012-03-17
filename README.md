@@ -14,17 +14,20 @@ Contributions and pull requests are very welcome. Please follow these guidelines
 
 1. Make all changes in Coffeescript files, **not** JavaScript files.
 2. For feature changes, update both jQuery *and* Prototype versions
-3. Use 'cake build' to generate Chosen's JavaScript file and minified version.
-4. Don't touch the VERSION file
-5. Submit a Pull Request using GitHub.
+3. Use `npm install -d` to install the correct development dependencies.
+4. Use `cake build` or `cake watch` to generate Chosen's JavaScript file and minified version.
+5. Don't touch the `VERSION` file
+6. Submit a Pull Request using GitHub.
 
 ### Using CoffeeScript & Cake
 
-First, make sure you have the proper CoffeeScript / Cake set-up in place.
+First, make sure you have the proper CoffeeScript / Cake set-up in place. We have added a package.json that makes this easy:
 
-1. Install Coffeescript: the [CoffeeScript documentation](http://jashkenas.github.com/coffee-script/) provides easy-to-follow instructions.
-2. Install UglifyJS: <code>npm -g install uglify-js</code>
-3. Verify that your $NODE_PATH is properly configured using <code>echo $NODE_PATH</code>
+```
+npm install -d
+```
+
+This will install `coffee-script` and `uglifyjs`.
 
 Once you're configured, building the JavasScript from the command line is easy:
 
@@ -44,3 +47,4 @@ If you're interested, you can find the recipes in Cakefile.
 
 - [Chosen for MooTools](https://github.com/julesjanssen/chosen), by Jules Janssen
 - [Chosen Drupal 7 Module](http://drupal.org/project/chosen), by Pol Dell'Aiera, Arshad Chummun, Bart Feenstra, Kálmán Hosszu, etc.
+- [Chosen CakePHP Plugin](https://github.com/paulredmond/chosen-cakephp), by Paul Redmond

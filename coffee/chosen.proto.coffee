@@ -16,7 +16,7 @@ class Chosen extends AbstractChosen
     super()
     
     # HTML Templates
-    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
+    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
@@ -83,6 +83,8 @@ class Chosen extends AbstractChosen
     if @is_multiple
       @search_choices.observe "click", (evt) => this.choices_click(evt)
       @search_field.observe "focus", (evt) => this.input_focus(evt)
+    else
+      @container.observe "click", (evt) => evt.preventDefault() # gobble click of anchor
 
   search_field_disabled: ->
     @is_disabled = @form_field.disabled
@@ -99,7 +101,7 @@ class Chosen extends AbstractChosen
   container_mousedown: (evt) ->
     if !@is_disabled
       target_closelink =  if evt? then evt.target.hasClassName "search-choice-close" else false
-      if evt and evt.type is "mousedown"
+      if evt and evt.type is "mousedown" and not @results_showing
         evt.stop()
       if not @pending_destroy_click and not target_closelink
         if not @active_field
@@ -177,7 +179,7 @@ class Chosen extends AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          @selected_item.down("span").update( data.html )
+          @selected_item.removeClassName("chzn-default").down("span").update( data.html )
           this.single_deselect_control_build() if @allow_single_deselect
 
     this.search_field_disabled()
@@ -306,6 +308,7 @@ class Chosen extends AbstractChosen
   results_reset: (evt) ->
     @form_field.options[0].selected = true
     @selected_item.down("span").update(@default_text)
+    @selected_item.addClassName("chzn-default") if not @is_multiple
     this.show_search_field_default()
     evt.target.remove()
     @form_field.simulate("change") if typeof Event.simulate is 'function'
@@ -320,6 +323,7 @@ class Chosen extends AbstractChosen
         this.result_deactivate high
       else
         @search_results.descendants(".result-selected").invoke "removeClassName", "result-selected"
+        @selected_item.removeClassName("chzn-default")
         @result_single_selected = high
       
       high.addClassName("result-selected")
@@ -372,7 +376,8 @@ class Chosen extends AbstractChosen
     results = 0
 
     searchText = if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
-    regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    regexAnchor = if @search_contains then "" else "^"
+    regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
