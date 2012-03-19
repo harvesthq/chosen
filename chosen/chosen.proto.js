@@ -131,7 +131,8 @@ Copyright (c) 2011 by Harvest
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
       this.search_contains = this.options.search_contains || false;
       this.choices = 0;
-      return this.results_none_found = this.options.no_results_text || "No results match";
+      this.results_none_found = this.options.no_results_text || "No results match";
+      return this.stay_open = this.options.stay_open || false;
     };
 
     AbstractChosen.prototype.mouse_enter = function() {
@@ -690,7 +691,9 @@ Copyright (c) 2011 by Harvest
           this.selected_item.down("span").update(item.html);
           if (this.allow_single_deselect) this.single_deselect_control_build();
         }
-        if (!(evt.metaKey && this.is_multiple)) this.results_hide();
+        if (!((evt.metaKey || this.stay_open) && this.is_multiple)) {
+          this.results_hide();
+        }
         this.search_field.value = "";
         if (typeof Event.simulate === 'function') {
           this.form_field.simulate("change");
