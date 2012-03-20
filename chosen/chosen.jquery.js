@@ -875,7 +875,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.keydown_checker = function(evt) {
-      var stroke, _ref;
+      var should_select, stroke, _ref;
       stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
       this.search_field_scale();
       if (stroke !== 8 && this.pending_backstroke) this.clear_backstroke();
@@ -884,7 +884,11 @@ Copyright (c) 2011 by Harvest
           this.backstroke_length = this.search_field.val().length;
           break;
         case 9:
-          if (this.results_showing && !this.is_multiple) this.result_select(evt);
+          should_select = this.results_showing;
+          if (this.is_multiple) {
+            should_select = should_select && this.options.select_on_tab;
+          }
+          if (should_select) this.result_select(evt);
           this.mouse_on_container = false;
           break;
         case 13:
