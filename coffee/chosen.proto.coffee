@@ -499,7 +499,10 @@ class Chosen extends AbstractChosen
         @backstroke_length = this.search_field.value.length
         break
       when 9
-        this.result_select(evt) if this.results_showing and not @is_multiple
+        should_select = this.results_showing
+        if @is_multiple
+          should_select = should_select and this.options.select_on_tab
+        this.result_select(evt) if should_select
         @mouse_on_container = false
         break
       when 13
