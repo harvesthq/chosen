@@ -32,6 +32,7 @@
         array_index: group_position,
         group: true,
         label: group.label,
+        html: group.label, //USEFUL FOR GROUP SEARCH
         children: 0,
         disabled: group.disabled
       });
@@ -128,6 +129,7 @@ Copyright (c) 2011 by Harvest
       this.result_highlighted = null;
       this.result_single_selected = null;
       this.allow_single_deselect = (this.options.allow_single_deselect != null) && (this.form_field.options[0] != null) && this.form_field.options[0].text === "" ? this.options.allow_single_deselect : false;
+      this.allow_optgroup_search = (this.options.allow_optgroup_search != null) ? this.options.allow_optgroup_search : false;
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
       this.search_contains = this.options.search_contains || false;
       this.choices = 0;
@@ -730,7 +732,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, regexAnchor, result, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len2, _ref;
+      var found, option, part, parts, regex, regexAnchor, result, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len2, _ref, parent_optgroup_found;
       this.no_results_clear();
       results = 0;
       searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
@@ -738,10 +740,11 @@ Copyright (c) 2011 by Harvest
       regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       _ref = this.results_data;
+      parent_optgroup_found = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
         if (!option.disabled && !option.empty) {
-          if (option.group) {
+          if (!this.allow_optgroup_search && option.group) {
             $('#' + option.dom_id).css('display', 'none');
           } else if (!(this.is_multiple && option.selected)) {
             found = false;
@@ -762,11 +765,18 @@ Copyright (c) 2011 by Harvest
                 }
               }
             }
-            if (found) {
+            if (found || $.inArray(option.group_array_index, parent_optgroup_found) > -1 ) {
               if (searchText.length) {
+                if (option.group) {
+                  parent_optgroup_found.push(option.array_index);
+                }
                 startpos = option.html.search(zregex);
-                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
-                text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
+                if(startpos > - 1) {
+                  text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
+                  text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
+                } else {
+                  text = option.html;
+                }
               } else {
                 text = option.html;
               }
@@ -776,10 +786,14 @@ Copyright (c) 2011 by Harvest
                 $("#" + this.results_data[option.group_array_index].dom_id).css('display', 'list-item');
               }
             } else {
-              if (this.result_highlight && result_id === this.result_highlight.attr('id')) {
-                this.result_clear_highlight();
+              if (option.group) {
+                $('#' + option.dom_id).css('display', 'none');
+              } else {
+                if (this.result_highlight && result_id === this.result_highlight.attr('id')) {
+                  this.result_clear_highlight();
+                }
+                this.result_deactivate(result);
               }
-              this.result_deactivate(result);
             }
           }
         }
