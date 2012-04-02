@@ -103,7 +103,7 @@ class AbstractChosen
     new_id
   
   generate_random_char: ->
-    chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ"
+    chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     rand = Math.floor(Math.random() * chars.length)
     newchar = chars.substring rand, rand+1
 
