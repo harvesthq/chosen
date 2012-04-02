@@ -24,7 +24,7 @@ class Chosen extends AbstractChosen
     @form_field_jq.addClass "chzn-done"
 
   set_up_html: ->
-    @container_id = if @form_field.id.length then @form_field.id.replace(/(:|\.)/g, '_') else this.generate_field_id()
+    @container_id = if @form_field.id.length then @form_field.id.replace(/[^\w]/g, '_') else this.generate_field_id()
     @container_id += "_chzn"
     
     @f_width = @form_field_jq.outerWidth()
