@@ -299,6 +299,7 @@ Copyright (c) 2011 by Harvest
 
     InfixTrie.prototype.clean_string = function(str) {
       if (!this.is_case_sensitive) str = str.toLowerCase();
+      str = str.replace(/^\s+|\s+$/g, "");
       return str;
     };
 

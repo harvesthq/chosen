@@ -13,6 +13,7 @@ class InfixTrie
   clean_string: (str) ->
     if !@is_case_sensitive
       str = str.toLowerCase()
+    str = str.replace(/^\s+|\s+$/g,"")
     # invalid char clean here
     str;
 
