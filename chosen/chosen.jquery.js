@@ -239,7 +239,7 @@ Copyright (c) 2011 by Harvest
 
     AbstractChosen.prototype.generate_random_char = function() {
       var chars, newchar, rand;
-      chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ";
+      chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
       rand = Math.floor(Math.random() * chars.length);
       return newchar = chars.substring(rand, rand + 1);
     };
@@ -271,8 +271,12 @@ Copyright (c) 2011 by Harvest
       if ($.browser.msie && ($.browser.version === "6.0" || $.browser.version === "7.0")) {
         return this;
       }
-      return $(this).each(function(input_field) {
-        if (!($(this)).hasClass("chzn-done")) return new Chosen(this, options);
+      return this.each(function(input_field) {
+        var $this;
+        $this = $(this);
+        if (!$this.hasClass("chzn-done")) {
+          return $this.data('chosen', new Chosen(this, options));
+        }
       });
     }
   });
