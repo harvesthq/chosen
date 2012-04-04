@@ -289,13 +289,12 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.set_up_html = function() {
-      var base_template, container_props, dd_top, dd_width, sf_width;
+      var base_template, container_props, dd_top, dd_width;
       this.container_id = this.form_field.identify().replace(/(:|\.)/g, '_') + "_chzn";
       this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
       container_props = {
         'id': this.container_id,
-        'class': "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
-        'style': 'width: ' + this.f_width + 'px'
+        'class': "chzn-container" + (this.is_rtl ? ' chzn-rtl' : '')
       };
       this.default_text = this.form_field.readAttribute('data-placeholder') ? this.form_field.readAttribute('data-placeholder') : this.default_text_default;
       base_template = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
@@ -312,7 +311,6 @@ Copyright (c) 2011 by Harvest
       dd_top = this.container.getHeight();
       dd_width = this.f_width - get_side_border_padding(this.dropdown);
       this.dropdown.setStyle({
-        "width": dd_width + "px",
         "top": dd_top + "px"
       });
       this.search_field = this.container.down('input');
@@ -325,10 +323,6 @@ Copyright (c) 2011 by Harvest
       } else {
         this.search_container = this.container.down('div.chzn-search');
         this.selected_item = this.container.down('.chzn-single');
-        sf_width = dd_width - get_side_border_padding(this.search_container) - get_side_border_padding(this.search_field);
-        this.search_field.setStyle({
-          "width": sf_width + "px"
-        });
       }
       this.results_build();
       this.set_tab_index();
@@ -935,9 +929,6 @@ Copyright (c) 2011 by Harvest
         w = Element.measure(div, 'width') + 25;
         div.remove();
         if (w > this.f_width - 10) w = this.f_width - 10;
-        this.search_field.setStyle({
-          'width': w + 'px'
-        });
         dd_top = this.container.getHeight();
         return this.dropdown.setStyle({
           "top": dd_top + "px"

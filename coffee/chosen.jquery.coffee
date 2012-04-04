@@ -34,7 +34,6 @@ class Chosen extends AbstractChosen
     container_div = ($ "<div />", {
       id: @container_id
       class: "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
-      style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
     })
 
     if @is_multiple
@@ -50,7 +49,7 @@ class Chosen extends AbstractChosen
     dd_top = @container.height()
     dd_width = (@f_width - get_side_border_padding(@dropdown))
 
-    @dropdown.css({"width": dd_width  + "px", "top": dd_top + "px"})
+    @dropdown.css({"top": dd_top + "px"})
 
     @search_field = @container.find('input').first()
     @search_results = @container.find('ul.chzn-results').first()
@@ -65,7 +64,6 @@ class Chosen extends AbstractChosen
       @search_container = @container.find('div.chzn-search').first()
       @selected_item = @container.find('.chzn-single').first()
       sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
-      @search_field.css( {"width" : sf_width + "px"} )
 
     this.results_build()
     this.set_tab_index()
@@ -540,8 +538,6 @@ class Chosen extends AbstractChosen
 
       if( w > @f_width-10 )
         w = @f_width - 10
-
-      @search_field.css({'width': w + 'px'})
 
       dd_top = @container.height()
       @dropdown.css({"top":  dd_top + "px"})
