@@ -89,13 +89,13 @@
   this.SelectParser = SelectParser;
 
 }).call(this);
-
-/*
-Chosen source: generate output using 'cake build'
-Copyright (c) 2011 by Harvest
-*/
-
 (function() {
+
+  /*
+  Chosen source: generate output using 'cake build'
+  Copyright (c) 2011 by Harvest
+  */
+
   var AbstractChosen, root;
 
   root = this;
@@ -239,7 +239,7 @@ Copyright (c) 2011 by Harvest
 
     AbstractChosen.prototype.generate_random_char = function() {
       var chars, newchar, rand;
-      chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ";
+      chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
       rand = Math.floor(Math.random() * chars.length);
       return newchar = chars.substring(rand, rand + 1);
     };
@@ -251,16 +251,15 @@ Copyright (c) 2011 by Harvest
   root.AbstractChosen = AbstractChosen;
 
 }).call(this);
-
-/*
-Chosen source: generate output using 'cake build'
-Copyright (c) 2011 by Harvest
-*/
-
 (function() {
-  var $, Chosen, get_side_border_padding, root,
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
+  /*
+  Chosen source: generate output using 'cake build'
+  Copyright (c) 2011 by Harvest
+  */
+
+  var $, Chosen, get_side_border_padding, root;
+  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   root = this;
 
@@ -277,9 +276,9 @@ Copyright (c) 2011 by Harvest
     }
   });
 
-  Chosen = (function(_super) {
+  Chosen = (function() {
 
-    __extends(Chosen, _super);
+    __extends(Chosen, AbstractChosen);
 
     function Chosen() {
       Chosen.__super__.constructor.apply(this, arguments);
@@ -296,6 +295,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.set_up_html = function() {
       var container_div, dd_top, dd_width, sf_width;
+      var _this = this;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/[^\w]/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
       this.f_width = this.form_field_jq.outerWidth();
@@ -334,6 +334,18 @@ Copyright (c) 2011 by Harvest
         this.search_field.css({
           "width": sf_width + "px"
         });
+      }
+      if (this.form_field.id.length) {
+        this.form_field_label = $("label[for=" + this.form_field.id + "]");
+        if (this.form_field_label.length > 0) {
+          this.form_field_label.click(function(evt) {
+            if (_this.is_multiple) {
+              return _this.container_mousedown(evt);
+            } else {
+              return _this.activate_field();
+            }
+          });
+        }
       }
       this.results_build();
       this.set_tab_index();
@@ -630,8 +642,8 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.choice_build = function(item) {
-      var choice_id, link,
-        _this = this;
+      var choice_id, link;
+      var _this = this;
       choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
       this.search_container.before('<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>');
@@ -940,7 +952,7 @@ Copyright (c) 2011 by Harvest
 
     return Chosen;
 
-  })(AbstractChosen);
+  })();
 
   get_side_border_padding = function(elmt) {
     var side_border_padding;
