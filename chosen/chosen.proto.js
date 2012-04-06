@@ -89,13 +89,13 @@
   this.SelectParser = SelectParser;
 
 }).call(this);
+
+/*
+Chosen source: generate output using 'cake build'
+Copyright (c) 2011 by Harvest
+*/
+
 (function() {
-
-  /*
-  Chosen source: generate output using 'cake build'
-  Copyright (c) 2011 by Harvest
-  */
-
   var AbstractChosen, root;
 
   root = this;
@@ -251,21 +251,22 @@
   root.AbstractChosen = AbstractChosen;
 
 }).call(this);
+
+/*
+Chosen source: generate output using 'cake build'
+Copyright (c) 2011 by Harvest
+*/
+
 (function() {
-
-  /*
-  Chosen source: generate output using 'cake build'
-  Copyright (c) 2011 by Harvest
-  */
-
-  var Chosen, get_side_border_padding, root;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var Chosen, get_side_border_padding, root,
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   root = this;
 
-  Chosen = (function() {
+  Chosen = (function(_super) {
 
-    __extends(Chosen, AbstractChosen);
+    __extends(Chosen, _super);
 
     function Chosen() {
       Chosen.__super__.constructor.apply(this, arguments);
@@ -288,8 +289,8 @@
     };
 
     Chosen.prototype.set_up_html = function() {
-      var base_template, container_props, dd_top, dd_width, sf_width;
-      var _this = this;
+      var base_template, container_props, dd_top, dd_width, sf_width,
+        _this = this;
       this.container_id = this.form_field.identify().replace(/[^\w]/g, '_') + "_chzn";
       this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
       container_props = {
@@ -633,8 +634,8 @@
     };
 
     Chosen.prototype.choice_build = function(item) {
-      var choice_id, link;
-      var _this = this;
+      var choice_id, link,
+        _this = this;
       choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
       this.search_container.insert({
@@ -954,7 +955,7 @@
 
     return Chosen;
 
-  })();
+  })(AbstractChosen);
 
   root.Chosen = Chosen;
 
