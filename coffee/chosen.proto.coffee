@@ -284,7 +284,7 @@ class @Chosen extends AbstractChosen
     this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
 
   choice_build: (item) ->
-    choice = new Element('li', { class: "search-choice" }).update("<span>#{item.html}</span>")
+    choice = new Element('li', { class: "search-choice" }).update("<span>#{this.choice_label(item)}</span>")
 
     if item.disabled
       choice.addClassName 'search-choice-disabled'
@@ -294,6 +294,12 @@ class @Chosen extends AbstractChosen
       choice.insert close_link
 
     @search_container.insert { before: choice }
+
+  choice_label: (item) ->
+    if @include_group_label_in_selected and item.group_label?
+      "<b class='group-name'>#{item.group_label}</b>#{item.html}"
+    else
+      item.html
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
@@ -349,7 +355,7 @@ class @Chosen extends AbstractChosen
       if @is_multiple
         this.choice_build item
       else
-        this.single_set_selected_text(item.text)
+        this.single_set_selected_text(this.choice_label(item))
 
       this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
 

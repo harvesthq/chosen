@@ -31,6 +31,7 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+    @include_group_label_in_selected = @options.include_group_label_in_selected || false
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
