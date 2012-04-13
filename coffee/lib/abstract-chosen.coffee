@@ -32,6 +32,7 @@ class AbstractChosen
     @search_contains = @options.search_contains || false
     @choices = 0
     @results_none_found = @options.no_results_text or "No results match"
+    @higlight_matched_text = if @options.highlight_matched_text? then @options.highlight_matched_text else true
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
