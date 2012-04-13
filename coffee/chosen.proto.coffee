@@ -179,7 +179,7 @@ class Chosen extends AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          @selected_item.removeClassName("chzn-default").down("span").update( data.html )
+          @selected_item.removeClassName("chzn-default").down("span").update this.choice_label(data)
           this.single_deselect_control_build() if @allow_single_deselect
 
     this.search_field_disabled()
@@ -285,10 +285,17 @@ class Chosen extends AbstractChosen
     @search_container.insert
       before: @choice_temp.evaluate
         id:       choice_id
-        choice:   item.html
+        choice:   this.choice_label(item)
         position: item.array_index
     link = $(choice_id).down('a')
     link.observe "click", (evt) => this.choice_destroy_link_click(evt)
+
+  choice_label: (item) ->
+    if @include_group_label_in_selected
+      group_label = if item.group_label? then "<b class='group-name'>#{item.group_label}</b>" else ''
+      group_label + item.html
+    else
+      item.html
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
@@ -337,7 +344,7 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.choice_build item
       else
-        @selected_item.down("span").update(item.html)
+        @selected_item.down("span").update this.choice_label(item)
         this.single_deselect_control_build() if @allow_single_deselect
 
       this.results_hide() unless evt.metaKey and @is_multiple

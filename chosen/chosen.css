@@ -63,6 +63,23 @@
   -ms-text-overflow: ellipsis;
   text-overflow: ellipsis;
 }
+.chzn-container-single .chzn-single span b {
+  margin-right: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  font-weight: normal;
+  color: #999999;
+}
+.chzn-container-single .chzn-single span b:after {
+  color: #C2BCBC;
+  content: "\25B6";
+  font-size: 80%;
+  padding-left: 4px;
+  vertical-align: top;
+}
 .chzn-container-single .chzn-single abbr {
   display: block;
   position: absolute;
@@ -197,6 +214,18 @@
   margin: 3px 0 3px 5px;
   position: relative;
   cursor: default;
+}
+.chzn-container-multi .chzn-choices .search-choice span b {
+  margin-right: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: normal;
+  color: #999999;
+}
+.chzn-container-multi .chzn-choices .search-choice span b:after {
+  content: ":";
+  padding-left: 2px;
+  vertical-align: top;
 }
 .chzn-container-multi .chzn-choices .search-choice-focus {
   background: #d4d4d4;
