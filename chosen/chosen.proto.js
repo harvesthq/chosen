@@ -239,7 +239,7 @@ Copyright (c) 2011 by Harvest
 
     AbstractChosen.prototype.generate_random_char = function() {
       var chars, newchar, rand;
-      chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ";
+      chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
       rand = Math.floor(Math.random() * chars.length);
       return newchar = chars.substring(rand, rand + 1);
     };
@@ -289,7 +289,8 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.set_up_html = function() {
-      var base_template, container_props, dd_top, dd_width, sf_width;
+      var base_template, container_props, dd_top, dd_width, sf_width,
+        _this = this;
       this.container_id = this.form_field.identify().replace(/[^\w]/g, '_') + "_chzn";
       this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
       container_props = {
@@ -329,6 +330,17 @@ Copyright (c) 2011 by Harvest
         this.search_field.setStyle({
           "width": sf_width + "px"
         });
+      }
+      if (this.form_field.id.length) {
+        if (this.form_field_label = $$("label[for=" + this.form_field.id + "]").first()) {
+          this.form_field_label.observe("click", function(evt) {
+            if (_this.is_multiple) {
+              return _this.container_mousedown(evt);
+            } else {
+              return _this.activate_field();
+            }
+          });
+        }
       }
       this.results_build();
       this.set_tab_index();

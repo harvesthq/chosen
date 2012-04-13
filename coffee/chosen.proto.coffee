@@ -60,6 +60,10 @@ class Chosen extends AbstractChosen
       sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
       @search_field.setStyle( {"width" : sf_width + "px"} )
     
+    if @form_field.id.length
+      if @form_field_label = $$("label[for=#{@form_field.id}]").first()
+        @form_field_label.observe "click", (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
+
     this.results_build()
     this.set_tab_index()
     @form_field.fire("liszt:ready", {chosen: this})
