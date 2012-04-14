@@ -1222,7 +1222,11 @@
     <div class="side-by-side clearfix">
       <p>You can easily limit how many options can user select:</p>
       <code>
-        $(".chzn-select").chosen({limit: 5});
+        $(".chzn-select").chosen({max_selected_options: 5});
+      </code>
+      <p>If you try to select another option with limit reached <code>liszt:maxselected</code> event is triggered:</p>
+      <code>
+        $(".chzn-select").bind("liszt:maxselected", function () { ... });
       </code>
     </div>
     

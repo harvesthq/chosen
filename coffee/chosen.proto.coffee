@@ -224,7 +224,8 @@ class Chosen extends AbstractChosen
       @selected_item.addClassName('chzn-single-with-drop')
       if @result_single_selected
         this.result_do_highlight( @result_single_selected )
-    else if @limit_choices != false and @limit_choices == @choices
+    else if @max_selected_options <= @choices
+      @form_field.fire("liszt:maxselected", {chosen: this})
       return false
 
     dd_top = if @is_multiple then @container.getHeight() else (@container.getHeight() - 1)
@@ -282,7 +283,8 @@ class Chosen extends AbstractChosen
       this.results_show()
 
   choice_build: (item) ->
-    if @is_multiple and @limit_choices != false and @limit_choices == @choices
+    if @is_multiple and @max_selected_options <= @choices
+      @form_field.fire("liszt:maxselected", {chosen: this})
       return false
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
