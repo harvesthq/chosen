@@ -62,7 +62,8 @@
             disabled: group_disabled === true ? group_disabled : option.disabled,
             group_array_index: group_position,
             classes: option.className,
-            style: option.style.cssText
+            style: option.style.cssText,
+            allow_removal: option.dataset && option.dataset.removable ? !!option.dataset.removable && !option.dataset.removable === 0 && !option.dataset.removable === "false" : true
           });
         } else {
           this.parsed.push({

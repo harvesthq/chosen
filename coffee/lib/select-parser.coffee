@@ -36,6 +36,7 @@ class SelectParser
           group_array_index: group_position
           classes: option.className
           style: option.style.cssText
+          allow_removal: if option.dataset and option.dataset.removable then (not not option.dataset.removable and not option.dataset.removable == 0 and not option.dataset.removable == "false") else true
       else
         @parsed.push
           array_index: @parsed.length

@@ -292,7 +292,9 @@ class Chosen extends AbstractChosen
   choice_build: (item) ->
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
-    @search_container.before  '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
+    html = '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span>'
+    html += '<a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>' if item.allow_removal
+    @search_container.before  html
     link = $('#' + choice_id).find("a").first()
     link.click (evt) => this.choice_destroy_link_click(evt)
 
