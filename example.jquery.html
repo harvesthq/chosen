@@ -1203,6 +1203,23 @@
       </div>
     </div>
 
+    <h2>Prevent deselect</h2>
+    <div class="side-by-side clearfix">
+      <p>You can prevent deselection:</p>
+			<em>Multiple Select</em>
+			<select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select-no-deselect" id="test_no_desel" name="test_no_desel_form" tabindex="9">
+				<option value=""></option>
+				<option>American Black Bear</option>
+				<option>Asiatic Black Bear</option>
+				<option>Brown Bear</option>
+				<option>Giant Panda</option>
+				<option selected>Sloth Bear</option>
+				<option disabled>Sun Bear</option>
+				<option selected>Polar Bear</option>
+				<option disabled>Spectacled Bear</option>
+			</select>
+    </div>
+
     <h2>Default Text Support</h2>
     <div class="side-by-side clearfix">
       <p>Chosen automatically sets the default field text ("Choose a country...") by reading the select element's data-placeholder value. If no data-placeholder value is present, it will default to "Select Some Option" or "Select Some Options" depending on whether the select is single or multiple. You can change these elements in the plugin js file as you see fit.</p>
@@ -1297,6 +1314,13 @@
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
   <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
-  <script type="text/javascript"> $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true}); </script>
+	<script type="text/javascript">
+		$(".chzn-select").chosen();
+		$(".chzn-select-deselect").chosen({allow_single_deselect:true});
+		$(".chzn-select-no-deselect").chosen().bind('liszt:deselect', function(e){
+			alert('Tut tut! No removing '+e.chosen_item.text);
+			e.preventDefault();
+		});
+	</script>
   </form>
 </body>

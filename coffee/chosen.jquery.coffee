@@ -305,12 +305,18 @@ class Chosen extends AbstractChosen
       evt.stopPropagation
 
   choice_destroy: (link) ->
+    pos=link.attr "rel"
+    result_data = @results_data[pos]
+    evt = $.Event("liszt:deselect", {"chosen_pos": pos, "chosen_item": result_data})
+    @form_field_jq.trigger evt
+    return if evt.isDefaultPrevented()
+
     @choices -= 1
     this.show_search_field_default()
 
     this.results_hide() if @is_multiple and @choices > 0 and @search_field.val().length < 1
 
-    this.result_deselect (link.attr "rel")
+    this.result_deselect pos
     link.parents('li').first().remove()
 
   results_reset: (evt) ->

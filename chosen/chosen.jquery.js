@@ -686,12 +686,23 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.choice_destroy = function(link) {
+      var evt, pos, result_data;
+      pos = link.attr("rel");
+      result_data = this.results_data[pos];
+      evt = $.Event("liszt:deselect", {
+        "chosen_pos": pos,
+        "chosen_item": result_data
+      });
+      this.form_field_jq.trigger(evt);
+      if (evt.isDefaultPrevented()) {
+        return;
+      }
       this.choices -= 1;
       this.show_search_field_default();
       if (this.is_multiple && this.choices > 0 && this.search_field.val().length < 1) {
         this.results_hide();
       }
-      this.result_deselect(link.attr("rel"));
+      this.result_deselect(pos);
       return link.parents('li').first().remove();
     };
 
