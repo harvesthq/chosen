@@ -19,6 +19,7 @@ class Chosen extends AbstractChosen
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
+    @choice_temp_noclose = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
@@ -283,7 +284,7 @@ class Chosen extends AbstractChosen
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
     @search_container.insert
-      before: @choice_temp.evaluate
+      before: (if item.allow_removal then @choice_temp else @choice_temp_noclose).evaluate
         id:       choice_id
         choice:   item.html
         position: item.array_index
@@ -297,12 +298,17 @@ class Chosen extends AbstractChosen
       this.choice_destroy evt.target
 
   choice_destroy: (link) ->
+    pos=link.readAttribute("rel")
+    result_data = @results_data[pos]
+    @form_field.fire("liszt:deselect", {"chosen_pos": pos, "chosen_item": result_data})
+    return if evt.stopped
+
     @choices -= 1
     this.show_search_field_default()
 
     this.results_hide() if @is_multiple and @choices > 0 and @search_field.value.length < 1
 
-    this.result_deselect link.readAttribute("rel")
+    this.result_deselect pos
     link.up('li').remove()
 
   results_reset: (evt) ->

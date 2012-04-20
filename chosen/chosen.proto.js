@@ -306,6 +306,7 @@ Copyright (c) 2011 by Harvest
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
+      this.choice_temp_noclose = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span></li>');
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
     };
 
@@ -658,7 +659,7 @@ Copyright (c) 2011 by Harvest
       choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
       this.search_container.insert({
-        before: this.choice_temp.evaluate({
+        before: (item.allow_removal ? this.choice_temp : this.choice_temp_noclose).evaluate({
           id: choice_id,
           choice: item.html,
           position: item.array_index
@@ -679,12 +680,22 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.choice_destroy = function(link) {
+      var pos, result_data;
+      pos = link.readAttribute("rel");
+      result_data = this.results_data[pos];
+      this.form_field.fire("liszt:deselect", {
+        "chosen_pos": pos,
+        "chosen_item": result_data
+      });
+      if (evt.stopped) {
+        return;
+      }
       this.choices -= 1;
       this.show_search_field_default();
       if (this.is_multiple && this.choices > 0 && this.search_field.value.length < 1) {
         this.results_hide();
       }
-      this.result_deselect(link.readAttribute("rel"));
+      this.result_deselect(pos);
       return link.up('li').remove();
     };
 
