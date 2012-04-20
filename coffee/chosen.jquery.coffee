@@ -39,9 +39,9 @@ class Chosen extends AbstractChosen
     })
 
     if @is_multiple
-      container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
+      container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="display:none;"><ul class="chzn-results"></ul></div>'
     else
-      container_div.html '<a href="javascript:void(0)" class="chzn-single chzn-default"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
+      container_div.html '<a href="javascript:void(0)" class="chzn-single chzn-default"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="display:none;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
 
     @form_field_jq.hide().after container_div
     @container = ($ '#' + @container_id)
@@ -239,7 +239,7 @@ class Chosen extends AbstractChosen
       return false
 
     dd_top = if @is_multiple then @container.height() else (@container.height() - 1)
-    @dropdown.css {"top":  dd_top + "px", "left":0}
+    @dropdown.show()
     @results_showing = true
 
     @search_field.focus()
@@ -250,7 +250,7 @@ class Chosen extends AbstractChosen
   results_hide: ->
     @selected_item.removeClass "chzn-single-with-drop" unless @is_multiple
     this.result_clear_highlight()
-    @dropdown.css {"left":"-9000px"}
+    @dropdown.hide()
     @results_showing = false
 
 
