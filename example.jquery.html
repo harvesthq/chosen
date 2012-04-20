@@ -1217,6 +1217,18 @@
         $(".chzn-select").chosen({no_results_text: "No results matched"});
       </code>
     </div>
+
+    <h2>Limit Selected Options in Multiselect</h2>
+    <div class="side-by-side clearfix">
+      <p>You can easily limit how many options can user select:</p>
+      <code>
+        $(".chzn-select").chosen({max_selected_options: 5});
+      </code>
+      <p>If you try to select another option with limit reached <code>liszt:maxselected</code> event is triggered:</p>
+      <code>
+        $(".chzn-select").bind("liszt:maxselected", function () { ... });
+      </code>
+    </div>
     
     <h2>Allow Deselect on Single Selects</h2>
     <div class="side-by-side clearfix">

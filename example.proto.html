@@ -1213,7 +1213,19 @@
     <div class="side-by-side clearfix">
       <p>Setting the "No results" search text is as easy as passing an option when you create Chosen:</p>
       <code>
-        New Chosen($("chzn_select_field"),{no_results_text: "No results matched"});
+        new Chosen($("chzn_select_field"),{no_results_text: "No results matched"});
+      </code>
+    </div>
+
+    <h2>Limit Selected Options in Multiselect</h2>
+    <div class="side-by-side clearfix">
+      <p>You can easily limit how many options can user select:</p>
+      <code>
+        new Chosen($("chzn_select_field"),{max_selected_options: 5});
+      </code>
+      <p>If you try to select another option with limit reached <code>liszt:maxselected</code> event is triggered:</p>
+      <code>
+        $("chzn_select_field").observe("liszt:maxselected", function(evt) { ... });
       </code>
     </div>
 
