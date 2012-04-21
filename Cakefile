@@ -98,9 +98,9 @@ task 'watch', 'watch coffee/ for changes and build Chosen', ->
 task 'package_npm', 'generate the package.json file for npm', package_npm = (cb) ->
   try
     package_file = 'package.json'
-    package = JSON.parse("#{fs.readFileSync package_file}")
-    package['version'] = version()
-    fs.writeFileSync package_file, JSON.stringify(package, null, 2)
+    package_obj = JSON.parse("#{fs.readFileSync package_file}")
+    package_obj['version'] = version()
+    fs.writeFileSync package_file, JSON.stringify(package_obj, null, 2)
     console.log "Wrote #{package_file}"
     cb() if typeof cb is 'function'
   catch e
