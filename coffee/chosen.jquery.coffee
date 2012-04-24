@@ -298,7 +298,8 @@ class Chosen extends AbstractChosen
       return false # fire event
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
-    @search_container.before  '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
+    optgroup_class =  if item.group_array_index then " group-option-#{item.group_array_index}" else ""
+    @search_container.before  '<li class="search-choice' + optgroup_class + '" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
     link = $('#' + choice_id).find("a").first()
     link.click (evt) => this.choice_destroy_link_click(evt)
 

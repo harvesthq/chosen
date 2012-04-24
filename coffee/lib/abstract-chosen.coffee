@@ -52,6 +52,7 @@ class AbstractChosen
       classes = if option.selected and @is_multiple then [] else ["active-result"]
       classes.push "result-selected" if option.selected
       classes.push "group-option" if option.group_array_index?
+      classes.push "group-option-#{option.group_array_index}" if option.group_array_index?
       classes.push option.classes if option.classes != ""
 
       style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""

@@ -18,7 +18,7 @@ class Chosen extends AbstractChosen
     # HTML Templates
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
-    @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
+    @choice_temp = new Template('<li class="search-choice#{optgroup_class}" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
@@ -287,11 +287,13 @@ class Chosen extends AbstractChosen
       @form_field.fire("liszt:maxselected", {chosen: this})
       return false
     choice_id = @container_id + "_c_" + item.array_index
+    optgroup_class =  if item.group_array_index then " group-option-#{item.group_array_index}" else ""
     @choices += 1
     @search_container.insert
       before: @choice_temp.evaluate
         id:       choice_id
         choice:   item.html
+        optgroup_class: optgroup_class
         position: item.array_index
     link = $(choice_id).down('a')
     link.observe "click", (evt) => this.choice_destroy_link_click(evt)
