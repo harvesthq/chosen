@@ -19,6 +19,7 @@ class Chosen extends AbstractChosen
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
+    @choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
@@ -289,16 +290,18 @@ class Chosen extends AbstractChosen
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
     @search_container.insert
-      before: @choice_temp.evaluate
+      before: (if item.disabled then @choice_noclose_temp else @choice_temp).evaluate
         id:       choice_id
         choice:   item.html
         position: item.array_index
-    link = $(choice_id).down('a')
-    link.observe "click", (evt) => this.choice_destroy_link_click(evt)
+    if not item.disabled
+      link = $(choice_id).down('a')
+      link.observe "click", (evt) => this.choice_destroy_link_click(evt)
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
-    if not @is_disabled
+    result_data = @results_data[evt.target.readAttribute("rel")]
+    if not @is_disabled and not result_data.disabled
       @pending_destroy_click = true
       this.choice_destroy evt.target
 
@@ -487,8 +490,8 @@ class Chosen extends AbstractChosen
       this.choice_destroy @pending_backstroke.down("a")
       this.clear_backstroke()
     else
-      @pending_backstroke = @search_container.siblings("li.search-choice").last()
-      @pending_backstroke.addClassName("search-choice-focus")
+      @pending_backstroke = @search_container.siblings().reject( (x) -> x.hasClassName("search-choice-disabled") ).last()
+      @pending_backstroke.addClassName("search-choice-focus") if @pending_backstroke
 
   clear_backstroke: ->
     @pending_backstroke.removeClassName("search-choice-focus") if @pending_backstroke
