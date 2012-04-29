@@ -239,6 +239,7 @@ class Chosen extends AbstractChosen
       return false
 
     dd_top = if @is_multiple then @container.height() else (@container.height() - 1)
+    @form_field_jq.trigger("liszt:showing_dropdown", {chosen: this})
     @dropdown.css {"top":  dd_top + "px", "left":0}
     @results_showing = true
 
@@ -250,6 +251,7 @@ class Chosen extends AbstractChosen
   results_hide: ->
     @selected_item.removeClass "chzn-single-with-drop" unless @is_multiple
     this.result_clear_highlight()
+    @form_field_jq.trigger("liszt:hiding_dropdown", {chosen: this})
     @dropdown.css {"left":"-9000px"}
     @results_showing = false
 
