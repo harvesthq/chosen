@@ -108,6 +108,7 @@ Copyright (c) 2011 by Harvest
       this.set_default_values();
       this.is_multiple = this.form_field.multiple;
       this.default_text_default = this.is_multiple ? "Select Some Options" : "Select an Option";
+      this.no_results_default = "No results match";
       this.setup();
       this.set_up_html();
       this.register_observers();
@@ -132,7 +133,8 @@ Copyright (c) 2011 by Harvest
       this.search_contains = this.options.search_contains || false;
       this.choices = 0;
       this.max_selected_options = this.options.max_selected_options || Infinity;
-      return this.results_none_found = this.options.no_results_text || "No results match";
+      this.results_none_found = this.form_field.getAttribute("data-no_results_text") || this.options.no_results_text || this.no_results_default;
+      return this.default_text = this.form_field.getAttribute("data-placeholder") || this.options.placeholder || this.default_text_default;
     };
 
     AbstractChosen.prototype.mouse_enter = function() {
@@ -298,7 +300,6 @@ Copyright (c) 2011 by Harvest
         'class': "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
         'style': 'width: ' + this.f_width + 'px'
       };
-      this.default_text = this.form_field.readAttribute('data-placeholder') ? this.form_field.readAttribute('data-placeholder') : this.default_text_default;
       base_template = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
         "default": this.default_text
       })) : new Element('div', container_props).update(this.single_temp.evaluate({

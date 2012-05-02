@@ -30,8 +30,6 @@ class Chosen extends AbstractChosen
 
     @f_width = @form_field_jq.outerWidth()
 
-    @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
-
     container_div = ($ "<div />", {
       id: @container_id
       class: "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
