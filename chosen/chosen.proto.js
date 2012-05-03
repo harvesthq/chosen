@@ -563,6 +563,9 @@ Copyright (c) 2011 by Harvest
         return false;
       }
       dd_top = this.is_multiple ? this.container.getHeight() : this.container.getHeight() - 1;
+      this.form_field.fire("liszt:showing_dropdown", {
+        chosen: this
+      });
       this.dropdown.setStyle({
         "top": dd_top + "px",
         "left": 0
@@ -578,6 +581,9 @@ Copyright (c) 2011 by Harvest
         this.selected_item.removeClassName('chzn-single-with-drop');
       }
       this.result_clear_highlight();
+      this.form_field.fire("liszt:hiding_dropdown", {
+        chosen: this
+      });
       this.dropdown.setStyle({
         "left": "-9000px"
       });
