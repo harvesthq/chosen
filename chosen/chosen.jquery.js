@@ -107,7 +107,7 @@ Copyright (c) 2011 by Harvest
       this.options = options != null ? options : {};
       this.set_default_values();
       this.is_multiple = this.form_field.multiple;
-      this.default_text_default = this.is_multiple ? "Select Some Options" : "Select an Option";
+      this.set_default_text();
       this.setup();
       this.set_up_html();
       this.register_observers();
@@ -131,8 +131,18 @@ Copyright (c) 2011 by Harvest
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
       this.search_contains = this.options.search_contains || false;
       this.choices = 0;
-      this.max_selected_options = this.options.max_selected_options || Infinity;
-      return this.results_none_found = this.options.no_results_text || "No results match";
+      return this.max_selected_options = this.options.max_selected_options || Infinity;
+    };
+
+    AbstractChosen.prototype.set_default_text = function() {
+      if (this.form_field.getAttribute("data-placeholder")) {
+        this.default_text = this.form_field.getAttribute("data-placeholder");
+      } else if (this.is_multiple) {
+        this.default_text = this.options.placeholder_text_multiple || this.options.placeholder_text || "Select Some Options";
+      } else {
+        this.default_text = this.options.placeholder_text_single || this.options.placeholder_text || "Select an Option";
+      }
+      return this.results_none_found = this.form_field.getAttribute("data-no_results_text") || this.options.no_results_text || "No results match";
     };
 
     AbstractChosen.prototype.mouse_enter = function() {
@@ -304,7 +314,6 @@ Copyright (c) 2011 by Harvest
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/[^\w]/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
       this.f_width = this.form_field_jq.outerWidth();
-      this.default_text = this.form_field_jq.data('placeholder') ? this.form_field_jq.data('placeholder') : this.default_text_default;
       container_div = $("<div />", {
         id: this.container_id,
         "class": "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
