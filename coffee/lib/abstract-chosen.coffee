@@ -10,8 +10,7 @@ class AbstractChosen
     this.set_default_values()
     
     @is_multiple = @form_field.multiple
-    @default_text_default = if @is_multiple then "Select Some Options" else "Select an Option"
-    @no_results_default = "No results match"
+    this.set_default_text()
 
     this.setup()
 
@@ -34,8 +33,15 @@ class AbstractChosen
     @choices = 0
     @max_selected_options = @options.max_selected_options || Infinity
 
-    @results_none_found = @form_field.getAttribute("data-no_results_text") || @options.no_results_text or @no_results_default
-    @default_text = @form_field.getAttribute("data-placeholder") || @options.placeholder || @default_text_default
+  set_default_text: ->
+    if @form_field.getAttribute("data-placeholder")
+      @default_text = @form_field.getAttribute("data-placeholder")
+    else if @is_multiple
+      @default_text = @options.placeholder_text_multiple || @options.placeholder_text || "Select Some Options"
+    else
+      @default_text = @options.placeholder_text_single || @options.placeholder_text || "Select an Option"
+
+    @results_none_found = @form_field.getAttribute("data-no_results_text") || @options.no_results_text || "No results match"
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
