@@ -311,12 +311,12 @@ class Chosen extends AbstractChosen
     this.result_deselect link.readAttribute("rel")
     link.up('li').remove()
 
-  results_reset: (evt) ->
+  results_reset: ->
     @form_field.options[0].selected = true
     @selected_item.down("span").update(@default_text)
     @selected_item.addClassName("chzn-default") if not @is_multiple
     this.show_search_field_default()
-    evt.target.remove()
+    @selected_item.down("abbr").remove()
     @form_field.simulate("change") if typeof Event.simulate is 'function'
     this.results_hide() if @active_field
   

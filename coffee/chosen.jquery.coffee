@@ -319,12 +319,12 @@ class Chosen extends AbstractChosen
     this.result_deselect (link.attr "rel")
     link.parents('li').first().remove()
 
-  results_reset: (evt) ->
+  results_reset: ->
     @form_field.options[0].selected = true
     @selected_item.find("span").text @default_text
     @selected_item.addClass("chzn-default") if not @is_multiple
     this.show_search_field_default()
-    $(evt.target).remove();
+    @selected_item.find("abbr").remove()
     @form_field_jq.trigger "change"
     this.results_hide() if @active_field
 

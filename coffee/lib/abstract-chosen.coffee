@@ -70,6 +70,7 @@ class AbstractChosen
       ""
 
   results_update_field: ->
+    this.results_reset()
     this.result_clear_highlight()
     @result_single_selected = null
     this.results_build()
