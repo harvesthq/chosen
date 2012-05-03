@@ -521,6 +521,12 @@ Copyright (c) 2011 by Harvest
           }
         }
       }
+
+      if(this.options.add_new_options)
+      {
+        content += '<li class="new-option" style="display: none;"></li>';
+      }
+
       this.search_field_disabled();
       this.show_search_field_default();
       this.search_field_scale();
@@ -703,8 +709,18 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.result_select = function(evt) {
-      var high, high_id, item, position;
+      var high, high_id, item, position, added = false;
       if (this.result_highlight) {
+        if( this.options.add_new_options && this.result_highlight.hasClass('new-option')) {
+          
+          var new_option_html =  $('<option selected="selected" value="' + this.result_highlight.html() + '">' + this.result_highlight.html() + '</option>');
+          this.form_field_jq.append(new_option_html);
+          this.form_field_jq.trigger("liszt:updated");
+
+          this.form_field_jq.find('.new-option').html('').attr('value','').hide();
+        }
+        
+
         high = this.result_highlight;
         high_id = high.attr("id");
         this.result_clear_highlight();
@@ -729,6 +745,7 @@ Copyright (c) 2011 by Harvest
         if (!(evt.metaKey && this.is_multiple)) this.results_hide();
         this.search_field.val("");
         this.form_field_jq.trigger("change");
+
         return this.search_field_scale();
       }
     };
@@ -851,13 +868,27 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.no_results = function(terms) {
-      var no_results_html;
-      no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"</li>');
-      no_results_html.find("span").first().html(terms);
-      return this.search_results.append(no_results_html);
+      if( this.options.add_new_options )
+      {
+        var new_option_html = this.search_results.find('.new-option');
+        new_option_html.html(terms).addClass('active-result').show();
+        var last_id = new_option_html.siblings().last().attr('id');
+        var new_id = last_id.substr(last_id.lastIndexOf("_") + 1);
+        new_option_html.attr('id', this.container_id + "_o_" + this.results_data.length);
+
+        this.result_do_highlight(new_option_html);
+      }
+      else
+      {
+        var no_results_html;
+        no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"</li>');
+        no_results_html.find("span").first().html(terms);
+        return this.search_results.append(no_results_html);        
+      }
     };
 
     Chosen.prototype.no_results_clear = function() {
+      this.search_results.find('.new-option').html('').attr('value', '').hide();
       return this.search_results.find(".no-results").remove();
     };
 
