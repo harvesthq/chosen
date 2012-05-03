@@ -17,7 +17,7 @@
   -moz-box-shadow   : 0 4px 5px rgba(0,0,0,.15);
   -o-box-shadow     : 0 4px 5px rgba(0,0,0,.15);
   box-shadow        : 0 4px 5px rgba(0,0,0,.15);
-  z-index: 999;
+  z-index: 1010;
 }
 /* @end */
 
@@ -52,7 +52,7 @@
   text-decoration: none;
 }
 .chzn-container-single .chzn-default {
-	color: #999;
+  color: #999;
 }
 .chzn-container-single .chzn-single span {
   margin-right: 26px;
@@ -71,7 +71,7 @@
   width: 12px;
   height: 13px;
   font-size: 1px;
-  background: url(chosen-sprite.png) right top no-repeat;
+  background: url('chosen-sprite.png') right top no-repeat;
 }
 .chzn-container-single .chzn-single abbr:hover {
   background-position: right -11px;
@@ -209,7 +209,7 @@
   width: 12px;
   height: 13px;
   font-size: 1px;
-  background: url(chosen-sprite.png) right top no-repeat;
+  background: url('chosen-sprite.png') right top no-repeat;
 }
 .chzn-container-multi .chzn-choices .search-choice .search-choice-close:hover {
   background-position: right -11px;
@@ -227,6 +227,7 @@
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .chzn-container-multi .chzn-results {
   margin: -1px 0 0;
