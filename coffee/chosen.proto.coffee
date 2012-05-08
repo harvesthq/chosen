@@ -316,9 +316,13 @@ class Chosen extends AbstractChosen
     @selected_item.down("span").update(@default_text)
     @selected_item.addClassName("chzn-default") if not @is_multiple
     this.show_search_field_default()
-    @selected_item.down("abbr").remove()
+    this.results_reset_cleanup()
     @form_field.simulate("change") if typeof Event.simulate is 'function'
     this.results_hide() if @active_field
+
+  results_reset_cleanup: ->
+    deselect_trigger = @selected_item.down("abbr")
+    deselect_trigger.remove() if(deselect_trigger)
   
   result_select: (evt) ->
     if @result_highlight

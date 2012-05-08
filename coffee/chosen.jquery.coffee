@@ -324,9 +324,12 @@ class Chosen extends AbstractChosen
     @selected_item.find("span").text @default_text
     @selected_item.addClass("chzn-default") if not @is_multiple
     this.show_search_field_default()
-    @selected_item.find("abbr").remove()
+    this.results_reset_cleanup()
     @form_field_jq.trigger "change"
     this.results_hide() if @active_field
+  
+  results_reset_cleanup: ->
+    @selected_item.find("abbr").remove()
 
   result_select: (evt) ->
     if @result_highlight
