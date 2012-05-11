@@ -114,7 +114,7 @@ class Chosen extends AbstractChosen
         @pending_destroy_click = false
   
   container_mouseup: (evt) ->
-    this.results_reset(evt) if evt.target.nodeName is "ABBR"
+    this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
 
   blur_test: (evt) ->
     this.close_field() if not @active_field and @container.hasClassName("chzn-container-active")

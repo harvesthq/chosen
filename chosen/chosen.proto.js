@@ -436,7 +436,9 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.container_mouseup = function(evt) {
-      if (evt.target.nodeName === "ABBR") return this.results_reset(evt);
+      if (evt.target.nodeName === "ABBR" && !this.is_disabled) {
+        return this.results_reset(evt);
+      }
     };
 
     Chosen.prototype.blur_test = function(evt) {
