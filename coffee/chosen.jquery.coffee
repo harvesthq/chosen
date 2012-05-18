@@ -30,8 +30,6 @@ class Chosen extends AbstractChosen
 
     @f_width = @form_field_jq.outerWidth()
 
-    @default_text = if @form_field_jq.data 'placeholder' then @form_field_jq.data 'placeholder' else @default_text_default
-
     container_div = ($ "<div />", {
       id: @container_id
       class: "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
@@ -125,7 +123,7 @@ class Chosen extends AbstractChosen
         @pending_destroy_click = false
 
   container_mouseup: (evt) ->
-    this.results_reset(evt) if evt.target.nodeName is "ABBR"
+    this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
 
   blur_test: (evt) ->
     this.close_field() if not @active_field and @container.hasClass "chzn-container-active"
@@ -173,7 +171,7 @@ class Chosen extends AbstractChosen
       @search_choices.find("li.search-choice").remove()
       @choices = 0
     else if not @is_multiple
-      @selected_item.find("span").text @default_text
+      @selected_item.addClass("chzn-default").find("span").text(@default_text)
       if @form_field.options.length <= @disable_search_threshold
         @container.addClass "chzn-container-single-nosearch"
       else
@@ -239,6 +237,7 @@ class Chosen extends AbstractChosen
       return false
 
     dd_top = if @is_multiple then @container.height() else (@container.height() - 1)
+    @form_field_jq.trigger("liszt:showing_dropdown", {chosen: this})
     @dropdown.css {"top":  dd_top + "px", "left":0}
     @results_showing = true
 
@@ -250,6 +249,7 @@ class Chosen extends AbstractChosen
   results_hide: ->
     @selected_item.removeClass "chzn-single-with-drop" unless @is_multiple
     this.result_clear_highlight()
+    @form_field_jq.trigger("liszt:hiding_dropdown", {chosen: this})
     @dropdown.css {"left":"-9000px"}
     @results_showing = false
 
@@ -319,14 +319,17 @@ class Chosen extends AbstractChosen
     this.result_deselect (link.attr "rel")
     link.parents('li').first().remove()
 
-  results_reset: (evt) ->
+  results_reset: ->
     @form_field.options[0].selected = true
     @selected_item.find("span").text @default_text
     @selected_item.addClass("chzn-default") if not @is_multiple
     this.show_search_field_default()
-    $(evt.target).remove();
+    this.results_reset_cleanup()
     @form_field_jq.trigger "change"
     this.results_hide() if @active_field
+  
+  results_reset_cleanup: ->
+    @selected_item.find("abbr").remove()
 
   result_select: (evt) ->
     if @result_highlight
@@ -360,7 +363,7 @@ class Chosen extends AbstractChosen
 
       @search_field.val ""
 
-      @form_field_jq.trigger "change"
+      @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value}
       this.search_field_scale()
 
   result_activate: (el) ->
@@ -380,7 +383,7 @@ class Chosen extends AbstractChosen
     this.result_clear_highlight()
     this.winnow_results()
 
-    @form_field_jq.trigger "change"
+    @form_field_jq.trigger "change", {deselected: @form_field.options[result_data.options_index].value}
     this.search_field_scale()
 
   single_deselect_control_build: ->

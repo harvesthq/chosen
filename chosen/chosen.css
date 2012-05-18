@@ -76,6 +76,9 @@
 .chzn-container-single .chzn-single abbr:hover {
   background-position: right -11px;
 }
+.chzn-container-single.chzn-disabled .chzn-single abbr:hover {
+  background-position: right top;
+}
 .chzn-container-single .chzn-single div {
   position: absolute;
   right: 0;
