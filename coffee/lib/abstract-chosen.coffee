@@ -118,4 +118,26 @@ class AbstractChosen
     rand = Math.floor(Math.random() * chars.length)
     newchar = chars.substring rand, rand+1
 
+  # returns the number of matches for the regex in the option
+  option_matches: (option, regex) ->
+    results = this.option_value_matches option.html, regex
+    if option.tags
+      results += this.option_value_matches option.tags, regex
+    return results
+  
+  # returns the number of matches for the regex in the option value (the HTML 
+  # or the tags)
+  option_value_matches: (value, regex) ->
+    results = 0
+    if regex.test value
+      results += 1
+    else if value.indexOf(" ") >= 0 or value.indexOf("[") == 0
+      #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
+      parts = value.replace(/\[|\]/g, "").split(" ")
+      if parts.length
+        for part in parts
+          if regex.test part
+            results += 1
+    return results
+
 root.AbstractChosen = AbstractChosen

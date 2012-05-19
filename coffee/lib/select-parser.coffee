@@ -36,6 +36,7 @@ class SelectParser
           group_array_index: group_position
           classes: option.className
           style: option.style.cssText
+          tags: option.getAttribute 'data-tags'
       else
         @parsed.push
           array_index: @parsed.length
