@@ -408,26 +408,19 @@ class Chosen extends AbstractChosen
           result_id = option.dom_id
           result = $("#" + result_id)
 
-          if regex.test option.html
+          matches = this.option_matches option, regex
+          if matches > 0
             found = true
-            results += 1
-          else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  found = true
-                  results += 1
+            results += matches
 
           if found
+            text = option.html
             if searchText.length
               startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
-              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-            else
-              text = option.html
-
+              if startpos > -1
+                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
+                text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+              
             result.html(text)
             this.result_activate result
 
