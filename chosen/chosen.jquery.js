@@ -303,6 +303,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.setup = function() {
       this.form_field_jq = $(this.form_field);
+      this.current_value = this.form_field_jq.val();
       return this.is_rtl = this.form_field_jq.hasClass("chzn-rtl");
     };
 
@@ -735,9 +736,13 @@ Copyright (c) 2011 by Harvest
         }
         if (!(evt.metaKey && this.is_multiple)) this.results_hide();
         this.search_field.val("");
-        this.form_field_jq.trigger("change", {
-          'selected': this.form_field.options[item.options_index].value
-        });
+        if (this.is_multiple || this.form_field_jq.val() !== this.current_value) {
+          this.form_field_jq.trigger("change", {
+            'selected': this.form_field.options[item.options_index].value
+          });
+        }
+        this.current_value = this.form_field_jq.val();
+        console.log(this.current_value);
         return this.search_field_scale();
       }
     };

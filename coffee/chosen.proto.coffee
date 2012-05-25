@@ -7,6 +7,7 @@ root = this
 class Chosen extends AbstractChosen
 
   setup: ->
+    @current_value = @form_field.value
     @is_rtl = @form_field.hasClassName "chzn-rtl"
 
   finish_setup: ->
@@ -353,8 +354,10 @@ class Chosen extends AbstractChosen
       this.results_hide() unless evt.metaKey and @is_multiple
 
       @search_field.value = ""
-
-      @form_field.simulate("change") if typeof Event.simulate is 'function'
+      
+      @form_field.simulate("change") if typeof Event.simulate is 'function' && (@is_multiple || @form_field.value != @current_value)
+      @current_value = @form_field.value
+      
       this.search_field_scale()
 
   result_activate: (el) ->

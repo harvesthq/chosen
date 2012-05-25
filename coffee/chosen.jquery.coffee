@@ -19,6 +19,7 @@ class Chosen extends AbstractChosen
 
   setup: ->
     @form_field_jq = $ @form_field
+    @current_value = @form_field_jq.val()
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
 
   finish_setup: ->
@@ -363,7 +364,8 @@ class Chosen extends AbstractChosen
 
       @search_field.val ""
 
-      @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value}
+      @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field_jq.val() != @current_value
+      @current_value = @form_field_jq.val()
       this.search_field_scale()
 
   result_activate: (el) ->
