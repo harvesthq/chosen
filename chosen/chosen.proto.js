@@ -733,7 +733,6 @@ Copyright (c) 2011 by Harvest
           this.form_field.simulate("change");
         }
         this.current_value = this.form_field.value;
-        console.log(this.current_value);
         return this.search_field_scale();
       }
     };
