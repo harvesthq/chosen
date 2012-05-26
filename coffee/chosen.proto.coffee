@@ -502,7 +502,7 @@ class Chosen extends AbstractChosen
       this.clear_backstroke()
     else
       next_available_destroy = @search_container.siblings().last()
-      if next_available_destroy.length and next_available_destroy.hasClassName("search-choice") and not next_available_destroy.hasClassName("search-choice-disabled")
+      if next_available_destroy and next_available_destroy.hasClassName("search-choice") and not next_available_destroy.hasClassName("search-choice-disabled")
         @pending_backstroke = next_available_destroy
         @pending_backstroke.addClassName("search-choice-focus") if @pending_backstroke
         if @single_backstroke_delete

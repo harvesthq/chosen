@@ -927,7 +927,7 @@ Copyright (c) 2011 by Harvest
         return this.clear_backstroke();
       } else {
         next_available_destroy = this.search_container.siblings().last();
-        if (next_available_destroy.length && next_available_destroy.hasClassName("search-choice") && !next_available_destroy.hasClassName("search-choice-disabled")) {
+        if (next_available_destroy && next_available_destroy.hasClassName("search-choice") && !next_available_destroy.hasClassName("search-choice-disabled")) {
           this.pending_backstroke = next_available_destroy;
           if (this.pending_backstroke) {
             this.pending_backstroke.addClassName("search-choice-focus");
