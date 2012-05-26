@@ -131,6 +131,7 @@ Copyright (c) 2011 by Harvest
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
       this.search_contains = this.options.search_contains || false;
       this.choices = 0;
+      this.single_backstroke_delete = this.options.single_backstroke_delete || false;
       return this.max_selected_options = this.options.max_selected_options || Infinity;
     };
 
@@ -674,23 +675,22 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.choice_destroy_link_click = function(evt) {
-      var result_data;
       evt.preventDefault();
-      result_data = this.results_data[evt.target.readAttribute("rel")];
-      if (!this.is_disabled && !result_data.disabled) {
+      if (!this.is_disabled) {
         this.pending_destroy_click = true;
         return this.choice_destroy(evt.target);
       }
     };
 
     Chosen.prototype.choice_destroy = function(link) {
-      this.choices -= 1;
-      this.show_search_field_default();
-      if (this.is_multiple && this.choices > 0 && this.search_field.value.length < 1) {
-        this.results_hide();
+      if (this.result_deselect(link.readAttribute("rel"))) {
+        this.choices -= 1;
+        this.show_search_field_default();
+        if (this.is_multiple && this.choices > 0 && this.search_field.value.length < 1) {
+          this.results_hide();
+        }
+        return link.up('li').remove();
       }
-      this.result_deselect(link.readAttribute("rel"));
-      return link.up('li').remove();
     };
 
     Chosen.prototype.results_reset = function() {
@@ -753,14 +753,21 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.result_deselect = function(pos) {
       var result, result_data;
       result_data = this.results_data[pos];
-      result_data.selected = false;
-      this.form_field.options[result_data.options_index].selected = false;
-      result = $(this.container_id + "_o_" + pos);
-      result.removeClassName("result-selected").addClassName("active-result").show();
-      this.result_clear_highlight();
-      this.winnow_results();
-      if (typeof Event.simulate === 'function') this.form_field.simulate("change");
-      return this.search_field_scale();
+      if (!this.form_field.options[result_data.options_index].disabled) {
+        result_data.selected = false;
+        this.form_field.options[result_data.options_index].selected = false;
+        result = $(this.container_id + "_o_" + pos);
+        result.removeClassName("result-selected").addClassName("active-result").show();
+        this.result_clear_highlight();
+        this.winnow_results();
+        if (typeof Event.simulate === 'function') {
+          this.form_field.simulate("change");
+        }
+        this.search_field_scale();
+        return true;
+      } else {
+        return false;
+      }
     };
 
     Chosen.prototype.single_deselect_control_build = function() {
@@ -914,15 +921,22 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.keydown_backstroke = function() {
+      var next_available_destroy;
       if (this.pending_backstroke) {
         this.choice_destroy(this.pending_backstroke.down("a"));
         return this.clear_backstroke();
       } else {
-        this.pending_backstroke = this.search_container.siblings().reject(function(x) {
-          return x.hasClassName("search-choice-disabled");
-        }).last();
-        if (this.pending_backstroke) {
-          return this.pending_backstroke.addClassName("search-choice-focus");
+        next_available_destroy = this.search_container.siblings().last();
+        if (next_available_destroy.length && next_available_destroy.hasClassName("search-choice") && !next_available_destroy.hasClassName("search-choice-disabled")) {
+          this.pending_backstroke = next_available_destroy;
+          if (this.pending_backstroke) {
+            this.pending_backstroke.addClassName("search-choice-focus");
+          }
+          if (this.single_backstroke_delete) {
+            return this.keydown_backstroke();
+          } else {
+            return this.pending_backstroke.addClassName("search-choice-focus");
+          }
         }
       }
     };

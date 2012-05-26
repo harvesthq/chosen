@@ -510,7 +510,10 @@ class Chosen extends AbstractChosen
       next_available_destroy = @search_container.siblings("li.search-choice").last()
       if next_available_destroy.length and not next_available_destroy.hasClass("search-choice-disabled")
         @pending_backstroke = next_available_destroy
-        @pending_backstroke.addClass "search-choice-focus"
+        if @single_backstroke_delete
+          @keydown_backstroke()
+        else
+          @pending_backstroke.addClass "search-choice-focus"
 
   clear_backstroke: ->
     @pending_backstroke.removeClass "search-choice-focus" if @pending_backstroke

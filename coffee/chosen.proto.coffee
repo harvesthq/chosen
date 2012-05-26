@@ -501,11 +501,15 @@ class Chosen extends AbstractChosen
       this.choice_destroy @pending_backstroke.down("a")
       this.clear_backstroke()
     else
-    next_available_destroy = @search_container.siblings().last()
-    if next_available_destroy.length and next_available_destroy.hasClassName("search-choice") and not next_available_destroy.hasClassName("search-choice-disabled")
-      @pending_backstroke = next_available_destroy
-      @pending_backstroke.addClassName("search-choice-focus") if @pending_backstroke
-      
+      next_available_destroy = @search_container.siblings().last()
+      if next_available_destroy.length and next_available_destroy.hasClassName("search-choice") and not next_available_destroy.hasClassName("search-choice-disabled")
+        @pending_backstroke = next_available_destroy
+        @pending_backstroke.addClassName("search-choice-focus") if @pending_backstroke
+        if @single_backstroke_delete
+          @keydown_backstroke()
+        else
+          @pending_backstroke.addClassName("search-choice-focus")
+
   clear_backstroke: ->
     @pending_backstroke.removeClassName("search-choice-focus") if @pending_backstroke
     @pending_backstroke = null
