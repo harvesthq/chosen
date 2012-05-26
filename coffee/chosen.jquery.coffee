@@ -299,13 +299,18 @@ class Chosen extends AbstractChosen
       return false # fire event
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
-    @search_container.before  '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
+    if item.disabled
+      html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>'
+    else
+      html = '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
+    @search_container.before  html
     link = $('#' + choice_id).find("a").first()
     link.click (evt) => this.choice_destroy_link_click(evt)
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
-    if not @is_disabled
+    result_data = @results_data[$(evt.target).attr "rel"]
+    if not @is_disabled and not result_data.disabled
       @pending_destroy_click = true
       this.choice_destroy $(evt.target)
     else
@@ -497,7 +502,7 @@ class Chosen extends AbstractChosen
       this.choice_destroy @pending_backstroke.find("a").first()
       this.clear_backstroke()
     else
-      @pending_backstroke = @search_container.siblings("li.search-choice").last()
+      @pending_backstroke = @search_container.siblings("li.search-choice:not(.search-choice-disabled)").last()
       @pending_backstroke.addClass "search-choice-focus"
 
   clear_backstroke: ->
