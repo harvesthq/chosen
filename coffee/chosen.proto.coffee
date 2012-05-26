@@ -301,19 +301,18 @@ class Chosen extends AbstractChosen
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
-    result_data = @results_data[evt.target.readAttribute("rel")]
-    if not @is_disabled and not result_data.disabled
+    if not @is_disabled
       @pending_destroy_click = true
       this.choice_destroy evt.target
 
   choice_destroy: (link) ->
-    @choices -= 1
-    this.show_search_field_default()
+    if this.result_deselect link.readAttribute("rel")
+      @choices -= 1
+      this.show_search_field_default()
 
-    this.results_hide() if @is_multiple and @choices > 0 and @search_field.value.length < 1
+      this.results_hide() if @is_multiple and @choices > 0 and @search_field.value.length < 1
 
-    this.result_deselect link.readAttribute("rel")
-    link.up('li').remove()
+      link.up('li').remove()
 
   results_reset: ->
     @form_field.options[0].selected = true
@@ -371,17 +370,22 @@ class Chosen extends AbstractChosen
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]
-    result_data.selected = false
+    
+    if not @form_field.options[result_data.options_index].disabled
+      result_data.selected = false
 
-    @form_field.options[result_data.options_index].selected = false
-    result = $(@container_id + "_o_" + pos)
-    result.removeClassName("result-selected").addClassName("active-result").show()
+      @form_field.options[result_data.options_index].selected = false
+      result = $(@container_id + "_o_" + pos)
+      result.removeClassName("result-selected").addClassName("active-result").show()
 
-    this.result_clear_highlight()
-    this.winnow_results()
+      this.result_clear_highlight()
+      this.winnow_results()
 
-    @form_field.simulate("change") if typeof Event.simulate is 'function'
-    this.search_field_scale()
+      @form_field.simulate("change") if typeof Event.simulate is 'function'
+      this.search_field_scale()
+      return true
+    else
+      return false
     
   single_deselect_control_build: ->
     @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } if @allow_single_deselect and not @selected_item.down("abbr")
@@ -497,9 +501,11 @@ class Chosen extends AbstractChosen
       this.choice_destroy @pending_backstroke.down("a")
       this.clear_backstroke()
     else
-      @pending_backstroke = @search_container.siblings().reject( (x) -> x.hasClassName("search-choice-disabled") ).last()
+    next_available_destroy = @search_container.siblings().last()
+    if next_available_destroy.length and next_available_destroy.hasClassName("search-choice") and not next_available_destroy.hasClassName("search-choice-disabled")
+      @pending_backstroke = next_available_destroy
       @pending_backstroke.addClassName("search-choice-focus") if @pending_backstroke
-
+      
   clear_backstroke: ->
     @pending_backstroke.removeClassName("search-choice-focus") if @pending_backstroke
     @pending_backstroke = null

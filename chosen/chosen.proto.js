@@ -298,6 +298,7 @@ Copyright (c) 2011 by Harvest
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
+      this.choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
     };
 
@@ -658,21 +659,25 @@ Copyright (c) 2011 by Harvest
       choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
       this.search_container.insert({
-        before: this.choice_temp.evaluate({
+        before: (item.disabled ? this.choice_noclose_temp : this.choice_temp).evaluate({
           id: choice_id,
           choice: item.html,
           position: item.array_index
         })
       });
-      link = $(choice_id).down('a');
-      return link.observe("click", function(evt) {
-        return _this.choice_destroy_link_click(evt);
-      });
+      if (!item.disabled) {
+        link = $(choice_id).down('a');
+        return link.observe("click", function(evt) {
+          return _this.choice_destroy_link_click(evt);
+        });
+      }
     };
 
     Chosen.prototype.choice_destroy_link_click = function(evt) {
+      var result_data;
       evt.preventDefault();
-      if (!this.is_disabled) {
+      result_data = this.results_data[evt.target.readAttribute("rel")];
+      if (!this.is_disabled && !result_data.disabled) {
         this.pending_destroy_click = true;
         return this.choice_destroy(evt.target);
       }
@@ -913,8 +918,12 @@ Copyright (c) 2011 by Harvest
         this.choice_destroy(this.pending_backstroke.down("a"));
         return this.clear_backstroke();
       } else {
-        this.pending_backstroke = this.search_container.siblings("li.search-choice").last();
-        return this.pending_backstroke.addClassName("search-choice-focus");
+        this.pending_backstroke = this.search_container.siblings().reject(function(x) {
+          return x.hasClassName("search-choice-disabled");
+        }).last();
+        if (this.pending_backstroke) {
+          return this.pending_backstroke.addClassName("search-choice-focus");
+        }
       }
     };
 
