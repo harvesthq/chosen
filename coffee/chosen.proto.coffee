@@ -495,7 +495,10 @@ class Chosen extends AbstractChosen
       this.clear_backstroke()
     else
       @pending_backstroke = @search_container.siblings("li.search-choice").last()
-      @pending_backstroke.addClassName("search-choice-focus")
+      if @single_backstroke_delete
+        @keydown_backstroke()
+      else
+        @pending_backstroke.addClassName("search-choice-focus")
 
   clear_backstroke: ->
     @pending_backstroke.removeClassName("search-choice-focus") if @pending_backstroke
