@@ -299,6 +299,7 @@ Copyright (c) 2011 by Harvest
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
+      this.choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
     };
 
@@ -659,16 +660,18 @@ Copyright (c) 2011 by Harvest
       choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
       this.search_container.insert({
-        before: this.choice_temp.evaluate({
+        before: (item.disabled ? this.choice_noclose_temp : this.choice_temp).evaluate({
           id: choice_id,
           choice: item.html,
           position: item.array_index
         })
       });
-      link = $(choice_id).down('a');
-      return link.observe("click", function(evt) {
-        return _this.choice_destroy_link_click(evt);
-      });
+      if (!item.disabled) {
+        link = $(choice_id).down('a');
+        return link.observe("click", function(evt) {
+          return _this.choice_destroy_link_click(evt);
+        });
+      }
     };
 
     Chosen.prototype.choice_destroy_link_click = function(evt) {
@@ -680,13 +683,14 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.choice_destroy = function(link) {
-      this.choices -= 1;
-      this.show_search_field_default();
-      if (this.is_multiple && this.choices > 0 && this.search_field.value.length < 1) {
-        this.results_hide();
+      if (this.result_deselect(link.readAttribute("rel"))) {
+        this.choices -= 1;
+        this.show_search_field_default();
+        if (this.is_multiple && this.choices > 0 && this.search_field.value.length < 1) {
+          this.results_hide();
+        }
+        return link.up('li').remove();
       }
-      this.result_deselect(link.readAttribute("rel"));
-      return link.up('li').remove();
     };
 
     Chosen.prototype.results_reset = function() {
@@ -749,14 +753,21 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.result_deselect = function(pos) {
       var result, result_data;
       result_data = this.results_data[pos];
-      result_data.selected = false;
-      this.form_field.options[result_data.options_index].selected = false;
-      result = $(this.container_id + "_o_" + pos);
-      result.removeClassName("result-selected").addClassName("active-result").show();
-      this.result_clear_highlight();
-      this.winnow_results();
-      if (typeof Event.simulate === 'function') this.form_field.simulate("change");
-      return this.search_field_scale();
+      if (!this.form_field.options[result_data.options_index].disabled) {
+        result_data.selected = false;
+        this.form_field.options[result_data.options_index].selected = false;
+        result = $(this.container_id + "_o_" + pos);
+        result.removeClassName("result-selected").addClassName("active-result").show();
+        this.result_clear_highlight();
+        this.winnow_results();
+        if (typeof Event.simulate === 'function') {
+          this.form_field.simulate("change");
+        }
+        this.search_field_scale();
+        return true;
+      } else {
+        return false;
+      }
     };
 
     Chosen.prototype.single_deselect_control_build = function() {
@@ -910,15 +921,22 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.keydown_backstroke = function() {
+      var next_available_destroy;
       if (this.pending_backstroke) {
         this.choice_destroy(this.pending_backstroke.down("a"));
         return this.clear_backstroke();
       } else {
-        this.pending_backstroke = this.search_container.siblings("li.search-choice").last();
-        if (this.single_backstroke_delete) {
-          return this.keydown_backstroke();
-        } else {
-          return this.pending_backstroke.addClassName("search-choice-focus");
+        next_available_destroy = this.search_container.siblings().last();
+        if (next_available_destroy && next_available_destroy.hasClassName("search-choice") && !next_available_destroy.hasClassName("search-choice-disabled")) {
+          this.pending_backstroke = next_available_destroy;
+          if (this.pending_backstroke) {
+            this.pending_backstroke.addClassName("search-choice-focus");
+          }
+          if (this.single_backstroke_delete) {
+            return this.keydown_backstroke();
+          } else {
+            return this.pending_backstroke.addClassName("search-choice-focus");
+          }
         }
       }
     };

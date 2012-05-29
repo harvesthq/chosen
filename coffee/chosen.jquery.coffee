@@ -299,7 +299,11 @@ class Chosen extends AbstractChosen
       return false # fire event
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
-    @search_container.before  '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
+    if item.disabled
+      html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>'
+    else
+      html = '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
+    @search_container.before  html
     link = $('#' + choice_id).find("a").first()
     link.click (evt) => this.choice_destroy_link_click(evt)
 
@@ -312,13 +316,13 @@ class Chosen extends AbstractChosen
       evt.stopPropagation
 
   choice_destroy: (link) ->
-    @choices -= 1
-    this.show_search_field_default()
+    if this.result_deselect (link.attr "rel")
+      @choices -= 1
+      this.show_search_field_default()
 
-    this.results_hide() if @is_multiple and @choices > 0 and @search_field.val().length < 1
+      this.results_hide() if @is_multiple and @choices > 0 and @search_field.val().length < 1
 
-    this.result_deselect (link.attr "rel")
-    link.parents('li').first().remove()
+      link.parents('li').first().remove()
 
   results_reset: ->
     @form_field.options[0].selected = true
@@ -376,17 +380,23 @@ class Chosen extends AbstractChosen
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]
-    result_data.selected = false
 
-    @form_field.options[result_data.options_index].selected = false
-    result = $("#" + @container_id + "_o_" + pos)
-    result.removeClass("result-selected").addClass("active-result").show()
+    if not @form_field.options[result_data.options_index].disabled
+      result_data.selected = false
+      
+      @form_field.options[result_data.options_index].selected = false
+      result = $("#" + @container_id + "_o_" + pos)
+      result.removeClass("result-selected").addClass("active-result").show()
 
-    this.result_clear_highlight()
-    this.winnow_results()
+      this.result_clear_highlight()
+      this.winnow_results()
 
-    @form_field_jq.trigger "change", {deselected: @form_field.options[result_data.options_index].value}
-    this.search_field_scale()
+      @form_field_jq.trigger "change", {deselected: @form_field.options[result_data.options_index].value}
+      this.search_field_scale()
+      
+      return true
+    else
+      return false
 
   single_deselect_control_build: ->
     @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" if @allow_single_deselect and @selected_item.find("abbr").length < 1
@@ -497,11 +507,13 @@ class Chosen extends AbstractChosen
       this.choice_destroy @pending_backstroke.find("a").first()
       this.clear_backstroke()
     else
-      @pending_backstroke = @search_container.siblings("li.search-choice").last()
-      if @single_backstroke_delete
-        @keydown_backstroke()
-      else
-        @pending_backstroke.addClass "search-choice-focus"
+      next_available_destroy = @search_container.siblings("li.search-choice").last()
+      if next_available_destroy.length and not next_available_destroy.hasClass("search-choice-disabled")
+        @pending_backstroke = next_available_destroy
+        if @single_backstroke_delete
+          @keydown_backstroke()
+        else
+          @pending_backstroke.addClass "search-choice-focus"
 
   clear_backstroke: ->
     @pending_backstroke.removeClass "search-choice-focus" if @pending_backstroke

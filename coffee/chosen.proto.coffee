@@ -20,6 +20,7 @@ class Chosen extends AbstractChosen
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
+    @choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
@@ -290,12 +291,13 @@ class Chosen extends AbstractChosen
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
     @search_container.insert
-      before: @choice_temp.evaluate
+      before: (if item.disabled then @choice_noclose_temp else @choice_temp).evaluate
         id:       choice_id
         choice:   item.html
         position: item.array_index
-    link = $(choice_id).down('a')
-    link.observe "click", (evt) => this.choice_destroy_link_click(evt)
+    if not item.disabled
+      link = $(choice_id).down('a')
+      link.observe "click", (evt) => this.choice_destroy_link_click(evt)
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
@@ -304,13 +306,13 @@ class Chosen extends AbstractChosen
       this.choice_destroy evt.target
 
   choice_destroy: (link) ->
-    @choices -= 1
-    this.show_search_field_default()
+    if this.result_deselect link.readAttribute("rel")
+      @choices -= 1
+      this.show_search_field_default()
 
-    this.results_hide() if @is_multiple and @choices > 0 and @search_field.value.length < 1
+      this.results_hide() if @is_multiple and @choices > 0 and @search_field.value.length < 1
 
-    this.result_deselect link.readAttribute("rel")
-    link.up('li').remove()
+      link.up('li').remove()
 
   results_reset: ->
     @form_field.options[0].selected = true
@@ -368,17 +370,22 @@ class Chosen extends AbstractChosen
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]
-    result_data.selected = false
+    
+    if not @form_field.options[result_data.options_index].disabled
+      result_data.selected = false
 
-    @form_field.options[result_data.options_index].selected = false
-    result = $(@container_id + "_o_" + pos)
-    result.removeClassName("result-selected").addClassName("active-result").show()
+      @form_field.options[result_data.options_index].selected = false
+      result = $(@container_id + "_o_" + pos)
+      result.removeClassName("result-selected").addClassName("active-result").show()
 
-    this.result_clear_highlight()
-    this.winnow_results()
+      this.result_clear_highlight()
+      this.winnow_results()
 
-    @form_field.simulate("change") if typeof Event.simulate is 'function'
-    this.search_field_scale()
+      @form_field.simulate("change") if typeof Event.simulate is 'function'
+      this.search_field_scale()
+      return true
+    else
+      return false
     
   single_deselect_control_build: ->
     @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } if @allow_single_deselect and not @selected_item.down("abbr")
@@ -494,11 +501,14 @@ class Chosen extends AbstractChosen
       this.choice_destroy @pending_backstroke.down("a")
       this.clear_backstroke()
     else
-      @pending_backstroke = @search_container.siblings("li.search-choice").last()
-      if @single_backstroke_delete
-        @keydown_backstroke()
-      else
-        @pending_backstroke.addClassName("search-choice-focus")
+      next_available_destroy = @search_container.siblings().last()
+      if next_available_destroy and next_available_destroy.hasClassName("search-choice") and not next_available_destroy.hasClassName("search-choice-disabled")
+        @pending_backstroke = next_available_destroy
+        @pending_backstroke.addClassName("search-choice-focus") if @pending_backstroke
+        if @single_backstroke_delete
+          @keydown_backstroke()
+        else
+          @pending_backstroke.addClassName("search-choice-focus")
 
   clear_backstroke: ->
     @pending_backstroke.removeClassName("search-choice-focus") if @pending_backstroke

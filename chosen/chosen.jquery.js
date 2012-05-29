@@ -660,7 +660,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.choice_build = function(item) {
-      var choice_id, link,
+      var choice_id, html, link,
         _this = this;
       if (this.is_multiple && this.max_selected_options <= this.choices) {
         this.form_field_jq.trigger("liszt:maxselected", {
@@ -670,7 +670,12 @@ Copyright (c) 2011 by Harvest
       }
       choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
-      this.search_container.before('<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>');
+      if (item.disabled) {
+        html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>';
+      } else {
+        html = '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>';
+      }
+      this.search_container.before(html);
       link = $('#' + choice_id).find("a").first();
       return link.click(function(evt) {
         return _this.choice_destroy_link_click(evt);
@@ -688,13 +693,14 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.choice_destroy = function(link) {
-      this.choices -= 1;
-      this.show_search_field_default();
-      if (this.is_multiple && this.choices > 0 && this.search_field.val().length < 1) {
-        this.results_hide();
+      if (this.result_deselect(link.attr("rel"))) {
+        this.choices -= 1;
+        this.show_search_field_default();
+        if (this.is_multiple && this.choices > 0 && this.search_field.val().length < 1) {
+          this.results_hide();
+        }
+        return link.parents('li').first().remove();
       }
-      this.result_deselect(link.attr("rel"));
-      return link.parents('li').first().remove();
     };
 
     Chosen.prototype.results_reset = function() {
@@ -758,16 +764,21 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.result_deselect = function(pos) {
       var result, result_data;
       result_data = this.results_data[pos];
-      result_data.selected = false;
-      this.form_field.options[result_data.options_index].selected = false;
-      result = $("#" + this.container_id + "_o_" + pos);
-      result.removeClass("result-selected").addClass("active-result").show();
-      this.result_clear_highlight();
-      this.winnow_results();
-      this.form_field_jq.trigger("change", {
-        deselected: this.form_field.options[result_data.options_index].value
-      });
-      return this.search_field_scale();
+      if (!this.form_field.options[result_data.options_index].disabled) {
+        result_data.selected = false;
+        this.form_field.options[result_data.options_index].selected = false;
+        result = $("#" + this.container_id + "_o_" + pos);
+        result.removeClass("result-selected").addClass("active-result").show();
+        this.result_clear_highlight();
+        this.winnow_results();
+        this.form_field_jq.trigger("change", {
+          deselected: this.form_field.options[result_data.options_index].value
+        });
+        this.search_field_scale();
+        return true;
+      } else {
+        return false;
+      }
     };
 
     Chosen.prototype.single_deselect_control_build = function() {
@@ -905,15 +916,19 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.keydown_backstroke = function() {
+      var next_available_destroy;
       if (this.pending_backstroke) {
         this.choice_destroy(this.pending_backstroke.find("a").first());
         return this.clear_backstroke();
       } else {
-        this.pending_backstroke = this.search_container.siblings("li.search-choice").last();
-        if (this.single_backstroke_delete) {
-          return this.keydown_backstroke();
-        } else {
-          return this.pending_backstroke.addClass("search-choice-focus");
+        next_available_destroy = this.search_container.siblings("li.search-choice").last();
+        if (next_available_destroy.length && !next_available_destroy.hasClass("search-choice-disabled")) {
+          this.pending_backstroke = next_available_destroy;
+          if (this.single_backstroke_delete) {
+            return this.keydown_backstroke();
+          } else {
+            return this.pending_backstroke.addClass("search-choice-focus");
+          }
         }
       }
     };

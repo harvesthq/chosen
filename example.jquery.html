@@ -1203,6 +1203,24 @@
       </div>
     </div>
 
+    <div class="side-by-side clearfix">
+      <p>It is also possible to prevent selected options being deselected by also making them disabled.</p>
+      <div>
+        <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select" id="test_me_paddington" name="test_me_form" tabindex="8">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option selected disabled>Sloth Bear</option>
+          <option disabled>Sun Bear</option>
+          <option selected disabled>Paddington Bear</option>
+          <option selected>Polar Bear</option>
+          <option disabled>Spectacled Bear</option>
+        </select>
+      </div>
+    </div>
+
     <h2>Default Text Support</h2>
     <div class="side-by-side clearfix">
       <p>Chosen automatically sets the default field text ("Choose a country...") by reading the select element's data-placeholder value. If no data-placeholder value is present, it will default to "Select Some Option" or "Select Some Options" depending on whether the select is single or multiple. You can change these elements in the plugin js file as you see fit.</p>
