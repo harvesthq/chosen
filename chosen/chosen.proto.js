@@ -132,6 +132,7 @@ Copyright (c) 2011 by Harvest
       this.search_contains = this.options.search_contains || false;
       this.choices = 0;
       this.single_backstroke_delete = this.options.single_backstroke_delete || false;
+      this.dropdown_position = (this.options.dropdown_position != null) ? this.options.dropdown_position : "bottom" ;
       return this.max_selected_options = this.options.max_selected_options || Infinity;
     };
 
@@ -323,6 +324,9 @@ Copyright (c) 2011 by Harvest
       this.container.addClassName("chzn-container-" + (this.is_multiple ? "multi" : "single"));
       this.dropdown = this.container.down('div.chzn-drop');
       dd_top = this.container.getHeight();
+      if ("top" == this.dropdown_position) {
+		    dd_top = -this.dropdown.height();
+	    }
       dd_width = this.f_width - get_side_border_padding(this.dropdown);
       this.dropdown.setStyle({
         "width": dd_width + "px",
@@ -568,6 +572,9 @@ Copyright (c) 2011 by Harvest
         return false;
       }
       dd_top = this.is_multiple ? this.container.getHeight() : this.container.getHeight() - 1;
+      if ("top" == this.dropdown_position) {
+  	    dd_top = -this.dropdown.height();
+	    }
       this.form_field.fire("liszt:showing_dropdown", {
         chosen: this
       });
@@ -978,6 +985,9 @@ Copyright (c) 2011 by Harvest
           'width': w + 'px'
         });
         dd_top = this.container.getHeight();
+        if ("top" == this.dropdown_position) {
+    	    dd_top = -this.dropdown.height();
+	      }
         return this.dropdown.setStyle({
           "top": dd_top + "px"
         });
