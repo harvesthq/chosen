@@ -32,6 +32,7 @@ class AbstractChosen
     @search_contains = @options.search_contains || false
     @choices = 0
     @single_backstroke_delete = @options.single_backstroke_delete || false
+    @dropdown_position = if @options.dropdown_position? then @options.dropdown_position else "bottom"
     @max_selected_options = @options.max_selected_options || Infinity
 
   set_default_text: ->

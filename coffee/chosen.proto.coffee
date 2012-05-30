@@ -40,6 +40,8 @@ class Chosen extends AbstractChosen
     @dropdown = @container.down('div.chzn-drop')
     
     dd_top = @container.getHeight()
+    if @dropdown_position is "top"
+      dd_top = -@dropdown.getHeight()
     dd_width = (@f_width - get_side_border_padding(@dropdown))
     
     @dropdown.setStyle({"width": dd_width  + "px", "top": dd_top + "px"})
@@ -228,6 +230,8 @@ class Chosen extends AbstractChosen
       return false
 
     dd_top = if @is_multiple then @container.getHeight() else (@container.getHeight() - 1)
+    if @dropdown_position is "top"
+      dd_top = -@dropdown.getHeight()
     @form_field.fire("liszt:showing_dropdown", {chosen: this})
     @dropdown.setStyle {"top":  dd_top + "px", "left":0}
     @results_showing = true
@@ -552,6 +556,8 @@ class Chosen extends AbstractChosen
       @search_field.setStyle({'width': w + 'px'})
 
       dd_top = @container.getHeight()
+      if @dropdown_position is "top"
+        dd_top = -@dropdown.getHeight()
       @dropdown.setStyle({"top":  dd_top + "px"})
 
 root.Chosen = Chosen
