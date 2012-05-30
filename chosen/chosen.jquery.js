@@ -120,6 +120,7 @@ Copyright (c) 2011 by Harvest
         return _this.test_active_click(evt);
       };
       this.activate_action = function(evt) {
+        if (_this.container.hasClass('chzn-disabled')) return;
         return _this.activate_field(evt);
       };
       this.active_field = false;
@@ -212,6 +213,7 @@ Copyright (c) 2011 by Harvest
     };
 
     AbstractChosen.prototype.keyup_checker = function(evt) {
+      if (this.container.hasClass('chzn-disabled')) return;
       var stroke, _ref;
       stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
       this.search_field_scale();
@@ -408,6 +410,19 @@ Copyright (c) 2011 by Harvest
       }
     };
 
+    Chosen.prototype.disable = function() {
+      this.container.addClass('chzn-disabled');
+      if (!this.form_field_jq.attr('disabled')) {
+        return this.form_field_jq.attr('disabled', true);
+      }
+    };
+    Chosen.prototype.enable = function() {
+      this.container.removeClass('chzn-disabled');
+      if (this.form_field_jq.attr('disabled')) {
+        return this.form_field_jq.attr('disabled', false);
+      }
+    };
+
     Chosen.prototype.search_field_disabled = function() {
       this.is_disabled = this.form_field_jq[0].disabled;
       if (this.is_disabled) {
@@ -428,7 +443,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.container_mousedown = function(evt) {
       var target_closelink;
-      if (!this.is_disabled) {
+      if (!this.is_disabled && !this.container.hasClass('chzn-disabled')) {
         target_closelink = evt != null ? ($(evt.target)).hasClass("search-choice-close") : false;
         if (evt && evt.type === "mousedown" && !this.results_showing) {
           evt.stopPropagation();
@@ -450,7 +465,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.container_mouseup = function(evt) {
-      if (evt.target.nodeName === "ABBR" && !this.is_disabled) {
+      if (evt.target.nodeName === "ABBR" && !this.is_disabled && !this.container.hasClass('chzn-disabled')) {
         return this.results_reset(evt);
       }
     };
@@ -926,6 +941,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.keydown_checker = function(evt) {
+      if (this.container.hasClass('chzn-disabled')) return;
       var stroke, _ref;
       stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
       this.search_field_scale();
