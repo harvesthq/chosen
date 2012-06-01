@@ -30,5 +30,12 @@
   test('Chosen is on the jQuery prototype object', 1, function() {
     ok($.prototype.chosen, "The chosen function is truthy");
   });
+  
+  test('Apply Chosen', 3, function() {
+    $("#test1").chosen();
+    ok($("#test1_chzn").length, "Chosen has been applied to a select");
+    equal($("#test1_chzn .chzn-results li").length, $("#test1 option").length, "Number of options matches.")
+    ok($("#test1_chzn .chzn-drop").attr("style").match(/-9000/).length, "Dropdown is off screen")
+  });
 
 }(jQuery));
