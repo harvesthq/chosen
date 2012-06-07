@@ -322,6 +322,7 @@ class Chosen extends AbstractChosen
 
   results_reset: ->
     @form_field.options[0].selected = true
+    @current_value = @form_field_jq.val()
     @selected_item.find("span").text @default_text
     @selected_item.addClass("chzn-default") if not @is_multiple
     this.show_search_field_default()
