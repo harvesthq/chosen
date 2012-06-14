@@ -134,7 +134,8 @@ class Chosen extends AbstractChosen
 
     if not @is_multiple
       @selected_item.attr "tabindex", @search_field.attr("tabindex")
-      @search_field.attr "tabindex", -1
+      @search_field.attr "tabindex",  @form_field_jq.attr("tabindex")
+
 
     @active_field = false
     this.results_hide()
@@ -258,13 +259,7 @@ class Chosen extends AbstractChosen
   set_tab_index: (el) ->
     if @form_field_jq.attr "tabindex"
       ti = @form_field_jq.attr "tabindex"
-      @form_field_jq.attr "tabindex", -1
-
-      if @is_multiple
-        @search_field.attr "tabindex", ti
-      else
-        @selected_item.attr "tabindex", ti
-        @search_field.attr "tabindex", -1
+      @search_field.attr "tabindex", ti
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
