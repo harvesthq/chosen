@@ -134,7 +134,7 @@ class Chosen extends AbstractChosen
 
     if not @is_multiple
       @selected_item.attr "tabindex", @search_field.attr("tabindex")
-      @search_field.attr "tabindex", $(@form_field).attr("tabindex")
+      @search_field.attr "tabindex",  @form_field_jq.attr("tabindex")
 
 
     @active_field = false
