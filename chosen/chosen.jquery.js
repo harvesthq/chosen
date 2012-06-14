@@ -465,7 +465,7 @@ Copyright (c) 2011 by Harvest
       $(document).unbind("click", this.click_test_action);
       if (!this.is_multiple) {
         this.selected_item.attr("tabindex", this.search_field.attr("tabindex"));
-        this.search_field.attr("tabindex", -1);
+        this.search_field.attr("tabindex", $(this.form_field).attr('tabindex'));
       }
       this.active_field = false;
       this.results_hide();
@@ -611,13 +611,13 @@ Copyright (c) 2011 by Harvest
       var ti;
       if (this.form_field_jq.attr("tabindex")) {
         ti = this.form_field_jq.attr("tabindex");
-        this.form_field_jq.attr("tabindex", -1);
-        if (this.is_multiple) {
-          return this.search_field.attr("tabindex", ti);
-        } else {
-          this.selected_item.attr("tabindex", ti);
-          return this.search_field.attr("tabindex", -1);
-        }
+        //this.form_field_jq.attr("tabindex", -1);         outcommented by @pshizzle
+        //if (this.is_multiple) {                          outcommented by @pshizzle
+        return this.search_field.attr("tabindex", ti);
+        //} else {                                         outcommented by @pshizzle
+          //this.selected_item.attr("tabindex", ti);       outcommented by @pshizzle
+          //return this.search_field.attr("tabindex", -1); outcommented by @pshizzle
+        //}                                                outcommented by @pshizzle
       }
     };
 
