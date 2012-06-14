@@ -125,7 +125,7 @@ class Chosen extends AbstractChosen
     
     if not @is_multiple
       @selected_item.tabIndex = @search_field.tabIndex
-      @search_field.tabIndex = -1
+      @search_field.tabIndex = @form_field.tabIndex
     
     @active_field = false
     this.results_hide()
@@ -248,13 +248,7 @@ class Chosen extends AbstractChosen
   set_tab_index: (el) ->
     if @form_field.tabIndex
       ti = @form_field.tabIndex
-      @form_field.tabIndex = -1
-
-      if @is_multiple
-        @search_field.tabIndex = ti
-      else
-        @selected_item.tabIndex = ti
-        @search_field.tabIndex = -1
+      @search_field.tabIndex = ti
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
