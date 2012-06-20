@@ -425,7 +425,7 @@ class Chosen extends AbstractChosen
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
               text = if this.options.template then this.options.template(option, text) else text
             else
-              text = if this.options.template then this.options.template(option, null) else option.text
+              text = if this.options.template then this.options.template(option) else option.html
 
             $(result_id).update text if $(result_id).innerHTML != text
 

@@ -71,7 +71,7 @@ class AbstractChosen
 
       style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
       
-      html = if this.options.template then this.options.template(option, null) else option.text
+      html = if this.options.template then this.options.template(option) else option.html
       
       '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + html + '</li>'
     else

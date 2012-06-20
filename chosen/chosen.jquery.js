@@ -219,7 +219,7 @@ Copyright (c) 2011 by Harvest
           classes.push(option.classes);
         }
         style = option.style.cssText !== "" ? " style=\"" + option.style + "\"" : "";
-        html = this.options.template ? this.options.template(option, null) : option.text;
+        html = this.options.template ? this.options.template(option) : option.html;
         return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' + style + '>' + html + '</li>';
       } else {
         return "";
@@ -941,7 +941,7 @@ Copyright (c) 2011 by Harvest
                 text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
                 text = this.options.template ? this.options.template(option, text) : text;
               } else {
-                text = this.options.template ? this.options.template(option, null) : option.text;
+                text = this.options.template ? this.options.template(option) : option.html;
               }
               result.html(text);
               this.result_activate(result);
