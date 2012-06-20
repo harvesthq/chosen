@@ -45,7 +45,7 @@
     };
 
     SelectParser.prototype.get_template_data = function(option) {
-      var attribute_name, k, template_data, v, _ref;
+      var attribute_name, i, k, template_data, v, word, _i, _len, _ref;
       template_data = {};
       _ref = option.attributes;
       for (k in _ref) {
@@ -53,7 +53,13 @@
         if (typeof v.nodeName === "string") {
           attribute_name = v.nodeName.split("-");
           if (attribute_name[0] === "data" && (attribute_name = attribute_name.slice(1))) {
-            template_data[attribute_name.join("_")] = v.nodeValue;
+            for (i = _i = 0, _len = attribute_name.length; _i < _len; i = ++_i) {
+              word = attribute_name[i];
+              if (i !== 0) {
+                attribute_name[i] = word.charAt(0).toUpperCase() + word.slice(1);
+              }
+            }
+            template_data[attribute_name.join("")] = v.nodeValue;
           }
         }
       }
@@ -219,7 +225,7 @@ Copyright (c) 2011 by Harvest
           classes.push(option.classes);
         }
         style = option.style.cssText !== "" ? " style=\"" + option.style + "\"" : "";
-        html = this.options.template ? this.options.template(option.template_data, option.text) : option.html;
+        html = this.options.template ? this.options.template(option.text, option.template_data) : option.html;
         return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' + style + '>' + html + '</li>';
       } else {
         return "";
@@ -939,9 +945,9 @@ Copyright (c) 2011 by Harvest
                 startpos = option.html.search(zregex);
                 text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
                 text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
-                text = this.options.template ? this.options.template(option.template_data, text) : text;
+                text = this.options.template ? this.options.template(text, option.template_data) : text;
               } else {
-                text = this.options.template ? this.options.template(option.template_data, option.text) : option.html;
+                text = this.options.template ? this.options.template(option.text, option.template_data) : option.html;
               }
               result.html(text);
               this.result_activate(result);

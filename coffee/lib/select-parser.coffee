@@ -28,7 +28,10 @@ class SelectParser
         attribute_name = v.nodeName.split("-")
 
         if attribute_name[0] == "data" and attribute_name = attribute_name[1..]
-          template_data[attribute_name.join("_")] = v.nodeValue 
+          for word, i in attribute_name
+            attribute_name[i] = word.charAt(0).toUpperCase() + word.slice(1) if i != 0
+            
+          template_data[attribute_name.join("")] = v.nodeValue 
 
     template_data
 

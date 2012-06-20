@@ -438,9 +438,9 @@ class Chosen extends AbstractChosen
               startpos = option.html.search zregex
               text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-              text = if this.options.template then this.options.template(option.template_data, text) else text
+              text = if this.options.template then this.options.template(text, option.template_data) else text
             else
-              text = if this.options.template then this.options.template(option.template_data, option.text) else option.html
+              text = if this.options.template then this.options.template(option.text, option.template_data) else option.html
 
             result.html(text)
             this.result_activate result
