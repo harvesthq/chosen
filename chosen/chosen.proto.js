@@ -942,7 +942,7 @@ Copyright (c) 2011 by Harvest
                 text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
                 text = this.options.template ? this.options.template(text, option.template_data) : text;
               } else {
-                text = this.options.template ? this.options.template(option.text, option.template_data) : option.html;
+                text = this.options.template ? this.options.template(option.html, option.template_data) : option.html;
               }
               if ($(result_id).innerHTML !== text) {
                 $(result_id).update(text);

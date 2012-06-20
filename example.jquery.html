@@ -1493,11 +1493,11 @@
       '.chzn-select-no-results': {no_results_text:'Oops, nothing found!'},
       '.chzn-select-width'     : {width:"95%"},
       '.chzn-select-template-example' : {
-        template: function (text, template_data) {
+        template: function (text, templateData) {
           return [
-            "<span style='float: right'>User Rating: " + template_data.userRating + "</span>",
+            "<span style='float: right'>User Rating: " + templateData.userRating + "</span>",
             "<div>" + text + "</div>",
-            "<div><i>type of candy: " + template_data.type + "</i></div>"
+            "<div><i>type of candy: " + templateData.type + "</i></div>"
           ].join("");
         }
       }

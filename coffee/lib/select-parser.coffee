@@ -51,7 +51,7 @@ class SelectParser
           group_array_index: group_position
           classes: option.className
           style: option.style.cssText
-          template_data: this.get_template_data(option)
+          template_data: @get_template_data(option)
       else
         @parsed.push
           array_index: @parsed.length
