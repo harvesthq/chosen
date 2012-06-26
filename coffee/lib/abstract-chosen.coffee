@@ -33,6 +33,7 @@ class AbstractChosen
     @choices = 0
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
+    @render_func = @options.render || (render (elem, text) -> text)
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -66,7 +67,7 @@ class AbstractChosen
 
       style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
 
-      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + option.html + '</li>'
+      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + @render_func(option.element, option.text) + '</li>'
     else
       ""
 
