@@ -20,9 +20,7 @@ pre, code, kbd, samp { font-family: monospace, sans-serif; }
 
 body { background: #EEE; color: #444; line-height: 1.4em; }
 
-header { background: #222; background: -moz-linear-gradient(center bottom , #222 0%, #444 80%) repeat scroll 0 0 transparent; background: -webkit-gradient(linear, 0% 100%, 0% 0%, color-stop(0, #222), color-stop(0.8, #444)); height: 59px; margin: 0 auto; padding: 0 50px; width: 740px; }
-header h1 { color: white; font-size: 2em; line-height: 1.1em; text-indent: -5000px; display: inline-block; width: 109px; height: 27px; background: url(chosen.png); margin-top: 13px; }
-header a { color: white; float: right; font-size: .825em; line-height: 60px; }
+header h1 { color: black; font-size: 2em; line-height: 1.1em; display: inline-block; width: 109px; height: 27px; margin: 20px 0 25px; }
 
 div#content { background: white; border: 1px solid #ccc; border-width: 0 1px 1px; margin: 0 auto; padding: 40px 50px 40px; width: 738px; }
 
@@ -65,3 +63,50 @@ a:hover { text-decoration: underline; }
 ul.credits li { margin-bottom: .25em; }
 
 strong { font-weight: bold; }
+
+/* Tweak navbar brand link to be super sleek
+-------------------------------------------------- */
+.oss-bar {
+  top: 0;
+  right: 20px;
+  position: fixed;
+  z-index: 1030;
+}
+.oss-bar ul {
+  float: right;
+  margin: 0;
+  list-style: none;
+}
+.oss-bar ul li {
+  float: left;
+  line-height: 0;
+  margin: 0;
+}
+.oss-bar ul li a {
+  box-sizing: border-box;
+  border: 0;
+  margin-top: -10px;
+  display: block;
+  height: 58px;  
+  background: #F36C00 url(oss-credit.png) no-repeat 20px 22px;
+  padding: 22px 20px 12px 20px;
+  text-indent: 120%; /* stupid padding */
+  white-space: nowrap;
+  overflow: hidden;
+  -webkit-transition: all 0.10s ease-in-out;
+  -moz-transition: all 0.10s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+.oss-bar ul li a:hover {
+  margin-top: 0px;
+}
+.oss-bar a.harvest {
+  width: 196px;
+  background-color: #F36C00;
+  background-position: -142px 22px;
+  padding-right: 22px; /* optical illusion */
+}
+.oss-bar a.fork {
+  width: 162px;
+  background-color: #333333;
+}
