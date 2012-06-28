@@ -78,6 +78,7 @@ strong { font-weight: bold; }
   list-style: none;
 }
 .oss-bar ul li {
+  list-style: none;
   float: left;
   line-height: 0;
   margin: 0;
