@@ -328,7 +328,7 @@ class Chosen extends AbstractChosen
     this.results_reset_cleanup()
     @form_field_jq.trigger "change"
     this.results_hide() if @active_field
-  
+
   results_reset_cleanup: ->
     @selected_item.find("abbr").remove()
 
@@ -439,12 +439,17 @@ class Chosen extends AbstractChosen
             this.result_deactivate result
 
     if results < 1 and searchText.length
-      this.no_results searchText
+      if @show_options_when_not_found
+        this.winnow_results_clear()
+        this.no_results searchText unless @form_field.options.length <= @disable_search_threshold
+      else
+        this.no_results searchText
     else
       this.winnow_results_set_highlight()
 
   winnow_results_clear: ->
-    @search_field.val ""
+    @search_field.val "" unless (@show_options_when_not_found and @form_field.options.length > @disable_search_threshold)
+
     lis = @search_results.find("li")
 
     for li in lis
@@ -466,7 +471,7 @@ class Chosen extends AbstractChosen
     no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
     no_results_html.find("span").first().html(terms)
 
-    @search_results.append no_results_html
+    @search_results.prepend no_results_html
 
   no_results_clear: ->
     @search_results.find(".no-results").remove()
