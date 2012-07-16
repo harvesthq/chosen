@@ -252,7 +252,7 @@ Copyright (c) 2011 by Harvest
 
     AbstractChosen.prototype.generate_random_char = function() {
       var chars, newchar, rand;
-      chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
       rand = Math.floor(Math.random() * chars.length);
       return newchar = chars.substring(rand, rand + 1);
     };
