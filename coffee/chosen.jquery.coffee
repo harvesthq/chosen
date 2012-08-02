@@ -21,6 +21,7 @@ class Chosen extends AbstractChosen
     @form_field_jq = $ @form_field
     @current_value = @form_field_jq.val()
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
+    @allow_custom_value = @form_field_jq.hasClass "chzn-custom-value" || @options.allow_custom_value
 
   finish_setup: ->
     @form_field_jq.addClass "chzn-done"
@@ -41,6 +42,7 @@ class Chosen extends AbstractChosen
       container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
     else
       container_div.html '<a href="javascript:void(0)" class="chzn-single chzn-default"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
+
 
     @form_field_jq.hide().after container_div
     @container = ($ '#' + @container_id)
@@ -328,7 +330,7 @@ class Chosen extends AbstractChosen
     this.results_reset_cleanup()
     @form_field_jq.trigger "change"
     this.results_hide() if @active_field
-  
+
   results_reset_cleanup: ->
     @selected_item.find("abbr").remove()
 
@@ -367,6 +369,30 @@ class Chosen extends AbstractChosen
       @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field_jq.val() != @current_value
       @current_value = @form_field_jq.val()
       this.search_field_scale()
+    else if not @is_multiple
+      value = @search_field.val()
+      group = @add_unique_custom_group()
+      option = $ '<option value="' + value + '">' + value + '</option>'
+      group.append option
+
+      @form_field_jq.append group
+      @form_field.options[@form_field.options.length-1].selected = true
+
+      @results_hide() unless evt.metaKey
+      @results_build()
+
+  find_custom_group: ->
+    found = group for group in $('optgroup', @form_field) when group.getAttribute('label') is @custom_group_text
+
+    found
+
+  add_unique_custom_group: ->
+    group = @find_custom_group()
+    if not group
+      group = $ ('<optgroup label="' + @custom_group_text + '"></optgroup>')
+
+    $ group
+
 
   result_activate: (el) ->
     el.addClass("active-result")
