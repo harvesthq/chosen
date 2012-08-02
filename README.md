@@ -13,8 +13,15 @@ http://harvesthq.github.com/chosen
 You can configure it to accept new values on the fly, just typing into the search field.
 There is 2 ways to do that:
 
-- Add a class "chzn-custom-value" to the original select field
-- Add an option "allow_custom_value = true" to the constructor
+Add a class "chzn-custom-value" to the original select field:
+```
+<select id="list" class="chzn-custom-value">...
+```
+
+Or add an option "allow_custom_value: true" to the constructor:
+```
+$(#list).chosen({allow_custom_value: true});
+```
 
 ### Contributing to Chosen
 
