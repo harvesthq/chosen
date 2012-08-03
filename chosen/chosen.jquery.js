@@ -791,7 +791,7 @@ Copyright (c) 2011 by Harvest
         }
         this.current_value = this.form_field_jq.val();
         return this.search_field_scale();
-      } else if (!this.is_multiple) {
+      } else if ((!this.is_multiple) && this.allow_custom_value) {
         value = this.search_field.val();
         group = this.add_unique_custom_group();
         option = $('<option value="' + value + '">' + value + '</option>');
