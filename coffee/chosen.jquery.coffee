@@ -30,6 +30,7 @@ class Chosen extends AbstractChosen
     @container_id += "_chzn"
 
     @f_width = @form_field_jq.outerWidth()
+    @f_width += 10 if @f_width < 60
 
     container_div = ($ "<div />", {
       id: @container_id

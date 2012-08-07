@@ -26,6 +26,7 @@ class Chosen extends AbstractChosen
     @container_id = @form_field.identify().replace(/[^\w]/g, '_') + "_chzn"
     
     @f_width = if @form_field.getStyle("width") then parseInt @form_field.getStyle("width"), 10 else @form_field.getWidth()
+    @f_width += 10 if @f_width < 60
     
     container_props =
       'id': @container_id
