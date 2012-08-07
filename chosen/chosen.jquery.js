@@ -316,7 +316,11 @@ Copyright (c) 2011 by Harvest
       var container_div, dd_top, dd_width, sf_width;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/[^\w]/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
-      this.f_width = this.form_field_jq.outerWidth();
+      if(this.form_field_jq.outerWidth() < 60) {
+          this.f_width = this.form_field_jq.outerWidth() + 10;
+      } else {
+          this.f_width = this.form_field_jq.outerWidth() ;
+      }
       container_div = $("<div />", {
         id: this.container_id,
         "class": "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
