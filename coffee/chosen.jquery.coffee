@@ -201,7 +201,7 @@ class Chosen extends AbstractChosen
   result_add_group: (group) ->
     if not group.disabled
       group.dom_id = @container_id + "_g_" + group.array_index
-      if this.is_multiple
+      if this.is_multiple and this.allow_select_group
         '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).append($('<span />').addClass('select-group').text('Select All')).html() + '</li>';
       else
         '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>';

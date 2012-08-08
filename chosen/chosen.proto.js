@@ -130,6 +130,7 @@ Copyright (c) 2011 by Harvest
       this.results_showing = false;
       this.result_highlighted = null;
       this.result_single_selected = null;
+      this.allow_select_group = this.options.allow_select_group != null ? this.options.allow_select_group : true;
       this.allow_single_deselect = (this.options.allow_single_deselect != null) && (this.form_field.options[0] != null) && this.form_field.options[0].text === "" ? this.options.allow_single_deselect : false;
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
       this.search_contains = this.options.search_contains || false;

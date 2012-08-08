@@ -130,6 +130,7 @@ Copyright (c) 2011 by Harvest
       this.results_showing = false;
       this.result_highlighted = null;
       this.result_single_selected = null;
+      this.allow_select_group = this.options.allow_select_group != null ? this.options.allow_select_group : true;
       this.allow_single_deselect = (this.options.allow_single_deselect != null) && (this.form_field.options[0] != null) && this.form_field.options[0].text === "" ? this.options.allow_single_deselect : false;
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
       this.search_contains = this.options.search_contains || false;
@@ -556,7 +557,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.result_add_group = function(group) {
       if (!group.disabled) {
         group.dom_id = this.container_id + "_g_" + group.array_index;
-        if (this.is_multiple) {
+        if (this.is_multiple && this.allow_select_group) {
           return '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).append($('<span />').addClass('select-group').text('Select All')).html() + '</li>';
         } else {
           return '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>';
