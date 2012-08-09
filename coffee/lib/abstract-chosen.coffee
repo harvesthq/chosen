@@ -8,7 +8,7 @@ class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
     this.set_default_values()
-    
+
     @is_multiple = @form_field.multiple
     this.set_default_text()
 
@@ -33,6 +33,7 @@ class AbstractChosen
     @choices = 0
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
+    @show_options_when_not_found = @options.show_options_when_not_found || false
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -49,7 +50,7 @@ class AbstractChosen
 
   input_focus: (evt) ->
     setTimeout (=> this.container_mousedown()), 50 unless @active_field
-  
+
   input_blur: (evt) ->
     if not @mouse_on_container
       @active_field = false
@@ -113,7 +114,7 @@ class AbstractChosen
     new_id = this.generate_random_id()
     @form_field.id = new_id
     new_id
-  
+
   generate_random_char: ->
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     rand = Math.floor(Math.random() * chars.length)
