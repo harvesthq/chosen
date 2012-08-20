@@ -267,6 +267,26 @@
   color: #999;
   font-weight: bold;
 }
+
+.chzn-container .chzn-results .group-result .select-group {
+  margin-left: 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0 3px 0 3px;
+
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+}
+
+.chzn-container .chzn-results .group-result .select-group:hover {
+  background-color: #3875d7;
+  color: white;
+  text-decoration: none;
+}
+
 .chzn-container .chzn-results .group-option {
   padding-left: 15px;
 }

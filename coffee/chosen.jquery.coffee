@@ -201,7 +201,10 @@ class Chosen extends AbstractChosen
   result_add_group: (group) ->
     if not group.disabled
       group.dom_id = @container_id + "_g_" + group.array_index
-      '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
+      if this.is_multiple and this.allow_select_group
+        '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).append($('<span />').addClass('select-group').text('Select All')).html() + '</li>';
+      else
+        '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>';
     else
       ""
 
@@ -274,8 +277,18 @@ class Chosen extends AbstractChosen
       @search_field.val("")
       @search_field.removeClass "default"
 
+  select_optgroup: (evt, optgroup) ->
+    self = this
+    $(optgroup).nextUntil('.group-result').each ->
+      evt.target = this;
+      self.result_highlight = $(this);
+      self.result_select(evt);
+
   search_results_mouseup: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+    if $(evt.target).hasClass "active-result" then target = $(evt.target)
+    else if $(evt.target).hasClass('select-group') then return this.select_optgroup(evt, $(evt.target).parent())
+    else target = $(evt.target).parents(".active-result").first()
+
     if target.length
       @result_highlight = target
       this.result_select(evt)
