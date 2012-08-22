@@ -326,6 +326,7 @@ class Chosen extends AbstractChosen
     @selected_item.addClass("chzn-default") if not @is_multiple
     this.show_search_field_default()
     this.results_reset_cleanup()
+    this.current_value = ''
     @form_field_jq.trigger "change"
     this.results_hide() if @active_field
   
