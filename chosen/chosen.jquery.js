@@ -190,6 +190,7 @@ Copyright (c) 2011 by Harvest
 
     AbstractChosen.prototype.results_update_field = function() {
       if (!this.is_multiple) this.results_reset_cleanup();
+      this.current_value = this.form_field_jq.val();
       this.result_clear_highlight();
       this.result_single_selected = null;
       return this.results_build();
