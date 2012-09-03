@@ -1,6 +1,6 @@
 // Chosen, a Select Box Enhancer for jQuery and Protoype
 // by Patrick Filler for Harvest, http://getharvest.com
-// 
+//
 // Version 0.9.8
 // Full source at https://github.com/harvesthq/chosen
 // Copyright (c) 2011 Harvest http://getharvest.com
@@ -328,7 +328,13 @@ Copyright (c) 2011 by Harvest
       } else {
         container_div.html('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       }
-      this.form_field_jq.hide().after(container_div);
+
+      this.form_field_jq.hide();
+      if (this.options.insert_before) {
+          this.form_field_jq.before(container_div);
+      } else {
+          this.form_field_jq.after(container_div);
+      }
       this.container = $('#' + this.container_id);
       this.container.addClass("chzn-container-" + (this.is_multiple ? "multi" : "single"));
       this.dropdown = this.container.find('div.chzn-drop').first();
