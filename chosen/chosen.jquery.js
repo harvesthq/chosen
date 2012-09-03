@@ -715,6 +715,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.results_reset_cleanup = function() {
+      this.current_value = this.form_field_jq.val();
       return this.selected_item.find("abbr").remove();
     };
 

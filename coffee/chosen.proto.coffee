@@ -324,6 +324,7 @@ class Chosen extends AbstractChosen
     this.results_hide() if @active_field
 
   results_reset_cleanup: ->
+    @current_value = @form_field.value
     deselect_trigger = @selected_item.down("abbr")
     deselect_trigger.remove() if(deselect_trigger)
   

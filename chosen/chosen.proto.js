@@ -708,6 +708,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.results_reset_cleanup = function() {
       var deselect_trigger;
+      this.current_value = this.form_field.value;
       deselect_trigger = this.selected_item.down("abbr");
       if (deselect_trigger) return deselect_trigger.remove();
     };
