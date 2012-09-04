@@ -75,6 +75,8 @@ class Chosen extends AbstractChosen
     @search_results.observe "mouseout", (evt) => this.search_results_mouseout(evt)
     
     @form_field.observe "liszt:updated", (evt) => this.results_update_field(evt)
+    @form_field.observe "liszt:activate", (evt) => this.activate_field(evt)
+    @form_field.observe "liszt:open", (evt) => this.container_mousedown(evt)
 
     @search_field.observe "blur", (evt) => this.input_blur(evt)
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
@@ -165,7 +167,7 @@ class Chosen extends AbstractChosen
       @choices = 0
     else if not @is_multiple
       @selected_item.addClassName("chzn-default").down("span").update(@default_text)
-      if @form_field.options.length <= @disable_search_threshold
+      if @disable_search or @form_field.options.length <= @disable_search_threshold
         @container.addClassName "chzn-container-single-nosearch"
       else
         @container.removeClassName "chzn-container-single-nosearch"
@@ -324,6 +326,7 @@ class Chosen extends AbstractChosen
     this.results_hide() if @active_field
 
   results_reset_cleanup: ->
+    @current_value = @form_field.value
     deselect_trigger = @selected_item.down("abbr")
     deselect_trigger.remove() if(deselect_trigger)
   
