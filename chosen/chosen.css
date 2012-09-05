@@ -18,6 +18,10 @@
   box-shadow        : 0 4px 5px rgba(0,0,0,.15);
   z-index: 1010;
 }
+
+.chzn-container .chzn-drop.chzn-hidden {
+    display: none;
+}
 /* @end */
 
 /* @group Single Chosen */
