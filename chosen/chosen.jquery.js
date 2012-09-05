@@ -18,7 +18,8 @@
     }
 
     SelectParser.prototype.add_node = function(child) {
-      if (child.nodeName === "OPTGROUP") {
+      if (child.nodeName.toUpperCase() === "OPTGROUP") {
+        console.log("group");
         return this.add_group(child);
       } else {
         return this.add_option(child);
@@ -45,7 +46,8 @@
     };
 
     SelectParser.prototype.add_option = function(option, group_position, group_disabled) {
-      if (option.nodeName === "OPTION") {
+      console.log("option");
+      if (option.nodeName.toUpperCase() === "OPTION") {
         if (option.text !== "") {
           if (group_position != null) this.parsed[group_position].children += 1;
           this.parsed.push({
