@@ -444,7 +444,7 @@ class Chosen extends AbstractChosen
             else
               text = option.html
 
-            result.html(text)
+            result.html(@render_func(option.element, text))
             this.result_activate result
 
             $("#" + @results_data[option.group_array_index].dom_id).css('display', 'list-item') if option.group_array_index?
