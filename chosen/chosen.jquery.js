@@ -451,6 +451,7 @@ Copyright (c) 2011 by Harvest
           }
           return this.activate_field();
         } else {
+          this.current_value = this.form_field_jq.val("").val();
           return this.pending_destroy_click = false;
         }
       }
@@ -537,6 +538,7 @@ Copyright (c) 2011 by Harvest
       this.show_search_field_default();
       this.search_field_scale();
       this.search_results.html(content);
+      this.current_value = this.form_field_jq.val();
       return this.parsing = false;
     };
 
