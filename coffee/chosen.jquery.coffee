@@ -335,7 +335,7 @@ class Chosen extends AbstractChosen
     this.results_reset_cleanup()
     @form_field_jq.trigger "change"
     this.results_hide() if @active_field
-  
+
   results_reset_cleanup: ->
     @current_value = @form_field_jq.val()
     @selected_item.find("abbr").remove()
@@ -387,7 +387,7 @@ class Chosen extends AbstractChosen
 
     if not @form_field.options[result_data.options_index].disabled
       result_data.selected = false
-      
+
       @form_field.options[result_data.options_index].selected = false
       result = $("#" + @container_id + "_o_" + pos)
       result.removeClass("result-selected").addClass("active-result").show()
@@ -397,7 +397,7 @@ class Chosen extends AbstractChosen
 
       @form_field_jq.trigger "change", {deselected: @form_field.options[result_data.options_index].value}
       this.search_field_scale()
-      
+
       return true
     else
       return false
@@ -424,12 +424,12 @@ class Chosen extends AbstractChosen
           result_id = option.dom_id
           result = $("#" + result_id)
 
-          if regex.test option.html
+          if regex.test option.text
             found = true
             results += 1
-          else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
+          else if option.text.indexOf(" ") >= 0 or option.text.indexOf("[") == 0
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
+            parts = option.text.replace(/\[|\]/g, "").split(" ")
             if parts.length
               for part in parts
                 if regex.test part
@@ -438,11 +438,11 @@ class Chosen extends AbstractChosen
 
           if found
             if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
+              startpos = option.text.search zregex
+              text = option.text.substr(0, startpos + searchText.length) + '</em>' + option.text.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
             else
-              text = option.html
+              text = option.text
 
             result.html(text)
             this.result_activate result
