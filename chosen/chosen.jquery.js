@@ -796,9 +796,10 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, regexAnchor, result, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len2, _ref;
+      var found, option, part, parts, regex, regexAnchor, result, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len2, _ref, split_words;
       this.no_results_clear();
       results = 0;
+	  split_words = !this.options.do_not_split;
       searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
       regexAnchor = this.search_contains ? "" : "^";
       regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
@@ -816,7 +817,7 @@ Copyright (c) 2011 by Harvest
             if (regex.test(option.html)) {
               found = true;
               results += 1;
-            } else if (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0) {
+            } else if (split_words && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {
               parts = option.html.replace(/\[|\]/g, "").split(" ");
               if (parts.length) {
                 for (_j = 0, _len2 = parts.length; _j < _len2; _j++) {
