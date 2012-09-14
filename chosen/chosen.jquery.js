@@ -334,9 +334,9 @@ Copyright (c) 2011 by Harvest
       this.dropdown = this.container.find('div.chzn-drop').first();
       dd_top = this.container.height();
       dd_width = this.f_width - get_side_border_padding(this.dropdown);
-      var ss_width=this.container.find('ul.chzn-choices').width();
+      var ss_width=this.is_multiple?this.container.find('ul.chzn-choices').width():this.container.find('a.chzn-single').outerWidth()- get_side_border_padding(this.dropdown);
       this.dropdown.css({
-        "width": ss_width + "px",
+        "width": (ss_width?ss_width:dd_width) + "px",
         "top": dd_top + "px"
       });
       this.search_field = this.container.find('input').first();
@@ -349,7 +349,7 @@ Copyright (c) 2011 by Harvest
       } else {
         this.search_container = this.container.find('div.chzn-search').first();
         this.selected_item = this.container.find('.chzn-single').first();
-        sf_width = dd_width - get_side_border_padding(this.search_container) - get_side_border_padding(this.search_field);
+        sf_width = (ss_width?ss_width:dd_width) - get_side_border_padding(this.search_container) - get_side_border_padding(this.search_field);
         this.search_field.css({
           "width": sf_width + "px"
         });
