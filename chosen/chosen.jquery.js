@@ -631,6 +631,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.show_search_field_default = function() {
       if (this.is_multiple && this.choices < 1 && !this.active_field) {
         this.search_field.val(this.default_text);
+        this.search_field.width('');
         return this.search_field.addClass("default");
       } else {
         this.search_field.val("");
@@ -684,6 +685,7 @@ Copyright (c) 2011 by Harvest
       }
       this.search_container.before(html);
       link = $('#' + choice_id).find("a").first();
+      this.close_field()
       return link.click(function(evt) {
         return _this.choice_destroy_link_click(evt);
       });
@@ -801,8 +803,20 @@ Copyright (c) 2011 by Harvest
       results = 0;
       searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
       regexAnchor = this.search_contains ? "" : "^";
-      regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+       if (searchText.indexOf(" ") >= 0){
+            var searchElements, regexSearch = "", _index, _words
+            searchElements = searchText.replace(/[-[\]{}()*+?.,\\^$|#]/g, "\\$&").split(" ");
+            for (_index = 0, _words = searchElements.length; _index < _words; _index++){
+                regexSearch += "(?=.*" + searchElements[_index] + ")";
+            }
+            regex = new RegExp(regexAnchor + regexSearch, 'i');
+            zregex = new RegExp(regexSearch, 'i');
+        } else {
+            regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+            zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+        }
+      //regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      //zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       _ref = this.results_data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
