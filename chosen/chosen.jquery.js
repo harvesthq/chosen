@@ -334,8 +334,9 @@ Copyright (c) 2011 by Harvest
       this.dropdown = this.container.find('div.chzn-drop').first();
       dd_top = this.container.height();
       dd_width = this.f_width - get_side_border_padding(this.dropdown);
+      var ss_width=this.container.find('ul.chzn-choices').width();
       this.dropdown.css({
-        "width": dd_width + "px",
+        "width": ss_width + "px",
         "top": dd_top + "px"
       });
       this.search_field = this.container.find('input').first();
