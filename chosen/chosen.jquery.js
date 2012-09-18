@@ -586,13 +586,23 @@ Copyright (c) 2011 by Harvest
         });
         return false;
       }
-      dd_top = this.is_multiple ? this.container.height() : this.container.height() - 1;
+      var container_offset=this.container.offset();
+      var container_position=this.container.position();
+      var c_top=container_offset.top;
+      var c_left=container_offset.left;
+      if(container_position.top!=container_offset.top){
+          c_top=container_position.top;
+      }
+      if(container_position.left!=container_offset.left){
+          c_left=container_position.left;
+      }
+      dd_top = c_top + (this.is_multiple ? this.container.height() : this.container.height() - 1);
       this.form_field_jq.trigger("liszt:showing_dropdown", {
         chosen: this
       });
       this.dropdown.css({
         "top": dd_top + "px",
-        "left": 0
+        "left": c_left
       });
       this.results_showing = true;
       this.search_field.focus();
