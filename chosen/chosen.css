@@ -1,7 +1,6 @@
 /* @group Base */
 .chzn-container {
   font-size: 13px;
-  position: relative;
   display: inline-block;
   zoom: 1;
   *display: inline;
@@ -394,4 +393,9 @@
   padding: 4px 5px 4px 20px;
   direction: rtl;
 }
+
 /* @end */
+.chzn-container .chzn-results .option-disabled{
+    opacity: .75;
+    cursor: default;
+}
