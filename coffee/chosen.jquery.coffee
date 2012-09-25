@@ -39,7 +39,7 @@ class Chosen extends AbstractChosen
     })
 
     attr_title = $(this.form_field).attr('title')
-    container_div.attr('title', attr) if attr_title?
+    container_div.attr('title', attr_title) if attr_title?
 
     if @is_multiple
       container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
