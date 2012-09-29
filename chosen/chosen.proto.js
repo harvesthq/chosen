@@ -334,8 +334,15 @@ Copyright (c) 2011 by Harvest
       })) : new Element('div', container_props).update(this.single_temp.evaluate({
         "default": this.default_text
       }));
-      this.form_field.hide().insert({
-        after: base_template
+      this.form_field.setStyle({
+        visibility: 'hidden',
+        float: 'right',
+        display: 'inline',
+        width: 0,
+        height: 0
+      });
+      this.form_field.insert({
+        before: base_template
       });
       this.container = $(this.container_id);
       this.container.addClassName("chzn-container-" + (this.is_multiple ? "multi" : "single"));
