@@ -43,7 +43,9 @@ class Chosen extends AbstractChosen
     else
       container_div.html '<a href="javascript:void(0)" class="chzn-single chzn-default"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
 
-    @form_field_jq.hide().after container_div
+    @form_field_jq.css {visibility: 'hidden', float: 'right', display: 'inline', width: 0, height: 0}
+    @form_field_jq.before container_div
+
     @container = ($ '#' + @container_id)
     @container.addClass( "chzn-container-" + (if @is_multiple then "multi" else "single") )
     @dropdown = @container.find('div.chzn-drop').first()
@@ -283,13 +285,14 @@ class Chosen extends AbstractChosen
       @result_highlight = target
       this.result_select(evt)
 
+    @form_field_jq.trigger "click"
+
   search_results_mouseover: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
     this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
-
 
   choices_click: (evt) ->
     evt.preventDefault()
