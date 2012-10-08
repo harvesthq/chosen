@@ -21,7 +21,7 @@ class Chosen extends AbstractChosen
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
-    @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
+    @no_results_temp = new Template('<li class="no-results">#{text} "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
     @container_id = @form_field.identify().replace(/[^\w]/g, '_') + "_chzn"
@@ -467,7 +467,7 @@ class Chosen extends AbstractChosen
       this.result_do_highlight do_high if do_high?
   
   no_results: (terms) ->
-    @search_results.insert @no_results_temp.evaluate( terms: terms )
+    @search_results.insert @no_results_temp.evaluate( terms: terms, text: @results_none_found )
   
   no_results_clear: ->
     nr = null
