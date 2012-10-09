@@ -49,7 +49,10 @@ class AbstractChosen
   mouse_leave: -> @mouse_on_container = false
 
   input_focus: (evt) ->
-    setTimeout (=> this.container_mousedown()), 50 unless @active_field
+    if @is_multiple
+      setTimeout (=> this.container_mousedown()), 50 unless @active_field
+    else
+      @activate_field() unless @active_field
   
   input_blur: (evt) ->
     if not @mouse_on_container
