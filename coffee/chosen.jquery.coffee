@@ -89,12 +89,13 @@ class Chosen extends AbstractChosen
     @search_field.blur (evt) => this.input_blur(evt)
     @search_field.keyup (evt) => this.keyup_checker(evt)
     @search_field.keydown (evt) => this.keydown_checker(evt)
+    @search_field.focus (evt) => this.input_focus(evt)
 
     if @is_multiple
       @search_choices.click (evt) => this.choices_click(evt)
-      @search_field.focus (evt) => this.input_focus(evt)
     else
       @container.click (evt) => evt.preventDefault() # gobble click of anchor
+    
 
   search_field_disabled: ->
     @is_disabled = @form_field_jq[0].disabled
@@ -135,10 +136,6 @@ class Chosen extends AbstractChosen
   close_field: ->
     $(document).unbind "click", @click_test_action
 
-    if not @is_multiple
-      @selected_item.attr "tabindex", @search_field.attr("tabindex")
-      @search_field.attr "tabindex", -1
-
     @active_field = false
     this.results_hide()
 
@@ -150,10 +147,6 @@ class Chosen extends AbstractChosen
     this.search_field_scale()
 
   activate_field: ->
-    if not @is_multiple and not @active_field
-      @search_field.attr "tabindex", (@selected_item.attr "tabindex")
-      @selected_item.attr "tabindex", -1
-
     @container.addClass "chzn-container-active"
     @active_field = true
 
@@ -262,12 +255,7 @@ class Chosen extends AbstractChosen
     if @form_field_jq.attr "tabindex"
       ti = @form_field_jq.attr "tabindex"
       @form_field_jq.attr "tabindex", -1
-
-      if @is_multiple
-        @search_field.attr "tabindex", ti
-      else
-        @selected_item.attr "tabindex", ti
-        @search_field.attr "tabindex", -1
+      @search_field.attr "tabindex", ti
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
@@ -282,6 +270,7 @@ class Chosen extends AbstractChosen
     if target.length
       @result_highlight = target
       this.result_select(evt)
+      @search_field.focus()
 
   search_results_mouseover: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
