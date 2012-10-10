@@ -266,9 +266,17 @@ class Chosen extends AbstractChosen
       @search_field.removeClass "default"
 
   search_results_mouseup: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    if target.length
-      @result_highlight = target
+    if @enable_group_select
+      group = if $(evt.target).hasClass "group-result" then $(evt.target) else $(evt.target).parents(".group-result").first()
+      if group.length
+        children = group.nextUntil(".group-result", ".active-result")
+        for child in children
+          @result_highlight = $(child)
+          this.result_select({metaKey: null})
+    
+    option = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+    if option.length
+      @result_highlight = option
       this.result_select(evt)
       @search_field.focus()
 
@@ -399,37 +407,27 @@ class Chosen extends AbstractChosen
 
     results = 0
 
-    searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
+    @searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
     regexAnchor = if @search_contains then "" else "^"
-    regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    @regex = new RegExp(regexAnchor + @searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    @zregex = new RegExp(@searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
       if not option.disabled and not option.empty
         if option.group
-          $('#' + option.dom_id).css('display', 'none')
+          this.winnow_option_group(option)
         else if not (@is_multiple and option.selected)
-          found = false
+          found = this.winnow_search_match(@regex, option.html)
+          
           result_id = option.dom_id
           result = $("#" + result_id)
 
-          if regex.test option.html
-            found = true
-            results += 1
-          else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  found = true
-                  results += 1
+          if found or (option.group_array_index? && @results_data[option.group_array_index].search_match)
 
-          if found
-            if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
-              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+            results += 1
+            
+            if @searchText.length and found
+              text = this.winnow_search_highlight_match(@zregex, option.html, @searchText.length)
             else
               text = option.html
 
@@ -441,10 +439,20 @@ class Chosen extends AbstractChosen
             this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
             this.result_deactivate result
 
-    if results < 1 and searchText.length
-      this.no_results searchText
+    if results < 1 and @searchText.length
+      this.no_results @searchText
     else
       this.winnow_results_set_highlight()
+  
+  winnow_option_group: (group) ->
+    $('#' + group.dom_id).css('display', 'none')
+    
+    group.search_match = this.winnow_search_match(@regex, group.label)
+      
+    text = if @searchText.length and group.search_match then this.winnow_search_highlight_match(@zregex, group.label, @searchText.length) else group.label
+    $("##{group.dom_id}").html(text)
+
+    return group.search_match
 
   winnow_results_clear: ->
     @search_field.val ""

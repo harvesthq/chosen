@@ -27,6 +27,7 @@ class AbstractChosen
     @results_showing = false
     @result_highlighted = null
     @result_single_selected = null
+    @enable_group_select = @options.enable_group_select || false
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
     @disable_search_threshold = @options.disable_search_threshold || 0
     @disable_search = @options.disable_search || false
@@ -91,6 +92,24 @@ class AbstractChosen
       this.winnow_results()
     else
       this.results_show()
+
+  winnow_search_match: (regex, optionText) ->
+    found = false
+    if regex.test optionText
+      found = true
+    else if optionText.indexOf(" ") >= 0 or optionText.indexOf("[") == 0
+      #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
+      parts = optionText.replace(/\[|\]/g, "").split(" ")
+      if parts.length
+        for part in parts
+          if regex.test part
+            found = true
+    return found
+
+  winnow_search_highlight_match: (regex, optionText, searchTextLength) ->
+    startpos = optionText.search regex
+    text = optionText.substr(0, startpos + searchTextLength) + '</em>' + optionText.substr(startpos + searchTextLength)
+    text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
