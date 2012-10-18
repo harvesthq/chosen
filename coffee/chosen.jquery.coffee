@@ -30,7 +30,7 @@ class Chosen extends AbstractChosen
     @container_id = if @form_field.id.length then @form_field.id.replace(/[^\w]/g, '_') else this.generate_field_id()
     @container_id += "_chzn"
 
-    @f_width = @form_field_jq.outerWidth()
+    @f_width = @form_field_jq.outerWidth(false)
 
     container_div = ($ "<div />", {
       id: @container_id
@@ -213,7 +213,7 @@ class Chosen extends AbstractChosen
       visible_bottom = maxHeight + visible_top
 
       high_top = @result_highlight.position().top + @search_results.scrollTop()
-      high_bottom = high_top + @result_highlight.outerHeight()
+      high_bottom = high_top + @result_highlight.outerHeight(false)
 
       if high_bottom >= visible_bottom
         @search_results.scrollTop if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
@@ -570,6 +570,6 @@ class Chosen extends AbstractChosen
     string
 
 get_side_border_padding = (elmt) ->
-  side_border_padding = elmt.outerWidth() - elmt.width()
+  side_border_padding = elmt.outerWidth(false) - elmt.width()
 
 root.get_side_border_padding = get_side_border_padding
