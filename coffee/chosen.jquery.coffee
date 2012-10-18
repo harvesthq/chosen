@@ -95,7 +95,7 @@ class Chosen extends AbstractChosen
       @search_choices.click (evt) => this.choices_click(evt)
     else
       @container.click (evt) => evt.preventDefault() # gobble click of anchor
-    
+
 
   search_field_disabled: ->
     @is_disabled = @form_field_jq[0].disabled
@@ -324,7 +324,7 @@ class Chosen extends AbstractChosen
     this.results_reset_cleanup()
     @form_field_jq.trigger "change"
     this.results_hide() if @active_field
-  
+
   results_reset_cleanup: ->
     @current_value = @form_field_jq.val()
     @selected_item.find("abbr").remove()
@@ -376,7 +376,7 @@ class Chosen extends AbstractChosen
 
     if not @form_field.options[result_data.options_index].disabled
       result_data.selected = false
-      
+
       @form_field.options[result_data.options_index].selected = false
       result = $("#" + @container_id + "_o_" + pos)
       result.removeClass("result-selected").addClass("active-result").show()
@@ -386,7 +386,7 @@ class Chosen extends AbstractChosen
 
       @form_field_jq.trigger "change", {deselected: @form_field.options[result_data.options_index].value}
       this.search_field_scale()
-      
+
       return true
     else
       return false
@@ -400,39 +400,47 @@ class Chosen extends AbstractChosen
     results = 0
 
     searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
-    regexAnchor = if @search_contains then "" else "^"
-    regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    words = searchText.toLowerCase().split(' ')
 
     for option in @results_data
       if not option.disabled and not option.empty
         if option.group
           $('#' + option.dom_id).css('display', 'none')
         else if not (@is_multiple and option.selected)
-          found = false
           result_id = option.dom_id
           result = $("#" + result_id)
 
-          if regex.test option.html
-            found = true
-            results += 1
-          else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  found = true
-                  results += 1
+          found = true
+          ranges = []
+          for word in words
+            continue if word.length == 0
+            position = option.html.toLowerCase().indexOf(word)
+            if position < 0
+              found = false
+              break
+            else
+              ranges.push { start: position, end: position + word.length }
 
           if found
-            if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
-              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-            else
-              text = option.html
+            results += 1
+            text = option.html
+            if ranges.length > 0
+              ranges = ranges.sort (a, b) -> a.start - b.start
+              collapsed_ranges = [ranges[0]]
+              if ranges.length > 1
+                for i_range in [1..(ranges.length-1)]
+                  range = ranges[i_range]
+                  last_range = collapsed_ranges[collapsed_ranges.length - 1]
+                  if range.start <= last_range.end
+                    last_range.end = range.end
+                  else
+                    collapsed_ranges.push range
 
+              collapsed_ranges.sort (a, b) -> b.start - a.start
+
+              for range in collapsed_ranges
+                text = text.substr(0, range.end) + "</em>" + text.substr(range.end)
+                text = text.substr(0, range.start) + "<em>" + text.substr(range.start)
             result.html(text)
             this.result_activate result
 
