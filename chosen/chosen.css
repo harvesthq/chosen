@@ -244,6 +244,8 @@
   padding: 0;
 }
 .chzn-container .chzn-results li {
+  float: left; 
+  clear: left;
   display: none;
   line-height: 15px;
   padding: 5px 6px;
