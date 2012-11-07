@@ -161,10 +161,14 @@ Copyright (c) 2011 by Harvest
 
     AbstractChosen.prototype.input_focus = function(evt) {
       var _this = this;
-      if (!this.active_field) {
-        return setTimeout((function() {
-          return _this.container_mousedown();
-        }), 50);
+      if (this.is_multiple) {
+        if (!this.active_field) {
+          return setTimeout((function() {
+            return _this.container_mousedown();
+          }), 50);
+        }
+      } else {
+        if (!this.active_field) return this.activate_field();
       }
     };
 
@@ -314,7 +318,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.set_default_values = function() {
       Chosen.__super__.set_default_values.call(this);
-      this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
+      this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
       this.choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
@@ -410,12 +414,12 @@ Copyright (c) 2011 by Harvest
       this.search_field.observe("keydown", function(evt) {
         return _this.keydown_checker(evt);
       });
+      this.search_field.observe("focus", function(evt) {
+        return _this.input_focus(evt);
+      });
       if (this.is_multiple) {
-        this.search_choices.observe("click", function(evt) {
+        return this.search_choices.observe("click", function(evt) {
           return _this.choices_click(evt);
-        });
-        return this.search_field.observe("focus", function(evt) {
-          return _this.input_focus(evt);
         });
       } else {
         return this.container.observe("click", function(evt) {
@@ -480,10 +484,6 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.close_field = function() {
       document.stopObserving("click", this.click_test_action);
-      if (!this.is_multiple) {
-        this.selected_item.tabIndex = this.search_field.tabIndex;
-        this.search_field.tabIndex = -1;
-      }
       this.active_field = false;
       this.results_hide();
       this.container.removeClassName("chzn-container-active");
@@ -494,10 +494,6 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.activate_field = function() {
-      if (!this.is_multiple && !this.active_field) {
-        this.search_field.tabIndex = this.selected_item.tabIndex;
-        this.selected_item.tabIndex = -1;
-      }
       this.container.addClassName("chzn-container-active");
       this.active_field = true;
       this.search_field.value = this.search_field.value;
@@ -631,12 +627,7 @@ Copyright (c) 2011 by Harvest
       if (this.form_field.tabIndex) {
         ti = this.form_field.tabIndex;
         this.form_field.tabIndex = -1;
-        if (this.is_multiple) {
-          return this.search_field.tabIndex = ti;
-        } else {
-          this.selected_item.tabIndex = ti;
-          return this.search_field.tabIndex = -1;
-        }
+        return this.search_field.tabIndex = ti;
       }
     };
 
@@ -655,7 +646,8 @@ Copyright (c) 2011 by Harvest
       target = evt.target.hasClassName("active-result") ? evt.target : evt.target.up(".active-result");
       if (target) {
         this.result_highlight = target;
-        return this.result_select(evt);
+        this.result_select(evt);
+        return this.search_field.focus();
       }
     };
 

@@ -161,10 +161,14 @@ Copyright (c) 2011 by Harvest
 
     AbstractChosen.prototype.input_focus = function(evt) {
       var _this = this;
-      if (!this.active_field) {
-        return setTimeout((function() {
-          return _this.container_mousedown();
-        }), 50);
+      if (this.is_multiple) {
+        if (!this.active_field) {
+          return setTimeout((function() {
+            return _this.container_mousedown();
+          }), 50);
+        }
+      } else {
+        if (!this.active_field) return this.activate_field();
       }
     };
 
@@ -343,7 +347,7 @@ Copyright (c) 2011 by Harvest
       if (this.is_multiple) {
         container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       } else {
-        container_div.html('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
+        container_div.html('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       }
       this.form_field_jq.hide().after(container_div);
       this.container = $('#' + this.container_id);
@@ -418,12 +422,12 @@ Copyright (c) 2011 by Harvest
       this.search_field.keydown(function(evt) {
         return _this.keydown_checker(evt);
       });
+      this.search_field.focus(function(evt) {
+        return _this.input_focus(evt);
+      });
       if (this.is_multiple) {
-        this.search_choices.click(function(evt) {
+        return this.search_choices.click(function(evt) {
           return _this.choices_click(evt);
-        });
-        return this.search_field.focus(function(evt) {
-          return _this.input_focus(evt);
         });
       } else {
         return this.container.click(function(evt) {
@@ -489,10 +493,6 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.close_field = function() {
       $(document).unbind("click", this.click_test_action);
-      if (!this.is_multiple) {
-        this.selected_item.attr("tabindex", this.search_field.attr("tabindex"));
-        this.search_field.attr("tabindex", -1);
-      }
       this.active_field = false;
       this.results_hide();
       this.container.removeClass("chzn-container-active");
@@ -503,10 +503,6 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.activate_field = function() {
-      if (!this.is_multiple && !this.active_field) {
-        this.search_field.attr("tabindex", this.selected_item.attr("tabindex"));
-        this.selected_item.attr("tabindex", -1);
-      }
       this.container.addClass("chzn-container-active");
       this.active_field = true;
       this.search_field.val(this.search_field.val());
@@ -642,12 +638,7 @@ Copyright (c) 2011 by Harvest
       if (this.form_field_jq.attr("tabindex")) {
         ti = this.form_field_jq.attr("tabindex");
         this.form_field_jq.attr("tabindex", -1);
-        if (this.is_multiple) {
-          return this.search_field.attr("tabindex", ti);
-        } else {
-          this.selected_item.attr("tabindex", ti);
-          return this.search_field.attr("tabindex", -1);
-        }
+        return this.search_field.attr("tabindex", ti);
       }
     };
 
@@ -666,7 +657,8 @@ Copyright (c) 2011 by Harvest
       target = $(evt.target).hasClass("active-result") ? $(evt.target) : $(evt.target).parents(".active-result").first();
       if (target.length) {
         this.result_highlight = target;
-        return this.result_select(evt);
+        this.result_select(evt);
+        return this.search_field.focus();
       }
     };
 
