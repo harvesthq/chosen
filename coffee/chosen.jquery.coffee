@@ -43,7 +43,7 @@ class Chosen extends AbstractChosen
     else
       container_div.html '<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
 
-    @form_field_jq.css({position: 'absolute',visibility: 'hidden'}).after container_div
+    @form_field_jq.css({position:'absolute',display:'none'}).after container_div
     @container = ($ '#' + @container_id)
     @container.addClass( "chzn-container-" + (if @is_multiple then "multi" else "single") )
     @dropdown = @container.find('div.chzn-drop').first()
@@ -72,6 +72,19 @@ class Chosen extends AbstractChosen
     this.set_tab_index()
     @form_field_jq.trigger("liszt:ready", {chosen: this})
 
+  field_invalid: (evt) ->
+    @form_field_jq.css({display:''});
+    @form_field_jq.css({
+      height: @container.height() + 'px',
+      width: @container.width() + 'px',
+      marginLeft:'1px',
+      marginTop: (@container.position().top - 
+        @form_field_jq.position().top ) + 'px'
+    });
+
+  field_valid: (evt) ->
+    @form_field_jq.css({display:'none'});
+
   register_observers: ->
     @container.mousedown (evt) => this.container_mousedown(evt)
     @container.mouseup (evt) => this.container_mouseup(evt)
@@ -85,6 +98,8 @@ class Chosen extends AbstractChosen
     @form_field_jq.bind "liszt:updated", (evt) => this.results_update_field(evt)
     @form_field_jq.bind "liszt:activate", (evt) => this.activate_field(evt)
     @form_field_jq.bind "liszt:open", (evt) => this.container_mousedown(evt)
+    @form_field_jq.bind "liszt:invalid", (evt) => this.field_invalid(evt)
+    @form_field_jq.bind "liszt:valid", (evt) => this.field_valid(evt)
 
     @search_field.blur (evt) => this.input_blur(evt)
     @search_field.keyup (evt) => this.keyup_checker(evt)
