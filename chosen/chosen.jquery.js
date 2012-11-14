@@ -350,10 +350,7 @@ Copyright (c) 2011 by Harvest
       } else {
         container_div.html('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       }
-      this.form_field_jq.css({
-        position: 'absolute',
-        display: 'none'
-      }).after(container_div);
+      this.form_field_jq.hide().after(container_div);
       this.container = $('#' + this.container_id);
       this.container.addClass("chzn-container-" + (this.is_multiple ? "multi" : "single"));
       this.dropdown = this.container.find('div.chzn-drop').first();
@@ -387,6 +384,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.field_invalid = function(evt) {
       this.form_field_jq.css({
+        position: 'absolute',
         display: ''
       });
       return this.form_field_jq.css({
@@ -398,9 +396,11 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.field_valid = function(evt) {
-      return this.form_field_jq.css({
-        display: 'none'
-      });
+      if (this.form_field_jq.is(":valid")) {
+        return this.form_field_jq.css({
+          display: 'none'
+        });
+      }
     };
 
     Chosen.prototype.register_observers = function() {
@@ -435,10 +435,10 @@ Copyright (c) 2011 by Harvest
       this.form_field_jq.bind("liszt:open", function(evt) {
         return _this.container_mousedown(evt);
       });
-      this.form_field_jq.bind("liszt:invalid", function(evt) {
+      this.form_field_jq.on("invalid", function(evt) {
         return _this.field_invalid(evt);
       });
-      this.form_field_jq.bind("liszt:valid", function(evt) {
+      this.form_field_jq.on("change", function(evt) {
         return _this.field_valid(evt);
       });
       this.search_field.blur(function(evt) {

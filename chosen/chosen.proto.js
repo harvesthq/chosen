@@ -377,6 +377,27 @@ Copyright (c) 2011 by Harvest
       });
     };
 
+    Chosen.prototype.field_invalid = function(evt) {
+      this.form_field_jq.setStyle({
+        position: 'absolute',
+        display: ''
+      });
+      return this.form_field_jq.setStyle({
+        height: this.container.getHeight() + 'px',
+        width: this.container.getWidth() + 'px',
+        marginLeft: '1px',
+        marginTop: (this.container.cumulativeOffset().top - this.form_field_jq.cumulativeOffset().top) + 'px'
+      });
+    };
+
+    Chosen.prototype.field_valid = function(evt) {
+      if (this.form_field_jq.is(":valid")) {
+        return this.form_field_jq.css({
+          display: 'none'
+        });
+      }
+    };
+
     Chosen.prototype.register_observers = function() {
       var _this = this;
       this.container.observe("mousedown", function(evt) {
@@ -408,6 +429,12 @@ Copyright (c) 2011 by Harvest
       });
       this.form_field.observe("liszt:open", function(evt) {
         return _this.container_mousedown(evt);
+      });
+      this.form_field_jq.observe("invalid", function(evt) {
+        return _this.field_invalid(evt);
+      });
+      this.form_field_jq.observe("change", function(evt) {
+        return _this.field_valid(evt);
       });
       this.search_field.observe("blur", function(evt) {
         return _this.input_blur(evt);

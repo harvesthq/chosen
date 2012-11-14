@@ -64,6 +64,22 @@ class Chosen extends AbstractChosen
     this.set_tab_index()
     @form_field.fire("liszt:ready", {chosen: this})
 
+  field_invalid: (evt) ->
+    @form_field_jq.setStyle({
+      position: 'absolute',
+      display: ''
+    })
+    @form_field_jq.setStyle({
+      height: @container.getHeight() + 'px',
+      width: @container.getWidth() + 'px',
+      marginLeft: '1px',
+      marginTop: (@container.cumulativeOffset().top - @form_field_jq.cumulativeOffset().top ) + 'px'
+    });
+
+  field_valid: (evt) ->
+    if @form_field_jq.is(":valid")
+      @form_field_jq.css({display:'none'});
+
   register_observers: ->
     @container.observe "mousedown", (evt) => this.container_mousedown(evt)
     @container.observe "mouseup", (evt) => this.container_mouseup(evt)
@@ -77,6 +93,9 @@ class Chosen extends AbstractChosen
     @form_field.observe "liszt:updated", (evt) => this.results_update_field(evt)
     @form_field.observe "liszt:activate", (evt) => this.activate_field(evt)
     @form_field.observe "liszt:open", (evt) => this.container_mousedown(evt)
+
+    @form_field_jq.observe "invalid", (evt) => @field_invalid(evt)
+    @form_field_jq.observe "change", (evt) => @field_valid(evt)
 
     @search_field.observe "blur", (evt) => this.input_blur(evt)
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
