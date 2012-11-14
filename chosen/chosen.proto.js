@@ -340,10 +340,7 @@ Copyright (c) 2011 by Harvest
       })) : new Element('div', container_props).update(this.single_temp.evaluate({
         "default": this.default_text
       }));
-      this.form_field.hide({
-        position: 'absolute',
-        visibility: 'hidden'
-      }).insert({
+      this.form_field.hide().insert({
         after: base_template
       });
       this.container = $(this.container_id);
