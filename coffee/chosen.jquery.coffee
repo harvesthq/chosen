@@ -82,11 +82,11 @@ class Chosen extends AbstractChosen
       width: @container.width() + 'px',
       marginLeft: '1px',
       marginTop: (@container.position().top - @form_field_jq.position().top ) + 'px'
-    });
+    })
 
   field_valid: (evt) ->
     if @form_field_jq.is(":valid")
-      @form_field_jq.css({display:'none'});
+      @form_field_jq.hide()
 
   register_observers: ->
     @container.mousedown (evt) => this.container_mousedown(evt)

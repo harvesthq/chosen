@@ -65,20 +65,19 @@ class Chosen extends AbstractChosen
     @form_field.fire("liszt:ready", {chosen: this})
 
   field_invalid: (evt) ->
-    @form_field_jq.setStyle({
+    @form_field.setStyle({
       position: 'absolute',
       display: ''
     })
-    @form_field_jq.setStyle({
+    @form_field.setStyle({
       height: @container.getHeight() + 'px',
       width: @container.getWidth() + 'px',
       marginLeft: '1px',
-      marginTop: (@container.cumulativeOffset().top - @form_field_jq.cumulativeOffset().top ) + 'px'
-    });
+      marginTop: (@container.cumulativeOffset().top - @form_field.cumulativeOffset().top ) + 'px'
+    })
 
   field_valid: (evt) ->
-    if @form_field_jq.is(":valid")
-      @form_field_jq.css({display:'none'});
+    @form_field.hide()
 
   register_observers: ->
     @container.observe "mousedown", (evt) => this.container_mousedown(evt)
@@ -94,8 +93,8 @@ class Chosen extends AbstractChosen
     @form_field.observe "liszt:activate", (evt) => this.activate_field(evt)
     @form_field.observe "liszt:open", (evt) => this.container_mousedown(evt)
 
-    @form_field_jq.observe "invalid", (evt) => @field_invalid(evt)
-    @form_field_jq.observe "change", (evt) => @field_valid(evt)
+    @form_field.observe "invalid", (evt) => @field_invalid(evt)
+    @form_field.observe "change", (evt) => @field_valid(evt)
 
     @search_field.observe "blur", (evt) => this.input_blur(evt)
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)

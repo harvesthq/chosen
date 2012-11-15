@@ -397,9 +397,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.field_valid = function(evt) {
       if (this.form_field_jq.is(":valid")) {
-        return this.form_field_jq.css({
-          display: 'none'
-        });
+        return this.form_field_jq.hide();
       }
     };
 
