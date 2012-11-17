@@ -795,7 +795,7 @@ Copyright (c) 2011 by Harvest
           } else if (!(this.is_multiple && option.selected)) {
             found = false;
             result_id = option.dom_id;
-            if (regex.test(option.html)) {
+            if (regex.test(option.html) || regex.test(option.text)) {
               found = true;
               results += 1;
             } else if (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0) {
