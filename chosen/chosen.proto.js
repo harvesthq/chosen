@@ -105,9 +105,9 @@ Copyright (c) 2011 by Harvest
     function AbstractChosen(form_field, options) {
       this.form_field = form_field;
       this.options = options != null ? options : {};
-      this.set_default_values();
       this.is_multiple = this.form_field.multiple;
       this.set_default_text();
+      this.set_default_values();
       this.setup();
       this.set_up_html();
       this.register_observers();
