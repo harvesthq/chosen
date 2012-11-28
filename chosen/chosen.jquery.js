@@ -327,7 +327,7 @@ Copyright (c) 2011 by Harvest
         "class": "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
         style: 'width: ' + this.f_width + 'px;'
       });
-      if (this.form_field.title.length) {
+      if (this.form_field.title) {
         container_div.attr('title', this.form_field.title);
       }
       if (this.is_multiple) {
