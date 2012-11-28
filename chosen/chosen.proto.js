@@ -315,7 +315,8 @@ Copyright (c) 2011 by Harvest
       container_props = {
         'id': this.container_id,
         'class': "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
-        'style': 'width: ' + this.f_width + 'px'
+        'style': 'width: ' + this.f_width + 'px',
+        'title': this.form_field.title
       };
       base_template = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
         "default": this.default_text

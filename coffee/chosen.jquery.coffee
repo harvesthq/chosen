@@ -32,11 +32,13 @@ class Chosen extends AbstractChosen
 
     @f_width = @form_field_jq.outerWidth()
 
-    container_div = ($ "<div />", {
+    container_props = 
       id: @container_id
       class: "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
-    })
+      title: @form_field.title
+
+    container_div = ($ "<div />", container_props)
 
     if @is_multiple
       container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'

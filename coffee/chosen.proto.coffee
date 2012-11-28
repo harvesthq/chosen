@@ -32,6 +32,7 @@ class Chosen extends AbstractChosen
       'id': @container_id
       'class': "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
       'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
+      'title': @form_field.title
     
     base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 

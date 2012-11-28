@@ -318,15 +318,17 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.set_up_html = function() {
-      var container_div, dd_top, dd_width, sf_width;
+      var container_div, container_props, dd_top, dd_width, sf_width;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/[^\w]/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
       this.f_width = this.form_field_jq.outerWidth();
-      container_div = $("<div />", {
+      container_props = {
         id: this.container_id,
         "class": "chzn-container" + (this.is_rtl ? ' chzn-rtl' : ''),
-        style: 'width: ' + this.f_width + 'px;'
-      });
+        style: 'width: ' + this.f_width + 'px;',
+        title: this.form_field.title
+      };
+      container_div = $("<div />", container_props);
       if (this.is_multiple) {
         container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       } else {
