@@ -304,6 +304,8 @@ class Chosen extends AbstractChosen
 
       link.up('li').remove()
 
+      this.search_field_scale()
+
   results_reset: ->
     @form_field.options[0].selected = true
     @selected_item.down("span").update(@default_text)
