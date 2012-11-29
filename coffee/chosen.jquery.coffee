@@ -317,6 +317,7 @@ class Chosen extends AbstractChosen
       this.results_hide() if @is_multiple and @choices > 0 and @search_field.val().length < 1
 
       link.parents('li').first().remove()
+      this.search_field_scale()
 
   results_reset: ->
     @form_field.options[0].selected = true
