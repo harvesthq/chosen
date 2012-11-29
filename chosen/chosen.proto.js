@@ -313,6 +313,9 @@ Copyright (c) 2011 by Harvest
       this.container_id = this.form_field.identify().replace(/[^\w]/g, '_') + "_chzn";
       container_classes = ["chzn-container"];
       container_classes.push("chzn-container-" + (this.is_multiple ? "multi" : "single"));
+      if (this.form_field.className) {
+        container_classes.push(this.form_field.className);
+      }
       if (this.is_rtl) container_classes.push("chzn-rtl");
       this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
       container_props = {
