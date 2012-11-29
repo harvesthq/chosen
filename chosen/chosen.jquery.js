@@ -383,6 +383,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.field_invalid = function(evt) {
+      var _this = this;
       this.form_field_jq.css({
         position: 'absolute',
         display: ''
@@ -390,14 +391,15 @@ Copyright (c) 2011 by Harvest
       return this.form_field_jq.css({
         height: this.container.height() + 'px',
         width: this.container.width() + 'px',
-        marginLeft: '1px',
         marginTop: (this.container.position().top - this.form_field_jq.position().top) + 'px'
+      }).bind("change.chzn-valid", function(evt) {
+        return _this.field_valid(evt);
       });
     };
 
     Chosen.prototype.field_valid = function(evt) {
-      if (this.form_field_jq.is(":valid")) {
-        return this.form_field_jq.hide();
+      if (this.form_field.validity && this.form_field.validity.valid) {
+        return this.form_field_jq.hide().unbind("change.chzn-valid");
       }
     };
 
@@ -433,11 +435,8 @@ Copyright (c) 2011 by Harvest
       this.form_field_jq.bind("liszt:open", function(evt) {
         return _this.container_mousedown(evt);
       });
-      this.form_field_jq.on("invalid", function(evt) {
+      this.form_field_jq.bind("invalid.chzn", function(evt) {
         return _this.field_invalid(evt);
-      });
-      this.form_field_jq.on("change", function(evt) {
-        return _this.field_valid(evt);
       });
       this.search_field.blur(function(evt) {
         return _this.input_blur(evt);

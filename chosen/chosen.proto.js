@@ -379,16 +379,19 @@ Copyright (c) 2011 by Harvest
         position: 'absolute',
         display: ''
       });
-      return this.form_field.setStyle({
+      this.form_field.setStyle({
         height: this.container.getHeight() + 'px',
         width: this.container.getWidth() + 'px',
-        marginLeft: '1px',
         marginTop: (this.container.cumulativeOffset().top - this.form_field.cumulativeOffset().top) + 'px'
       });
+      return this.form_field.observe("change", this.field_valid_bound);
     };
 
     Chosen.prototype.field_valid = function(evt) {
-      return this.form_field.hide();
+      if (this.form_field.validity && this.form_field.validity.valid) {
+        this.form_field.hide();
+        return this.form_field.stopObserving("change", this.field_valid_bound);
+      }
     };
 
     Chosen.prototype.register_observers = function() {
@@ -426,9 +429,7 @@ Copyright (c) 2011 by Harvest
       this.form_field.observe("invalid", function(evt) {
         return _this.field_invalid(evt);
       });
-      this.form_field.observe("change", function(evt) {
-        return _this.field_valid(evt);
-      });
+      this.field_valid_bound = this.field_valid.bind(this);
       this.search_field.observe("blur", function(evt) {
         return _this.input_blur(evt);
       });

@@ -72,12 +72,14 @@ class Chosen extends AbstractChosen
     @form_field.setStyle({
       height: @container.getHeight() + 'px',
       width: @container.getWidth() + 'px',
-      marginLeft: '1px',
       marginTop: (@container.cumulativeOffset().top - @form_field.cumulativeOffset().top ) + 'px'
     })
+    @form_field.observe "change", this.field_valid_bound
 
   field_valid: (evt) ->
-    @form_field.hide()
+    if @form_field.validity && @form_field.validity.valid
+      @form_field.hide()
+      @form_field.stopObserving "change", this.field_valid_bound
 
   register_observers: ->
     @container.observe "mousedown", (evt) => this.container_mousedown(evt)
@@ -93,8 +95,8 @@ class Chosen extends AbstractChosen
     @form_field.observe "liszt:activate", (evt) => this.activate_field(evt)
     @form_field.observe "liszt:open", (evt) => this.container_mousedown(evt)
 
-    @form_field.observe "invalid", (evt) => @field_invalid(evt)
-    @form_field.observe "change", (evt) => @field_valid(evt)
+    @form_field.observe "invalid", (evt) => this.field_invalid(evt)
+    @field_valid_bound = @field_valid.bind this
 
     @search_field.observe "blur", (evt) => this.input_blur(evt)
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)

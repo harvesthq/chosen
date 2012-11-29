@@ -80,13 +80,13 @@ class Chosen extends AbstractChosen
     @form_field_jq.css({
       height: @container.height() + 'px',
       width: @container.width() + 'px',
-      marginLeft: '1px',
       marginTop: (@container.position().top - @form_field_jq.position().top ) + 'px'
     })
+    .bind "change.chzn-valid", (evt) => this.field_valid(evt)
 
   field_valid: (evt) ->
-    if @form_field_jq.is(":valid")
-      @form_field_jq.hide()
+    if @form_field.validity && @form_field.validity.valid
+      @form_field_jq.hide().unbind "change.chzn-valid"
 
   register_observers: ->
     @container.mousedown (evt) => this.container_mousedown(evt)
@@ -102,8 +102,7 @@ class Chosen extends AbstractChosen
     @form_field_jq.bind "liszt:activate", (evt) => this.activate_field(evt)
     @form_field_jq.bind "liszt:open", (evt) => this.container_mousedown(evt)
 
-    @form_field_jq.on "invalid", (evt) => @field_invalid(evt)
-    @form_field_jq.on "change", (evt) => @field_valid(evt)
+    @form_field_jq.bind "invalid.chzn", (evt) => this.field_invalid(evt)
 
     @search_field.blur (evt) => this.input_blur(evt)
     @search_field.keyup (evt) => this.keyup_checker(evt)
