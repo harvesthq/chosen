@@ -5,18 +5,7 @@ Copyright (c) 2011 by Harvest
 root = this
 $ = jQuery
 
-$.fn.extend({
-  chosen: (options) ->
-    # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
-    # Continue on if running IE document type but in compatibility mode
-    return this if $.browser.msie and ($.browser.version is "6.0" or  ($.browser.version is "7.0" and document.documentMode is 7 ))
-    this.each((input_field) ->
-      $this = $ this
-      $this.data('chosen', new Chosen(this, options)) unless $this.hasClass "chzn-done"
-    )
-})
-
-class Chosen extends AbstractChosen
+class Chosen extends root.AbstractChosen
 
   setup: ->
     @form_field_jq = $ @form_field
@@ -575,3 +564,5 @@ get_side_border_padding = (elmt) ->
   side_border_padding = elmt.outerWidth() - elmt.width()
 
 root.get_side_border_padding = get_side_border_padding
+
+root.Chosen = Chosen;
