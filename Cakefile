@@ -9,18 +9,19 @@ path             = require 'path'
 CoffeeScript     = require 'coffee-script'
 {parser, uglify} = require 'uglify-js'
 
-javascripts = {
-  'chosen/chosen.jquery.js': [
-    'coffee/lib/select-parser.coffee'
-    'coffee/lib/abstract-chosen.coffee'
-    'coffee/chosen.jquery.coffee'
-  ]
-  'chosen/chosen.proto.js': [
-    'coffee/lib/select-parser.coffee'
-    'coffee/lib/abstract-chosen.coffee'
-    'coffee/chosen.proto.coffee'
-  ]
-}
+javascripts =
+  'chosen/chosen.jquery.js':
+    template: 'coffee/chosen.jquery.template.coffee'
+    parts:
+      select_parser: 'coffee/lib/select-parser.coffee'
+      abstract_chosen: 'coffee/lib/abstract-chosen.coffee'
+      chosen_jquery: 'coffee/chosen.jquery.coffee'
+  'chosen/chosen.proto.js':
+    template: 'coffee/chosen.proto.template.coffee'
+    parts:
+      select_parser: 'coffee/lib/select-parser.coffee'
+      abstract_chosen: 'coffee/lib/abstract-chosen.coffee'
+      chosen_proto: 'coffee/chosen.proto.coffee'
 
 Array::unique = ->
   output = {}
@@ -31,8 +32,9 @@ Array::unique = ->
 #
 source_files = ->
   all_sources = []
-  for javascript, sources of javascripts
-    for source in sources
+  for javascript, template_source of javascripts
+    all_sources.push template_source.template
+    for part, source of template_source.parts
       all_sources.push source
   all_sources.unique()
 
@@ -66,12 +68,15 @@ write_chosen_javascript = (filename, body, trailing='') ->
 task 'build', 'build Chosen from source', build = (cb) ->
   file_name = null; file_contents = null
   try
-    for javascript, sources of javascripts
-      code = ''
-      for source in sources
+    for javascript, template_source of javascripts
+      file_name = template_source.template
+      file_contents = "#{fs.readFileSync template_source.template}"
+      code = CoffeeScript.compile file_contents
+      for part, source of template_source.parts
         file_name = source
         file_contents = "#{fs.readFileSync source}"
-        code += CoffeeScript.compile file_contents
+        code = 
+          code.replace new RegExp("'" + part + "';", "g"), CoffeeScript.compile(file_contents).replace(/\$/g, "$$$$")
       write_chosen_javascript javascript, code
       unless process.env.MINIFY is 'false'
         write_chosen_javascript javascript.replace(/\.js$/,'.min.js'), (
