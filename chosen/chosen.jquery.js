@@ -1060,6 +1060,8 @@ Copyright (c) 2011 by Harvest
 
   })(AbstractChosen);
 
+  root.Chosen = Chosen;
+
   get_side_border_padding = function(elmt) {
     var side_border_padding;
     return side_border_padding = elmt.outerWidth() - elmt.width();
