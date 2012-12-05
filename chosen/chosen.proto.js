@@ -715,7 +715,8 @@ Copyright (c) 2011 by Harvest
         if (this.is_multiple && this.choices > 0 && this.search_field.value.length < 1) {
           this.results_hide();
         }
-        return link.up('li').remove();
+        link.up('li').remove();
+        return this.search_field_scale();
       }
     };
 
