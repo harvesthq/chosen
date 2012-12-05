@@ -571,6 +571,8 @@ class Chosen extends AbstractChosen
       string += this.generate_random_char()
     string
 
+root.Chosen = Chosen
+
 get_side_border_padding = (elmt) ->
   side_border_padding = elmt.outerWidth() - elmt.width()
 
