@@ -404,7 +404,7 @@ class Chosen extends AbstractChosen
           if regex.test option.html
             found = true
             results += 1
-          else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
+          else if @search_split_words and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
             parts = option.html.replace(/\[|\]/g, "").split(" ")
             if parts.length

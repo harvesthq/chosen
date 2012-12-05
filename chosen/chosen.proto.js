@@ -133,6 +133,7 @@ Copyright (c) 2011 by Harvest
       this.allow_single_deselect = (this.options.allow_single_deselect != null) && (this.form_field.options[0] != null) && this.form_field.options[0].text === "" ? this.options.allow_single_deselect : false;
       this.disable_search_threshold = this.options.disable_search_threshold || 0;
       this.disable_search = this.options.disable_search || false;
+      this.search_split_words = !(this.options.disable_search_split_words || false);
       this.search_contains = this.options.search_contains || false;
       this.choices = 0;
       this.single_backstroke_delete = this.options.single_backstroke_delete || false;
@@ -838,7 +839,7 @@ Copyright (c) 2011 by Harvest
             if (regex.test(option.html)) {
               found = true;
               results += 1;
-            } else if (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0) {
+            } else if (this.search_split_words && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {
               parts = option.html.replace(/\[|\]/g, "").split(" ");
               if (parts.length) {
                 for (_j = 0, _len1 = parts.length; _j < _len1; _j++) {
