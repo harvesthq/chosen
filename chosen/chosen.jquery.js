@@ -462,7 +462,7 @@ Copyright (c) 2011 by Harvest
       if (!this.is_disabled) {
         target_closelink = evt != null ? ($(evt.target)).hasClass("search-choice-close") : false;
         if (evt && evt.type === "mousedown" && !this.results_showing) {
-          evt.stopPropagation();
+          evt.preventDefault();
         }
         if (!this.pending_destroy_click && !target_closelink) {
           if (!this.active_field) {
