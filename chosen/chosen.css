@@ -18,6 +18,9 @@
   box-shadow        : 0 4px 5px rgba(0,0,0,.15);
   z-index: 1010;
 }
+.chzn-container * {
+    box-sizing: content-box;
+}
 /* @end */
 
 /* @group Single Chosen */
