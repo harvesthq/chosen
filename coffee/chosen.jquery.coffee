@@ -32,7 +32,7 @@ class Chosen extends AbstractChosen
 
     container_classes = ["chzn-container"]
     container_classes.push "chzn-container-" + (if @is_multiple then "multi" else "single")
-    container_classes.push @form_field.className if @form_field.className
+    container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chzn-rtl" if @is_rtl
 
     @f_width = @form_field_jq.outerWidth()
