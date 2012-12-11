@@ -335,7 +335,9 @@ Copyright (c) 2011 by Harvest
       if (this.form_field.className) {
         container_classes.push(this.form_field.className);
       }
-      if (this.is_rtl) container_classes.push("chzn-rtl");
+      if (this.is_rtl) {
+        container_classes.push("chzn-rtl");
+      }
       this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
       container_props = {
         'id': this.container_id,
