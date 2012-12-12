@@ -26,11 +26,16 @@ class Chosen extends AbstractChosen
   set_up_html: ->
     @container_id = @form_field.identify().replace(/[^\w]/g, '_') + "_chzn"
 
+    container_classes = ["chzn-container"]
+    container_classes.push "chzn-container-" + (if @is_multiple then "multi" else "single")
+    container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
+    container_classes.push "chzn-rtl" if @is_rtl
+
     @f_width = if @form_field.getStyle("width") then parseInt @form_field.getStyle("width"), 10 else @form_field.getWidth()
 
     container_props =
       'id': @container_id
-      'class': "chzn-container#{ if @is_rtl then ' chzn-rtl' else '' }"
+      'class': container_classes.join ' '
       'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
       'title': @form_field.title
     
@@ -38,7 +43,6 @@ class Chosen extends AbstractChosen
 
     @form_field.hide().insert({ after: base_template })
     @container = $(@container_id)
-    @container.addClassName( "chzn-container-" + (if @is_multiple then "multi" else "single") )
     @dropdown = @container.down('div.chzn-drop')
 
     dd_top = @container.getHeight()
