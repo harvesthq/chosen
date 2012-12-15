@@ -212,7 +212,8 @@ Copyright (c) 2011 by Harvest
       }
       this.result_clear_highlight();
       this.result_single_selected = null;
-      return this.results_build();
+      this.results_build();
+      return this.winnow_results();
     };
 
     AbstractChosen.prototype.results_toggle = function() {
