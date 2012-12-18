@@ -11,14 +11,14 @@ $.fn.extend({
 
     match = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
       /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
-    	/(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
-    	/(msie) ([\w.]+)/.exec( ua ) ||
-    	ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
-    	[];
+      /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+      /(msie) ([\w.]+)/.exec( ua ) ||
+      ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
+      [];
     
     browser =
       name: match[ 1 ] || ""
-    	version: match[ 2 ] || "0"
+      version: match[ 2 ] || "0"
       
     # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
     # Continue on if running IE document type but in compatibility mode
