@@ -397,7 +397,7 @@
 .chzn-container-single.chzn-rtl .chzn-single div b {
   background-position: 6px 2px;
 }
-.chzn-container-single.chzn-rtl.chzn-container-active .chzn-single div b {
+.chzn-container-single.chzn-rtl .chzn-single-with-drop div b {
   background-position: -12px 2px;
 }
 /* @end */
