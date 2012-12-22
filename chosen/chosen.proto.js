@@ -110,8 +110,8 @@ Copyright (c) 2011 by Harvest
       this.options = options != null ? options : {};
       this.is_multiple = this.form_field.multiple;
       this.set_default_text();
-      this.set_default_values();
       this.setup();
+      this.set_default_values();
       this.set_up_html();
       this.register_observers();
       this.finish_setup();
@@ -312,7 +312,8 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.setup = function() {
       this.current_value = this.form_field.value;
-      return this.is_rtl = this.form_field.hasClassName("chzn-rtl");
+      this.is_rtl = this.form_field.hasClassName("chzn-rtl") || ($(document.body).getStyle('direction') || '').toLowerCase() == 'rtl';
+      return this.default_left = (this.is_rtl ? '' : '-') + '9000';
     };
 
     Chosen.prototype.finish_setup = function() {
@@ -321,8 +322,8 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.set_default_values = function() {
       Chosen.__super__.set_default_values.call(this);
-      this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
-      this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
+      this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:' + this.default_left + 'px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
+      this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:' + this.default_left + 'px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
       this.choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
@@ -628,7 +629,7 @@ Copyright (c) 2011 by Harvest
         chosen: this
       });
       this.dropdown.setStyle({
-        "left": "-9000px"
+        "left": this.default_left + 'px'
       });
       return this.results_showing = false;
     };
