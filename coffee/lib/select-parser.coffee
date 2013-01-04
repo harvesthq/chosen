@@ -20,6 +20,21 @@ class SelectParser
       disabled: group.disabled
     this.add_option( option, group_position, group.disabled ) for option in group.childNodes
 
+  get_template_data: (option) ->
+    template_data = {}
+
+    for k, v of option.attributes
+      if typeof(v.nodeName) == "string"
+        attribute_name = v.nodeName.split("-")
+
+        if attribute_name[0] == "data" and attribute_name = attribute_name[1..]
+          for word, i in attribute_name
+            attribute_name[i] = word.charAt(0).toUpperCase() + word.slice(1) if i != 0
+            
+          template_data[attribute_name.join("")] = v.nodeValue 
+
+    template_data
+
   add_option: (option, group_position, group_disabled) ->
     if option.nodeName.toUpperCase() is "OPTION"
       if option.text != ""
@@ -36,6 +51,7 @@ class SelectParser
           group_array_index: group_position
           classes: option.className
           style: option.style.cssText
+          template_data: @get_template_data(option)
       else
         @parsed.push
           array_index: @parsed.length

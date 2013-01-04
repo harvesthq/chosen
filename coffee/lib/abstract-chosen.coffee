@@ -70,8 +70,9 @@ class AbstractChosen
       classes.push option.classes if option.classes != ""
 
       style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
-
-      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + option.html + '</li>'
+      html = @useTemplate(option)
+      
+      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + html + '</li>'
     else
       ""
 
@@ -123,5 +124,11 @@ class AbstractChosen
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     rand = Math.floor(Math.random() * chars.length)
     newchar = chars.substring rand, rand+1
+
+  useTemplate: (item, text=false) ->
+    if this.options.template
+      this.options.template(text or item.text, item.value, item.template_data)
+    else
+      text or item.text
 
 root.AbstractChosen = AbstractChosen

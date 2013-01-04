@@ -1327,6 +1327,33 @@
         </select>
       </div>
     </div>
+
+    <h2>Template Support</h2>
+    <div class="side-by-side clearfix">
+      <p>Chosen supports templating select boxes too.</p>
+      <div>
+      	<em>Single...</em>
+        <select data-placeholder="Choose your favorite candy..." class="chzn-select-template-example" style="width:350px;" tabindex="11">
+          <option value=""></option>
+          <option data-type="chocolate" data-ico="http://cdn1.iconfinder.com/data/icons/winter_png/16/christmas_5.png" value="sel1">M&Ms</option>
+          <option data-type="fruity" data-ico="http://cdn1.iconfinder.com/data/icons/iconshock_vista_CharlieandtheChocolateFactory/png/24/CharlieandtheChocolateFactory1.png" value="sel2">Starburst</option>
+          <option data-type="fruity" data-ico="http://cdn1.iconfinder.com/data/icons/winter_png/16/christmas_5.png" value="sel3">Skittles</option>
+          <option data-type="chocolate" data-ico="http://cdn1.iconfinder.com/data/icons/fatcow/16/candy_cane.png" value="sel4">Reese's</option>
+          <option data-type="chocolate" data-ico="http://cdn1.iconfinder.com/data/icons/winter_png/16/christmas_5.png" value="sel5">Snickers</option>
+        </select>
+      </div>
+      <div>
+        <em>Multi...</em>
+        <select data-placeholder="Choose your favorite candy..." multiple class="chzn-select-template-example" style="width:350px;" tabindex="11">
+          <option value=""></option>
+          <option data-type="chocolate" data-ico="http://cdn1.iconfinder.com/data/icons/winter_png/16/christmas_5.png" value="sel1">M&Ms</option>
+          <option data-type="fruity" data-ico="http://cdn1.iconfinder.com/data/icons/iconshock_vista_CharlieandtheChocolateFactory/png/24/CharlieandtheChocolateFactory1.png" value="sel2">Starburst</option>
+          <option data-type="fruity" data-ico="http://cdn1.iconfinder.com/data/icons/winter_png/16/christmas_5.png" value="sel3">Skittles</option>
+          <option data-type="chocolate" data-ico="http://cdn1.iconfinder.com/data/icons/fatcow/16/candy_cane.png" value="sel4">Reese's</option>
+          <option data-type="chocolate" data-ico="http://cdn1.iconfinder.com/data/icons/winter_png/16/christmas_5.png" value="sel5">Snickers</option>
+        </select>
+      </div>
+    </div>
         
     <h2>Change / Update Events</h2>
     <div class="side-by-side clearfix">
@@ -1376,8 +1403,19 @@
       select = deselects[_i];
       _results.push(new Chosen(select,{allow_single_deselect:true}));
     }
+  	templateExamples = $$(".chzn-select-template-example");
+  	for (_i = 0, _len = templateExamples.length; _i < _len; _i++) {
+      select = templateExamples[_i];
+      _results.push(new Chosen(select,{
+      template: function (text, value, templateData) {
+        return [
+          "<img src='" + templateData.ico + "' height='16' width='16'></img> " + text + "</i> value: " + value         
+        ].join("");
+      }
+    }));
+    }
     return _results;
-  });
+    });
   </script>
 </body>
 </html>
