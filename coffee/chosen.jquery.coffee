@@ -189,7 +189,8 @@ class Chosen extends AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          @selected_item.removeClass("chzn-default").find("span").text data.text
+          html = if this.options.template then this.options.template(data.text, data.value, data.template_data) else data.text
+          @selected_item.removeClass("chzn-default").find("span").html html
           this.single_deselect_control_build() if @allow_single_deselect
 
     this.search_field_disabled()
@@ -297,10 +298,11 @@ class Chosen extends AbstractChosen
       return false # fire event
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
+    html = if this.options.template then this.options.template(item.text, item.value, item.template_data) else item.html
     if item.disabled
-      html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>'
+      html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + html + '</span></li>'
     else
-      html = '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
+      html = '<li class="search-choice" id="' + choice_id + '"><span>' + html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
     @search_container.before  html
     link = $('#' + choice_id).find("a").first()
     link.click (evt) => this.choice_destroy_link_click(evt)
@@ -362,7 +364,8 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.choice_build item
       else
-        @selected_item.find("span").first().text item.text
+        html = if this.options.template then this.options.template(item.text, item.value, item.template_data) else item.text
+        @selected_item.find("span").first().html html
         this.single_deselect_control_build() if @allow_single_deselect
 
       this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
@@ -438,8 +441,9 @@ class Chosen extends AbstractChosen
               startpos = option.html.search zregex
               text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+              text = if this.options.template then this.options.template(text, option.value, option.template_data) else text
             else
-              text = option.html
+              text = if this.options.template then this.options.template(option.html, option.value, option.template_data) else option.html
 
             result.html(text)
             this.result_activate result

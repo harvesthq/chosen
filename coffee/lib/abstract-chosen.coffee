@@ -70,8 +70,10 @@ class AbstractChosen
       classes.push option.classes if option.classes != ""
 
       style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
-
-      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + option.html + '</li>'
+      
+      html = if this.options.template then this.options.template(option.text, option.value, option.template_data) else option.html
+      
+      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + html + '</li>'
     else
       ""
 
