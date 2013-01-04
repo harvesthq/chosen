@@ -177,7 +177,8 @@ class Chosen extends AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          @selected_item.removeClassName("chzn-default").down("span").update( data.html )
+          html = @useTemplate(data)
+          @selected_item.removeClassName("chzn-default").down("span").update( html )
           this.single_deselect_control_build() if @allow_single_deselect
 
     this.search_field_disabled()
@@ -284,10 +285,11 @@ class Chosen extends AbstractChosen
       return false
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
+    html = @useTemplate(item)
     @search_container.insert
       before: (if item.disabled then @choice_noclose_temp else @choice_temp).evaluate
         id:       choice_id
-        choice:   item.html
+        choice:   html
         position: item.array_index
     if not item.disabled
       link = $(choice_id).down('a')
@@ -347,7 +349,8 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.choice_build item
       else
-        @selected_item.down("span").update(item.html)
+        html = @useTemplate(item)
+        @selected_item.down("span").update(html)
         this.single_deselect_control_build() if @allow_single_deselect
 
       this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
@@ -422,10 +425,11 @@ class Chosen extends AbstractChosen
               startpos = option.html.search zregex
               text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+              html = @useTemplate(option, text)
             else
-              text = option.html
+              html = @useTemplate(option)
 
-            $(result_id).update text if $(result_id).innerHTML != text
+            $(result_id).update html if $(result_id).innerHTML != html
 
             this.result_activate $(result_id)
 

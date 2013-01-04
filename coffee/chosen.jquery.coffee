@@ -189,7 +189,7 @@ class Chosen extends AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          html = if this.options.template then this.options.template(data.text, data.value, data.template_data) else data.text
+          html = @useTemplate(data)
           @selected_item.removeClass("chzn-default").find("span").html html
           this.single_deselect_control_build() if @allow_single_deselect
 
@@ -298,7 +298,7 @@ class Chosen extends AbstractChosen
       return false # fire event
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
-    html = if this.options.template then this.options.template(item.text, item.value, item.template_data) else item.html
+    html = @useTemplate(item)
     if item.disabled
       html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + html + '</span></li>'
     else
@@ -364,7 +364,7 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.choice_build item
       else
-        html = if this.options.template then this.options.template(item.text, item.value, item.template_data) else item.text
+        html = @useTemplate(item)
         @selected_item.find("span").first().html html
         this.single_deselect_control_build() if @allow_single_deselect
 
@@ -441,11 +441,11 @@ class Chosen extends AbstractChosen
               startpos = option.html.search zregex
               text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-              text = if this.options.template then this.options.template(text, option.value, option.template_data) else text
+              html = @useTemplate(option, text)
             else
-              text = if this.options.template then this.options.template(option.html, option.value, option.template_data) else option.html
+              html = @useTemplate(option)
 
-            result.html(text)
+            result.html(html)
             this.result_activate result
 
             $("#" + @results_data[option.group_array_index].dom_id).css('display', 'list-item') if option.group_array_index?
