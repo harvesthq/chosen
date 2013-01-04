@@ -2,6 +2,10 @@
 Chosen source: generate output using 'cake build'
 Copyright (c) 2011 by Harvest
 ###
+
+# For thouse using codekit to compile:
+# @codekit-prepend "lib/select-parser.coffee", "lib/abstract-chosen.coffee"
+
 root = this
 $ = jQuery
 
