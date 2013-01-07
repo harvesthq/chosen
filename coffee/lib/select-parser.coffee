@@ -1,5 +1,5 @@
 class SelectParser
-  
+
   constructor: ->
     @options_index = 0
     @parsed = []
@@ -15,7 +15,7 @@ class SelectParser
     @parsed.push
       array_index: group_position
       group: true
-      label: group.label
+      label: AbstractChosen.escapeExpression(group.label)
       children: 0
       disabled: group.disabled
     this.add_option( option, group_position, group.disabled ) for option in group.childNodes
