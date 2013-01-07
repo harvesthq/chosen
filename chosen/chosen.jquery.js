@@ -31,7 +31,7 @@
       this.parsed.push({
         array_index: group_position,
         group: true,
-        label: group.label,
+        label: AbstractChosen.escapeExpression(group.label),
         children: 0,
         disabled: group.disabled
       });
@@ -279,6 +279,27 @@ Copyright (c) 2011 by Harvest
       chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
       rand = Math.floor(Math.random() * chars.length);
       return newchar = chars.substring(rand, rand + 1);
+    };
+
+    AbstractChosen.escapeExpression = function(text) {
+      var map, unsafe_chars;
+      if (!(text != null) || text === false) {
+        return "";
+      }
+      if (!/[\&\<\>\"\'\`]/.test(text)) {
+        return text;
+      }
+      map = {
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#x27;",
+        "`": "&#x60;"
+      };
+      unsafe_chars = /&(?!\w+;)|[\<\>\"\'\`]/g;
+      return text.replace(unsafe_chars, function(chr) {
+        return map[chr] || "&amp;";
+      });
     };
 
     return AbstractChosen;
