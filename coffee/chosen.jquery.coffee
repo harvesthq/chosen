@@ -37,7 +37,7 @@ class Chosen extends AbstractChosen
 
     @f_width = @form_field_jq.outerWidth()
 
-    container_props = 
+    container_props =
       id: @container_id
       class: container_classes.join ' '
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
@@ -107,12 +107,14 @@ class Chosen extends AbstractChosen
     @is_disabled = @form_field_jq[0].disabled
     if(@is_disabled)
       @container.addClass 'chzn-disabled'
-      @search_field[0].disabled = true
+      if(@search_field[0])
+        @search_field[0].disabled = true
       @selected_item.unbind "focus", @activate_action if !@is_multiple
       this.close_field()
     else
       @container.removeClass 'chzn-disabled'
-      @search_field[0].disabled = false
+      if(@search_field[0])
+        @search_field[0].disabled = false
       @selected_item.bind "focus", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
@@ -325,7 +327,8 @@ class Chosen extends AbstractChosen
       this.search_field_scale()
 
   results_reset: ->
-    @form_field.options[0].selected = true
+    if(@form_field.options[0])
+      @form_field.options[0].selected = true
     @selected_item.find("span").text @default_text
     @selected_item.addClass("chzn-default") if not @is_multiple
     this.show_search_field_default()
