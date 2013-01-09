@@ -67,15 +67,15 @@
   right: 26px;
   top: 6px;
   width: 12px;
-  height: 13px;
+  height: 12px;
   font-size: 1px;
-  background: url('chosen-sprite.png') right top no-repeat;
+  background: url('chosen-sprite.png') -42px 1px no-repeat;
 }
 .chzn-container-single .chzn-single abbr:hover {
-  background-position: right -11px;
+  background-position: -42px -10px;
 }
 .chzn-container-single.chzn-disabled .chzn-single abbr:hover {
-  background-position: right top;
+  background-position: -42px -10px;
 }
 .chzn-container-single .chzn-single div {
   position: absolute;
@@ -86,7 +86,7 @@
   width: 18px;
 }
 .chzn-container-single .chzn-single div b {
-  background: url('chosen-sprite.png') no-repeat 0 0;
+  background: url('chosen-sprite.png') no-repeat 0px 2px;
   display: block;
   width: 100%;
   height: 100%;
@@ -99,12 +99,12 @@
   z-index: 1010;
 }
 .chzn-container-single .chzn-search input {
-  background: #fff url('chosen-sprite.png') no-repeat 100% -22px;
-  background: url('chosen-sprite.png') no-repeat 100% -22px, -webkit-gradient(linear, 0 0, 0 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
-  background: url('chosen-sprite.png') no-repeat 100% -22px, -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-  background: url('chosen-sprite.png') no-repeat 100% -22px, -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-  background: url('chosen-sprite.png') no-repeat 100% -22px, -o-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-  background: url('chosen-sprite.png') no-repeat 100% -22px, linear-gradient(#eeeeee 1%, #ffffff 15%);
+  background: #fff url('chosen-sprite.png') no-repeat 100% -20px;
+  background: url('chosen-sprite.png') no-repeat 100% -20px, -webkit-gradient(linear, 0 0, 0 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
+  background: url('chosen-sprite.png') no-repeat 100% -20px, -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: url('chosen-sprite.png') no-repeat 100% -20px, -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: url('chosen-sprite.png') no-repeat 100% -20px, -o-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: url('chosen-sprite.png') no-repeat 100% -20px, linear-gradient(#eeeeee 1%, #ffffff 15%);
   margin: 1px 0;
   padding: 4px 20px 4px 5px;
   outline: 0;
@@ -217,15 +217,15 @@
   right: 3px;
   top: 4px;
   width: 12px;
-  height: 13px;
+  height: 12px;
   font-size: 1px;
-  background: url('chosen-sprite.png') right top no-repeat;
+  background: url('chosen-sprite.png') -42px 1px no-repeat;
 }
 .chzn-container-multi .chzn-choices .search-choice .search-choice-close:hover {
-  background-position: right -11px;
+  background-position: -42px -10px;
 }
 .chzn-container-multi .chzn-choices .search-choice-focus .search-choice-close {
-  background-position: right -11px;
+  background-position: -42px -10px;
 }
 /* @end */
 
@@ -342,7 +342,7 @@
   border-left: none;
 }
 .chzn-container-active .chzn-single-with-drop div b {
-  background-position: -18px 1px;
+  background-position: -18px 2px;
 }
 .chzn-container-active .chzn-choices {
   -webkit-box-shadow: 0 0 5px rgba(0,0,0,.3);
@@ -380,18 +380,34 @@
 .chzn-rtl .chzn-choices .search-field input { direction: rtl; }
 .chzn-rtl .chzn-choices li { float: right; }
 .chzn-rtl .chzn-choices .search-choice { padding: 3px 5px 3px 19px; margin: 3px 5px 3px 0; }
-.chzn-rtl .chzn-choices .search-choice .search-choice-close { left: 4px; right: auto; background-position: right top;}
+.chzn-rtl .chzn-choices .search-choice .search-choice-close { left: 4px; right: auto; }
 .chzn-rtl.chzn-container-single .chzn-results { margin: 0 0 4px 4px; padding: 0 4px 0 0; }
 .chzn-rtl .chzn-results .group-option { padding-left: 0; padding-right: 15px; }
 .chzn-rtl.chzn-container-active .chzn-single-with-drop div { border-right: none; }
 .chzn-rtl .chzn-search input {
-  background: #fff url('chosen-sprite.png') no-repeat -38px -22px;
-  background: url('chosen-sprite.png') no-repeat -38px -22px, -webkit-gradient(linear, 0 0, 0 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
-  background: url('chosen-sprite.png') no-repeat -38px -22px, -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 15%);  
-  background: url('chosen-sprite.png') no-repeat -38px -22px, -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-  background: url('chosen-sprite.png') no-repeat -38px -22px, -o-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-  background: url('chosen-sprite.png') no-repeat -38px -22px, linear-gradient(#eeeeee 1%, #ffffff 15%);
+  background: #fff url('chosen-sprite.png') no-repeat -30px -20px;
+  background: url('chosen-sprite.png') no-repeat -30px -20px, -webkit-gradient(linear, 0 0, 0 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
+  background: url('chosen-sprite.png') no-repeat -30px -20px, -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 15%);  
+  background: url('chosen-sprite.png') no-repeat -30px -20px, -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: url('chosen-sprite.png') no-repeat -30px -20px, -o-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: url('chosen-sprite.png') no-repeat -30px -20px, linear-gradient(#eeeeee 1%, #ffffff 15%);
   padding: 4px 5px 4px 20px;
   direction: rtl;
+}
+.chzn-container-single.chzn-rtl .chzn-single div b {
+  background-position: 6px 2px;
+}
+.chzn-container-single.chzn-rtl .chzn-single-with-drop div b {
+  background-position: -12px 2px;
+}
+/* @end */
+
+/* @group Retina compatibility */
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-resolution: 144dpi)  {
+  .chzn-rtl .chzn-search input, .chzn-container-single .chzn-single abbr, .chzn-container-single .chzn-single div b, .chzn-container-single .chzn-search input, .chzn-container-multi .chzn-choices .search-choice .search-choice-close, .chzn-container .chzn-results-scroll-down span, .chzn-container .chzn-results-scroll-up span {
+      background-image: url('chosen-sprite@2x.png') !important;
+      background-repeat: no-repeat !important;
+      background-size: 52px 37px !important;
+  }
 }
 /* @end */

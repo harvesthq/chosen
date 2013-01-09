@@ -7,10 +7,9 @@ root = this
 class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
-    this.set_default_values()
-    
     @is_multiple = @form_field.multiple
     this.set_default_text()
+    this.set_default_values()
 
     this.setup()
 
@@ -30,10 +29,12 @@ class AbstractChosen
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
     @disable_search_threshold = @options.disable_search_threshold || 0
     @disable_search = @options.disable_search || false
+    @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
     @search_contains = @options.search_contains || false
     @choices = 0
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
+    @inherit_select_classes = @options.inherit_select_classes || false
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
