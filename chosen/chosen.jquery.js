@@ -349,7 +349,7 @@ Copyright (c) 2011 by Harvest
       if (this.is_rtl) {
         container_classes.push("chzn-rtl");
       }
-      this.f_width = this.form_field_jq.outerWidth();
+      this.f_width = window.getComputedStyle(this.form_field_jq[0]).width;
       container_props = {
         id: this.container_id,
         "class": container_classes.join(' '),
