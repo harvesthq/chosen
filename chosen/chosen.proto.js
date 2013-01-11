@@ -339,7 +339,11 @@ Copyright (c) 2011 by Harvest
       if (this.is_rtl) {
         container_classes.push("chzn-rtl");
       }
-      this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
+      if (window.getComputedStyle != null) {
+        this.f_width = parseFloat(window.getComputedStyle(this.form_field).width.replace('px', ''));
+      } else {
+        this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
+      }
       container_props = {
         'id': this.container_id,
         'class': container_classes.join(' '),
