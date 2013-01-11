@@ -35,7 +35,10 @@ class Chosen extends AbstractChosen
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chzn-rtl" if @is_rtl
 
-    @f_width = @form_field_jq.outerWidth()
+    if window.getComputedStyle?
+      @f_width = parseFloat window.getComputedStyle(@form_field).width.replace('px','')
+    else
+      @f_width = @form_field_jq.outerWidth()
 
     container_props = 
       id: @container_id
