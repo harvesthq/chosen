@@ -358,6 +358,8 @@ class Chosen extends AbstractChosen
       @current_value = @form_field.value
 
       this.search_field_scale()
+    else if @allow_single_deselect
+      @results_reset(evt)
 
   result_activate: (el) ->
     el.addClassName("active-result")
