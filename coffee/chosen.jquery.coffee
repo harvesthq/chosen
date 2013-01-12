@@ -95,7 +95,7 @@ class Chosen extends AbstractChosen
       @search_choices.click (evt) => this.choices_click(evt)
     else
       @container.click (evt) => evt.preventDefault() # gobble click of anchor
-    
+
 
   search_field_disabled: ->
     @is_disabled = @form_field_jq[0].disabled
@@ -169,7 +169,7 @@ class Chosen extends AbstractChosen
       @choices = 0
     else if not @is_multiple
       @selected_item.addClass("chzn-default").find("span").text(@default_text)
-      if @disable_search or @form_field.options.length <= @disable_search_threshold
+      if @disable_search or not @form_field.options or @form_field.options.length <= @disable_search_threshold
         @container.addClass "chzn-container-single-nosearch"
       else
         @container.removeClass "chzn-container-single-nosearch"
@@ -324,7 +324,7 @@ class Chosen extends AbstractChosen
     this.results_reset_cleanup()
     @form_field_jq.trigger "change"
     this.results_hide() if @active_field
-  
+
   results_reset_cleanup: ->
     @current_value = @form_field_jq.val()
     @selected_item.find("abbr").remove()
@@ -376,7 +376,7 @@ class Chosen extends AbstractChosen
 
     if not @form_field.options[result_data.options_index].disabled
       result_data.selected = false
-      
+
       @form_field.options[result_data.options_index].selected = false
       result = $("#" + @container_id + "_o_" + pos)
       result.removeClass("result-selected").addClass("active-result").show()
@@ -386,7 +386,7 @@ class Chosen extends AbstractChosen
 
       @form_field_jq.trigger "change", {deselected: @form_field.options[result_data.options_index].value}
       this.search_field_scale()
-      
+
       return true
     else
       return false
