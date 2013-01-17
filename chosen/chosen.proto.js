@@ -125,6 +125,9 @@ Copyright (c) 2011 by Harvest
       this.activate_action = function(evt) {
         return _this.activate_field(evt);
       };
+      this.search_template_action = this.options.search_template || function(item) {
+        return item;
+      };
       this.active_field = false;
       this.mouse_on_container = false;
       this.results_showing = false;
@@ -832,6 +835,7 @@ Copyright (c) 2011 by Harvest
       this.no_results_clear();
       results = 0;
       searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
+      searchText = this.search_template_action(searchText);
       regexAnchor = this.search_contains ? "" : "^";
       regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
