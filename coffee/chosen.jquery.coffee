@@ -193,7 +193,7 @@ class Chosen extends AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          html = @useTemplate(data)
+          html = @useTemplate data
           @selected_item.removeClass("chzn-default").find("span").html html
           this.single_deselect_control_build() if @allow_single_deselect
 
@@ -302,7 +302,7 @@ class Chosen extends AbstractChosen
       return false # fire event
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
-    html = @useTemplate(item)
+    html = @useTemplate item
     if item.disabled
       html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + html + '</span></li>'
     else
@@ -368,7 +368,7 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.choice_build item
       else
-        html = @useTemplate(item)
+        html = @useTemplate item
         @selected_item.find("span").first().html html
         this.single_deselect_control_build() if @allow_single_deselect
 
@@ -445,9 +445,9 @@ class Chosen extends AbstractChosen
               startpos = option.html.search zregex
               text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-              html = @useTemplate(option, text)
+              html = @useTemplate option, text
             else
-              html = @useTemplate(option)
+              html = @useTemplate option
 
             result.html(html)
             this.result_activate result
