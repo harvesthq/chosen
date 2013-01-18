@@ -44,6 +44,28 @@
       return _results;
     };
 
+    SelectParser.prototype.get_template_data = function(option) {
+      var attribute_name, i, k, template_data, v, word, _i, _len, _ref;
+      template_data = {};
+      _ref = option.attributes;
+      for (k in _ref) {
+        v = _ref[k];
+        if (typeof v.nodeName === "string") {
+          attribute_name = v.nodeName.split("-");
+          if (attribute_name[0] === "data" && (attribute_name = attribute_name.slice(1))) {
+            for (i = _i = 0, _len = attribute_name.length; _i < _len; i = ++_i) {
+              word = attribute_name[i];
+              if (i !== 0) {
+                attribute_name[i] = word.charAt(0).toUpperCase() + word.slice(1);
+              }
+            }
+            template_data[attribute_name.join("")] = v.nodeValue;
+          }
+        }
+      }
+      return template_data;
+    };
+
     SelectParser.prototype.add_option = function(option, group_position, group_disabled) {
       if (option.nodeName.toUpperCase() === "OPTION") {
         if (option.text !== "") {
@@ -60,7 +82,8 @@
             disabled: group_disabled === true ? group_disabled : option.disabled,
             group_array_index: group_position,
             classes: option.className,
-            style: option.style.cssText
+            style: option.style.cssText,
+            template_data: this.get_template_data(option)
           });
         } else {
           this.parsed.push({
@@ -186,7 +209,7 @@ Copyright (c) 2011 by Harvest
     };
 
     AbstractChosen.prototype.result_add_option = function(option) {
-      var classes, style;
+      var classes, html, style;
       if (!option.disabled) {
         option.dom_id = this.container_id + "_o_" + option.array_index;
         classes = option.selected && this.is_multiple ? [] : ["active-result"];
@@ -200,7 +223,8 @@ Copyright (c) 2011 by Harvest
           classes.push(option.classes);
         }
         style = option.style.cssText !== "" ? " style=\"" + option.style + "\"" : "";
-        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' + style + '>' + option.html + '</li>';
+        html = this.useTemplate(option);
+        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' + style + '>' + html + '</li>';
       } else {
         return "";
       }
@@ -279,6 +303,17 @@ Copyright (c) 2011 by Harvest
       chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
       rand = Math.floor(Math.random() * chars.length);
       return newchar = chars.substring(rand, rand + 1);
+    };
+
+    AbstractChosen.prototype.useTemplate = function(item, text) {
+      if (text == null) {
+        text = false;
+      }
+      if (this.options.template) {
+        return this.options.template(text || item.text, item.value, item.template_data);
+      } else {
+        return text || item.text;
+      }
     };
 
     return AbstractChosen;
@@ -520,7 +555,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.results_build = function() {
-      var content, data, _i, _len, _ref;
+      var content, data, html, _i, _len, _ref;
       this.parsing = true;
       this.results_data = root.SelectParser.select_to_array(this.form_field);
       if (this.is_multiple && this.choices > 0) {
@@ -545,7 +580,8 @@ Copyright (c) 2011 by Harvest
           if (data.selected && this.is_multiple) {
             this.choice_build(data);
           } else if (data.selected && !this.is_multiple) {
-            this.selected_item.removeClassName("chzn-default").down("span").update(data.html);
+            html = this.useTemplate(data);
+            this.selected_item.removeClassName("chzn-default").down("span").update(html);
             if (this.allow_single_deselect) {
               this.single_deselect_control_build();
             }
@@ -684,7 +720,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.choice_build = function(item) {
-      var choice_id, link,
+      var choice_id, html, link,
         _this = this;
       if (this.is_multiple && this.max_selected_options <= this.choices) {
         this.form_field.fire("liszt:maxselected", {
@@ -694,10 +730,11 @@ Copyright (c) 2011 by Harvest
       }
       choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
+      html = this.useTemplate(item);
       this.search_container.insert({
         before: (item.disabled ? this.choice_noclose_temp : this.choice_temp).evaluate({
           id: choice_id,
-          choice: item.html,
+          choice: html,
           position: item.array_index
         })
       });
@@ -755,7 +792,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.result_select = function(evt) {
-      var high, item, position;
+      var high, html, item, position;
       if (this.result_highlight) {
         high = this.result_highlight;
         this.result_clear_highlight();
@@ -774,7 +811,8 @@ Copyright (c) 2011 by Harvest
         if (this.is_multiple) {
           this.choice_build(item);
         } else {
-          this.selected_item.down("span").update(item.html);
+          html = this.useTemplate(item);
+          this.selected_item.down("span").update(html);
           if (this.allow_single_deselect) {
             this.single_deselect_control_build();
           }
@@ -828,7 +866,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, regexAnchor, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref;
+      var found, html, option, part, parts, regex, regexAnchor, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref;
       this.no_results_clear();
       results = 0;
       searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
@@ -864,11 +902,12 @@ Copyright (c) 2011 by Harvest
                 startpos = option.html.search(zregex);
                 text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
                 text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
+                html = this.useTemplate(option, text);
               } else {
-                text = option.html;
+                html = this.useTemplate(option);
               }
-              if ($(result_id).innerHTML !== text) {
-                $(result_id).update(text);
+              if ($(result_id).innerHTML !== html) {
+                $(result_id).update(html);
               }
               this.result_activate($(result_id));
               if (option.group_array_index != null) {
