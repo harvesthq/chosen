@@ -248,6 +248,8 @@ Copyright (c) 2011 by Harvest
           evt.preventDefault();
           if (this.results_showing) {
             return this.result_select(evt);
+          } else {
+            return this.results_show();
           }
           break;
         case 27:
@@ -255,6 +257,11 @@ Copyright (c) 2011 by Harvest
             this.results_hide();
           }
           return true;
+        case 46:
+          if (this.allow_single_deselect && !this.results_showing && this.current_value !== "") {
+            return this.results_reset(evt);
+          }
+          break;
         case 9:
         case 38:
         case 40:
