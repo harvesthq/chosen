@@ -272,9 +272,10 @@ class Chosen extends AbstractChosen
       @search_field.attr "tabindex", ti
 
   show_search_field_default: ->
-    if @is_multiple and @choices < 1 and not @active_field
-      @search_field.val(@default_text)
-      @search_field.addClass "default"
+    if @is_multiple
+      if @choices < 1 and not @active_field
+        @search_field.val(@default_text)
+        @search_field.addClass "default"
     else
       @search_field.val("")
       @search_field.removeClass "default"
