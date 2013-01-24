@@ -643,9 +643,11 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.show_search_field_default = function() {
-      if (this.is_multiple && this.choices < 1 && !this.active_field) {
-        this.search_field.value = this.default_text;
-        return this.search_field.addClassName("default");
+      if (this.is_multiple) {
+        if (this.choices < 1 && !this.active_field) {
+          this.search_field.value = this.default_text;
+          return this.search_field.addClassName("default");
+        }
       } else {
         this.search_field.value = "";
         return this.search_field.removeClassName("default");
