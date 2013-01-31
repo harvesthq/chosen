@@ -94,7 +94,7 @@ class Chosen extends AbstractChosen
       @container.observe "click", (evt) => evt.preventDefault() # gobble click of anchor
 
   search_field_disabled: ->
-    @is_disabled = @form_field.disabled
+    @is_disabled = @form_field.disabled or @form_field.hasAttribute('readonly')
     if(@is_disabled)
       @container.addClassName 'chzn-disabled'
       @search_field.disabled = true
