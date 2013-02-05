@@ -126,7 +126,7 @@
   background-clip        : padding-box;
 }
 .chzn-container-multi .chzn-drop {
-  top: 2px;
+  top: 1px;
 }
 /* @end */
 
@@ -156,7 +156,11 @@
   float: left;
   list-style: none;
 }
+.chzn-container-multi .chzn-choices .search-field-wrapper {
+  margin-right: 10px;
+}
 .chzn-container-multi .chzn-choices .search-field {
+  width: 100%;
   white-space: nowrap;
   margin: 0;
   padding: 0;
