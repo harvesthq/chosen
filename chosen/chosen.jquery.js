@@ -369,8 +369,8 @@ Copyright (c) 2011 by Harvest
       };
       container_div = $("<div />", container_props);
       if (this.is_multiple) {
-        // Edit 1 line. chzn-drop wrapped in <div class="chzn-drop-wrapper" style="left:-9000px;">. Removed initial style from chzn-drop
-        container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop-wrapper" style="left:-9000px;"><div class="chzn-drop"><ul class="chzn-results"></ul></div></div>');
+        // Edit 1 line. Added some divs for fixing paddings. Removed initial style from chzn-drop
+        container_div.html('<ul class="chzn-choices"><li class="search-field"><div class="search-field-wrapper"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" /></div></li></ul><div class="chzn-drop-wrapper" style="left:-9000px;"><div class="chzn-drop"><ul class="chzn-results"></ul></div></div>');
       } else {
         // Edit 1 line. Same thing
         container_div.html('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop-wrapper" style="left:-9000px;"><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div></div>');
@@ -1083,7 +1083,6 @@ Copyright (c) 2011 by Harvest
         return this.dropdown.css({
           "top": dd_top + "px"
         });*/
-        // Added
         return this.dropdown
       }
     };
