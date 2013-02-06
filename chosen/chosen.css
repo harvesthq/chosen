@@ -167,6 +167,7 @@
   padding: 0;
 }
 .chzn-container-multi .chzn-choices .search-field input {
+  max-width: 100%;
   color: #666;
   background: transparent !important;
   border: 0 !important;
