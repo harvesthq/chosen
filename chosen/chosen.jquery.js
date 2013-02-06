@@ -1070,8 +1070,8 @@ Copyright (c) 2011 by Harvest
         });
         div.text(this.search_field.val());
         $('body').append(div);
-        // Removed
-        /*w = div.width() + 25;
+        
+        w = div.width() + 25;
         div.remove();
         if (w > this.f_width - 10) {
           w = this.f_width - 10;
@@ -1079,7 +1079,8 @@ Copyright (c) 2011 by Harvest
         this.search_field.css({
           'width': w + 'px'
         });
-        dd_top = this.container.height();
+        // Removed
+        /*dd_top = this.container.height();
         return this.dropdown.css({
           "top": dd_top + "px"
         });*/
