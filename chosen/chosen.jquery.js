@@ -1073,9 +1073,10 @@ Copyright (c) 2011 by Harvest
         
         w = div.width() + 25;
         div.remove();
-        if (w > this.f_width - 10) {
+        // Removed
+        /*if (w > this.f_width - 10) {
           w = this.f_width - 10;
-        }
+        }*/
         this.search_field.css({
           'width': w + 'px'
         });
