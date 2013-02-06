@@ -109,6 +109,7 @@
   background: url('../img/chosen-sprite.png') no-repeat 100% -20px, -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
   background: url('../img/chosen-sprite.png') no-repeat 100% -20px, -o-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
   background: url('../img/chosen-sprite.png') no-repeat 100% -20px, linear-gradient(#eeeeee 1%, #ffffff 15%);
+  width: 100%;
   margin: 1px 0;
   padding: 4px 20px 4px 5px;
   outline: 0;
@@ -160,7 +161,7 @@
   margin-right: 10px;
 }
 .chzn-container-multi .chzn-choices .search-field {
-  width: 100%;
+  max-width: 100%;
   white-space: nowrap;
   margin: 0;
   padding: 0;
