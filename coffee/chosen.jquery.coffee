@@ -346,6 +346,7 @@ class Chosen extends AbstractChosen
     @selected_item.find("abbr").remove()
 
   result_select: (evt) ->
+
     if @result_highlight
       high = @result_highlight
       high_id = high.attr "id"
@@ -380,6 +381,15 @@ class Chosen extends AbstractChosen
       @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field_jq.val() != @current_value
       @current_value = @form_field_jq.val()
       this.search_field_scale()
+    else
+      if @add_new_result_to_list and @empty_results_search
+        new_option = document.createElement("option")
+        new_option.text = @empty_results_search
+        new_option.selected = true
+        @form_field.add(new_option, @form_field.options[0])
+        @form_field_jq.trigger("liszt:updated")
+        @empty_results_search = ""
+        this.close_field() 
 
   result_activate: (el) ->
     el.addClass("active-result")
@@ -412,7 +422,7 @@ class Chosen extends AbstractChosen
 
   winnow_results: ->
     this.no_results_clear()
-
+    @empty_results_search = ""
     results = 0
 
     searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
@@ -458,6 +468,7 @@ class Chosen extends AbstractChosen
             this.result_deactivate result
 
     if results < 1 and searchText.length
+      @empty_results_search = searchText
       this.no_results searchText
     else
       this.winnow_results_set_highlight()
@@ -482,7 +493,10 @@ class Chosen extends AbstractChosen
       this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
-    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
+    extra_text = ""
+    if @add_new_result_to_list
+       extra_text = "Press Enter to add item to list."
+    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>" ' + extra_text + '</li>')
     no_results_html.find("span").first().html(terms)
 
     @search_results.append no_results_html

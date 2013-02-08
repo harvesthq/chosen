@@ -138,7 +138,8 @@ Copyright (c) 2011 by Harvest
       this.choices = 0;
       this.single_backstroke_delete = this.options.single_backstroke_delete || false;
       this.max_selected_options = this.options.max_selected_options || Infinity;
-      return this.inherit_select_classes = this.options.inherit_select_classes || false;
+      this.inherit_select_classes = this.options.inherit_select_classes || false;
+      return this.add_new_result_to_list = this.options.add_new_result_to_list || false;
     };
 
     AbstractChosen.prototype.set_default_text = function() {
