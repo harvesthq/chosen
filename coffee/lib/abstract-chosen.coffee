@@ -46,7 +46,6 @@ class AbstractChosen
       @default_text = @options.placeholder_text_single || @options.placeholder_text || "Select an Option"
 
     @results_none_found = @form_field.getAttribute("data-no_results_text") || @options.no_results_text || "No results match"
-    
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
@@ -108,8 +107,7 @@ class AbstractChosen
           this.results_search()
       when 13
         evt.preventDefault()
-        if this.results_showing 
-          this.result_select(evt) 
+        this.result_select(evt) if this.results_showing
       when 27
         this.results_hide() if @results_showing
         return true
