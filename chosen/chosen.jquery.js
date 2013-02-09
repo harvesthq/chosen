@@ -949,9 +949,9 @@ Copyright (c) 2011 by Harvest
       var add_item_text, no_results_html;
       add_item_text = "";
       if (this.add_new_result_to_list) {
-        add_item_text = "Press Enter to add item to list.";
+        add_item_text = "Press <b>Enter</b> to add item.";
       }
-      no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>" ' + add_item_text + '</li>');
+      no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"<br> ' + add_item_text + '</li>');
       no_results_html.find("span").first().html(terms);
       return this.search_results.append(no_results_html);
     };

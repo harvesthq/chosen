@@ -494,8 +494,8 @@ class Chosen extends AbstractChosen
   no_results: (terms) ->
     add_item_text = ""
     if @add_new_result_to_list
-       add_item_text = "Press Enter to add item to list."
-    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>" ' + add_item_text + '</li>')
+       add_item_text = "Press <b>Enter</b> to add item."
+    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"<br> ' + add_item_text + '</li>')
     no_results_html.find("span").first().html(terms)
 
     @search_results.append no_results_html
