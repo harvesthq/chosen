@@ -388,6 +388,7 @@ class Chosen extends AbstractChosen
         @form_field.add(new_option, @form_field.options[0])
         @form_field_jq.trigger("liszt:updated")
         @empty_results_search = ""
+        @form_field_jq.trigger "change", {'selected': @form_field.options[0].value}
         this.close_field() 
 
   result_activate: (el) ->

@@ -812,6 +812,9 @@ Copyright (c) 2011 by Harvest
           this.form_field.add(new_option, this.form_field.options[0]);
           this.form_field_jq.trigger("liszt:updated");
           this.empty_results_search = "";
+          this.form_field_jq.trigger("change", {
+            'selected': this.form_field.options[0].value
+          });
           return this.close_field();
         }
       }
