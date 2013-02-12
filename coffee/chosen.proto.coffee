@@ -17,8 +17,8 @@ class Chosen extends AbstractChosen
     super()
 
     # HTML Templates
-    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
-    @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
+    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop-wrapper" style="left:-9000px;"><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div></div>')
+    @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><div class="search-field-wrapper"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></div></li></ul><div class="chzn-drop-wrapper" style="left:-9000px;"><div class="chzn-drop"><ul class="chzn-results"></ul></div></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
@@ -36,19 +36,15 @@ class Chosen extends AbstractChosen
     container_props =
       'id': @container_id
       'class': container_classes.join ' '
-      'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
+      'style': if @fixed_width then 'width: ' + (@f_width) + 'px;' else '' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
       'title': @form_field.title
     
     base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
     @form_field.hide().insert({ after: base_template })
     @container = $(@container_id)
+    @dropdown_wrapper = @container.down('div.chzn-drop-wrapper')
     @dropdown = @container.down('div.chzn-drop')
-
-    dd_top = @container.getHeight()
-    dd_width = (@f_width - get_side_border_padding(@dropdown))
-
-    @dropdown.setStyle({"width": dd_width  + "px", "top": dd_top + "px"})
 
     @search_field = @container.down('input')
     @search_results = @container.down('ul.chzn-results')
@@ -62,8 +58,6 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.down('div.chzn-search')
       @selected_item = @container.down('.chzn-single')
-      sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
-      @search_field.setStyle( {"width" : sf_width + "px"} )
 
     this.results_build()
     this.set_tab_index()
@@ -226,9 +220,8 @@ class Chosen extends AbstractChosen
       @form_field.fire("liszt:maxselected", {chosen: this})
       return false
 
-    dd_top = if @is_multiple then @container.getHeight() else (@container.getHeight() - 1)
     @form_field.fire("liszt:showing_dropdown", {chosen: this})
-    @dropdown.setStyle {"top":  dd_top + "px", "left":0}
+    @dropdown_wrapper.setStyle {"left":0}
     @results_showing = true
 
     @search_field.focus()
@@ -240,7 +233,7 @@ class Chosen extends AbstractChosen
     @selected_item.removeClassName('chzn-single-with-drop') unless @is_multiple
     this.result_clear_highlight()
     @form_field.fire("liszt:hiding_dropdown", {chosen: this})
-    @dropdown.setStyle({"left":"-9000px"})
+    @dropdown_wrapper.setStyle({"left":"-9000px"})
     @results_showing = false
 
 
@@ -538,7 +531,6 @@ class Chosen extends AbstractChosen
 
   search_field_scale: ->
     if @is_multiple
-      h = 0
       w = 0
 
       style_block = "position:absolute; left: -1000px; top: -1000px; display:none;"
@@ -553,13 +545,9 @@ class Chosen extends AbstractChosen
       w = Element.measure(div, 'width') + 25
       div.remove()
 
-      if( w > @f_width-10 )
-        w = @f_width - 10
-
       @search_field.setStyle({'width': w + 'px'})
 
-      dd_top = @container.getHeight()
-      @dropdown.setStyle({"top":  dd_top + "px"})
+      @dropdown
 
 root.Chosen = Chosen
 
