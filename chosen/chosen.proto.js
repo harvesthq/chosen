@@ -138,6 +138,7 @@ Copyright (c) 2011 by Harvest
       this.choices = 0;
       this.single_backstroke_delete = this.options.single_backstroke_delete || false;
       this.max_selected_options = this.options.max_selected_options || Infinity;
+      this.fixed_width = this.options.fixed_width != null ? this.options.fixed_width : true;
       return this.inherit_select_classes = this.options.inherit_select_classes || false;
     };
 
@@ -321,15 +322,15 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.set_default_values = function() {
       Chosen.__super__.set_default_values.call(this);
-      this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
-      this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
+      this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop-wrapper" style="left:-9000px;"><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div></div>');
+      this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><div class="search-field-wrapper"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></div></li></ul><div class="chzn-drop-wrapper" style="left:-9000px;"><div class="chzn-drop"><ul class="chzn-results"></ul></div></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
       this.choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
     };
 
     Chosen.prototype.set_up_html = function() {
-      var base_template, container_classes, container_props, dd_top, dd_width, sf_width;
+      var base_template, container_classes, container_props;
       this.container_id = this.form_field.identify().replace(/[^\w]/g, '_') + "_chzn";
       container_classes = ["chzn-container"];
       container_classes.push("chzn-container-" + (this.is_multiple ? "multi" : "single"));
@@ -343,7 +344,7 @@ Copyright (c) 2011 by Harvest
       container_props = {
         'id': this.container_id,
         'class': container_classes.join(' '),
-        'style': 'width: ' + this.f_width + 'px',
+        'style': this.fixed_width ? 'width: ' + this.f_width + 'px;' : '',
         'title': this.form_field.title
       };
       base_template = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
@@ -355,13 +356,8 @@ Copyright (c) 2011 by Harvest
         after: base_template
       });
       this.container = $(this.container_id);
+      this.dropdown_wrapper = this.container.down('div.chzn-drop-wrapper');
       this.dropdown = this.container.down('div.chzn-drop');
-      dd_top = this.container.getHeight();
-      dd_width = this.f_width - get_side_border_padding(this.dropdown);
-      this.dropdown.setStyle({
-        "width": dd_width + "px",
-        "top": dd_top + "px"
-      });
       this.search_field = this.container.down('input');
       this.search_results = this.container.down('ul.chzn-results');
       this.search_field_scale();
@@ -372,10 +368,6 @@ Copyright (c) 2011 by Harvest
       } else {
         this.search_container = this.container.down('div.chzn-search');
         this.selected_item = this.container.down('.chzn-single');
-        sf_width = dd_width - get_side_border_padding(this.search_container) - get_side_border_padding(this.search_field);
-        this.search_field.setStyle({
-          "width": sf_width + "px"
-        });
       }
       this.results_build();
       this.set_tab_index();
@@ -593,7 +585,6 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.results_show = function() {
-      var dd_top;
       if (!this.is_multiple) {
         this.selected_item.addClassName('chzn-single-with-drop');
         if (this.result_single_selected) {
@@ -605,12 +596,10 @@ Copyright (c) 2011 by Harvest
         });
         return false;
       }
-      dd_top = this.is_multiple ? this.container.getHeight() : this.container.getHeight() - 1;
       this.form_field.fire("liszt:showing_dropdown", {
         chosen: this
       });
-      this.dropdown.setStyle({
-        "top": dd_top + "px",
+      this.dropdown_wrapper.setStyle({
         "left": 0
       });
       this.results_showing = true;
@@ -627,7 +616,7 @@ Copyright (c) 2011 by Harvest
       this.form_field.fire("liszt:hiding_dropdown", {
         chosen: this
       });
-      this.dropdown.setStyle({
+      this.dropdown_wrapper.setStyle({
         "left": "-9000px"
       });
       return this.results_showing = false;
@@ -1038,9 +1027,8 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.search_field_scale = function() {
-      var dd_top, div, h, style, style_block, styles, w, _i, _len;
+      var div, style, style_block, styles, w, _i, _len;
       if (this.is_multiple) {
-        h = 0;
         w = 0;
         style_block = "position:absolute; left: -1000px; top: -1000px; display:none;";
         styles = ['font-size', 'font-style', 'font-weight', 'font-family', 'line-height', 'text-transform', 'letter-spacing'];
@@ -1054,16 +1042,10 @@ Copyright (c) 2011 by Harvest
         document.body.appendChild(div);
         w = Element.measure(div, 'width') + 25;
         div.remove();
-        if (w > this.f_width - 10) {
-          w = this.f_width - 10;
-        }
         this.search_field.setStyle({
           'width': w + 'px'
         });
-        dd_top = this.container.getHeight();
-        return this.dropdown.setStyle({
-          "top": dd_top + "px"
-        });
+        return this.dropdown;
       }
     };
 

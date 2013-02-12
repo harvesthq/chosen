@@ -34,6 +34,7 @@ class AbstractChosen
     @choices = 0
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
+    @fixed_width = if @options.fixed_width? then @options.fixed_width else true
     @inherit_select_classes = @options.inherit_select_classes || false
 
   set_default_text: ->
