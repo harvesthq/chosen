@@ -440,7 +440,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.search_field_disabled = function() {
-      this.is_disabled = this.form_field.disabled;
+      this.is_disabled = this.form_field.disabled || this.form_field.hasAttribute('readonly');
       if (this.is_disabled) {
         this.container.addClassName('chzn-disabled');
         this.search_field.disabled = true;

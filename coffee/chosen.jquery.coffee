@@ -112,7 +112,7 @@ class Chosen extends AbstractChosen
 
 
   search_field_disabled: ->
-    @is_disabled = @form_field_jq[0].disabled
+    @is_disabled = @form_field.disabled or @form_field.hasAttribute('readonly')
     if(@is_disabled)
       @container.addClass 'chzn-disabled'
       @search_field[0].disabled = true
