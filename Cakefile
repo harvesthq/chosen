@@ -50,7 +50,7 @@ write_chosen_javascript = (filename, body, trailing='') ->
   fs.writeFileSync filename, """
 // Chosen, a Select Box Enhancer for jQuery and Protoype
 // by Patrick Filler for Harvest, http://getharvest.com
-// 
+//
 // Version #{version()}
 // Full source at https://github.com/harvesthq/chosen
 // Copyright (c) 2011 Harvest http://getharvest.com
@@ -78,10 +78,11 @@ task 'build', 'build Chosen from source', build = (cb) ->
           uglify.gen_code uglify.ast_squeeze uglify.ast_mangle parser.parse code
         ), ';'
     package_npm () ->
-      cb() if typeof cb is 'function'
+      package_jquery () ->
+        cb() if typeof cb is 'function'
   catch e
     print_error e, file_name, file_contents
- 
+
 task 'watch', 'watch coffee/ for changes and build Chosen', ->
   console.log "Watching for changes in coffee/"
   for file in source_files()
@@ -98,6 +99,17 @@ task 'watch', 'watch coffee/ for changes and build Chosen', ->
 task 'package_npm', 'generate the package.json file for npm', package_npm = (cb) ->
   try
     package_file = 'package.json'
+    package_obj = JSON.parse("#{fs.readFileSync package_file}")
+    package_obj['version'] = version()
+    fs.writeFileSync package_file, JSON.stringify(package_obj, null, 2)
+    console.log "Wrote #{package_file}"
+    cb() if typeof cb is 'function'
+  catch e
+    print_error e, package_file
+
+task 'package_jquery', 'generate the chosen.jquery.json file for the jQuery plugin website', package_jquery = (cb) ->
+  try
+    package_file = 'chosen.jquery.json'
     package_obj = JSON.parse("#{fs.readFileSync package_file}")
     package_obj['version'] = version()
     fs.writeFileSync package_file, JSON.stringify(package_obj, null, 2)
@@ -154,7 +166,7 @@ print_error = (error, file_name, file_contents) ->
   else
     console.log """
 Error compiling #{file_name}:
-  
+
   #{error.message}
 
 """
