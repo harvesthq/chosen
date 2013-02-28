@@ -31,6 +31,7 @@ class AbstractChosen
     @disable_search = @options.disable_search || false
     @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
     @search_contains = @options.search_contains || false
+    @search_optgroup = if @options.search_optgroup? then @options.search_optgroup else true
     @choices = 0
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
@@ -92,6 +93,24 @@ class AbstractChosen
       this.winnow_results()
     else
       this.results_show()
+
+  winnow_search_match: (regex, optionText) ->
+    found = false
+    if regex.test optionText
+      found = true
+    else if @enable_split_word_search and (optionText.indexOf(" ") >= 0 or optionText.indexOf("[") == 0)
+      #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
+      parts = optionText.replace(/\[|\]/g, "").split(" ")
+      if parts.length
+        for part in parts
+          if regex.test part
+            found = true
+    return found
+
+  winnow_search_highlight_match: (regex, optionText, searchTextLength) ->
+    startpos = optionText.search regex
+    text = optionText.substr(0, startpos + searchTextLength) + '</em>' + optionText.substr(startpos + searchTextLength)
+    text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
