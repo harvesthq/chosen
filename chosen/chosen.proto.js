@@ -135,6 +135,7 @@ Copyright (c) 2011 by Harvest
       this.disable_search = this.options.disable_search || false;
       this.enable_split_word_search = this.options.enable_split_word_search != null ? this.options.enable_split_word_search : true;
       this.search_contains = this.options.search_contains || false;
+      this.search_optgroup = this.options.search_optgroup != null ? this.options.search_optgroup : true;
       this.choices = 0;
       this.single_backstroke_delete = this.options.single_backstroke_delete || false;
       this.max_selected_options = this.options.max_selected_options || Infinity;
@@ -867,11 +868,13 @@ Copyright (c) 2011 by Harvest
         if (!option.disabled && !option.empty) {
           if (option.group) {
             $(option.dom_id).hide();
-            option.search_match = this.winnow_search_match(regex, option.label);
-            text = searchText.length && option.search_match ? this.winnow_search_highlight_match(zregex, option.label, searchText.length) : option.label;
-            $(option.dom_id).update(text);
-            if (option.search_match) {
-              results += 1;
+            if (this.search_optgroup) {
+              option.search_match = this.winnow_search_match(regex, option.label);
+              text = searchText.length && option.search_match ? this.winnow_search_highlight_match(zregex, option.label, searchText.length) : option.label;
+              $(option.dom_id).update(text);
+              if (option.search_match) {
+                results += 1;
+              }
             }
           } else if (!(this.is_multiple && option.selected)) {
             found = this.winnow_search_match(regex, option.html);
@@ -879,7 +882,7 @@ Copyright (c) 2011 by Harvest
               results += 1;
             }
             result_id = option.dom_id;
-            if (found || ((option.group_array_index != null) && this.results_data[option.group_array_index].search_match)) {
+            if (found || (this.search_optgroup && (option.group_array_index != null) && this.results_data[option.group_array_index].search_match)) {
               if (searchText.length && found) {
                 text = this.winnow_search_highlight_match(zregex, option.html, searchText.length);
               } else {

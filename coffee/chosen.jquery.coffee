@@ -424,20 +424,20 @@ class Chosen extends AbstractChosen
       if not option.disabled and not option.empty
         if option.group
           $('#' + option.dom_id).css('display', 'none')
+          if @search_optgroup
+            option.search_match = this.winnow_search_match(regex, option.label)
+            text = if searchText.length and option.search_match then this.winnow_search_highlight_match(zregex, option.label, searchText.length) else option.label
 
-          option.search_match = this.winnow_search_match(regex, option.label)
-          text = if searchText.length and option.search_match then this.winnow_search_highlight_match(zregex, option.label, searchText.length) else option.label
-
-          $('#' + option.dom_id).html(text)
-          if option.search_match
-            results += 1
+            $('#' + option.dom_id).html(text)
+            if option.search_match
+              results += 1
         else if not (@is_multiple and option.selected)
           found = this.winnow_search_match(regex, option.html)
           results += 1 if found
           result_id = option.dom_id
           result = $("#" + result_id)
 
-          if found or (option.group_array_index? && @results_data[option.group_array_index].search_match)
+          if found or (@search_optgroup && option.group_array_index? && @results_data[option.group_array_index].search_match)
             if searchText.length and found
               text = this.winnow_search_highlight_match(zregex, option.html, searchText.length)
             else
