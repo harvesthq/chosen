@@ -183,6 +183,7 @@ class Chosen extends AbstractChosen
     this.search_field_disabled()
     this.show_search_field_default()
     this.search_field_scale()
+    this.do_middle_truncate() if @middle_truncate
 
     @search_results.update content
     @parsing = false
@@ -242,6 +243,7 @@ class Chosen extends AbstractChosen
     @form_field.fire("liszt:hiding_dropdown", {chosen: this})
     @dropdown.setStyle({"left":"-9000px"})
     @results_showing = false
+    this.do_middle_truncate() if @middle_truncate
 
 
   set_tab_index: (el) ->
@@ -535,6 +537,17 @@ class Chosen extends AbstractChosen
       when 40
         this.keydown_arrow()
         break
+
+  do_middle_truncate: ->
+    span = @selected_item.down('span')
+    target_width = span.measure('width')
+    text = span.innerHTML
+    span.setStyle({position: 'absolute'}) # Temporarily pull span out of layout, in order to see how big it would be
+    len = text.length
+    while span.measure('width') > target_width
+      span.update( text.substr(0, Math.ceil(len/2)) + '&hellip;' + text.substr(text.length - Math.floor(len/2)) )
+      len--
+    span.setStyle({position: null})
 
   search_field_scale: ->
     if @is_multiple
