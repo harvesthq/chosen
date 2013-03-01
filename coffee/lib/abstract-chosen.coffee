@@ -30,6 +30,7 @@ class AbstractChosen
     @disable_search_threshold = @options.disable_search_threshold || 0
     @disable_search = @options.disable_search || false
     @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
+    @middle_truncate = @options.middle_truncate || false
     @search_contains = @options.search_contains || false
     @choices = 0
     @single_backstroke_delete = @options.single_backstroke_delete || false
