@@ -10,11 +10,11 @@ $.fn.extend({
     ua = navigator.userAgent.toLowerCase();
 
     match = /(msie) ([\w.]+)/.exec( ua ) || [];
-    
+
     browser =
       name: match[ 1 ] || ""
       version: match[ 2 ] || "0"
-      
+
     # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
     # Continue on if running IE document type but in compatibility mode
     return this if browser.name is "msie" and (browser.version is "6.0" or  (browser.version is "7.0" and document.documentMode is 7 ))
@@ -31,6 +31,9 @@ class Chosen extends AbstractChosen
     @current_value = @form_field_jq.val()
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
 
+  choices: ->
+    return @form_field_jq.children('option[selected=true]').length
+
   finish_setup: ->
     @form_field_jq.addClass "chzn-done"
 
@@ -45,7 +48,7 @@ class Chosen extends AbstractChosen
 
     @f_width = @form_field_jq.outerWidth()
 
-    container_props = 
+    container_props =
       id: @container_id
       class: container_classes.join ' '
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
@@ -178,9 +181,8 @@ class Chosen extends AbstractChosen
     @parsing = true
     @results_data = root.SelectParser.select_to_array @form_field
 
-    if @is_multiple and @choices > 0
+    if @is_multiple and this.choices() > 0
       @search_choices.find("li.search-choice").remove()
-      @choices = 0
     else if not @is_multiple
       @selected_item.addClass("chzn-default").find("span").text(@default_text)
       if @disable_search or @form_field.options.length <= @disable_search_threshold
@@ -243,7 +245,7 @@ class Chosen extends AbstractChosen
       @selected_item.addClass "chzn-single-with-drop"
       if @result_single_selected
         this.result_do_highlight( @result_single_selected )
-    else if @max_selected_options <= @choices
+    else if @max_selected_options <= this.choices()
       @form_field_jq.trigger("liszt:maxselected", {chosen: this})
       return false
 
@@ -272,7 +274,7 @@ class Chosen extends AbstractChosen
       @search_field.attr "tabindex", ti
 
   show_search_field_default: ->
-    if @is_multiple and @choices < 1 and not @active_field
+    if @is_multiple and this.choices() < 1 and not @active_field
       @search_field.val(@default_text)
       @search_field.addClass "default"
     else
@@ -300,11 +302,10 @@ class Chosen extends AbstractChosen
       this.results_show()
 
   choice_build: (item) ->
-    if @is_multiple and @max_selected_options <= @choices
+    if @is_multiple and @max_selected_options <= this.choices()
       @form_field_jq.trigger("liszt:maxselected", {chosen: this})
       return false # fire event
     choice_id = @container_id + "_c_" + item.array_index
-    @choices += 1
     if item.disabled
       html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>'
     else
@@ -323,10 +324,9 @@ class Chosen extends AbstractChosen
 
   choice_destroy: (link) ->
     if this.result_deselect (link.attr "rel")
-      @choices -= 1
       this.show_search_field_default()
 
-      this.results_hide() if @is_multiple and @choices > 0 and @search_field.val().length < 1
+      this.results_hide() if @is_multiple and this.choices() > 0 and @search_field.val().length < 1
 
       link.parents('li').first().remove()
 
@@ -508,7 +508,7 @@ class Chosen extends AbstractChosen
       if prev_sibs.length
         this.result_do_highlight prev_sibs.first()
       else
-        this.results_hide() if @choices > 0
+        this.results_hide() if this.choices() > 0
         this.result_clear_highlight()
 
   keydown_backstroke: ->
