@@ -331,7 +331,7 @@ Copyright (c) 2011 by Harvest
     __extends(Chosen, _super);
 
     function Chosen() {
-      return Chosen.__super__.constructor.apply(this, arguments);
+      Chosen.__super__.constructor.apply(this, arguments);
     }
 
     Chosen.prototype.setup = function() {
@@ -403,54 +403,54 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.register_observers = function() {
       var _this = this;
       this.container.mousedown(function(evt) {
-        return _this.container_mousedown(evt);
+        _this.container_mousedown(evt);
       });
       this.container.mouseup(function(evt) {
-        return _this.container_mouseup(evt);
+        _this.container_mouseup(evt);
       });
       this.container.mouseenter(function(evt) {
-        return _this.mouse_enter(evt);
+        _this.mouse_enter(evt);
       });
       this.container.mouseleave(function(evt) {
-        return _this.mouse_leave(evt);
+        _this.mouse_leave(evt);
       });
       this.search_results.mouseup(function(evt) {
-        return _this.search_results_mouseup(evt);
+        _this.search_results_mouseup(evt);
       });
       this.search_results.mouseover(function(evt) {
-        return _this.search_results_mouseover(evt);
+        _this.search_results_mouseover(evt);
       });
       this.search_results.mouseout(function(evt) {
-        return _this.search_results_mouseout(evt);
+        _this.search_results_mouseout(evt);
       });
       this.form_field_jq.bind("liszt:updated", function(evt) {
-        return _this.results_update_field(evt);
+        _this.results_update_field(evt);
       });
       this.form_field_jq.bind("liszt:activate", function(evt) {
-        return _this.activate_field(evt);
+        _this.activate_field(evt);
       });
       this.form_field_jq.bind("liszt:open", function(evt) {
-        return _this.container_mousedown(evt);
+        _this.container_mousedown(evt);
       });
       this.search_field.blur(function(evt) {
-        return _this.input_blur(evt);
+        _this.input_blur(evt);
       });
       this.search_field.keyup(function(evt) {
-        return _this.keyup_checker(evt);
+        _this.keyup_checker(evt);
       });
       this.search_field.keydown(function(evt) {
-        return _this.keydown_checker(evt);
+        _this.keydown_checker(evt);
       });
       this.search_field.focus(function(evt) {
-        return _this.input_focus(evt);
+        _this.input_focus(evt);
       });
       if (this.is_multiple) {
         return this.search_choices.click(function(evt) {
-          return _this.choices_click(evt);
+          _this.choices_click(evt);
         });
       } else {
         return this.container.click(function(evt) {
-          return evt.preventDefault();
+          evt.preventDefault();
         });
       }
     };
