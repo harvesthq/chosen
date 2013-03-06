@@ -13,6 +13,9 @@ class Chosen extends AbstractChosen
   finish_setup: ->
     @form_field.addClassName "chzn-done"
 
+  choices: ->
+    return @form_field.select('option[selected=true]').length
+
   set_default_values: ->
     super()
 
@@ -38,7 +41,7 @@ class Chosen extends AbstractChosen
       'class': container_classes.join ' '
       'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
       'title': @form_field.title
-    
+
     base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
     @form_field.hide().insert({ after: base_template })
@@ -158,9 +161,8 @@ class Chosen extends AbstractChosen
     @parsing = true
     @results_data = root.SelectParser.select_to_array @form_field
 
-    if @is_multiple and @choices > 0
+    if @is_multiple and this.choices() > 0
       @search_choices.select("li.search-choice").invoke("remove")
-      @choices = 0
     else if not @is_multiple
       @selected_item.addClassName("chzn-default").down("span").update(@default_text)
       if @disable_search or @form_field.options.length <= @disable_search_threshold
@@ -222,7 +224,7 @@ class Chosen extends AbstractChosen
       @selected_item.addClassName('chzn-single-with-drop')
       if @result_single_selected
         this.result_do_highlight( @result_single_selected )
-    else if @max_selected_options <= @choices
+    else if @max_selected_options <= this.choices()
       @form_field.fire("liszt:maxselected", {chosen: this})
       return false
 
@@ -251,7 +253,7 @@ class Chosen extends AbstractChosen
       @search_field.tabIndex = ti
 
   show_search_field_default: ->
-    if @is_multiple and @choices < 1 and not @active_field
+    if @is_multiple and this.choices() < 1 and not @active_field
       @search_field.value = @default_text
       @search_field.addClassName "default"
     else
@@ -279,11 +281,10 @@ class Chosen extends AbstractChosen
       this.results_show()
 
   choice_build: (item) ->
-    if @is_multiple and @max_selected_options <= @choices
+    if @is_multiple and @max_selected_options <= this.choices()
       @form_field.fire("liszt:maxselected", {chosen: this})
       return false
     choice_id = @container_id + "_c_" + item.array_index
-    @choices += 1
     @search_container.insert
       before: (if item.disabled then @choice_noclose_temp else @choice_temp).evaluate
         id:       choice_id
@@ -301,10 +302,9 @@ class Chosen extends AbstractChosen
 
   choice_destroy: (link) ->
     if this.result_deselect link.readAttribute("rel")
-      @choices -= 1
       this.show_search_field_default()
 
-      this.results_hide() if @is_multiple and @choices > 0 and @search_field.value.length < 1
+      this.results_hide() if @is_multiple and this.choices() > 0 and @search_field.value.length < 1
 
       link.up('li').remove()
 
@@ -490,7 +490,7 @@ class Chosen extends AbstractChosen
       if prevs.length
         this.result_do_highlight prevs.first()
       else
-        this.results_hide() if @choices > 0
+        this.results_hide() if this.choices() > 0
         this.result_clear_highlight()
 
   keydown_backstroke: ->
