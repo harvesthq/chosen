@@ -115,12 +115,14 @@ class Chosen extends AbstractChosen
     @is_disabled = @form_field_jq[0].disabled
     if(@is_disabled)
       @container.addClass 'chzn-disabled'
-      @search_field[0].disabled = true
+      if(@search_field[0])
+        @search_field[0].disabled = true
       @selected_item.unbind "focus", @activate_action if !@is_multiple
       this.close_field()
     else
       @container.removeClass 'chzn-disabled'
-      @search_field[0].disabled = false
+      if(@search_field[0])
+        @search_field[0].disabled = false
       @selected_item.bind "focus", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
