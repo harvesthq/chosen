@@ -183,6 +183,6 @@ task 'release', 'build, tag the current release, and push', ->
             push_repo ['--tags'], ->
               console.log "Successfully tagged #{version_tag()}: https://github.com/harvesthq/chosen/tree/#{version_tag()}"
 
-            , untag_release
-          , untag_release
-        , untag_release
+            , untag_release ('push repo with tags')
+          , untag_release ('push repo')
+        , untag_release ('tag release')
