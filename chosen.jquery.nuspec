@@ -6,8 +6,8 @@
     <title />
     <authors>Harvest</authors>
     <owners />
-    <licenseUrl>https://github.com/harvesthq/chosen/blob/master/LICENSE.md</licenseUrl>
-    <projectUrl>https://github.com/harvesthq/chosen</projectUrl>
+    <licenseUrl>https://github.com/prabirshrestha/chosen/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/prabirshrestha/chosen</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Chosen is a JavaScript plugin that makes long, unwieldy select boxes much more user-friendly. It is currently available in both jQuery and Prototype flavors.</description>
     <copyright>Copyright (c) 2011 by Harvest</copyright>
