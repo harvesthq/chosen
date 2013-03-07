@@ -841,7 +841,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.winnow_results = function() {
-      var me = this, cache = [], found, option, part, parts, result, result_id, results, scores = [], searchText, text_bits, startpos, text, zregex, _i, _j, _len, _len1, _ref;
+      var me = this, found, option, part, parts, result, result_id, results, scores = [], searchText, text_bits, startpos, text, zregex, _i, _j, _len, _len1, _ref;
       this.no_results_clear();
       results = 0;
       searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
@@ -852,25 +852,21 @@ Copyright (c) 2011 by Harvest
         if (option.group) {
           $('#' + option.dom_id).css('display', 'none');
         } else if (!(me.is_multiple && option.selected)) {
-          cache.push(option.html.toLowerCase());
-        }
-      });
-      $.each(cache, function (i) {
-        var score = this.score(searchText);
-        option = _ref[i];
-        result_id = option.dom_id;
-        result = $("#" + result_id);
-        if (score > 0) {
-          results += 1;
-          me.result_activate(result);
-          if (option.group_array_index != null) {
-            $("#" + me.results_data[option.group_array_index].dom_id).css('display', 'list-item');
+          var score = option.html.toLowerCase().score(searchText);
+          result_id = option.dom_id;
+          result = $("#" + result_id);
+          if (score > 0) {
+            results += 1;
+            me.result_activate(result);
+            if (option.group_array_index != null) {
+              $("#" + me.results_data[option.group_array_index].dom_id).css('display', 'list-item');
+            }
+          } else {
+            if (me.result_highlight && result_id === me.result_highlight.attr('id')) {
+              me.result_clear_highlight();
+            }
+            me.result_deactivate(result);
           }
-        } else {
-          if (me.result_highlight && result_id === me.result_highlight.attr('id')) {
-            me.result_clear_highlight();
-          }
-          me.result_deactivate(result);
         }
       });
       if (results < 1 && searchText.length) {
