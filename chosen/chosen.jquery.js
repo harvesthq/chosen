@@ -294,7 +294,6 @@ Chosen source: generate output using 'cake build'
 Copyright (c) 2011 by Harvest
 */
 
-
 (function() {
   var $, Chosen, get_side_border_padding, root,
     __hasProp = {}.hasOwnProperty,
@@ -331,7 +330,7 @@ Copyright (c) 2011 by Harvest
     __extends(Chosen, _super);
 
     function Chosen() {
-      Chosen.__super__.constructor.apply(this, arguments);
+      return Chosen.__super__.constructor.apply(this, arguments);
     }
 
     Chosen.prototype.setup = function() {
@@ -841,32 +840,41 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.winnow_results = function() {
-      var me = this, found, option, part, parts, result, result_id, results, scores = [], searchText, text_bits, startpos, text, zregex, _i, _j, _len, _len1, _ref;
+      var me, results, searchText;
+      me = this;
       this.no_results_clear();
       results = 0;
-      searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
+      searchText = (this.search_field.val() === this.default_text ? "" : $("<div/>").text($.trim(this.search_field.val())).html());
       searchText = searchText.toLowerCase();
-      _ref = this.results_data;
-      $.each(_ref, function(i) {
-        option = _ref[i];
+      $.each(this.results_data, function(i, option) {
+        var optionText, result, result_id, score;
+        if (option.disabled || option.empty) {
+          return true;
+        }
         if (option.group) {
           $('#' + option.dom_id).css('display', 'none');
-        } else if (!(me.is_multiple && option.selected)) {
-          var score = option.html.toLowerCase().score(searchText);
-          result_id = option.dom_id;
-          result = $("#" + result_id);
-          if (score > 0) {
-            results += 1;
-            me.result_activate(result);
-            if (option.group_array_index != null) {
-              $("#" + me.results_data[option.group_array_index].dom_id).css('display', 'list-item');
-            }
-          } else {
-            if (me.result_highlight && result_id === me.result_highlight.attr('id')) {
-              me.result_clear_highlight();
-            }
-            me.result_deactivate(result);
+          return true;
+        }
+        if (me.is_multiple && option.selected) {
+          return true;
+        }
+        optionText = option.html.toLowerCase();
+        score = optionText.score(searchText);
+        result_id = option.dom_id;
+        result = $("#" + result_id);
+        if (score > 0) {
+          results += 1;
+          me.result_activate(result);
+          if (option.group_array_index != null) {
+            $("#" + me.results_data[option.group_array_index].dom_id).css("display", "list-item");
           }
+          return true;
+        } else {
+          if (me.result_highlight && result_id === me.result_highlight.attr("id")) {
+            me.result_clear_highlight();
+          }
+          me.result_deactivate(result);
+          return true;
         }
       });
       if (results < 1 && searchText.length) {
@@ -1061,107 +1069,6 @@ Copyright (c) 2011 by Harvest
   root.get_side_border_padding = get_side_border_padding;
 
 }).call(this);
-
-(function($) {
-  $.fn.liveUpdate = function(data_source, options) {
-    if (options == undefined) {
-      options = {}
-    }
-    options = $.extend({
-      source_type: 'elements',
-      filter_elements: 'li',
-      clear_button: null,
-      hide_clear_on_empty: true
-    }, options);
-
-    if (data_source == 'cancel') {
-      this.unbind('keyup');
-      this.val('');
-      this.parents('form').unbind('submit');
-      if (options.clear_button) {
-        $(options.clear_button).unbind('click');
-        if (options.hide_clear_on_empty) {
-          $(options.clear_button).hide();
-        }
-      }
-      return;
-    }
-
-    var has_data = false;
-
-    if (options.source_type == 'elements') {
-      var elements = $(data_source);
-      if (elements.length) {
-        has_data = true;
-        var rows = elements.children(options.filter_elements),
-        cache = rows.map(function() {
-          return this.innerHTML.toLowerCase();
-        });
-      }
-    } else if (options.source_type == 'data') {
-      if (typeof(data_source) == 'object' && data_source.length) {
-        has_data = true;
-        var rows = $(options.filter_elements),
-        cache = $.map(data_source, function(value) {
-          return value.toLowerCase();
-        });
-      }
-    }
-    if (has_data) {
-      this.keyup(filter).keyup().parents('form').submit(function() {
-        return false;
-      });
-    }
-
-    if (options.clear_button) {
-      var me = this;
-      $(options.clear_button).click(function(event) {
-        event.preventDefault();
-        me.val('');
-        rows.show();
-        me.focus();
-        if (options.hide_clear_on_empty) {
-          $(this).hide();
-        }
-        return false;
-      });
-      if (options.hide_clear_on_empty) {
-        $(options.clear_button).hide();
-      }
-    }
-
-    return this;
-
-    function filter() {
-      var term = $.trim( $(this).val().toLowerCase() ), scores = [];
-
-      if ( !term ) {
-        if (options.clear_button && options.hide_clear_on_empty) {
-          $(options.clear_button).hide();
-        }
-        rows.show();
-      } else {
-        if (options.clear_button && options.hide_clear_on_empty) {
-          $(options.clear_button).show();
-        }
-        rows.hide();
-
-        $.each(cache, function(i){
-          var score = this.score(term);
-          if (score > 0) {
-            scores.push([score, i]);
-          }
-        });
-
-        $.each(scores.sort(function(a, b) {
-          return b[0] - a[0];
-        }), function() {
-          $(rows[ this[1] ]).show();
-        });
-      }
-    }
-  };
-})(jQuery);
 
 // qs_score - Quicksilver Score
 // 

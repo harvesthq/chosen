@@ -411,51 +411,32 @@ class Chosen extends AbstractChosen
     @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" if @allow_single_deselect and @selected_item.find("abbr").length < 1
 
   winnow_results: ->
-    this.no_results_clear()
-
+    me = this
+    @no_results_clear()
     results = 0
-
-    searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
-    regexAnchor = if @search_contains then "" else "^"
-    regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-
-    for option in @results_data
-      if not option.disabled and not option.empty
-        if option.group
-          $('#' + option.dom_id).css('display', 'none')
-        else if not (@is_multiple and option.selected)
-          found = false
-          result_id = option.dom_id
-          result = $("#" + result_id)
-
-          if regex.test option.html
-            found = true
-            results += 1
-          else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  found = true
-                  results += 1
-
-          if found
-            if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
-              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-            else
-              text = option.html
-
-            result.html(text)
-            this.result_activate result
-
-            $("#" + @results_data[option.group_array_index].dom_id).css('display', 'list-item') if option.group_array_index?
-          else
-            this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
-            this.result_deactivate result
+    searchText = (if @search_field.val() is @default_text then "" else $("<div/>").text($.trim(@search_field.val())).html())
+    searchText = searchText.toLowerCase()
+    $.each @results_data, (i, option) ->
+      if option.disabled or option.empty
+        return true
+      if (option.group)
+        $('#' + option.dom_id).css('display', 'none')
+        return true
+      if me.is_multiple and option.selected
+        return true
+      optionText = option.html.toLowerCase()
+      score = optionText.score(searchText)
+      result_id = option.dom_id
+      result = $("#" + result_id)
+      if score > 0
+        results += 1
+        me.result_activate result
+        $("#" + me.results_data[option.group_array_index].dom_id).css "display", "list-item"  if option.group_array_index?
+        return true
+      else
+        me.result_clear_highlight()  if me.result_highlight and result_id is me.result_highlight.attr("id")
+        me.result_deactivate result
+        return true
 
     if results < 1 and searchText.length
       this.no_results searchText
