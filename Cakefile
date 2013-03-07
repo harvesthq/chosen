@@ -14,6 +14,7 @@ javascripts = {
     'coffee/lib/select-parser.coffee'
     'coffee/lib/abstract-chosen.coffee'
     'coffee/chosen.jquery.coffee'
+    'coffee/lib/score.js'
   ]
   'chosen/chosen.proto.js': [
     'coffee/lib/select-parser.coffee'
