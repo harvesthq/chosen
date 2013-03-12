@@ -27,7 +27,6 @@ $.fn.extend({
 class Chosen extends AbstractChosen
 
   setup: ->
-    console.log @change_by_text
     @form_field_jq = $ @form_field
     @current_value = @form_field_jq.val()
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
