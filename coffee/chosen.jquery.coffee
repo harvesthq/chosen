@@ -27,6 +27,7 @@ $.fn.extend({
 class Chosen extends AbstractChosen
 
   setup: ->
+    console.log @change_by_text
     @form_field_jq = $ @form_field
     @current_value = @form_field_jq.val()
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
@@ -377,8 +378,13 @@ class Chosen extends AbstractChosen
 
       @search_field.val ""
 
-      @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field_jq.val() != @current_value
-      @current_value = @form_field_jq.val()
+      if @change_by_text
+        @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field_jq.children(':selected').text() != @current_value
+        @current_value = @form_field_jq.children(':selected').text()
+      else
+        @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field_jq.val() != @current_value
+        @current_value = @form_field_jq.val()
+
       this.search_field_scale()
 
   result_activate: (el) ->
