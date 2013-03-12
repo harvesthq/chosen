@@ -2,7 +2,7 @@
 .chzn-container {
   font-size: 13px;
   position: relative;
-  display: inline-block;
+  display: inline-table;
   zoom: 1;
   *display: inline;
 }
