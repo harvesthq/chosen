@@ -3,6 +3,7 @@
   font-size: 13px;
   position: relative;
   display: inline-block;
+  min-width: 180px;
   zoom: 1;
   *display: inline;
 }
@@ -17,6 +18,7 @@
   -moz-box-shadow   : 0 4px 5px rgba(0,0,0,.15);
   box-shadow        : 0 4px 5px rgba(0,0,0,.15);
   z-index: 1010;
+  min-width: 178px;
 }
 /* @end */
 
@@ -166,6 +168,7 @@
   -webkit-box-shadow: none;
   -moz-box-shadow   : none;
   box-shadow        : none;
+  min-width: 178px;
 }
 .chzn-container-multi .chzn-choices .search-field .default {
   color: #999;
@@ -238,6 +241,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  min-width: 178px;
 }
 .chzn-container-multi .chzn-results {
   margin: -1px 0 0;
