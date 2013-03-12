@@ -294,7 +294,6 @@ Chosen source: generate output using 'cake build'
 Copyright (c) 2011 by Harvest
 */
 
-
 (function() {
   var $, Chosen, get_side_border_padding, root,
     __hasProp = {}.hasOwnProperty,
@@ -331,7 +330,7 @@ Copyright (c) 2011 by Harvest
     __extends(Chosen, _super);
 
     function Chosen() {
-      Chosen.__super__.constructor.apply(this, arguments);
+      return Chosen.__super__.constructor.apply(this, arguments);
     }
 
     Chosen.prototype.setup = function() {
@@ -841,60 +840,43 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, regexAnchor, result, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref;
+      var me, results, searchText;
+      me = this;
       this.no_results_clear();
       results = 0;
-      searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
-      regexAnchor = this.search_contains ? "" : "^";
-      regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      _ref = this.results_data;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        option = _ref[_i];
-        if (!option.disabled && !option.empty) {
-          if (option.group) {
-            $('#' + option.dom_id).css('display', 'none');
-          } else if (!(this.is_multiple && option.selected)) {
-            found = false;
-            result_id = option.dom_id;
-            result = $("#" + result_id);
-            if (regex.test(option.html)) {
-              found = true;
-              results += 1;
-            } else if (this.enable_split_word_search && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {
-              parts = option.html.replace(/\[|\]/g, "").split(" ");
-              if (parts.length) {
-                for (_j = 0, _len1 = parts.length; _j < _len1; _j++) {
-                  part = parts[_j];
-                  if (regex.test(part)) {
-                    found = true;
-                    results += 1;
-                  }
-                }
-              }
-            }
-            if (found) {
-              if (searchText.length) {
-                startpos = option.html.search(zregex);
-                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
-                text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
-              } else {
-                text = option.html;
-              }
-              result.html(text);
-              this.result_activate(result);
-              if (option.group_array_index != null) {
-                $("#" + this.results_data[option.group_array_index].dom_id).css('display', 'list-item');
-              }
-            } else {
-              if (this.result_highlight && result_id === this.result_highlight.attr('id')) {
-                this.result_clear_highlight();
-              }
-              this.result_deactivate(result);
-            }
-          }
+      searchText = (this.search_field.val() === this.default_text ? "" : $("<div/>").text($.trim(this.search_field.val())).html());
+      searchText = searchText.toLowerCase();
+      $.each(this.results_data, function(i, option) {
+        var optionText, result, result_id, score;
+        if (option.disabled || option.empty) {
+          return true;
         }
-      }
+        if (option.group) {
+          $('#' + option.dom_id).css('display', 'none');
+          return true;
+        }
+        if (me.is_multiple && option.selected) {
+          return true;
+        }
+        optionText = option.html.toLowerCase();
+        score = optionText.score(searchText);
+        result_id = option.dom_id;
+        result = $("#" + result_id);
+        if (score > 0) {
+          results += 1;
+          me.result_activate(result);
+          if (option.group_array_index != null) {
+            $("#" + me.results_data[option.group_array_index].dom_id).css("display", "list-item");
+          }
+          return true;
+        } else {
+          if (me.result_highlight && result_id === me.result_highlight.attr("id")) {
+            me.result_clear_highlight();
+          }
+          me.result_deactivate(result);
+          return true;
+        }
+      });
       if (results < 1 && searchText.length) {
         return this.no_results(searchText);
       } else {
@@ -1087,3 +1069,99 @@ Copyright (c) 2011 by Harvest
   root.get_side_border_padding = get_side_border_padding;
 
 }).call(this);
+
+// qs_score - Quicksilver Score
+// 
+// A port of the Quicksilver string ranking algorithm
+// 
+// "hello world".score("axl") //=> 0.0
+// "hello world".score("ow") //=> 0.6
+// "hello world".score("hello world") //=> 1.0
+//
+// Tested in Firefox 2 and Safari 3
+//
+// The Quicksilver code is available here
+// http://code.google.com/p/blacktree-alchemy/
+// http://blacktree-alchemy.googlecode.com/svn/trunk/Crucible/Code/NSString+BLTRRanking.m
+//
+// The MIT License
+// 
+// Copyright (c) 2008 Lachie Cox
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+
+String.prototype.score = function(abbreviation,offset) {
+  offset = offset || 0 // TODO: I think this is unused... remove
+ 
+  if(abbreviation.length == 0) return 0.9
+  if(abbreviation.length > this.length) return 0.0
+
+  for (var i = abbreviation.length; i > 0; i--) {
+    var sub_abbreviation = abbreviation.substring(0,i)
+    var index = this.indexOf(sub_abbreviation)
+
+
+    if(index < 0) continue;
+    if(index + abbreviation.length > this.length + offset) continue;
+
+    var next_string       = this.substring(index+sub_abbreviation.length)
+    var next_abbreviation = null
+
+    if(i >= abbreviation.length)
+      next_abbreviation = ''
+    else
+      next_abbreviation = abbreviation.substring(i)
+ 
+    var remaining_score   = next_string.score(next_abbreviation,offset+index)
+ 
+    if (remaining_score > 0) {
+      var score = this.length-next_string.length;
+
+      if(index != 0) {
+        var j = 0;
+
+        var c = this.charCodeAt(index-1)
+        if(c==32 || c == 9) {
+          for(var j=(index-2); j >= 0; j--) {
+            c = this.charCodeAt(j)
+            score -= ((c == 32 || c == 9) ? 1 : 0.15)
+          }
+
+          // XXX maybe not port this heuristic
+          // 
+          //          } else if ([[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:[self characterAtIndex:matchedRange.location]]) {
+          //            for (j = matchedRange.location-1; j >= (int) searchRange.location; j--) {
+          //              if ([[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:[self characterAtIndex:j]])
+          //                score--;
+          //              else
+          //                score -= 0.15;
+          //            }
+        } else {
+          score -= index
+        }
+      }
+   
+      score += remaining_score * next_string.length
+      score /= this.length;
+      return score
+    }
+  }
+  return 0.0
+}
