@@ -18,7 +18,7 @@ class Chosen extends AbstractChosen
 
     # HTML Templates
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
-    @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
+    @multi_temp = new Template('<ul class="chzn-choices"><li class="chzn-search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
@@ -38,7 +38,7 @@ class Chosen extends AbstractChosen
       'class': container_classes.join ' '
       'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
       'title': @form_field.title
-    
+
     base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
     @form_field.hide().insert({ after: base_template })
@@ -58,7 +58,7 @@ class Chosen extends AbstractChosen
 
     if @is_multiple
       @search_choices = @container.down('ul.chzn-choices')
-      @search_container = @container.down('li.search-field')
+      @search_container = @container.down('li.chzn-search-field')
     else
       @search_container = @container.down('div.chzn-search')
       @selected_item = @container.down('.chzn-single')

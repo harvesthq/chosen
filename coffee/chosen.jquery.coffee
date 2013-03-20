@@ -10,11 +10,11 @@ $.fn.extend({
     ua = navigator.userAgent.toLowerCase();
 
     match = /(msie) ([\w.]+)/.exec( ua ) || [];
-    
+
     browser =
       name: match[ 1 ] || ""
       version: match[ 2 ] || "0"
-      
+
     # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
     # Continue on if running IE document type but in compatibility mode
     return this if browser.name is "msie" and (browser.version is "6.0" or  (browser.version is "7.0" and document.documentMode is 7 ))
@@ -45,7 +45,7 @@ class Chosen extends AbstractChosen
 
     @f_width = @form_field_jq.outerWidth()
 
-    container_props = 
+    container_props =
       id: @container_id
       class: container_classes.join ' '
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
@@ -54,7 +54,7 @@ class Chosen extends AbstractChosen
     container_div = ($ "<div />", container_props)
 
     if @is_multiple
-      container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
+      container_div.html '<ul class="chzn-choices"><li class="chzn-search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
     else
       container_div.html '<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
 
@@ -75,7 +75,7 @@ class Chosen extends AbstractChosen
 
     if @is_multiple
       @search_choices = @container.find('ul.chzn-choices').first()
-      @search_container = @container.find('li.search-field').first()
+      @search_container = @container.find('li.chzn-search-field').first()
     else
       @search_container = @container.find('div.chzn-search').first()
       @selected_item = @container.find('.chzn-single').first()
