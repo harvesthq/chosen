@@ -373,7 +373,7 @@ Copyright (c) 2011 by Harvest
       };
       container_div = $("<div />", container_props);
       if (this.is_multiple) {
-        container_div.html('<ul class="chzn-choices"><li class="chzn-search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
+        container_div.html('<ul class="chzn-choices"><li class="chzn-search-field"><input type="text" value="' + this.default_text + '" class="chzn-default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       } else {
         container_div.html('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       }
@@ -678,10 +678,10 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.show_search_field_default = function() {
       if (this.is_multiple && this.choices < 1 && !this.active_field) {
         this.search_field.val(this.default_text);
-        return this.search_field.addClass("default");
+        return this.search_field.addClass("chzn-default");
       } else {
         this.search_field.val("");
-        return this.search_field.removeClass("default");
+        return this.search_field.removeClass("chzn-default");
       }
     };
 

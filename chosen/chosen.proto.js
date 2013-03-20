@@ -327,7 +327,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.set_default_values = function() {
       Chosen.__super__.set_default_values.call(this);
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
-      this.multi_temp = new Template('<ul class="chzn-choices"><li class="chzn-search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
+      this.multi_temp = new Template('<ul class="chzn-choices"><li class="chzn-search-field"><input type="text" value="#{default}" class="chzn-default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
       this.choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
@@ -657,10 +657,10 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.show_search_field_default = function() {
       if (this.is_multiple && this.choices < 1 && !this.active_field) {
         this.search_field.value = this.default_text;
-        return this.search_field.addClassName("default");
+        return this.search_field.addClassName("chzn-default");
       } else {
         this.search_field.value = "";
-        return this.search_field.removeClassName("default");
+        return this.search_field.removeClassName("chzn-default");
       }
     };
 

@@ -167,7 +167,7 @@
   -moz-box-shadow   : none;
   box-shadow        : none;
 }
-.chzn-container-multi .chzn-choices .chzn-search-field .default {
+.chzn-container-multi .chzn-choices .chzn-search-field .chzn-default {
   color: #999;
 }
 .chzn-container-multi .chzn-choices .search-choice {
