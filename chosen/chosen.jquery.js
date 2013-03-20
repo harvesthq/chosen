@@ -194,7 +194,7 @@ Copyright (c) 2011 by Harvest
         option.dom_id = this.container_id + "_o_" + option.array_index;
         classes = option.selected && this.is_multiple ? [] : ["chzn-active-result"];
         if (option.selected) {
-          classes.push("result-selected");
+          classes.push("chzn-result-selected");
         }
         if (option.group_array_index != null) {
           classes.push("chzn-group-option");
@@ -793,11 +793,11 @@ Copyright (c) 2011 by Harvest
         if (this.is_multiple) {
           this.result_deactivate(high);
         } else {
-          this.search_results.find(".result-selected").removeClass("result-selected");
+          this.search_results.find(".chzn-result-selected").removeClass("chzn-result-selected");
           this.result_single_selected = high;
           this.selected_item.removeClass("chzn-default");
         }
-        high.addClass("result-selected");
+        high.addClass("chzn-result-selected");
         position = high_id.substr(high_id.lastIndexOf("_") + 1);
         item = this.results_data[position];
         item.selected = true;
@@ -840,7 +840,7 @@ Copyright (c) 2011 by Harvest
         result_data.selected = false;
         this.form_field.options[result_data.options_index].selected = false;
         result = $("#" + this.container_id + "_o_" + pos);
-        result.removeClass("result-selected").addClass("chzn-active-result").show();
+        result.removeClass("chzn-result-selected").addClass("chzn-active-result").show();
         this.result_clear_highlight();
         this.winnow_results();
         this.form_field_jq.trigger("change", {
@@ -933,7 +933,7 @@ Copyright (c) 2011 by Harvest
         li = $(li);
         if (li.hasClass("chzn-group-result")) {
           _results.push(li.css('display', 'auto'));
-        } else if (!this.is_multiple || !li.hasClass("result-selected")) {
+        } else if (!this.is_multiple || !li.hasClass("chzn-result-selected")) {
           _results.push(this.result_activate(li));
         } else {
           _results.push(void 0);
@@ -946,7 +946,7 @@ Copyright (c) 2011 by Harvest
       var do_high, selected_results;
 
       if (!this.result_highlight) {
-        selected_results = !this.is_multiple ? this.search_results.find(".result-selected.chzn-active-result") : [];
+        selected_results = !this.is_multiple ? this.search_results.find(".chzn-result-selected.chzn-active-result") : [];
         do_high = selected_results.length ? selected_results.first() : this.search_results.find(".chzn-active-result").first();
         if (do_high != null) {
           return this.result_do_highlight(do_high);

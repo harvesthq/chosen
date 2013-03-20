@@ -283,7 +283,7 @@
 .chzn-container .chzn-results .chzn-group-option {
   padding-left: 15px;
 }
-.chzn-container-multi .chzn-drop .result-selected {
+.chzn-container-multi .chzn-drop .chzn-result-selected {
   display: none;
 }
 .chzn-container .chzn-results-scroll {

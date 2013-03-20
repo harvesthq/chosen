@@ -332,11 +332,11 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.result_deactivate high
       else
-        @search_results.descendants(".result-selected").invoke "removeClassName", "result-selected"
+        @search_results.descendants(".chzn-result-selected").invoke "removeClassName", "chzn-result-selected"
         @selected_item.removeClassName("chzn-default")
         @result_single_selected = high
 
-      high.addClassName("result-selected")
+      high.addClassName("chzn-result-selected")
 
       position = high.id.substr(high.id.lastIndexOf("_") + 1 )
       item = @results_data[position]
@@ -373,7 +373,7 @@ class Chosen extends AbstractChosen
 
       @form_field.options[result_data.options_index].selected = false
       result = $(@container_id + "_o_" + pos)
-      result.removeClassName("result-selected").addClassName("chzn-active-result").show()
+      result.removeClassName("chzn-result-selected").addClassName("chzn-active-result").show()
 
       this.result_clear_highlight()
       this.winnow_results()
@@ -446,14 +446,14 @@ class Chosen extends AbstractChosen
     for li in lis
       if li.hasClassName("chzn-group-result")
         li.show()
-      else if not @is_multiple or not li.hasClassName("result-selected")
+      else if not @is_multiple or not li.hasClassName("chzn-result-selected")
         this.result_activate li
 
   winnow_results_set_highlight: ->
     if not @result_highlight
 
       if not @is_multiple
-        do_high = @search_results.down(".result-selected.chzn-active-result")
+        do_high = @search_results.down(".chzn-result-selected.chzn-active-result")
 
       if not do_high?
         do_high = @search_results.down(".chzn-active-result")

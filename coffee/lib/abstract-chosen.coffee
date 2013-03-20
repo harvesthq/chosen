@@ -65,7 +65,7 @@ class AbstractChosen
       option.dom_id = @container_id + "_o_" + option.array_index
 
       classes = if option.selected and @is_multiple then [] else ["chzn-active-result"]
-      classes.push "result-selected" if option.selected
+      classes.push "chzn-result-selected" if option.selected
       classes.push "chzn-group-option" if option.group_array_index?
       classes.push option.classes if option.classes != ""
 
