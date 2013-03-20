@@ -197,7 +197,7 @@ Copyright (c) 2011 by Harvest
           classes.push("result-selected");
         }
         if (option.group_array_index != null) {
-          classes.push("group-option");
+          classes.push("chzn-group-option");
         }
         if (option.classes !== "") {
           classes.push(option.classes);

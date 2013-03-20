@@ -280,7 +280,7 @@
   color: #999;
   font-weight: bold;
 }
-.chzn-container .chzn-results .group-option {
+.chzn-container .chzn-results .chzn-group-option {
   padding-left: 15px;
 }
 .chzn-container-multi .chzn-drop .result-selected {
@@ -382,7 +382,7 @@
 .chzn-rtl .chzn-choices .chzn-search-choice { padding: 3px 5px 3px 19px; margin: 3px 5px 3px 0; }
 .chzn-rtl .chzn-choices .chzn-search-choice .chzn-search-choice-close { left: 4px; right: auto; }
 .chzn-rtl.chzn-container-single .chzn-results { margin: 0 0 4px 4px; padding: 0 4px 0 0; }
-.chzn-rtl .chzn-results .group-option { padding-left: 0; padding-right: 15px; }
+.chzn-rtl .chzn-results .chzn-group-option { padding-left: 0; padding-right: 15px; }
 .chzn-rtl.chzn-container-active .chzn-single-with-drop div { border-right: none; }
 .chzn-rtl .chzn-search input {
   background: #fff url('chosen-sprite.png') no-repeat -30px -20px;
