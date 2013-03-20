@@ -275,7 +275,7 @@
   background: #f4f4f4;
   display: list-item;
 }
-.chzn-container .chzn-results .group-result {
+.chzn-container .chzn-results .chzn-group-result {
   cursor: default;
   color: #999;
   font-weight: bold;

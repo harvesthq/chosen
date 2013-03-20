@@ -191,7 +191,7 @@ class Chosen extends AbstractChosen
   result_add_group: (group) ->
     if not group.disabled
       group.dom_id = @container_id + "_g_" + group.array_index
-      '<li id="' + group.dom_id + '" class="group-result">' + group.label.escapeHTML() + '</li>'
+      '<li id="' + group.dom_id + '" class="chzn-group-result">' + group.label.escapeHTML() + '</li>'
     else
       ""
 
@@ -444,7 +444,7 @@ class Chosen extends AbstractChosen
     lis = @search_results.select("li")
 
     for li in lis
-      if li.hasClassName("group-result")
+      if li.hasClassName("chzn-group-result")
         li.show()
       else if not @is_multiple or not li.hasClassName("result-selected")
         this.result_activate li

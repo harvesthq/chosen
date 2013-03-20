@@ -571,7 +571,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.result_add_group = function(group) {
       if (!group.disabled) {
         group.dom_id = this.container_id + "_g_" + group.array_index;
-        return '<li id="' + group.dom_id + '" class="group-result">' + group.label.escapeHTML() + '</li>';
+        return '<li id="' + group.dom_id + '" class="chzn-group-result">' + group.label.escapeHTML() + '</li>';
       } else {
         return "";
       }
@@ -919,7 +919,7 @@ Copyright (c) 2011 by Harvest
       _results = [];
       for (_i = 0, _len = lis.length; _i < _len; _i++) {
         li = lis[_i];
-        if (li.hasClassName("group-result")) {
+        if (li.hasClassName("chzn-group-result")) {
           _results.push(li.show());
         } else if (!this.is_multiple || !li.hasClassName("result-selected")) {
           _results.push(this.result_activate(li));

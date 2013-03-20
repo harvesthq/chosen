@@ -211,7 +211,7 @@ class Chosen extends AbstractChosen
   result_add_group: (group) ->
     if not group.disabled
       group.dom_id = @container_id + "_g_" + group.array_index
-      '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
+      '<li id="' + group.dom_id + '" class="chzn-group-result">' + $("<div />").text(group.label).html() + '</li>'
     else
       ""
 
@@ -468,7 +468,7 @@ class Chosen extends AbstractChosen
 
     for li in lis
       li = $(li)
-      if li.hasClass "group-result"
+      if li.hasClass "chzn-group-result"
         li.css('display', 'auto')
       else if not @is_multiple or not li.hasClass "result-selected"
         this.result_activate li
