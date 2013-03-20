@@ -19,8 +19,8 @@ class Chosen extends AbstractChosen
     # HTML Templates
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="chzn-search-field"><input type="text" value="#{default}" class="chzn-default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
-    @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
-    @choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
+    @choice_temp = new Template('<li class="chzn-search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="chzn-search-choice-close" rel="#{position}"></a></li>')
+    @choice_noclose_temp = new Template('<li class="chzn-search-choice chzn-search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
@@ -107,7 +107,7 @@ class Chosen extends AbstractChosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
-      target_closelink =  if evt? then evt.target.hasClassName "search-choice-close" else false
+      target_closelink =  if evt? then evt.target.hasClassName "chzn-search-choice-close" else false
       if evt and evt.type is "mousedown" and not @results_showing
         evt.stop()
       if not @pending_destroy_click and not target_closelink
@@ -159,7 +159,7 @@ class Chosen extends AbstractChosen
     @results_data = root.SelectParser.select_to_array @form_field
 
     if @is_multiple and @choices > 0
-      @search_choices.select("li.search-choice").invoke("remove")
+      @search_choices.select("li.chzn-search-choice").invoke("remove")
       @choices = 0
     else if not @is_multiple
       @selected_item.addClassName("chzn-default").down("span").update(@default_text)
@@ -275,7 +275,7 @@ class Chosen extends AbstractChosen
 
   choices_click: (evt) ->
     evt.preventDefault()
-    if( @active_field and not(evt.target.hasClassName('search-choice') or evt.target.up('.search-choice')) and not @results_showing )
+    if( @active_field and not(evt.target.hasClassName('chzn-search-choice') or evt.target.up('.chzn-search-choice')) and not @results_showing )
       this.results_show()
 
   choice_build: (item) ->
@@ -385,7 +385,7 @@ class Chosen extends AbstractChosen
       return false
 
   single_deselect_control_build: ->
-    @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } if @allow_single_deselect and not @selected_item.down("abbr")
+    @selected_item.down("span").insert { after: "<abbr class=\"chzn-search-choice-close\"></abbr>" } if @allow_single_deselect and not @selected_item.down("abbr")
 
   winnow_results: ->
     this.no_results_clear()
@@ -499,16 +499,16 @@ class Chosen extends AbstractChosen
       this.clear_backstroke()
     else
       next_available_destroy = @search_container.siblings().last()
-      if next_available_destroy and next_available_destroy.hasClassName("search-choice") and not next_available_destroy.hasClassName("search-choice-disabled")
+      if next_available_destroy and next_available_destroy.hasClassName("chzn-search-choice") and not next_available_destroy.hasClassName("chzn-search-choice-disabled")
         @pending_backstroke = next_available_destroy
-        @pending_backstroke.addClassName("search-choice-focus") if @pending_backstroke
+        @pending_backstroke.addClassName("chzn-search-choice-focus") if @pending_backstroke
         if @single_backstroke_delete
           @keydown_backstroke()
         else
-          @pending_backstroke.addClassName("search-choice-focus")
+          @pending_backstroke.addClassName("chzn-search-choice-focus")
 
   clear_backstroke: ->
-    @pending_backstroke.removeClassName("search-choice-focus") if @pending_backstroke
+    @pending_backstroke.removeClassName("chzn-search-choice-focus") if @pending_backstroke
     @pending_backstroke = null
 
   keydown_checker: (evt) ->

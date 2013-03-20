@@ -486,7 +486,7 @@ Copyright (c) 2011 by Harvest
       var target_closelink;
 
       if (!this.is_disabled) {
-        target_closelink = evt != null ? ($(evt.target)).hasClass("search-choice-close") : false;
+        target_closelink = evt != null ? ($(evt.target)).hasClass("chzn-search-choice-close") : false;
         if (evt && evt.type === "mousedown" && !this.results_showing) {
           evt.preventDefault();
         }
@@ -552,7 +552,7 @@ Copyright (c) 2011 by Harvest
       this.parsing = true;
       this.results_data = root.SelectParser.select_to_array(this.form_field);
       if (this.is_multiple && this.choices > 0) {
-        this.search_choices.find("li.search-choice").remove();
+        this.search_choices.find("li.chzn-search-choice").remove();
         this.choices = 0;
       } else if (!this.is_multiple) {
         this.selected_item.addClass("chzn-default").find("span").text(this.default_text);
@@ -713,7 +713,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.choices_click = function(evt) {
       evt.preventDefault();
-      if (this.active_field && !($(evt.target).hasClass("search-choice" || $(evt.target).parents('.search-choice').first)) && !this.results_showing) {
+      if (this.active_field && !($(evt.target).hasClass("chzn-search-choice" || $(evt.target).parents('.chzn-search-choice').first)) && !this.results_showing) {
         return this.results_show();
       }
     };
@@ -731,9 +731,9 @@ Copyright (c) 2011 by Harvest
       choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
       if (item.disabled) {
-        html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>';
+        html = '<li class="chzn-search-choice chzn-search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>';
       } else {
-        html = '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>';
+        html = '<li class="chzn-search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="chzn-search-choice-close" rel="' + item.array_index + '"></a></li>';
       }
       this.search_container.before(html);
       link = $('#' + choice_id).find("a").first();
@@ -855,7 +855,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.single_deselect_control_build = function() {
       if (this.allow_single_deselect && this.selected_item.find("abbr").length < 1) {
-        return this.selected_item.find("span").first().after("<abbr class=\"search-choice-close\"></abbr>");
+        return this.selected_item.find("span").first().after("<abbr class=\"chzn-search-choice-close\"></abbr>");
       }
     };
 
@@ -1010,13 +1010,13 @@ Copyright (c) 2011 by Harvest
         this.choice_destroy(this.pending_backstroke.find("a").first());
         return this.clear_backstroke();
       } else {
-        next_available_destroy = this.search_container.siblings("li.search-choice").last();
-        if (next_available_destroy.length && !next_available_destroy.hasClass("search-choice-disabled")) {
+        next_available_destroy = this.search_container.siblings("li.chzn-search-choice").last();
+        if (next_available_destroy.length && !next_available_destroy.hasClass("chzn-search-choice-disabled")) {
           this.pending_backstroke = next_available_destroy;
           if (this.single_backstroke_delete) {
             return this.keydown_backstroke();
           } else {
-            return this.pending_backstroke.addClass("search-choice-focus");
+            return this.pending_backstroke.addClass("chzn-search-choice-focus");
           }
         }
       }
@@ -1024,7 +1024,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.clear_backstroke = function() {
       if (this.pending_backstroke) {
-        this.pending_backstroke.removeClass("search-choice-focus");
+        this.pending_backstroke.removeClass("chzn-search-choice-focus");
       }
       return this.pending_backstroke = null;
     };

@@ -125,7 +125,7 @@ class Chosen extends AbstractChosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
-      target_closelink =  if evt? then ($ evt.target).hasClass "search-choice-close" else false
+      target_closelink =  if evt? then ($ evt.target).hasClass "chzn-search-choice-close" else false
       if evt and evt.type is "mousedown" and not @results_showing
         evt.preventDefault()
       if not @pending_destroy_click and not target_closelink
@@ -179,7 +179,7 @@ class Chosen extends AbstractChosen
     @results_data = root.SelectParser.select_to_array @form_field
 
     if @is_multiple and @choices > 0
-      @search_choices.find("li.search-choice").remove()
+      @search_choices.find("li.chzn-search-choice").remove()
       @choices = 0
     else if not @is_multiple
       @selected_item.addClass("chzn-default").find("span").text(@default_text)
@@ -296,7 +296,7 @@ class Chosen extends AbstractChosen
 
   choices_click: (evt) ->
     evt.preventDefault()
-    if( @active_field and not($(evt.target).hasClass "search-choice" or $(evt.target).parents('.search-choice').first) and not @results_showing )
+    if( @active_field and not($(evt.target).hasClass "chzn-search-choice" or $(evt.target).parents('.chzn-search-choice').first) and not @results_showing )
       this.results_show()
 
   choice_build: (item) ->
@@ -306,9 +306,9 @@ class Chosen extends AbstractChosen
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
     if item.disabled
-      html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>'
+      html = '<li class="chzn-search-choice chzn-search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>'
     else
-      html = '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
+      html = '<li class="chzn-search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="chzn-search-choice-close" rel="' + item.array_index + '"></a></li>'
     @search_container.before  html
     link = $('#' + choice_id).find("a").first()
     link.click (evt) => this.choice_destroy_link_click(evt)
@@ -408,7 +408,7 @@ class Chosen extends AbstractChosen
       return false
 
   single_deselect_control_build: ->
-    @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" if @allow_single_deselect and @selected_item.find("abbr").length < 1
+    @selected_item.find("span").first().after "<abbr class=\"chzn-search-choice-close\"></abbr>" if @allow_single_deselect and @selected_item.find("abbr").length < 1
 
   winnow_results: ->
     this.no_results_clear()
@@ -516,16 +516,16 @@ class Chosen extends AbstractChosen
       this.choice_destroy @pending_backstroke.find("a").first()
       this.clear_backstroke()
     else
-      next_available_destroy = @search_container.siblings("li.search-choice").last()
-      if next_available_destroy.length and not next_available_destroy.hasClass("search-choice-disabled")
+      next_available_destroy = @search_container.siblings("li.chzn-search-choice").last()
+      if next_available_destroy.length and not next_available_destroy.hasClass("chzn-search-choice-disabled")
         @pending_backstroke = next_available_destroy
         if @single_backstroke_delete
           @keydown_backstroke()
         else
-          @pending_backstroke.addClass "search-choice-focus"
+          @pending_backstroke.addClass "chzn-search-choice-focus"
 
   clear_backstroke: ->
-    @pending_backstroke.removeClass "search-choice-focus" if @pending_backstroke
+    @pending_backstroke.removeClass "chzn-search-choice-focus" if @pending_backstroke
     @pending_backstroke = null
 
   keydown_checker: (evt) ->

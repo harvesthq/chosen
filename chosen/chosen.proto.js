@@ -328,8 +328,8 @@ Copyright (c) 2011 by Harvest
       Chosen.__super__.set_default_values.call(this);
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="chzn-search-field"><input type="text" value="#{default}" class="chzn-default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
-      this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
-      this.choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
+      this.choice_temp = new Template('<li class="chzn-search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="chzn-search-choice-close" rel="#{position}"></a></li>');
+      this.choice_noclose_temp = new Template('<li class="chzn-search-choice chzn-search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
     };
 
@@ -468,7 +468,7 @@ Copyright (c) 2011 by Harvest
       var target_closelink;
 
       if (!this.is_disabled) {
-        target_closelink = evt != null ? evt.target.hasClassName("search-choice-close") : false;
+        target_closelink = evt != null ? evt.target.hasClassName("chzn-search-choice-close") : false;
         if (evt && evt.type === "mousedown" && !this.results_showing) {
           evt.stop();
         }
@@ -533,7 +533,7 @@ Copyright (c) 2011 by Harvest
       this.parsing = true;
       this.results_data = root.SelectParser.select_to_array(this.form_field);
       if (this.is_multiple && this.choices > 0) {
-        this.search_choices.select("li.search-choice").invoke("remove");
+        this.search_choices.select("li.chzn-search-choice").invoke("remove");
         this.choices = 0;
       } else if (!this.is_multiple) {
         this.selected_item.addClassName("chzn-default").down("span").update(this.default_text);
@@ -692,7 +692,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.choices_click = function(evt) {
       evt.preventDefault();
-      if (this.active_field && !(evt.target.hasClassName('search-choice') || evt.target.up('.search-choice')) && !this.results_showing) {
+      if (this.active_field && !(evt.target.hasClassName('chzn-search-choice') || evt.target.up('.chzn-search-choice')) && !this.results_showing) {
         return this.results_show();
       }
     };
@@ -840,7 +840,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.single_deselect_control_build = function() {
       if (this.allow_single_deselect && !this.selected_item.down("abbr")) {
         return this.selected_item.down("span").insert({
-          after: "<abbr class=\"search-choice-close\"></abbr>"
+          after: "<abbr class=\"chzn-search-choice-close\"></abbr>"
         });
       }
     };
@@ -1011,15 +1011,15 @@ Copyright (c) 2011 by Harvest
         return this.clear_backstroke();
       } else {
         next_available_destroy = this.search_container.siblings().last();
-        if (next_available_destroy && next_available_destroy.hasClassName("search-choice") && !next_available_destroy.hasClassName("search-choice-disabled")) {
+        if (next_available_destroy && next_available_destroy.hasClassName("chzn-search-choice") && !next_available_destroy.hasClassName("chzn-search-choice-disabled")) {
           this.pending_backstroke = next_available_destroy;
           if (this.pending_backstroke) {
-            this.pending_backstroke.addClassName("search-choice-focus");
+            this.pending_backstroke.addClassName("chzn-search-choice-focus");
           }
           if (this.single_backstroke_delete) {
             return this.keydown_backstroke();
           } else {
-            return this.pending_backstroke.addClassName("search-choice-focus");
+            return this.pending_backstroke.addClassName("chzn-search-choice-focus");
           }
         }
       }
@@ -1027,7 +1027,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.clear_backstroke = function() {
       if (this.pending_backstroke) {
-        this.pending_backstroke.removeClassName("search-choice-focus");
+        this.pending_backstroke.removeClassName("chzn-search-choice-focus");
       }
       return this.pending_backstroke = null;
     };
