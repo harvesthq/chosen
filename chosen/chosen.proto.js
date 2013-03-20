@@ -330,7 +330,7 @@ Copyright (c) 2011 by Harvest
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="chzn-search-field"><input type="text" value="#{default}" class="chzn-default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="chzn-search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="chzn-search-choice-close" rel="#{position}"></a></li>');
       this.choice_noclose_temp = new Template('<li class="chzn-search-choice chzn-search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
-      return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
+      return this.no_results_temp = new Template('<li class="chzn-no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
     };
 
     Chosen.prototype.set_up_html = function() {
@@ -371,7 +371,7 @@ Copyright (c) 2011 by Harvest
       this.search_field = this.container.down('input');
       this.search_results = this.container.down('ul.chzn-results');
       this.search_field_scale();
-      this.search_no_results = this.container.down('li.no-results');
+      this.search_no_results = this.container.down('li.chzn-no-results');
       if (this.is_multiple) {
         this.search_choices = this.container.down('ul.chzn-choices');
         this.search_container = this.container.down('li.chzn-search-field');
@@ -957,7 +957,7 @@ Copyright (c) 2011 by Harvest
 
       nr = null;
       _results = [];
-      while (nr = this.search_results.down(".no-results")) {
+      while (nr = this.search_results.down(".chzn-no-results")) {
         _results.push(nr.remove());
       }
       return _results;

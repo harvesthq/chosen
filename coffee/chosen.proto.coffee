@@ -21,7 +21,7 @@ class Chosen extends AbstractChosen
     @multi_temp = new Template('<ul class="chzn-choices"><li class="chzn-search-field"><input type="text" value="#{default}" class="chzn-default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="chzn-search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="chzn-search-choice-close" rel="#{position}"></a></li>')
     @choice_noclose_temp = new Template('<li class="chzn-search-choice chzn-search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
-    @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
+    @no_results_temp = new Template('<li class="chzn-no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
     @container_id = @form_field.identify().replace(/[^\w]/g, '_') + "_chzn"
@@ -54,7 +54,7 @@ class Chosen extends AbstractChosen
     @search_results = @container.down('ul.chzn-results')
     this.search_field_scale()
 
-    @search_no_results = @container.down('li.no-results')
+    @search_no_results = @container.down('li.chzn-no-results')
 
     if @is_multiple
       @search_choices = @container.down('ul.chzn-choices')
@@ -465,7 +465,7 @@ class Chosen extends AbstractChosen
 
   no_results_clear: ->
     nr = null
-    nr.remove() while nr = @search_results.down(".no-results")
+    nr.remove() while nr = @search_results.down(".chzn-no-results")
 
 
   keydown_arrow: ->

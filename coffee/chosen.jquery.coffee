@@ -71,7 +71,7 @@ class Chosen extends AbstractChosen
     @search_results = @container.find('ul.chzn-results').first()
     this.search_field_scale()
 
-    @search_no_results = @container.find('li.no-results').first()
+    @search_no_results = @container.find('li.chzn-no-results').first()
 
     if @is_multiple
       @search_choices = @container.find('ul.chzn-choices').first()
@@ -482,13 +482,13 @@ class Chosen extends AbstractChosen
       this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
-    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
+    no_results_html = $('<li class="chzn-no-results">' + @results_none_found + ' "<span></span>"</li>')
     no_results_html.find("span").first().html(terms)
 
     @search_results.append no_results_html
 
   no_results_clear: ->
-    @search_results.find(".no-results").remove()
+    @search_results.find(".chzn-no-results").remove()
 
   keydown_arrow: ->
     if not @result_highlight

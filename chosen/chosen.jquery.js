@@ -389,7 +389,7 @@ Copyright (c) 2011 by Harvest
       this.search_field = this.container.find('input').first();
       this.search_results = this.container.find('ul.chzn-results').first();
       this.search_field_scale();
-      this.search_no_results = this.container.find('li.no-results').first();
+      this.search_no_results = this.container.find('li.chzn-no-results').first();
       if (this.is_multiple) {
         this.search_choices = this.container.find('ul.chzn-choices').first();
         this.search_container = this.container.find('li.chzn-search-field').first();
@@ -957,13 +957,13 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.no_results = function(terms) {
       var no_results_html;
 
-      no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"</li>');
+      no_results_html = $('<li class="chzn-no-results">' + this.results_none_found + ' "<span></span>"</li>');
       no_results_html.find("span").first().html(terms);
       return this.search_results.append(no_results_html);
     };
 
     Chosen.prototype.no_results_clear = function() {
-      return this.search_results.find(".no-results").remove();
+      return this.search_results.find(".chzn-no-results").remove();
     };
 
     Chosen.prototype.keydown_arrow = function() {

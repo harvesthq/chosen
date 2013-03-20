@@ -271,7 +271,7 @@
 .chzn-container .chzn-results .chzn-highlighted em {
   background: transparent;
 }
-.chzn-container .chzn-results .no-results {
+.chzn-container .chzn-results .chzn-no-results {
   background: #f4f4f4;
   display: list-item;
 }
