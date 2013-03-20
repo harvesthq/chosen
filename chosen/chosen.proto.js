@@ -192,7 +192,7 @@ Copyright (c) 2011 by Harvest
 
       if (!option.disabled) {
         option.dom_id = this.container_id + "_o_" + option.array_index;
-        classes = option.selected && this.is_multiple ? [] : ["active-result"];
+        classes = option.selected && this.is_multiple ? [] : ["chzn-active-result"];
         if (option.selected) {
           classes.push("result-selected");
         }
@@ -667,7 +667,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.search_results_mouseup = function(evt) {
       var target;
 
-      target = evt.target.hasClassName("active-result") ? evt.target : evt.target.up(".active-result");
+      target = evt.target.hasClassName("chzn-active-result") ? evt.target : evt.target.up(".chzn-active-result");
       if (target) {
         this.result_highlight = target;
         this.result_select(evt);
@@ -678,14 +678,14 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.search_results_mouseover = function(evt) {
       var target;
 
-      target = evt.target.hasClassName("active-result") ? evt.target : evt.target.up(".active-result");
+      target = evt.target.hasClassName("chzn-active-result") ? evt.target : evt.target.up(".chzn-active-result");
       if (target) {
         return this.result_do_highlight(target);
       }
     };
 
     Chosen.prototype.search_results_mouseout = function(evt) {
-      if (evt.target.hasClassName('active-result') || evt.target.up('.active-result')) {
+      if (evt.target.hasClassName('chzn-active-result') || evt.target.up('.chzn-active-result')) {
         return this.result_clear_highlight();
       }
     };
@@ -809,11 +809,11 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.result_activate = function(el) {
-      return el.addClassName("active-result");
+      return el.addClassName("chzn-active-result");
     };
 
     Chosen.prototype.result_deactivate = function(el) {
-      return el.removeClassName("active-result");
+      return el.removeClassName("chzn-active-result");
     };
 
     Chosen.prototype.result_deselect = function(pos) {
@@ -824,7 +824,7 @@ Copyright (c) 2011 by Harvest
         result_data.selected = false;
         this.form_field.options[result_data.options_index].selected = false;
         result = $(this.container_id + "_o_" + pos);
-        result.removeClassName("result-selected").addClassName("active-result").show();
+        result.removeClassName("result-selected").addClassName("chzn-active-result").show();
         this.result_clear_highlight();
         this.winnow_results();
         if (typeof Event.simulate === 'function') {
@@ -935,10 +935,10 @@ Copyright (c) 2011 by Harvest
 
       if (!this.result_highlight) {
         if (!this.is_multiple) {
-          do_high = this.search_results.down(".result-selected.active-result");
+          do_high = this.search_results.down(".result-selected.chzn-active-result");
         }
         if (do_high == null) {
-          do_high = this.search_results.down(".active-result");
+          do_high = this.search_results.down(".chzn-active-result");
         }
         if (do_high != null) {
           return this.result_do_highlight(do_high);
@@ -966,7 +966,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.keydown_arrow = function() {
       var actives, nexts, sibs;
 
-      actives = this.search_results.select("li.active-result");
+      actives = this.search_results.select("li.chzn-active-result");
       if (actives.length) {
         if (!this.result_highlight) {
           this.result_do_highlight(actives.first());
@@ -990,7 +990,7 @@ Copyright (c) 2011 by Harvest
         return this.results_show();
       } else if (this.result_highlight) {
         sibs = this.result_highlight.previousSiblings();
-        actives = this.search_results.select("li.active-result");
+        actives = this.search_results.select("li.chzn-active-result");
         prevs = sibs.intersect(actives);
         if (prevs.length) {
           return this.result_do_highlight(prevs.first());

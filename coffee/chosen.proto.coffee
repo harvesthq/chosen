@@ -259,18 +259,18 @@ class Chosen extends AbstractChosen
       @search_field.removeClassName "chzn-default"
 
   search_results_mouseup: (evt) ->
-    target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
+    target = if evt.target.hasClassName("chzn-active-result") then evt.target else evt.target.up(".chzn-active-result")
     if target
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
   search_results_mouseover: (evt) ->
-    target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
+    target = if evt.target.hasClassName("chzn-active-result") then evt.target else evt.target.up(".chzn-active-result")
     this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
-    this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
+    this.result_clear_highlight() if evt.target.hasClassName('chzn-active-result') or evt.target.up('.chzn-active-result')
 
 
   choices_click: (evt) ->
@@ -360,10 +360,10 @@ class Chosen extends AbstractChosen
       this.search_field_scale()
 
   result_activate: (el) ->
-    el.addClassName("active-result")
+    el.addClassName("chzn-active-result")
 
   result_deactivate: (el) ->
-    el.removeClassName("active-result")
+    el.removeClassName("chzn-active-result")
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]
@@ -373,7 +373,7 @@ class Chosen extends AbstractChosen
 
       @form_field.options[result_data.options_index].selected = false
       result = $(@container_id + "_o_" + pos)
-      result.removeClassName("result-selected").addClassName("active-result").show()
+      result.removeClassName("result-selected").addClassName("chzn-active-result").show()
 
       this.result_clear_highlight()
       this.winnow_results()
@@ -453,10 +453,10 @@ class Chosen extends AbstractChosen
     if not @result_highlight
 
       if not @is_multiple
-        do_high = @search_results.down(".result-selected.active-result")
+        do_high = @search_results.down(".result-selected.chzn-active-result")
 
       if not do_high?
-        do_high = @search_results.down(".active-result")
+        do_high = @search_results.down(".chzn-active-result")
 
       this.result_do_highlight do_high if do_high?
 
@@ -469,7 +469,7 @@ class Chosen extends AbstractChosen
 
 
   keydown_arrow: ->
-    actives = @search_results.select("li.active-result")
+    actives = @search_results.select("li.chzn-active-result")
     if actives.length
       if not @result_highlight
         this.result_do_highlight actives.first()
@@ -484,7 +484,7 @@ class Chosen extends AbstractChosen
       this.results_show()
     else if @result_highlight
       sibs = @result_highlight.previousSiblings()
-      actives = @search_results.select("li.active-result")
+      actives = @search_results.select("li.chzn-active-result")
       prevs = sibs.intersect(actives)
 
       if prevs.length

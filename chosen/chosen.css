@@ -250,7 +250,7 @@
   margin: 0;
   list-style: none;
 }
-.chzn-container .chzn-results .active-result {
+.chzn-container .chzn-results .chzn-active-result {
   cursor: pointer;
   display: list-item;
 }
