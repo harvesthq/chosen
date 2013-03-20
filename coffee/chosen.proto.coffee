@@ -199,7 +199,7 @@ class Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       @result_highlight = el
-      @result_highlight.addClassName "highlighted"
+      @result_highlight.addClassName "chzn-highlighted"
 
       maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
       visible_top = @search_results.scrollTop
@@ -214,7 +214,7 @@ class Chosen extends AbstractChosen
         @search_results.scrollTop = high_top
 
   result_clear_highlight: ->
-    @result_highlight.removeClassName('highlighted') if @result_highlight
+    @result_highlight.removeClassName('chzn-highlighted') if @result_highlight
     @result_highlight = null
 
   results_show: ->

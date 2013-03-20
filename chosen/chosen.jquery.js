@@ -602,7 +602,7 @@ Copyright (c) 2011 by Harvest
       if (el.length) {
         this.result_clear_highlight();
         this.result_highlight = el;
-        this.result_highlight.addClass("highlighted");
+        this.result_highlight.addClass("chzn-highlighted");
         maxHeight = parseInt(this.search_results.css("maxHeight"), 10);
         visible_top = this.search_results.scrollTop();
         visible_bottom = maxHeight + visible_top;
@@ -618,7 +618,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.result_clear_highlight = function() {
       if (this.result_highlight) {
-        this.result_highlight.removeClass("highlighted");
+        this.result_highlight.removeClass("chzn-highlighted");
       }
       return this.result_highlight = null;
     };
