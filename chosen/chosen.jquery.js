@@ -99,7 +99,7 @@ Copyright (c) 2011 by Harvest
 
 
 (function() {
-  var AbstractChosen, root;
+  var AbstractChosen, root, searchingInProgress;
 
   root = this;
 
@@ -235,6 +235,7 @@ Copyright (c) 2011 by Harvest
       var stroke, _ref;
       stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
       this.search_field_scale();
+      var self = this;
       switch (stroke) {
         case 8:
           if (this.is_multiple && this.backstroke_length < 1 && this.choices > 0) {
@@ -263,9 +264,15 @@ Copyright (c) 2011 by Harvest
         case 17:
           break;
         default:
-          return this.results_search();
+          var self = this;
+          clearTimeout(searchingInProgress);
+          searchingInProgress = setTimeout(function(){
+        	  self.results_search();
+          }, 800);
+          return true;
       }
     };
+    
 
     AbstractChosen.prototype.generate_field_id = function() {
       var new_id;
