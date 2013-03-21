@@ -5,7 +5,7 @@ Chosen is a library for making long, unwieldy select boxes more user friendly.
 - jQuery support: 1.4+
 - Prototype support: 1.7+
 
-For documentation, usage, and examples, see:  
+For documentation, usage, and examples, see:
 http://harvesthq.github.com/chosen
 
 ### Contributing to Chosen
@@ -33,7 +33,7 @@ Once you're configured, building the JavasScript from the command line is easy:
 
     cake build                # build Chosen from source
     cake watch                # watch coffee/ for changes and build Chosen
-    
+
 If you're interested, you can find the recipes in Cakefile.
 
 

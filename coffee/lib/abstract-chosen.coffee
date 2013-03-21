@@ -54,7 +54,7 @@ class AbstractChosen
       setTimeout (=> this.container_mousedown()), 50 unless @active_field
     else
       @activate_field() unless @active_field
-  
+
   input_blur: (evt) ->
     if not @mouse_on_container
       @active_field = false
@@ -64,9 +64,9 @@ class AbstractChosen
     if not option.disabled
       option.dom_id = @container_id + "_o_" + option.array_index
 
-      classes = if option.selected and @is_multiple then [] else ["active-result"]
-      classes.push "result-selected" if option.selected
-      classes.push "group-option" if option.group_array_index?
+      classes = if option.selected and @is_multiple then [] else ["chzn-active-result"]
+      classes.push "chzn-result-selected" if option.selected
+      classes.push "chzn-group-option" if option.group_array_index?
       classes.push option.classes if option.classes != ""
 
       style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
@@ -118,7 +118,7 @@ class AbstractChosen
     new_id = this.generate_random_id()
     @form_field.id = new_id
     new_id
-  
+
   generate_random_char: ->
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     rand = Math.floor(Math.random() * chars.length)

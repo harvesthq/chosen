@@ -18,10 +18,10 @@ class Chosen extends AbstractChosen
 
     # HTML Templates
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
-    @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
-    @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
-    @choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
-    @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
+    @multi_temp = new Template('<ul class="chzn-choices"><li class="chzn-search-field"><input type="text" value="#{default}" class="chzn-default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
+    @choice_temp = new Template('<li class="chzn-search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="chzn-search-choice-close" rel="#{position}"></a></li>')
+    @choice_noclose_temp = new Template('<li class="chzn-search-choice chzn-search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
+    @no_results_temp = new Template('<li class="chzn-no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
     @container_id = @form_field.identify().replace(/[^\w]/g, '_') + "_chzn"
@@ -38,7 +38,7 @@ class Chosen extends AbstractChosen
       'class': container_classes.join ' '
       'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
       'title': @form_field.title
-    
+
     base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
     @form_field.hide().insert({ after: base_template })
@@ -54,11 +54,11 @@ class Chosen extends AbstractChosen
     @search_results = @container.down('ul.chzn-results')
     this.search_field_scale()
 
-    @search_no_results = @container.down('li.no-results')
+    @search_no_results = @container.down('li.chzn-no-results')
 
     if @is_multiple
       @search_choices = @container.down('ul.chzn-choices')
-      @search_container = @container.down('li.search-field')
+      @search_container = @container.down('li.chzn-search-field')
     else
       @search_container = @container.down('div.chzn-search')
       @selected_item = @container.down('.chzn-single')
@@ -107,7 +107,7 @@ class Chosen extends AbstractChosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
-      target_closelink =  if evt? then evt.target.hasClassName "search-choice-close" else false
+      target_closelink =  if evt? then evt.target.hasClassName "chzn-search-choice-close" else false
       if evt and evt.type is "mousedown" and not @results_showing
         evt.stop()
       if not @pending_destroy_click and not target_closelink
@@ -159,7 +159,7 @@ class Chosen extends AbstractChosen
     @results_data = root.SelectParser.select_to_array @form_field
 
     if @is_multiple and @choices > 0
-      @search_choices.select("li.search-choice").invoke("remove")
+      @search_choices.select("li.chzn-search-choice").invoke("remove")
       @choices = 0
     else if not @is_multiple
       @selected_item.addClassName("chzn-default").down("span").update(@default_text)
@@ -191,7 +191,7 @@ class Chosen extends AbstractChosen
   result_add_group: (group) ->
     if not group.disabled
       group.dom_id = @container_id + "_g_" + group.array_index
-      '<li id="' + group.dom_id + '" class="group-result">' + group.label.escapeHTML() + '</li>'
+      '<li id="' + group.dom_id + '" class="chzn-group-result">' + group.label.escapeHTML() + '</li>'
     else
       ""
 
@@ -199,7 +199,7 @@ class Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       @result_highlight = el
-      @result_highlight.addClassName "highlighted"
+      @result_highlight.addClassName "chzn-highlighted"
 
       maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
       visible_top = @search_results.scrollTop
@@ -214,7 +214,7 @@ class Chosen extends AbstractChosen
         @search_results.scrollTop = high_top
 
   result_clear_highlight: ->
-    @result_highlight.removeClassName('highlighted') if @result_highlight
+    @result_highlight.removeClassName('chzn-highlighted') if @result_highlight
     @result_highlight = null
 
   results_show: ->
@@ -253,29 +253,29 @@ class Chosen extends AbstractChosen
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
       @search_field.value = @default_text
-      @search_field.addClassName "default"
+      @search_field.addClassName "chzn-default"
     else
       @search_field.value = ""
-      @search_field.removeClassName "default"
+      @search_field.removeClassName "chzn-default"
 
   search_results_mouseup: (evt) ->
-    target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
+    target = if evt.target.hasClassName("chzn-active-result") then evt.target else evt.target.up(".chzn-active-result")
     if target
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
   search_results_mouseover: (evt) ->
-    target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
+    target = if evt.target.hasClassName("chzn-active-result") then evt.target else evt.target.up(".chzn-active-result")
     this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
-    this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
+    this.result_clear_highlight() if evt.target.hasClassName('chzn-active-result') or evt.target.up('.chzn-active-result')
 
 
   choices_click: (evt) ->
     evt.preventDefault()
-    if( @active_field and not(evt.target.hasClassName('search-choice') or evt.target.up('.search-choice')) and not @results_showing )
+    if( @active_field and not(evt.target.hasClassName('chzn-search-choice') or evt.target.up('.chzn-search-choice')) and not @results_showing )
       this.results_show()
 
   choice_build: (item) ->
@@ -332,11 +332,11 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.result_deactivate high
       else
-        @search_results.descendants(".result-selected").invoke "removeClassName", "result-selected"
+        @search_results.descendants(".chzn-result-selected").invoke "removeClassName", "chzn-result-selected"
         @selected_item.removeClassName("chzn-default")
         @result_single_selected = high
 
-      high.addClassName("result-selected")
+      high.addClassName("chzn-result-selected")
 
       position = high.id.substr(high.id.lastIndexOf("_") + 1 )
       item = @results_data[position]
@@ -360,10 +360,10 @@ class Chosen extends AbstractChosen
       this.search_field_scale()
 
   result_activate: (el) ->
-    el.addClassName("active-result")
+    el.addClassName("chzn-active-result")
 
   result_deactivate: (el) ->
-    el.removeClassName("active-result")
+    el.removeClassName("chzn-active-result")
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]
@@ -373,7 +373,7 @@ class Chosen extends AbstractChosen
 
       @form_field.options[result_data.options_index].selected = false
       result = $(@container_id + "_o_" + pos)
-      result.removeClassName("result-selected").addClassName("active-result").show()
+      result.removeClassName("chzn-result-selected").addClassName("chzn-active-result").show()
 
       this.result_clear_highlight()
       this.winnow_results()
@@ -385,7 +385,7 @@ class Chosen extends AbstractChosen
       return false
 
   single_deselect_control_build: ->
-    @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } if @allow_single_deselect and not @selected_item.down("abbr")
+    @selected_item.down("span").insert { after: "<abbr class=\"chzn-search-choice-close\"></abbr>" } if @allow_single_deselect and not @selected_item.down("abbr")
 
   winnow_results: ->
     this.no_results_clear()
@@ -444,19 +444,19 @@ class Chosen extends AbstractChosen
     lis = @search_results.select("li")
 
     for li in lis
-      if li.hasClassName("group-result")
+      if li.hasClassName("chzn-group-result")
         li.show()
-      else if not @is_multiple or not li.hasClassName("result-selected")
+      else if not @is_multiple or not li.hasClassName("chzn-result-selected")
         this.result_activate li
 
   winnow_results_set_highlight: ->
     if not @result_highlight
 
       if not @is_multiple
-        do_high = @search_results.down(".result-selected.active-result")
+        do_high = @search_results.down(".chzn-result-selected.chzn-active-result")
 
       if not do_high?
-        do_high = @search_results.down(".active-result")
+        do_high = @search_results.down(".chzn-active-result")
 
       this.result_do_highlight do_high if do_high?
 
@@ -465,11 +465,11 @@ class Chosen extends AbstractChosen
 
   no_results_clear: ->
     nr = null
-    nr.remove() while nr = @search_results.down(".no-results")
+    nr.remove() while nr = @search_results.down(".chzn-no-results")
 
 
   keydown_arrow: ->
-    actives = @search_results.select("li.active-result")
+    actives = @search_results.select("li.chzn-active-result")
     if actives.length
       if not @result_highlight
         this.result_do_highlight actives.first()
@@ -484,7 +484,7 @@ class Chosen extends AbstractChosen
       this.results_show()
     else if @result_highlight
       sibs = @result_highlight.previousSiblings()
-      actives = @search_results.select("li.active-result")
+      actives = @search_results.select("li.chzn-active-result")
       prevs = sibs.intersect(actives)
 
       if prevs.length
@@ -499,16 +499,16 @@ class Chosen extends AbstractChosen
       this.clear_backstroke()
     else
       next_available_destroy = @search_container.siblings().last()
-      if next_available_destroy and next_available_destroy.hasClassName("search-choice") and not next_available_destroy.hasClassName("search-choice-disabled")
+      if next_available_destroy and next_available_destroy.hasClassName("chzn-search-choice") and not next_available_destroy.hasClassName("chzn-search-choice-disabled")
         @pending_backstroke = next_available_destroy
-        @pending_backstroke.addClassName("search-choice-focus") if @pending_backstroke
+        @pending_backstroke.addClassName("chzn-search-choice-focus") if @pending_backstroke
         if @single_backstroke_delete
           @keydown_backstroke()
         else
-          @pending_backstroke.addClassName("search-choice-focus")
+          @pending_backstroke.addClassName("chzn-search-choice-focus")
 
   clear_backstroke: ->
-    @pending_backstroke.removeClassName("search-choice-focus") if @pending_backstroke
+    @pending_backstroke.removeClassName("chzn-search-choice-focus") if @pending_backstroke
     @pending_backstroke = null
 
   keydown_checker: (evt) ->

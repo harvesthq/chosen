@@ -10,11 +10,11 @@ $.fn.extend({
     ua = navigator.userAgent.toLowerCase();
 
     match = /(msie) ([\w.]+)/.exec( ua ) || [];
-    
+
     browser =
       name: match[ 1 ] || ""
       version: match[ 2 ] || "0"
-      
+
     # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
     # Continue on if running IE document type but in compatibility mode
     return this if browser.name is "msie" and (browser.version is "6.0" or  (browser.version is "7.0" and document.documentMode is 7 ))
@@ -45,7 +45,7 @@ class Chosen extends AbstractChosen
 
     @f_width = @form_field_jq.outerWidth()
 
-    container_props = 
+    container_props =
       id: @container_id
       class: container_classes.join ' '
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
@@ -54,7 +54,7 @@ class Chosen extends AbstractChosen
     container_div = ($ "<div />", container_props)
 
     if @is_multiple
-      container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
+      container_div.html '<ul class="chzn-choices"><li class="chzn-search-field"><input type="text" value="' + @default_text + '" class="chzn-default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
     else
       container_div.html '<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
 
@@ -71,11 +71,11 @@ class Chosen extends AbstractChosen
     @search_results = @container.find('ul.chzn-results').first()
     this.search_field_scale()
 
-    @search_no_results = @container.find('li.no-results').first()
+    @search_no_results = @container.find('li.chzn-no-results').first()
 
     if @is_multiple
       @search_choices = @container.find('ul.chzn-choices').first()
-      @search_container = @container.find('li.search-field').first()
+      @search_container = @container.find('li.chzn-search-field').first()
     else
       @search_container = @container.find('div.chzn-search').first()
       @selected_item = @container.find('.chzn-single').first()
@@ -125,7 +125,7 @@ class Chosen extends AbstractChosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
-      target_closelink =  if evt? then ($ evt.target).hasClass "search-choice-close" else false
+      target_closelink =  if evt? then ($ evt.target).hasClass "chzn-search-choice-close" else false
       if evt and evt.type is "mousedown" and not @results_showing
         evt.preventDefault()
       if not @pending_destroy_click and not target_closelink
@@ -179,7 +179,7 @@ class Chosen extends AbstractChosen
     @results_data = root.SelectParser.select_to_array @form_field
 
     if @is_multiple and @choices > 0
-      @search_choices.find("li.search-choice").remove()
+      @search_choices.find("li.chzn-search-choice").remove()
       @choices = 0
     else if not @is_multiple
       @selected_item.addClass("chzn-default").find("span").text(@default_text)
@@ -211,7 +211,7 @@ class Chosen extends AbstractChosen
   result_add_group: (group) ->
     if not group.disabled
       group.dom_id = @container_id + "_g_" + group.array_index
-      '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
+      '<li id="' + group.dom_id + '" class="chzn-group-result">' + $("<div />").text(group.label).html() + '</li>'
     else
       ""
 
@@ -220,7 +220,7 @@ class Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       @result_highlight = el
-      @result_highlight.addClass "highlighted"
+      @result_highlight.addClass "chzn-highlighted"
 
       maxHeight = parseInt @search_results.css("maxHeight"), 10
       visible_top = @search_results.scrollTop()
@@ -235,7 +235,7 @@ class Chosen extends AbstractChosen
         @search_results.scrollTop high_top
 
   result_clear_highlight: ->
-    @result_highlight.removeClass "highlighted" if @result_highlight
+    @result_highlight.removeClass "chzn-highlighted" if @result_highlight
     @result_highlight = null
 
   results_show: ->
@@ -274,29 +274,29 @@ class Chosen extends AbstractChosen
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
       @search_field.val(@default_text)
-      @search_field.addClass "default"
+      @search_field.addClass "chzn-default"
     else
       @search_field.val("")
-      @search_field.removeClass "default"
+      @search_field.removeClass "chzn-default"
 
   search_results_mouseup: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+    target = if $(evt.target).hasClass "chzn-active-result" then $(evt.target) else $(evt.target).parents(".chzn-active-result").first()
     if target.length
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
   search_results_mouseover: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+    target = if $(evt.target).hasClass "chzn-active-result" then $(evt.target) else $(evt.target).parents(".chzn-active-result").first()
     this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
-    this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
+    this.result_clear_highlight() if $(evt.target).hasClass "chzn-active-result" or $(evt.target).parents('.chzn-active-result').first()
 
 
   choices_click: (evt) ->
     evt.preventDefault()
-    if( @active_field and not($(evt.target).hasClass "search-choice" or $(evt.target).parents('.search-choice').first) and not @results_showing )
+    if( @active_field and not($(evt.target).hasClass "chzn-search-choice" or $(evt.target).parents('.chzn-search-choice').first) and not @results_showing )
       this.results_show()
 
   choice_build: (item) ->
@@ -306,9 +306,9 @@ class Chosen extends AbstractChosen
     choice_id = @container_id + "_c_" + item.array_index
     @choices += 1
     if item.disabled
-      html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>'
+      html = '<li class="chzn-search-choice chzn-search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>'
     else
-      html = '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
+      html = '<li class="chzn-search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="chzn-search-choice-close" rel="' + item.array_index + '"></a></li>'
     @search_container.before  html
     link = $('#' + choice_id).find("a").first()
     link.click (evt) => this.choice_destroy_link_click(evt)
@@ -355,11 +355,11 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.result_deactivate high
       else
-        @search_results.find(".result-selected").removeClass "result-selected"
+        @search_results.find(".chzn-result-selected").removeClass "chzn-result-selected"
         @result_single_selected = high
         @selected_item.removeClass("chzn-default")
 
-      high.addClass "result-selected"
+      high.addClass "chzn-result-selected"
 
       position = high_id.substr(high_id.lastIndexOf("_") + 1 )
       item = @results_data[position]
@@ -382,10 +382,10 @@ class Chosen extends AbstractChosen
       this.search_field_scale()
 
   result_activate: (el) ->
-    el.addClass("active-result")
+    el.addClass("chzn-active-result")
 
   result_deactivate: (el) ->
-    el.removeClass("active-result")
+    el.removeClass("chzn-active-result")
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]
@@ -395,7 +395,7 @@ class Chosen extends AbstractChosen
 
       @form_field.options[result_data.options_index].selected = false
       result = $("#" + @container_id + "_o_" + pos)
-      result.removeClass("result-selected").addClass("active-result").show()
+      result.removeClass("chzn-result-selected").addClass("chzn-active-result").show()
 
       this.result_clear_highlight()
       this.winnow_results()
@@ -408,7 +408,7 @@ class Chosen extends AbstractChosen
       return false
 
   single_deselect_control_build: ->
-    @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" if @allow_single_deselect and @selected_item.find("abbr").length < 1
+    @selected_item.find("span").first().after "<abbr class=\"chzn-search-choice-close\"></abbr>" if @allow_single_deselect and @selected_item.find("abbr").length < 1
 
   winnow_results: ->
     this.no_results_clear()
@@ -468,34 +468,34 @@ class Chosen extends AbstractChosen
 
     for li in lis
       li = $(li)
-      if li.hasClass "group-result"
+      if li.hasClass "chzn-group-result"
         li.css('display', 'auto')
-      else if not @is_multiple or not li.hasClass "result-selected"
+      else if not @is_multiple or not li.hasClass "chzn-result-selected"
         this.result_activate li
 
   winnow_results_set_highlight: ->
     if not @result_highlight
 
-      selected_results = if not @is_multiple then @search_results.find(".result-selected.active-result") else []
-      do_high = if selected_results.length then selected_results.first() else @search_results.find(".active-result").first()
+      selected_results = if not @is_multiple then @search_results.find(".chzn-result-selected.chzn-active-result") else []
+      do_high = if selected_results.length then selected_results.first() else @search_results.find(".chzn-active-result").first()
 
       this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
-    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
+    no_results_html = $('<li class="chzn-no-results">' + @results_none_found + ' "<span></span>"</li>')
     no_results_html.find("span").first().html(terms)
 
     @search_results.append no_results_html
 
   no_results_clear: ->
-    @search_results.find(".no-results").remove()
+    @search_results.find(".chzn-no-results").remove()
 
   keydown_arrow: ->
     if not @result_highlight
-      first_active = @search_results.find("li.active-result").first()
+      first_active = @search_results.find("li.chzn-active-result").first()
       this.result_do_highlight $(first_active) if first_active
     else if @results_showing
-      next_sib = @result_highlight.nextAll("li.active-result").first()
+      next_sib = @result_highlight.nextAll("li.chzn-active-result").first()
       this.result_do_highlight next_sib if next_sib
     this.results_show() if not @results_showing
 
@@ -503,7 +503,7 @@ class Chosen extends AbstractChosen
     if not @results_showing and not @is_multiple
       this.results_show()
     else if @result_highlight
-      prev_sibs = @result_highlight.prevAll("li.active-result")
+      prev_sibs = @result_highlight.prevAll("li.chzn-active-result")
 
       if prev_sibs.length
         this.result_do_highlight prev_sibs.first()
@@ -516,16 +516,16 @@ class Chosen extends AbstractChosen
       this.choice_destroy @pending_backstroke.find("a").first()
       this.clear_backstroke()
     else
-      next_available_destroy = @search_container.siblings("li.search-choice").last()
-      if next_available_destroy.length and not next_available_destroy.hasClass("search-choice-disabled")
+      next_available_destroy = @search_container.siblings("li.chzn-search-choice").last()
+      if next_available_destroy.length and not next_available_destroy.hasClass("chzn-search-choice-disabled")
         @pending_backstroke = next_available_destroy
         if @single_backstroke_delete
           @keydown_backstroke()
         else
-          @pending_backstroke.addClass "search-choice-focus"
+          @pending_backstroke.addClass "chzn-search-choice-focus"
 
   clear_backstroke: ->
-    @pending_backstroke.removeClass "search-choice-focus" if @pending_backstroke
+    @pending_backstroke.removeClass "chzn-search-choice-focus" if @pending_backstroke
     @pending_backstroke = null
 
   keydown_checker: (evt) ->
