@@ -12,6 +12,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "cssmin": "~0.3.2",
     "coffee-script": ">= 1.4",
     "uglify-js": ">= 1.2.5 <2.0"
   }
