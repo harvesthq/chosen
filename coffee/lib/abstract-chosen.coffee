@@ -6,6 +6,8 @@ root = this
 
 class AbstractChosen
 
+  searchingInProgress = null
+
   constructor: (@form_field, @options={}) ->
     @is_multiple = @form_field.multiple
     this.set_default_text()
@@ -112,7 +114,11 @@ class AbstractChosen
         return true
       when 9, 38, 40, 16, 91, 17
         # don't do anything on these keys
-      else this.results_search()
+      else 
+        self = this
+        clearTimeout searchingInProgress
+        searchingInProgress = setTimeout (-> self.results_search()), 800
+        return true
 
   generate_field_id: ->
     new_id = this.generate_random_id()
