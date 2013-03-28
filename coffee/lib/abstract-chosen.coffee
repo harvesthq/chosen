@@ -7,13 +7,11 @@ root = this
 class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
+    @is_multiple = @form_field.multiple
+    this.set_default_text()
     this.set_default_values()
 
-    @is_multiple = @form_field.multiple
-
     this.setup()
-
-    this.set_default_text()
 
     this.set_up_html()
     this.register_observers()
@@ -30,11 +28,14 @@ class AbstractChosen
     @result_single_selected = null
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
     @disable_search_threshold = @options.disable_search_threshold || 0
+    @disable_search = @options.disable_search || false
+    @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
     @search_contains = @options.search_contains || false
     @choices = 0
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
     @allow_custom_value = false
+    @inherit_select_classes = @options.inherit_select_classes || false
     true
 
   set_default_text: ->
@@ -59,7 +60,10 @@ class AbstractChosen
   mouse_leave: -> @mouse_on_container = false
 
   input_focus: (evt) ->
-    setTimeout (=> this.container_mousedown()), 50 unless @active_field
+    if @is_multiple
+      setTimeout (=> this.container_mousedown()), 50 unless @active_field
+    else
+      @activate_field() unless @active_field
 
   input_blur: (evt) ->
     if not @mouse_on_container
@@ -82,6 +86,7 @@ class AbstractChosen
       ""
 
   results_update_field: ->
+    this.set_default_text()
     this.results_reset_cleanup() if not @is_multiple
     this.result_clear_highlight()
     @result_single_selected = null

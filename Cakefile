@@ -81,7 +81,8 @@ task 'build', 'build Chosen from source', build = (cb) ->
           uglify.gen_code uglify.ast_squeeze uglify.ast_mangle parser.parse code
         ), ';'
     package_npm () ->
-      cb() if typeof cb is 'function'
+      package_jquery () ->
+        cb() if typeof cb is 'function'
   catch e
     print_error e, file_name, file_contents
 
@@ -101,6 +102,17 @@ task 'watch', 'watch coffee/ for changes and build Chosen', ->
 task 'package_npm', 'generate the package.json file for npm', package_npm = (cb) ->
   try
     package_file = 'package.json'
+    package_obj = JSON.parse("#{fs.readFileSync package_file}")
+    package_obj['version'] = version()
+    fs.writeFileSync package_file, JSON.stringify(package_obj, null, 2)
+    console.log "Wrote #{package_file}"
+    cb() if typeof cb is 'function'
+  catch e
+    print_error e, package_file
+
+task 'package_jquery', 'generate the chosen.jquery.json file for the jQuery plugin website', package_jquery = (cb) ->
+  try
+    package_file = 'chosen.jquery.json'
     package_obj = JSON.parse("#{fs.readFileSync package_file}")
     package_obj['version'] = version()
     fs.writeFileSync package_file, JSON.stringify(package_obj, null, 2)
@@ -174,6 +186,6 @@ task 'release', 'build, tag the current release, and push', ->
             push_repo ['--tags'], ->
               console.log "Successfully tagged #{version_tag()}: https://github.com/harvesthq/chosen/tree/#{version_tag()}"
 
-            , untag_release
-          , untag_release
-        , untag_release
+            , untag_release ('push repo with tags')
+          , untag_release ('push repo')
+        , untag_release ('tag release')
