@@ -8,10 +8,12 @@ class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
     @is_multiple = @form_field.multiple
-    this.set_default_text()
-    this.set_default_values()
 
+    this.set_default_values()
     this.setup()
+
+    this.set_default_text()
+
 
     this.set_up_html()
     this.register_observers()
@@ -34,7 +36,7 @@ class AbstractChosen
     @choices = 0
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
-    @allow_custom_value = false
+    @allow_custom_value = if @options.allow_custom_value? then @options.allow_custom_value else false
     @inherit_select_classes = @options.inherit_select_classes || false
     true
 
