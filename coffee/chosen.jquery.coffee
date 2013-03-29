@@ -383,7 +383,7 @@ class Chosen extends AbstractChosen
       @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field_jq.val() != @current_value
       @current_value = @form_field_jq.val()
       this.search_field_scale()
-    else if (not @is_multiple) and @allow_custom_value
+    else if @allow_custom_value
       value = @search_field.val()
       group = @add_unique_custom_group()
       option = $ '<option value="' + value + '">' + value + '</option>'
