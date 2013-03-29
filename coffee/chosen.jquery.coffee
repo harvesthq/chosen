@@ -10,11 +10,11 @@ $.fn.extend({
     ua = navigator.userAgent.toLowerCase();
 
     match = /(msie) ([\w.]+)/.exec( ua ) || [];
-    
+
     browser =
       name: match[ 1 ] || ""
       version: match[ 2 ] || "0"
-      
+
     # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
     # Continue on if running IE document type but in compatibility mode
     return this if browser.name is "msie" and (browser.version is "6.0" or  (browser.version is "7.0" and document.documentMode is 7 ))
@@ -30,6 +30,8 @@ class Chosen extends AbstractChosen
     @form_field_jq = $ @form_field
     @current_value = @form_field_jq.val()
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
+    if not @allow_custom_value
+      @allow_custom_value = @form_field_jq.hasClass("chzn-custom-value")
 
   finish_setup: ->
     @form_field_jq.addClass "chzn-done"
@@ -45,7 +47,7 @@ class Chosen extends AbstractChosen
 
     @f_width = @form_field_jq.outerWidth()
 
-    container_props = 
+    container_props =
       id: @container_id
       class: container_classes.join ' '
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
@@ -57,6 +59,7 @@ class Chosen extends AbstractChosen
       container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
     else
       container_div.html '<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
+
 
     @form_field_jq.hide().after container_div
     @container = ($ '#' + @container_id)
@@ -380,6 +383,30 @@ class Chosen extends AbstractChosen
       @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field_jq.val() != @current_value
       @current_value = @form_field_jq.val()
       this.search_field_scale()
+    else if @allow_custom_value
+      value = @search_field.val()
+      group = @add_unique_custom_group()
+      option = $ '<option value="' + value + '">' + value + '</option>'
+      group.append option
+
+      @form_field_jq.append group
+      @form_field.options[@form_field.options.length-1].selected = true
+
+      @results_hide() unless evt.metaKey
+      @results_build()
+
+  find_custom_group: ->
+    found = group for group in $('optgroup', @form_field) when group.getAttribute('label') is @custom_group_text
+
+    found
+
+  add_unique_custom_group: ->
+    group = @find_custom_group()
+    if not group
+      group = $ ('<optgroup label="' + @custom_group_text + '"></optgroup>')
+
+    $ group
+
 
   result_activate: (el) ->
     el.addClass("active-result")

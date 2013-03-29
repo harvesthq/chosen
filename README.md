@@ -5,8 +5,23 @@ Chosen is a library for making long, unwieldy select boxes more user friendly.
 - jQuery support: 1.4+
 - Prototype support: 1.7+
 
-For documentation, usage, and examples, see:  
+For documentation, usage, and examples, see:
 http://harvesthq.github.com/chosen
+
+### Adding a new option on the fly
+
+You can configure it to accept new values on the fly, just typing into the search field.
+There is 2 ways to do that:
+
+Add a class "chzn-custom-value" to the original select field:
+```
+<select id="list" class="chzn-custom-value">...
+```
+
+Or add an option "allow_custom_value: true" to the constructor:
+```
+$(#list).chosen({allow_custom_value: true});
+```
 
 ### Contributing to Chosen
 
@@ -33,7 +48,7 @@ Once you're configured, building the JavasScript from the command line is easy:
 
     cake build                # build Chosen from source
     cake watch                # watch coffee/ for changes and build Chosen
-    
+
 If you're interested, you can find the recipes in Cakefile.
 
 
@@ -42,6 +57,7 @@ If you're interested, you can find the recipes in Cakefile.
 - Built by [Harvest](http://www.getharvest.com/). Want to work on projects like this? [We’re hiring](http://www.getharvest.com/careers)!
 - Concept and development by [Patrick Filler](http://www.patrickfiller.com/)
 - Design and CSS by [Matthew Lettini](http://matthewlettini.com/)
+- Add new value just typing by [Anderson Grüdtner Martins](http://about.me/andersonmartins)
 
 ### Notable Forks
 

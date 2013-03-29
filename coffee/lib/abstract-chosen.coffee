@@ -8,10 +8,12 @@ class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
     @is_multiple = @form_field.multiple
-    this.set_default_text()
-    this.set_default_values()
 
+    this.set_default_values()
     this.setup()
+
+    this.set_default_text()
+
 
     this.set_up_html()
     this.register_observers()
@@ -34,17 +36,27 @@ class AbstractChosen
     @choices = 0
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
+    @allow_custom_value = if @options.allow_custom_value? then @options.allow_custom_value else false
     @inherit_select_classes = @options.inherit_select_classes || false
+    true
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
       @default_text = @form_field.getAttribute("data-placeholder")
     else if @is_multiple
       @default_text = @options.placeholder_text_multiple || @options.placeholder_text || "Select Some Options"
+    else if @allow_custom_value
+      @default_text = @options.placeholder_text_single || @options.placeholder_text || "Type or Select an Option"
     else
       @default_text = @options.placeholder_text_single || @options.placeholder_text || "Select an Option"
 
-    @results_none_found = @form_field.getAttribute("data-no_results_text") || @options.no_results_text || "No results match"
+    if (@allow_custom_value)
+      @custom_group_text = @form_field.getAttribute("data-custom_group_text") || @options.custom_group_text || "Custom Value"
+      results_none_found_default = "Add custom value"
+    else
+      results_none_found_default = "No results match"
+
+    @results_none_found = @form_field.getAttribute("data-no_results_text") || @options.no_results_text || results_none_found_default
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
@@ -54,7 +66,7 @@ class AbstractChosen
       setTimeout (=> this.container_mousedown()), 50 unless @active_field
     else
       @activate_field() unless @active_field
-  
+
   input_blur: (evt) ->
     if not @mouse_on_container
       @active_field = false
@@ -119,7 +131,7 @@ class AbstractChosen
     new_id = this.generate_random_id()
     @form_field.id = new_id
     new_id
-  
+
   generate_random_char: ->
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     rand = Math.floor(Math.random() * chars.length)
