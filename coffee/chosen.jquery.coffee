@@ -10,11 +10,11 @@ $.fn.extend({
     ua = navigator.userAgent.toLowerCase();
 
     match = /(msie) ([\w.]+)/.exec( ua ) || [];
-    
+
     browser =
       name: match[ 1 ] || ""
       version: match[ 2 ] || "0"
-      
+
     # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
     # Continue on if running IE document type but in compatibility mode
     return this if browser.name is "msie" and (browser.version is "6.0" or  (browser.version is "7.0" and document.documentMode is 7 ))
@@ -24,7 +24,7 @@ $.fn.extend({
     )
 })
 
-class Chosen extends AbstractChosen
+class Chosen extends this.AbstractChosen
 
   setup: ->
     @form_field_jq = $ @form_field
@@ -45,7 +45,7 @@ class Chosen extends AbstractChosen
 
     @f_width = @form_field_jq.outerWidth()
 
-    container_props = 
+    container_props =
       id: @container_id
       class: container_classes.join ' '
       style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
