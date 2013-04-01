@@ -859,7 +859,6 @@ Copyright (c) 2011 by Harvest
             found = false;
             result_id = option.dom_id;
             result = $("#" + result_id);
-            console.log(regex, zregex, option.text, regex.test(option.text));
             if (regex.test(option.text)) {
               found = true;
               results += 1;
