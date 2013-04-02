@@ -7,14 +7,14 @@ $ = jQuery
 
 $.fn.extend({
   chosen: (options) ->
-    ua = navigator.userAgent.toLowerCase();
+    ua = navigator.userAgent.toLowerCase()
 
-    match = /(msie) ([\w.]+)/.exec( ua ) || [];
-    
+    match = /(msie) ([\w.]+)/.exec( ua ) || []
+
     browser =
       name: match[ 1 ] || ""
       version: match[ 2 ] || "0"
-      
+
     # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
     # Continue on if running IE document type but in compatibility mode
     return this if browser.name is "msie" and (browser.version is "6.0" or  (browser.version is "7.0" and document.documentMode is 7 ))
@@ -429,12 +429,12 @@ class Chosen extends AbstractChosen
           result_id = option.dom_id
           result = $("#" + result_id)
 
-          if regex.test option.html
+          if regex.test option.text
             found = true
             results += 1
-          else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
+          else if @enable_split_word_search and (option.text.indexOf(" ") >= 0 or option.text.indexOf("[") == 0)
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
+            parts = option.text.replace(/\[|\]/g, "").split(" ")
             if parts.length
               for part in parts
                 if regex.test part
@@ -443,11 +443,11 @@ class Chosen extends AbstractChosen
 
           if found
             if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
+              startpos = option.text.search zregex
+              text = option.text.substr(0, startpos + searchText.length) + '</em>' + option.text.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
             else
-              text = option.html
+              text = option.text
 
             result.html(text)
             this.result_activate result

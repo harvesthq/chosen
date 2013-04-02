@@ -38,7 +38,7 @@ class Chosen extends AbstractChosen
       'class': container_classes.join ' '
       'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
       'title': @form_field.title
-    
+
     base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
     @form_field.hide().insert({ after: base_template })
@@ -405,12 +405,12 @@ class Chosen extends AbstractChosen
           found = false
           result_id = option.dom_id
 
-          if regex.test option.html
+          if regex.test option.text
             found = true
             results += 1
-          else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
+          else if @enable_split_word_search and (option.text.indexOf(" ") >= 0 or option.text.indexOf("[") == 0)
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
+            parts = option.text.replace(/\[|\]/g, "").split(" ")
             if parts.length
               for part in parts
                 if regex.test part
@@ -419,13 +419,13 @@ class Chosen extends AbstractChosen
 
           if found
             if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
+              startpos = option.text.search zregex
+              text = option.text.substr(0, startpos + searchText.length) + '</em>' + option.text.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
             else
-              text = option.html
+              text = option.text
 
-            $(result_id).update text if $(result_id).innerHTML != text
+            $(result_id).update text if $(result_id).innerText != text
 
             this.result_activate $(result_id)
 
