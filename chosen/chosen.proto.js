@@ -392,7 +392,8 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.register_observers = function() {
-      var _this = this;
+      var scrollCallback,
+        _this = this;
 
       this.container.observe("mousedown", function(evt) {
         return _this.container_mousedown(evt);
@@ -415,6 +416,18 @@ Copyright (c) 2011 by Harvest
       this.search_results.observe("mouseout", function(evt) {
         return _this.search_results_mouseout(evt);
       });
+      scrollCallback = function(e) {
+        var bottom_overflow, delta, top_overflow;
+
+        delta = e.wheelDelta || (e.originalEvent && e.originalEvent.wheelDelta) || -e.detail;
+        bottom_overflow = this.scrollTop + this.getHeight() - this.scrollHeight >= 0;
+        top_overflow = this.scrollTop <= 0;
+        if (this.scrollHeight > this.getHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
+          return e.preventDefault();
+        }
+      };
+      this.search_results.observe("DOMMouseScroll", scrollCallback);
+      this.search_results.observe("mousewheel", scrollCallback);
       this.form_field.observe("liszt:updated", function(evt) {
         return _this.results_update_field(evt);
       });
