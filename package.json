@@ -12,7 +12,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "coffee-script": ">= 1.4",
+    "coffee-script": ">= 1.6",
     "uglify-js": ">= 1.2.5 <2.0"
   },
   "licenses": [

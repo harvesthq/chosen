@@ -152,17 +152,8 @@ push_repo = (args=[], cb, cb_err) ->
   run 'git', ['push'].concat(args), cb, cb_err
 
 print_error = (error, file_name, file_contents) ->
-  line = error.message.match /line ([0-9]+):/
-  if line && line[1] && line = parseInt(line[1])
-    contents_lines = file_contents.split "\n"
-    first = if line-4 < 0 then 0 else line-4
-    last  = if line+3 > contents_lines.size then contents_lines.size else line+3
-    console.log "Error compiling #{file_name}. \"#{error.message}\"\n"
-    index = 0
-    for line in contents_lines[first...last]
-      index++
-      line_number = first + 1 + index
-      console.log "#{(' ' for [0..(3-(line_number.toString().length))]).join('')} #{line}"
+  if error.location
+    console.log CoffeeScript.helpers.prettyErrorMessage(error, file_name, file_contents, true)
   else
     console.log """
 Error compiling #{file_name}:
@@ -170,8 +161,6 @@ Error compiling #{file_name}:
   #{error.message}
 
 """
-
-
 
 task 'release', 'build, tag the current release, and push', ->
   console.log "Trying to tag #{version_tag()}..."
