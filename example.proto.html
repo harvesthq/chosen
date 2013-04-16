@@ -1235,10 +1235,15 @@
       </div>
     </div>
 
+    <h2>Hide Search on Single Select</h2>
     <div class="side-by-side clearfix">
-      <p>It is also possible to prevent selected options being deselected by also making them disabled.</p>
+      <p>The disable_search_threshold option can be specified to hide the search input on single selects if there are fewer than (n) options.</p>
+      <code>
+        New Chosen($("chzn_select_field"),{disable_search_threshold: 10});
+      </code>
+      <p></p>
       <div>
-        <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select" id="test_me_paddington" name="test_me_form" tabindex="8">
+        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select-no-single" tabindex="9">
           <option value=""></option>
           <option>American Black Bear</option>
           <option>Asiatic Black Bear</option>
@@ -1246,7 +1251,7 @@
           <option>Giant Panda</option>
           <option selected disabled>Sloth Bear</option>
           <option disabled>Sun Bear</option>
-          <option selected disabled>Paddington Bear</option>
+          <option selected>Paddington Bear</option>
           <option selected>Polar Bear</option>
           <option disabled>Spectacled Bear</option>
         </select>
@@ -1264,7 +1269,7 @@
     <div class="side-by-side clearfix">
       <p>Setting the "No results" search text is as easy as passing an option when you create Chosen:</p>
       <code>
-        new Chosen($("chzn_select_field"),{no_results_text: "No results matched"});
+        New Chosen($("chzn_select_field"),{no_results_text: "Oops, nothing found!"});
       </code>
     </div>
 
@@ -1278,13 +1283,42 @@
       <code>
         $("chzn_select_field").observe("liszt:maxselected", function(evt) { ... });
       </code>
+      <p></p>
+      <div>
+        <em>Single Select</em>
+        <select data-placeholder="Type 'C' to view" style="width:350px;" class="chzn-select-no-results" tabindex="10">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option>Sloth Bear</option>
+          <option>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option>Spectacled Bear</option>
+        </select>
+      </div>
+      <div>
+        <em>Multiple Select</em>
+        <select data-placeholder="Type 'C' to view" style="width:350px;" multiple class="chzn-select-no-results" tabindex="11">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option>Sloth Bear</option>
+          <option>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option>Spectacled Bear</option>
+        </select>
+      </div>
     </div>
 
     <h2>Allow Deselect on Single Selects</h2>
     <div class="side-by-side clearfix">
       <p>When a single select box isn't a required field, you can set <code>allow_single_deselect: true</code> and Chosen will add a UI element for option deselection. This will only work if the first option has blank text.</p>
       <div class="side-by-side clearfix">
-        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select-deselect" tabindex="7">
+        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select-deselect" tabindex="12">
           <option value=""></option>
           <option>American Black Bear</option>
           <option>Asiatic Black Bear</option>
@@ -1304,7 +1338,7 @@
       <p><code>&lt;select class="chzn-select <strong>chzn-rtl</strong>"&gt;</code></p>
       <div>
         <em>Single right to left select</em>
-        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select chzn-rtl" tabindex="9">
+        <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select chzn-rtl" tabindex="13">
           <option value=""></option>
           <option>American Black Bear</option>
           <option>Asiatic Black Bear</option>
@@ -1316,7 +1350,7 @@
       </div>
       <div>
         <em>Multiple right to left select</em>
-        <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select  chzn-rtl" tabindex="10">
+        <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select  chzn-rtl" tabindex="14">
           <option value=""></option>
           <option>American Black Bear</option>
           <option>Asiatic Black Bear</option>
@@ -1348,11 +1382,48 @@
       </ul>
     </div>
 
+    <h2>Custom Width Support</h2>
+    <div class="side-by-side clearfix">
+      <p>Using a custom width with Chosen is as easy as passing an option when you create Chosen:</p>
+      <code>
+        New Chosen($("chzn_select_field"),{width: "95%"});
+      </code>
+      <p></p>
+      <div>
+        <em>Single Select</em>
+        <select data-placeholder="Your Favorite Types of Bear" class="chzn-select-width" tabindex="15">
+          <option value=""></option>
+          <option selected>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option>Sloth Bear</option>
+          <option>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option>Spectacled Bear</option>
+        </select>
+      </div>
+      <div>
+        <em>Multiple Select</em>
+        <select data-placeholder="Your Favorite Types of Bear" multiple class="chzn-select-width" tabindex="16">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option selected>Giant Panda</option>
+          <option>Sloth Bear</option>
+          <option>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option>Spectacled Bear</option>
+        </select>
+      </div>
+    </div>
+
     <h2>Setup (for Prototype)</h2>
     <p>Using Chosen is easy as can be.</p>
     <ol>
       <li>Download the plugin and copy the chosen files to your app.</li>
-      <li>Activate the plugin by creating a new instance of Chosen: new Chosen(<em>some_form_field</em>);</li>
+      <li>Activate the plugin by creating a new instance of Chosen: New Chosen(<em>some_form_field</em>,<em>some_options</em>);</li>
       <li><a href="http://youtu.be/pS-RsIzb78U?t=57s">Disco</a>.</li>
     </ol>
     
@@ -1361,22 +1432,24 @@
   <script src="chosen/chosen.proto.js" type="text/javascript"></script>
   <script type="text/javascript">
   document.observe('dom:loaded', function(evt) {
-    var select, selects, _i, _len, _results;
     if (Prototype.Browser.IE && (Prototype.BrowserFeatures['Version'] === 6 || Prototype.BrowserFeatures['Version'] === 7)) {
       return;
     }
-    selects = $$(".chzn-select");
-    _results = [];
-    for (_i = 0, _len = selects.length; _i < _len; _i++) {
-      select = selects[_i];
-      _results.push(new Chosen(select));
+    var config = {
+      '.chzn-select'           : {},
+      '.chzn-select-deselect'  : {allow_single_deselect:true},
+      '.chzn-select-no-single' : {disable_search_threshold:10},
+      '.chzn-select-no-results': {no_results_text: "Oops, nothing found!"},
+      '.chzn-select-width'     : {width: "95%"}
     }
-    deselects = $$(".chzn-select-deselect");
-    for (_i = 0, _len = deselects.length; _i < _len; _i++) {
-      select = deselects[_i];
-      _results.push(new Chosen(select,{allow_single_deselect:true}));
+    var results = [];
+    for (var selector in config) {
+      var elements = $$(selector);
+      for (var i = 0; i < elements.length; i++) {
+        results.push(new Chosen(elements[i],config[selector]));
+      }      
     }
-    return _results;
+    return results;
   });
   </script>
 </body>
