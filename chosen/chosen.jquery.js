@@ -287,8 +287,8 @@ Copyright (c) 2011 by Harvest
       if (this.options.width != null) {
         return this.options.width;
       }
-      width = typeof window.getComputedStyle === "function" ? window.getComputedStyle(this.form_field).getPropertyValue('width') : typeof jQuery !== "undefined" && jQuery !== null ? this.form_field_jq.outerWidth() : this.form_field.getWidth();
-      return parseInt(width, 10) + "px";
+      width = typeof window.getComputedStyle === "function" ? parseFloat(window.getComputedStyle(this.form_field).getPropertyValue('width')) : typeof jQuery !== "undefined" && jQuery !== null ? this.form_field_jq.outerWidth() : this.form_field.getWidth();
+      return width + "px";
     };
 
     return AbstractChosen;

@@ -129,12 +129,12 @@ class AbstractChosen
     return @options.width if @options.width?
       
     width = if typeof window.getComputedStyle is "function"
-      window.getComputedStyle(@form_field).getPropertyValue('width')
+      parseFloat window.getComputedStyle(@form_field).getPropertyValue('width')
     else if jQuery?
       @form_field_jq.outerWidth()
     else
       @form_field.getWidth()
 
-    parseInt(width, 10) + "px"
+    width + "px"
 
 root.AbstractChosen = AbstractChosen
