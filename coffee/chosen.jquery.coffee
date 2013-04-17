@@ -318,6 +318,8 @@ class Chosen extends AbstractChosen
     if not @is_disabled
       @pending_destroy_click = true
       this.choice_destroy $(evt.target)
+      this.input_blur(evt)
+      @pending_destroy_click = false
     else
       evt.stopPropagation
 
