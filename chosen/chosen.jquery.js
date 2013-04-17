@@ -729,11 +729,10 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.choice_destroy_link_click = function(evt) {
       evt.preventDefault();
+      evt.stopPropagation();
       if (!this.is_disabled) {
         this.pending_destroy_click = true;
         return this.choice_destroy($(evt.target));
-      } else {
-        return evt.stopPropagation;
       }
     };
 
