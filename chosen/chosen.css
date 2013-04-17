@@ -259,7 +259,7 @@
   -webkit-overflow-scrolling: touch;
 }
 .chzn-container-multi .chzn-results {
-  margin: -1px 0 0;
+  margin: 0;
   padding: 0;
 }
 .chzn-container .chzn-results li {
