@@ -43,13 +43,11 @@ class Chosen extends AbstractChosen
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chzn-rtl" if @is_rtl
 
-    @f_width = @form_field_jq.outerWidth()
-
-    container_props = 
-      id: @container_id
-      class: container_classes.join ' '
-      style: 'width: ' + (@f_width) + 'px;' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
-      title: @form_field.title
+    container_props =
+      'id': @container_id
+      'class': container_classes.join ' '
+      'style': "width: #{this.container_width()};"
+      'title': @form_field.title
 
     container_div = ($ "<div />", container_props)
 
@@ -62,10 +60,7 @@ class Chosen extends AbstractChosen
     @container = ($ '#' + @container_id)
     @dropdown = @container.find('div.chzn-drop').first()
 
-    dd_top = @container.height()
-    dd_width = (@f_width - get_side_border_padding(@dropdown))
-
-    @dropdown.css({"width": dd_width  + "px", "top": dd_top + "px"})
+    @dropdown.css({"top": "#{@container.height()}px"})
 
     @search_field = @container.find('input').first()
     @search_results = @container.find('ul.chzn-results').first()
@@ -79,8 +74,6 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.find('div.chzn-search').first()
       @selected_item = @container.find('.chzn-single').first()
-      sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
-      @search_field.css( {"width" : sf_width + "px"} )
 
     this.results_build()
     this.set_tab_index()
@@ -571,14 +564,15 @@ class Chosen extends AbstractChosen
       w = div.width() + 25
       div.remove()
 
+      @f_width = @container.outerWidth() unless @f_width
+
       if( w > @f_width-10 )
         w = @f_width - 10
 
       @search_field.css({'width': w + 'px'})
 
-      dd_top = @container.height()
-      @dropdown.css({"top":  dd_top + "px"})
-
+      @dropdown.css({"top": "#{@container.height()}px"})
+  
   generate_random_id: ->
     string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()
     while $("#" + string).length > 0
