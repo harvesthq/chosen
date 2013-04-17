@@ -295,6 +295,7 @@ class Chosen extends AbstractChosen
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
+    evt.stopPropagation()
     if not @is_disabled
       @pending_destroy_click = true
       this.choice_destroy evt.target
