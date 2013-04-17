@@ -6,6 +6,9 @@ root = this
 
 class Chosen extends AbstractChosen
 
+  constructor: (@form_field, @options={}) ->
+    super(@form_field, @options) unless Prototype.Browser.IE and Prototype.BrowserFeatures['version'].valueOf() <= 7
+
   setup: ->
     @current_value = @form_field.value
     @is_rtl = @form_field.hasClassName "chzn-rtl"
@@ -566,7 +569,7 @@ root.Chosen = Chosen
 # Prototype does not support version numbers so we add it ourselves
 if Prototype.Browser.IE
   if /MSIE (\d+\.\d+);/.test(navigator.userAgent)
-    Prototype.BrowserFeatures['Version'] = new Number(RegExp.$1);
+    Prototype.BrowserFeatures['version'] = new Number(RegExp.$1);
 
 
 get_side_border_padding = (elmt) ->
