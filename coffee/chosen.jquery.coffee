@@ -60,8 +60,6 @@ class Chosen extends AbstractChosen
     @container = ($ '#' + @container_id)
     @dropdown = @container.find('div.chzn-drop').first()
 
-    @dropdown.css({"top": "#{@container.height()}px"})
-
     @search_field = @container.find('input').first()
     @search_results = @container.find('ul.chzn-results').first()
     this.search_field_scale()
@@ -240,9 +238,8 @@ class Chosen extends AbstractChosen
       @form_field_jq.trigger("liszt:maxselected", {chosen: this})
       return false
 
-    dd_top = if @is_multiple then @container.height() else (@container.height() - 1)
     @form_field_jq.trigger("liszt:showing_dropdown", {chosen: this})
-    @dropdown.css {"top":  dd_top + "px", "left":0}
+    @dropdown.css {"left":0}
     @results_showing = true
 
     @search_field.focus()
@@ -569,8 +566,6 @@ class Chosen extends AbstractChosen
         w = @f_width - 10
 
       @search_field.css({'width': w + 'px'})
-
-      @dropdown.css({"top": "#{@container.height()}px"})
   
   generate_random_id: ->
     string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()

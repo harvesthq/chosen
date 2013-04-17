@@ -12,7 +12,7 @@
   border: 1px solid #aaa;
   border-top: 0;
   position: absolute;
-  top: 29px;
+  top: 100%;
   left: 0;
   -webkit-box-shadow: 0 4px 5px rgba(0,0,0,.15);
   -moz-box-shadow   : 0 4px 5px rgba(0,0,0,.15);
@@ -126,6 +126,7 @@
   box-sizing        : border-box;
 }
 .chzn-container-single .chzn-drop {
+  margin-top: -1px;
   -webkit-border-radius: 0 0 4px 4px;
   -moz-border-radius   : 0 0 4px 4px;
   border-radius        : 0 0 4px 4px;
@@ -258,7 +259,7 @@
   -webkit-overflow-scrolling: touch;
 }
 .chzn-container-multi .chzn-results {
-  margin: -1px 0 0;
+  margin: 0;
   padding: 0;
 }
 .chzn-container .chzn-results li {
