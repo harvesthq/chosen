@@ -1271,19 +1271,8 @@
       <code>
         New Chosen($("chzn_select_field"),{no_results_text: "Oops, nothing found!"});
       </code>
-    </div>
-
-    <h2>Limit Selected Options in Multiselect</h2>
-    <div class="side-by-side clearfix">
-      <p>You can easily limit how many options can user select:</p>
-      <code>
-        new Chosen($("chzn_select_field"),{max_selected_options: 5});
-      </code>
-      <p>If you try to select another option with limit reached <code>liszt:maxselected</code> event is triggered:</p>
-      <code>
-        $("chzn_select_field").observe("liszt:maxselected", function(evt) { ... });
-      </code>
       <p></p>
+
       <div>
         <em>Single Select</em>
         <select data-placeholder="Type 'C' to view" style="width:350px;" class="chzn-select-no-results" tabindex="10">
@@ -1312,6 +1301,19 @@
           <option>Spectacled Bear</option>
         </select>
       </div>
+    </div>
+
+    <h2>Limit Selected Options in Multiselect</h2>
+    <div class="side-by-side clearfix">
+      <p>You can easily limit how many options can user select:</p>
+      <code>
+        new Chosen($("chzn_select_field"),{max_selected_options: 5});
+      </code>
+      <p>If you try to select another option with limit reached <code>liszt:maxselected</code> event is triggered:</p>
+      <code>
+        $("chzn_select_field").observe("liszt:maxselected", function(evt) { ... });
+      </code>
+      <p></p>
     </div>
 
     <h2>Allow Deselect on Single Selects</h2>
