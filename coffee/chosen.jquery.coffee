@@ -43,14 +43,11 @@ class Chosen extends AbstractChosen
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chzn-rtl" if @is_rtl
 
-    @f_width = @form_field_jq.outerWidth()
-
-    container_width = this.fixup_width(if @options.width then @options.width else @f_width)
-    container_props = 
-      id: @container_id
-      class: container_classes.join ' '
-      style: "width: #{container_width};"
-      title: @form_field.title
+    container_props =
+      'id': @container_id
+      'class': container_classes.join ' '
+      'style': "width: #{this.container_width()};"
+      'title': @form_field.title
 
     container_div = ($ "<div />", container_props)
 
@@ -566,6 +563,8 @@ class Chosen extends AbstractChosen
 
       w = div.width() + 25
       div.remove()
+
+      @f_width = @container.outerWidth() unless @f_width
 
       if( w > @f_width-10 )
         w = @f_width - 10

@@ -31,15 +31,12 @@ class Chosen extends AbstractChosen
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chzn-rtl" if @is_rtl
 
-    @f_width = if @form_field.getStyle("width") then parseInt @form_field.getStyle("width"), 10 else @form_field.getWidth()
-    
-    container_width = this.fixup_width(if @options.width then @options.width else @f_width)
     container_props =
       'id': @container_id
       'class': container_classes.join ' '
-      'style': "width: #{container_width};"
+      'style': "width: #{this.container_width()};"
       'title': @form_field.title
-    
+
     base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
     @form_field.hide().insert({ after: base_template })
@@ -547,6 +544,8 @@ class Chosen extends AbstractChosen
 
       w = Element.measure(div, 'width') + 25
       div.remove()
+
+      @f_width = @container.getWidth() unless @f_width
 
       if( w > @f_width-10 )
         w = @f_width - 10

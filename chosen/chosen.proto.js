@@ -282,13 +282,13 @@ Copyright (c) 2011 by Harvest
       return newchar = chars.substring(rand, rand + 1);
     };
 
-    AbstractChosen.prototype.fixup_width = function(width) {
-      var format_regex;
-      format_regex = new RegExp('(px|em|ex|%|in|cm|mm|pt|pc)$', 'i');
-      if (!format_regex.test(width)) {
-        return "" + width + "px";
+    AbstractChosen.prototype.container_width = function() {
+      var width;
+      if (this.options.width != null) {
+        return this.options.width;
       }
-      return width;
+      width = typeof window.getComputedStyle === "function" ? window.getComputedStyle(this.form_field).getPropertyValue('width') : typeof jQuery !== "undefined" && jQuery !== null ? this.form_field_jq.outerWidth() : this.form_field.getWidth();
+      return parseInt(width, 10) + "px";
     };
 
     return AbstractChosen;
@@ -339,7 +339,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.set_up_html = function() {
-      var base_template, container_classes, container_props, container_width;
+      var base_template, container_classes, container_props;
       this.container_id = this.form_field.identify().replace(/[^\w]/g, '_') + "_chzn";
       container_classes = ["chzn-container"];
       container_classes.push("chzn-container-" + (this.is_multiple ? "multi" : "single"));
@@ -349,12 +349,10 @@ Copyright (c) 2011 by Harvest
       if (this.is_rtl) {
         container_classes.push("chzn-rtl");
       }
-      this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
-      container_width = this.fixup_width(this.options.width ? this.options.width : this.f_width);
       container_props = {
         'id': this.container_id,
         'class': container_classes.join(' '),
-        'style': "width: " + container_width + ";",
+        'style': "width: " + (this.container_width()) + ";",
         'title': this.form_field.title
       };
       base_template = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
@@ -1058,6 +1056,9 @@ Copyright (c) 2011 by Harvest
         document.body.appendChild(div);
         w = Element.measure(div, 'width') + 25;
         div.remove();
+        if (!this.f_width) {
+          this.f_width = this.container.getWidth();
+        }
         if (w > this.f_width - 10) {
           w = this.f_width - 10;
         }

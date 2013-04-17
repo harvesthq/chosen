@@ -282,13 +282,13 @@ Copyright (c) 2011 by Harvest
       return newchar = chars.substring(rand, rand + 1);
     };
 
-    AbstractChosen.prototype.fixup_width = function(width) {
-      var format_regex;
-      format_regex = new RegExp('(px|em|ex|%|in|cm|mm|pt|pc)$', 'i');
-      if (!format_regex.test(width)) {
-        return "" + width + "px";
+    AbstractChosen.prototype.container_width = function() {
+      var width;
+      if (this.options.width != null) {
+        return this.options.width;
       }
-      return width;
+      width = typeof window.getComputedStyle === "function" ? window.getComputedStyle(this.form_field).getPropertyValue('width') : typeof jQuery !== "undefined" && jQuery !== null ? this.form_field_jq.outerWidth() : this.form_field.getWidth();
+      return parseInt(width, 10) + "px";
     };
 
     return AbstractChosen;
@@ -355,7 +355,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.set_up_html = function() {
-      var container_classes, container_div, container_props, container_width;
+      var container_classes, container_div, container_props;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/[^\w]/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
       container_classes = ["chzn-container"];
@@ -366,13 +366,11 @@ Copyright (c) 2011 by Harvest
       if (this.is_rtl) {
         container_classes.push("chzn-rtl");
       }
-      this.f_width = this.form_field_jq.outerWidth();
-      container_width = this.fixup_width(this.options.width ? this.options.width : this.f_width);
       container_props = {
-        id: this.container_id,
-        "class": container_classes.join(' '),
-        style: "width: " + container_width + ";",
-        title: this.form_field.title
+        'id': this.container_id,
+        'class': container_classes.join(' '),
+        'style': "width: " + (this.container_width()) + ";",
+        'title': this.form_field.title
       };
       container_div = $("<div />", container_props);
       if (this.is_multiple) {
@@ -1055,6 +1053,9 @@ Copyright (c) 2011 by Harvest
         $('body').append(div);
         w = div.width() + 25;
         div.remove();
+        if (!this.f_width) {
+          this.f_width = this.container.outerWidth();
+        }
         if (w > this.f_width - 10) {
           w = this.f_width - 10;
         }
