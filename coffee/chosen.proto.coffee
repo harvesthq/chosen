@@ -99,7 +99,7 @@ class Chosen extends AbstractChosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
-      target_closelink =  if evt? then evt.target.hasClassName "search-choice-close" else false
+      target_closelink =  if evt? then $(evt.target).hasClassName "search-choice-close" else false
       if evt and evt.type is "mousedown" and not @results_showing
         evt.stop()
       if not @pending_destroy_click and not target_closelink
@@ -115,7 +115,7 @@ class Chosen extends AbstractChosen
         @pending_destroy_click = false
 
   container_mouseup: (evt) ->
-    this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
+    this.results_reset(evt) if $(evt.target).nodeName is "ABBR" and not @is_disabled
 
   blur_test: (evt) ->
     this.close_field() if not @active_field and @container.hasClassName("chzn-container-active")
@@ -141,7 +141,7 @@ class Chosen extends AbstractChosen
     @search_field.focus()
 
   test_active_click: (evt) ->
-    if evt.target.up('#' + @container_id)
+    if $(evt.target).up('#' + @container_id)
       @active_field = true
     else
       this.close_field()
@@ -251,23 +251,23 @@ class Chosen extends AbstractChosen
       @search_field.removeClassName "default"
 
   search_results_mouseup: (evt) ->
-    target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
+    target = if $(evt.target).hasClassName("active-result") then evt.target else evt.target.up(".active-result")
     if target
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
   search_results_mouseover: (evt) ->
-    target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
+    target = if $(evt.target).hasClassName("active-result") then evt.target else evt.target.up(".active-result")
     this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
-    this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
+    this.result_clear_highlight() if $(evt.target).hasClassName('active-result') or evt.target.up('.active-result')
 
 
   choices_click: (evt) ->
     evt.preventDefault()
-    if( @active_field and not(evt.target.hasClassName('search-choice') or evt.target.up('.search-choice')) and not @results_showing )
+    if( @active_field and not($(evt.target).hasClassName('search-choice') or evt.target.up('.search-choice')) and not @results_showing )
       this.results_show()
 
   choice_build: (item) ->
@@ -290,7 +290,7 @@ class Chosen extends AbstractChosen
     evt.stopPropagation()
     if not @is_disabled
       @pending_destroy_click = true
-      this.choice_destroy evt.target
+      this.choice_destroy $(evt.target)
 
   choice_destroy: (link) ->
     if this.result_deselect link.readAttribute("rel")
