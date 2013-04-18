@@ -107,7 +107,7 @@ Copyright (c) 2011 by Harvest
     function AbstractChosen(form_field, options) {
       this.form_field = form_field;
       this.options = options != null ? options : {};
-      if (!AbstractChosen.chosenify()) {
+      if (!AbstractChosen.browswer_is_supported()) {
         return;
       }
       this.is_multiple = this.form_field.multiple;
@@ -291,7 +291,7 @@ Copyright (c) 2011 by Harvest
       return newchar = chars.substring(rand, rand + 1);
     };
 
-    AbstractChosen.chosenify = function() {
+    AbstractChosen.browswer_is_supported = function() {
       var _ref;
 
       if (window.navigator.appName === "Microsoft Internet Explorer") {
