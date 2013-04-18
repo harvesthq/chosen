@@ -522,6 +522,12 @@ class Chosen extends AbstractChosen
       when 40
         this.keydown_arrow()
         break
+      when 33
+        (this.keyup_arrow() for iter in [1..5])
+        break
+      when 34
+        (this.keydown_arrow() for iter in [1..5])
+        break
 
   search_field_scale: ->
     if @is_multiple
