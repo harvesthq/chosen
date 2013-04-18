@@ -350,7 +350,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.set_up_html = function() {
-      var base_template, container_classes, container_props;
+      var container_classes, container_props;
       this.container_id = this.form_field.identify().replace(/[^\w]/g, '_') + "_chzn";
       container_classes = ["chzn-container"];
       container_classes.push("chzn-container-" + (this.is_multiple ? "multi" : "single"));
@@ -366,15 +366,14 @@ Copyright (c) 2011 by Harvest
         'style': "width: " + (this.container_width()) + ";",
         'title': this.form_field.title
       };
-      base_template = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
+      this.container = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
         "default": this.default_text
       })) : new Element('div', container_props).update(this.single_temp.evaluate({
         "default": this.default_text
       }));
       this.form_field.hide().insert({
-        after: base_template
+        after: this.container
       });
-      this.container = $(this.container_id);
       this.dropdown = this.container.down('div.chzn-drop');
       this.search_field = this.container.down('input');
       this.search_results = this.container.down('ul.chzn-results');

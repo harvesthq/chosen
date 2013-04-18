@@ -359,7 +359,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.set_up_html = function() {
-      var container_classes, container_div, container_props;
+      var container_classes, container_props;
       this.container_id = this.form_field.id.length ? this.form_field.id.replace(/[^\w]/g, '_') : this.generate_field_id();
       this.container_id += "_chzn";
       container_classes = ["chzn-container"];
@@ -376,14 +376,13 @@ Copyright (c) 2011 by Harvest
         'style': "width: " + (this.container_width()) + ";",
         'title': this.form_field.title
       };
-      container_div = $("<div />", container_props);
+      this.container = $("<div />", container_props);
       if (this.is_multiple) {
-        container_div.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
+        this.container.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       } else {
-        container_div.html('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
+        this.container.html('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       }
-      this.form_field_jq.hide().after(container_div);
-      this.container = $('#' + this.container_id);
+      this.form_field_jq.hide().after(this.container);
       this.dropdown = this.container.find('div.chzn-drop').first();
       this.search_field = this.container.find('input').first();
       this.search_results = this.container.find('ul.chzn-results').first();
