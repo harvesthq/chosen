@@ -7,7 +7,7 @@ root = this
 class Chosen extends AbstractChosen
 
   constructor: (@form_field, @options={}) ->
-    super(@form_field, @options) unless Prototype.Browser.IE and Prototype.BrowserFeatures['version'].valueOf() <= 7
+    super(@form_field, @options) unless null isnt root.IE_DOCUMENT_MODE < 8
 
   setup: ->
     @current_value = @form_field.value
@@ -565,11 +565,6 @@ class Chosen extends AbstractChosen
       @dropdown.setStyle({"top":  dd_top + "px"})
 
 root.Chosen = Chosen
-
-# Prototype does not support version numbers so we add it ourselves
-if Prototype.Browser.IE
-  if /MSIE (\d+\.\d+);/.test(navigator.userAgent)
-    Prototype.BrowserFeatures['version'] = new Number(RegExp.$1);
 
 
 get_side_border_padding = (elmt) ->
