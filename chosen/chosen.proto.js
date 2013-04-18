@@ -108,6 +108,9 @@ Copyright (c) 2011 by Harvest
     function AbstractChosen(form_field, options) {
       this.form_field = form_field;
       this.options = options != null ? options : {};
+      if (!AbstractChosen.browswer_is_supported()) {
+        return;
+      }
       this.is_multiple = this.form_field.multiple;
       this.set_default_text();
       this.set_default_values();
@@ -289,6 +292,14 @@ Copyright (c) 2011 by Harvest
       }
       width = window.getComputedStyle != null ? parseFloat(window.getComputedStyle(this.form_field).getPropertyValue('width')) : typeof jQuery !== "undefined" && jQuery !== null ? this.form_field_jq.outerWidth() : this.form_field.getWidth();
       return width + "px";
+    };
+
+    AbstractChosen.browswer_is_supported = function() {
+      var _ref;
+      if (window.navigator.appName === "Microsoft Internet Explorer") {
+        return (null !== (_ref = document.documentMode) && _ref >= 8);
+      }
+      return true;
     };
 
     return AbstractChosen;
@@ -1068,12 +1079,6 @@ Copyright (c) 2011 by Harvest
   })(AbstractChosen);
 
   root.Chosen = Chosen;
-
-  if (Prototype.Browser.IE) {
-    if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
-      Prototype.BrowserFeatures['Version'] = new Number(RegExp.$1);
-    }
-  }
 
   get_side_border_padding = function(elmt) {
     var layout, side_border_padding;
