@@ -468,13 +468,11 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.container_mousedown = function(evt) {
-      var target_closelink;
       if (!this.is_disabled) {
-        target_closelink = evt != null ? evt.target.hasClassName("search-choice-close") : false;
         if (evt && evt.type === "mousedown" && !this.results_showing) {
           evt.stop();
         }
-        if (!this.pending_destroy_click && !target_closelink) {
+        if (!((evt != null) && evt.target.hasClassName("search-choice-close"))) {
           if (!this.active_field) {
             if (this.is_multiple) {
               this.search_field.clear();
@@ -485,8 +483,6 @@ Copyright (c) 2011 by Harvest
             this.results_toggle();
           }
           return this.activate_field();
-        } else {
-          return this.pending_destroy_click = false;
         }
       }
     };
@@ -720,7 +716,6 @@ Copyright (c) 2011 by Harvest
       evt.preventDefault();
       evt.stopPropagation();
       if (!this.is_disabled) {
-        this.pending_destroy_click = true;
         return this.choice_destroy(evt.target);
       }
     };

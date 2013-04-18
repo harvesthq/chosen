@@ -98,10 +98,10 @@ class Chosen extends AbstractChosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
-      target_closelink =  if evt? then evt.target.hasClassName "search-choice-close" else false
       if evt and evt.type is "mousedown" and not @results_showing
         evt.stop()
-      if not @pending_destroy_click and not target_closelink
+
+      if not (evt? and evt.target.hasClassName "search-choice-close")
         if not @active_field
           @search_field.clear() if @is_multiple
           document.observe "click", @click_test_action
@@ -110,8 +110,6 @@ class Chosen extends AbstractChosen
           this.results_toggle()
 
         this.activate_field()
-      else
-        @pending_destroy_click = false
 
   container_mouseup: (evt) ->
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
@@ -286,9 +284,7 @@ class Chosen extends AbstractChosen
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
     evt.stopPropagation()
-    if not @is_disabled
-      @pending_destroy_click = true
-      this.choice_destroy evt.target
+    this.choice_destroy evt.target unless @is_disabled
 
   choice_destroy: (link) ->
     if this.result_deselect link.readAttribute("rel")
