@@ -42,7 +42,6 @@ class Chosen extends AbstractChosen
     @form_field.hide().insert({ after: base_template })
     @container = $(@container_id)
     @dropdown = @container.down('div.chzn-drop')
-    @dropdown.setStyle({"top": "#{@container.getHeight()}px"})
 
     @search_field = @container.down('input')
     @search_results = @container.down('ul.chzn-results')
@@ -218,9 +217,8 @@ class Chosen extends AbstractChosen
       @form_field.fire("liszt:maxselected", {chosen: this})
       return false
 
-    dd_top = if @is_multiple then @container.getHeight() else (@container.getHeight() - 1)
     @form_field.fire("liszt:showing_dropdown", {chosen: this})
-    @dropdown.setStyle {"top":  dd_top + "px", "left":0}
+    @dropdown.setStyle {"left":0}
     @results_showing = true
 
     @search_field.focus()
@@ -552,7 +550,6 @@ class Chosen extends AbstractChosen
         w = @f_width - 10
 
       @search_field.setStyle({'width': w + 'px'})
-      @dropdown.setStyle({"top":  "#{@container.getHeight()}px"})
 
 root.Chosen = Chosen
 
