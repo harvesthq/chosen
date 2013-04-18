@@ -31,24 +31,17 @@ class Chosen extends AbstractChosen
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chzn-rtl" if @is_rtl
 
-    @f_width = if @form_field.getStyle("width") then parseInt @form_field.getStyle("width"), 10 else @form_field.getWidth()
-
     container_props =
       'id': @container_id
       'class': container_classes.join ' '
-      'style': 'width: ' + (@f_width) + 'px' #use parens around @f_width so coffeescript doesn't think + ' px' is a function parameter
+      'style': "width: #{this.container_width()};"
       'title': @form_field.title
-    
+
     base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
     @form_field.hide().insert({ after: base_template })
     @container = $(@container_id)
     @dropdown = @container.down('div.chzn-drop')
-
-    dd_top = @container.getHeight()
-    dd_width = (@f_width - get_side_border_padding(@dropdown))
-
-    @dropdown.setStyle({"width": dd_width  + "px", "top": dd_top + "px"})
 
     @search_field = @container.down('input')
     @search_results = @container.down('ul.chzn-results')
@@ -62,8 +55,6 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.down('div.chzn-search')
       @selected_item = @container.down('.chzn-single')
-      sf_width = dd_width - get_side_border_padding(@search_container) - get_side_border_padding(@search_field)
-      @search_field.setStyle( {"width" : sf_width + "px"} )
 
     this.results_build()
     this.set_tab_index()
@@ -226,9 +217,8 @@ class Chosen extends AbstractChosen
       @form_field.fire("liszt:maxselected", {chosen: this})
       return false
 
-    dd_top = if @is_multiple then @container.getHeight() else (@container.getHeight() - 1)
     @form_field.fire("liszt:showing_dropdown", {chosen: this})
-    @dropdown.setStyle {"top":  dd_top + "px", "left":0}
+    @dropdown.setStyle {"left":0}
     @results_showing = true
 
     @search_field.focus()
@@ -295,6 +285,7 @@ class Chosen extends AbstractChosen
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
+    evt.stopPropagation()
     if not @is_disabled
       @pending_destroy_click = true
       this.choice_destroy evt.target
@@ -553,13 +544,12 @@ class Chosen extends AbstractChosen
       w = Element.measure(div, 'width') + 25
       div.remove()
 
+      @f_width = @container.getWidth() unless @f_width
+
       if( w > @f_width-10 )
         w = @f_width - 10
 
       @search_field.setStyle({'width': w + 'px'})
-
-      dd_top = @container.getHeight()
-      @dropdown.setStyle({"top":  dd_top + "px"})
 
 root.Chosen = Chosen
 

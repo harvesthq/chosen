@@ -126,12 +126,23 @@ class AbstractChosen
     rand = Math.floor(Math.random() * chars.length)
     newchar = chars.substring rand, rand+1
 
+  container_width: ->
+    return @options.width if @options.width?
+      
+    width = if window.getComputedStyle?
+      parseFloat window.getComputedStyle(@form_field).getPropertyValue('width')
+    else if jQuery?
+      @form_field_jq.outerWidth()
+    else
+      @form_field.getWidth()
+
+    width + "px"
+
   # class methods ============================================================ 
 
   @browswer_is_supported: ->
     if window.navigator.appName == "Microsoft Internet Explorer"
       return null isnt document.documentMode >= 8
     return true
-
 
 root.AbstractChosen = AbstractChosen
