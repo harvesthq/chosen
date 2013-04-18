@@ -59,6 +59,7 @@ class Chosen extends AbstractChosen
     this.results_build()
     this.set_tab_index()
     @form_field.fire("liszt:ready", {chosen: this})
+    this.update_field()
 
   register_observers: ->
     @container.observe "mousedown", (evt) => this.container_mousedown(evt)
@@ -129,6 +130,7 @@ class Chosen extends AbstractChosen
 
     this.show_search_field_default()
     this.search_field_scale()
+    this.update_field()
 
   activate_field: ->
     @container.addClassName "chzn-container-active"
@@ -136,6 +138,10 @@ class Chosen extends AbstractChosen
 
     @search_field.value = @search_field.value
     @search_field.focus()
+
+  update_field: ->
+    if not @is_multiple
+        if @current_value == "" then @container.removeClassName "chzn-container-selected" else @container.addClassName "chzn-container-selected"
 
   test_active_click: (evt) ->
     if evt.target.up('#' + @container_id)
