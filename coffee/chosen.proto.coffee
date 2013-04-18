@@ -553,11 +553,6 @@ class Chosen extends AbstractChosen
 
 root.Chosen = Chosen
 
-# Prototype does not support version numbers so we add it ourselves
-if Prototype.Browser.IE
-  if /MSIE (\d+\.\d+);/.test(navigator.userAgent)
-    Prototype.BrowserFeatures['Version'] = new Number(RegExp.$1);
-
 
 get_side_border_padding = (elmt) ->
   layout = new Element.Layout(elmt)
