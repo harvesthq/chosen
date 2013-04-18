@@ -307,6 +307,8 @@ class Chosen extends AbstractChosen
 
       link.parents('li').first().remove()
 
+      @form_field_jq.trigger "change", {deselected: @form_field.options[@results_data[pos].options_index].value}
+
       this.search_field_scale()
 
   results_reset: ->
@@ -377,7 +379,6 @@ class Chosen extends AbstractChosen
       this.result_clear_highlight()
       this.winnow_results()
 
-      @form_field_jq.trigger "change", {deselected: @form_field.options[result_data.options_index].value}
       this.search_field_scale()
 
       return true
