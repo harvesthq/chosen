@@ -64,6 +64,11 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.find('div.chzn-search').first()
       @selected_item = @container.find('.chzn-single').first()
+    
+    if @form_field.id.length
+      @form_field_label = $("label[for=#{@form_field.id}]")
+      if @form_field_label.length > 0
+        @form_field_label.click (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
 
     this.results_build()
     this.set_tab_index()
