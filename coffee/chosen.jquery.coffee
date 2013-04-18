@@ -20,7 +20,7 @@ class Chosen extends AbstractChosen
 
   setup: ->
     @form_field_jq = $ @form_field
-    @current_value = @form_field_jq.val()
+    @current_selectedIndex = @form_field.selectedIndex
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
 
   finish_setup: ->
@@ -323,7 +323,7 @@ class Chosen extends AbstractChosen
     this.results_hide() if @active_field
 
   results_reset_cleanup: ->
-    @current_value = @form_field_jq.val()
+    @current_selectedIndex = @form_field.selectedIndex
     @selected_item.find("abbr").remove()
 
   result_select: (evt) ->
@@ -358,8 +358,8 @@ class Chosen extends AbstractChosen
 
       @search_field.val ""
 
-      @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field_jq.val() != @current_value
-      @current_value = @form_field_jq.val()
+      @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
+      @current_selectedIndex = @form_field.selectedIndex
       this.search_field_scale()
 
   result_activate: (el) ->
