@@ -7,7 +7,7 @@ root = this
 class Chosen extends AbstractChosen
 
   constructor: (@form_field, @options={}) ->
-    super(@form_field, @options) unless null isnt root.IE_DOCUMENT_MODE < 8
+    super(@form_field, @options) unless null isnt Chosen.IE_DOCUMENT_MODE < 8
 
   setup: ->
     @current_value = @form_field.value

@@ -1,5 +1,3 @@
-root = this
-
 engine = null
 if window.navigator.appName == "Microsoft Internet Explorer"
   if document.documentMode # IE8 or later
@@ -10,4 +8,4 @@ if window.navigator.appName == "Microsoft Internet Explorer"
 
     # There is no test for IE6 standards mode because that mode was replaced by IE7 standards mode; there is no emulation.
 
-root.IE_DOCUMENT_MODE = engine
+Chosen.IE_DOCUMENT_MODE = engine
