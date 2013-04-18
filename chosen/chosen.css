@@ -25,6 +25,9 @@
   -khtml-box-sizing : border-box;
   box-sizing        : border-box;
 }
+.chzn-container * {
+    box-sizing: content-box;
+}
 /* @end */
 
 /* @group Single Chosen */
