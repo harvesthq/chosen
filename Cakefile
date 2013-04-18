@@ -14,13 +14,11 @@ javascripts = {
     'coffee/lib/select-parser.coffee'
     'coffee/lib/abstract-chosen.coffee'
     'coffee/chosen.jquery.coffee'
-    'coffee/lib/document-mode.coffee'
   ]
   'chosen/chosen.proto.js': [
     'coffee/lib/select-parser.coffee'
     'coffee/lib/abstract-chosen.coffee'
     'coffee/chosen.proto.coffee'
-    'coffee/lib/document-mode.coffee'
   ]
 }
 

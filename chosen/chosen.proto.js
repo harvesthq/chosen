@@ -107,6 +107,9 @@ Copyright (c) 2011 by Harvest
     function AbstractChosen(form_field, options) {
       this.form_field = form_field;
       this.options = options != null ? options : {};
+      if (!AbstractChosen.chosenify()) {
+        return;
+      }
       this.is_multiple = this.form_field.multiple;
       this.set_default_text();
       this.set_default_values();
@@ -288,6 +291,15 @@ Copyright (c) 2011 by Harvest
       return newchar = chars.substring(rand, rand + 1);
     };
 
+    AbstractChosen.chosenify = function() {
+      var _ref;
+
+      if (window.navigator.appName === "Microsoft Internet Explorer") {
+        return (null !== (_ref = document.documentMode) && _ref >= 8);
+      }
+      return true;
+    };
+
     return AbstractChosen;
 
   })();
@@ -302,7 +314,7 @@ Copyright (c) 2011 by Harvest
 
 
 (function() {
-  var Chosen, get_side_border_padding, root,
+  var Chosen, get_side_border_padding, root, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -311,14 +323,9 @@ Copyright (c) 2011 by Harvest
   Chosen = (function(_super) {
     __extends(Chosen, _super);
 
-    function Chosen(form_field, options) {
-      var _ref;
-
-      this.form_field = form_field;
-      this.options = options != null ? options : {};
-      if (!((null !== (_ref = Chosen.IE_DOCUMENT_MODE) && _ref < 8))) {
-        Chosen.__super__.constructor.call(this, this.form_field, this.options);
-      }
+    function Chosen() {
+      _ref = Chosen.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
     Chosen.prototype.setup = function() {
@@ -534,7 +541,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.results_build = function() {
-      var content, data, _i, _len, _ref;
+      var content, data, _i, _len, _ref1;
 
       this.parsing = true;
       this.results_data = root.SelectParser.select_to_array(this.form_field);
@@ -550,9 +557,9 @@ Copyright (c) 2011 by Harvest
         }
       }
       content = '';
-      _ref = this.results_data;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        data = _ref[_i];
+      _ref1 = this.results_data;
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        data = _ref1[_i];
         if (data.group) {
           content += this.result_add_group(data);
         } else if (!data.empty) {
@@ -852,7 +859,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, regexAnchor, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref;
+      var found, option, part, parts, regex, regexAnchor, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref1;
 
       this.no_results_clear();
       results = 0;
@@ -860,9 +867,9 @@ Copyright (c) 2011 by Harvest
       regexAnchor = this.search_contains ? "" : "^";
       regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      _ref = this.results_data;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        option = _ref[_i];
+      _ref1 = this.results_data;
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        option = _ref1[_i];
         if (!option.disabled && !option.empty) {
           if (option.group) {
             $(option.dom_id).hide();
@@ -1039,9 +1046,9 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.keydown_checker = function(evt) {
-      var stroke, _ref;
+      var stroke, _ref1;
 
-      stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
+      stroke = (_ref1 = evt.which) != null ? _ref1 : evt.keyCode;
       this.search_field_scale();
       if (stroke !== 8 && this.pending_backstroke) {
         this.clear_backstroke();
@@ -1114,24 +1121,5 @@ Copyright (c) 2011 by Harvest
   };
 
   root.get_side_border_padding = get_side_border_padding;
-
-}).call(this);
-(function() {
-  var engine;
-
-  engine = null;
-
-  if (window.navigator.appName === "Microsoft Internet Explorer") {
-    if (document.documentMode) {
-      engine = document.documentMode;
-    } else {
-      engine = 5;
-      if (document.compatMode && document.compatMode === "CSS1Compat") {
-        engine = 7;
-      }
-    }
-  }
-
-  Chosen.IE_DOCUMENT_MODE = engine;
 
 }).call(this);

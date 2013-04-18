@@ -7,6 +7,7 @@ root = this
 class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
+    return unless AbstractChosen.chosenify()
     @is_multiple = @form_field.multiple
     this.set_default_text()
     this.set_default_values()
@@ -124,5 +125,13 @@ class AbstractChosen
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     rand = Math.floor(Math.random() * chars.length)
     newchar = chars.substring rand, rand+1
+
+  # class methods ============================================================ 
+
+  @chosenify: ->
+    if window.navigator.appName == "Microsoft Internet Explorer"
+      return null isnt document.documentMode >= 8
+    return true
+
 
 root.AbstractChosen = AbstractChosen

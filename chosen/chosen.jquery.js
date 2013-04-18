@@ -107,6 +107,9 @@ Copyright (c) 2011 by Harvest
     function AbstractChosen(form_field, options) {
       this.form_field = form_field;
       this.options = options != null ? options : {};
+      if (!AbstractChosen.chosenify()) {
+        return;
+      }
       this.is_multiple = this.form_field.multiple;
       this.set_default_text();
       this.set_default_values();
@@ -288,6 +291,15 @@ Copyright (c) 2011 by Harvest
       return newchar = chars.substring(rand, rand + 1);
     };
 
+    AbstractChosen.chosenify = function() {
+      var _ref;
+
+      if (window.navigator.appName === "Microsoft Internet Explorer") {
+        return (null !== (_ref = document.documentMode) && _ref >= 8);
+      }
+      return true;
+    };
+
     return AbstractChosen;
 
   })();
@@ -312,9 +324,7 @@ Copyright (c) 2011 by Harvest
 
   $.fn.extend({
     chosen: function(options) {
-      var _ref;
-
-      if ((null !== (_ref = Chosen.IE_DOCUMENT_MODE) && _ref < 8)) {
+      if (!AbstractChosen.chosenify()) {
         return this;
       }
       return this.each(function(input_field) {
@@ -1110,24 +1120,5 @@ Copyright (c) 2011 by Harvest
   };
 
   root.get_side_border_padding = get_side_border_padding;
-
-}).call(this);
-(function() {
-  var engine;
-
-  engine = null;
-
-  if (window.navigator.appName === "Microsoft Internet Explorer") {
-    if (document.documentMode) {
-      engine = document.documentMode;
-    } else {
-      engine = 5;
-      if (document.compatMode && document.compatMode === "CSS1Compat") {
-        engine = 7;
-      }
-    }
-  }
-
-  Chosen.IE_DOCUMENT_MODE = engine;
 
 }).call(this);

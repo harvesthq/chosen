@@ -9,7 +9,7 @@ $.fn.extend({
   chosen: (options) ->
     # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
     # Continue on if running IE document type but in compatibility mode
-    return this if null isnt Chosen.IE_DOCUMENT_MODE < 8
+    return this unless AbstractChosen.chosenify()
     this.each((input_field) ->
       $this = $ this
       $this.data('chosen', new Chosen(this, options)) unless $this.hasClass "chzn-done"

@@ -6,9 +6,6 @@ root = this
 
 class Chosen extends AbstractChosen
 
-  constructor: (@form_field, @options={}) ->
-    super(@form_field, @options) unless null isnt Chosen.IE_DOCUMENT_MODE < 8
-
   setup: ->
     @current_value = @form_field.value
     @is_rtl = @form_field.hasClassName "chzn-rtl"
