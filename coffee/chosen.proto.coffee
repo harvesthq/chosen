@@ -345,8 +345,15 @@ class Chosen extends AbstractChosen
 
       @search_field.value = ""
 
-      @form_field.simulate("change") if typeof Event.simulate is 'function' && (@is_multiple || @form_field.value != @current_value)
-      @current_value = @form_field.value
+      if @change_by_text
+        selected_text = ""
+        @form_field.select("option:selected").each (item) ->
+            selected_text += item.text
+        @form_field.simulate("change") if typeof Event.simulate is 'function' && (@is_multiple || selected_text != @current_value)
+        @current_value = selected_text
+      else
+        @form_field.simulate("change") if typeof Event.simulate is 'function' && (@is_multiple || @form_field.value != @current_value)
+        @current_value = @form_field.value
 
       this.search_field_scale()
 
