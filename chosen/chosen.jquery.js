@@ -108,7 +108,7 @@ Copyright (c) 2011 by Harvest
     function AbstractChosen(form_field, options) {
       this.form_field = form_field;
       this.options = options != null ? options : {};
-      if (!AbstractChosen.browswer_is_supported()) {
+      if (!AbstractChosen.browser_is_supported()) {
         return;
       }
       this.is_multiple = this.form_field.multiple;
@@ -294,7 +294,7 @@ Copyright (c) 2011 by Harvest
       return width + "px";
     };
 
-    AbstractChosen.browswer_is_supported = function() {
+    AbstractChosen.browser_is_supported = function() {
       var _ref;
       if (window.navigator.appName === "Microsoft Internet Explorer") {
         return (null !== (_ref = document.documentMode) && _ref >= 8);
@@ -327,7 +327,7 @@ Copyright (c) 2011 by Harvest
 
   $.fn.extend({
     chosen: function(options) {
-      if (!AbstractChosen.browswer_is_supported()) {
+      if (!AbstractChosen.browser_is_supported()) {
         return this;
       }
       return this.each(function(input_field) {

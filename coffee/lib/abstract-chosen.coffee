@@ -7,7 +7,7 @@ root = this
 class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
-    return unless AbstractChosen.browswer_is_supported()
+    return unless AbstractChosen.browser_is_supported()
     @is_multiple = @form_field.multiple
     this.set_default_text()
     this.set_default_values()
@@ -140,7 +140,7 @@ class AbstractChosen
 
   # class methods ============================================================ 
 
-  @browswer_is_supported: ->
+  @browser_is_supported: ->
     if window.navigator.appName == "Microsoft Internet Explorer"
       return null isnt document.documentMode >= 8
     return true
