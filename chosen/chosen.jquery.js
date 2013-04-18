@@ -382,7 +382,8 @@ Copyright (c) 2011 by Harvest
       } else {
         container_div.html('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       }
-      this.form_field_jq.hide().after(container_div);
+      this.form_field_jq.css({position:'absolute', top:'-1000px'})
+      this.form_field_jq.after(container_div);
       this.container = $('#' + this.container_id);
       this.dropdown = this.container.find('div.chzn-drop').first();
       this.search_field = this.container.find('input').first();
