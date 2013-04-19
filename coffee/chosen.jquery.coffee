@@ -252,10 +252,12 @@ class Chosen extends AbstractChosen
       @search_field.attr "tabindex", ti
 
   set_label_behavior: ->
-    if @form_field.id.length
-      @form_field_label = $("label[for=#{@form_field.id}]")
-      if @form_field_label.length > 0
-        @form_field_label.click (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
+    @form_field_label = @form_field_jq.parents("label") # first check for a parent label
+    if not @form_field_label.length and @form_field.id.length
+      @form_field_label = $("label[for=#{@form_field.id}]") #next check for a for=#{id}
+
+    if @form_field_label.length > 0
+      @form_field_label.click (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
