@@ -653,16 +653,18 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.set_label_behavior = function() {
       var _this = this;
-      if (this.form_field.id.length) {
-        if (this.form_field_label = $$("label[for=" + this.form_field.id + "]").first()) {
-          return this.form_field_label.observe("click", function(evt) {
-            if (_this.is_multiple) {
-              return _this.container_mousedown(evt);
-            } else {
-              return _this.activate_field();
-            }
-          });
-        }
+      this.form_field_label = this.form_field.up("label");
+      if (!(this.form_field_label != null)) {
+        this.form_field_label = $$("label[for=" + this.form_field.id + "]").first();
+      }
+      if (this.form_field_label != null) {
+        return this.form_field_label.observe("click", function(evt) {
+          if (_this.is_multiple) {
+            return _this.container_mousedown(evt);
+          } else {
+            return _this.activate_field();
+          }
+        });
       }
     };
 
