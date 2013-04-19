@@ -397,14 +397,19 @@ Copyright (c) 2011 by Harvest
       } else {
         container_div.html('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       }
-      container_div.find('.chzn-results').bind('mousewheel DOMMouseScroll', function(e) {
-        var bottom_overflow, delta, top_overflow;
+      container_div.find('.chzn-results').bind('mousewheel DOMMouseScroll', function(evt) {
+        var bottom_overflow, delta, top_overflow, _ref1;
 
-        delta = e.wheelDelta || (e.originalEvent && e.originalEvent.wheelDelta) || -e.detail;
-        bottom_overflow = this.scrollTop + $(this).outerHeight() - this.scrollHeight >= 0;
-        top_overflow = this.scrollTop <= 0;
-        if (this.scrollHeight > $(this).outerHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
-          return e.preventDefault();
+        if (delta = evt.wheelDelta) {
+          this.scrollTop -= delta;
+          return evt.preventDefault();
+        } else {
+          delta = ((_ref1 = evt.originalEvent) != null ? _ref1.wheelDelta : void 0) || -evt.detail;
+          bottom_overflow = this.scrollTop + $(this).outerHeight() - this.scrollHeight >= 0;
+          top_overflow = this.scrollTop <= 0;
+          if (this.scrollHeight > $(this).outerHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
+            return evt.preventDefault();
+          }
         }
       });
       this.form_field_jq.hide().after(container_div);

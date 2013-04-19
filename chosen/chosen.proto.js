@@ -433,14 +433,19 @@ Copyright (c) 2011 by Harvest
       this.search_results.observe("mouseout", function(evt) {
         return _this.search_results_mouseout(evt);
       });
-      scrollCallback = function(e) {
-        var bottom_overflow, delta, top_overflow;
+      scrollCallback = function(evt) {
+        var bottom_overflow, delta, top_overflow, _ref1;
 
-        delta = e.wheelDelta || (e.originalEvent && e.originalEvent.wheelDelta) || -e.detail;
-        bottom_overflow = this.scrollTop + this.getHeight() - this.scrollHeight >= 0;
-        top_overflow = this.scrollTop <= 0;
-        if (this.scrollHeight > this.getHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
-          return e.preventDefault();
+        if (delta = evt.wheelDelta) {
+          this.scrollTop -= delta;
+          return evt.preventDefault();
+        } else {
+          delta = ((_ref1 = evt.originalEvent) != null ? _ref1.wheelDelta : void 0) || -evt.detail;
+          bottom_overflow = this.scrollTop + $(this).outerHeight() - this.scrollHeight >= 0;
+          top_overflow = this.scrollTop <= 0;
+          if (this.scrollHeight > $(this).outerHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
+            return evt.preventDefault();
+          }
         }
       };
       this.search_results.observe("DOMMouseScroll", scrollCallback);
