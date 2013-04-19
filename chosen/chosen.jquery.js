@@ -440,6 +440,12 @@ Copyright (c) 2011 by Harvest
       this.form_field_jq.bind("liszt:open", function(evt) {
         _this.container_mousedown(evt);
       });
+      this.form_field_jq.bind("liszt:prev", function(evt) {
+        return _this.keyup_arrow(evt);
+      });
+      this.form_field_jq.bind("liszt:next", function(evt) {
+        return _this.keydown_arrow(evt);
+      });
       this.search_field.blur(function(evt) {
         _this.input_blur(evt);
       });
