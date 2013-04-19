@@ -1468,9 +1468,6 @@
   <script src="chosen/chosen.proto.js" type="text/javascript"></script>
   <script type="text/javascript">
   document.observe('dom:loaded', function(evt) {
-    if (Prototype.Browser.IE && (Prototype.BrowserFeatures['Version'] === 6 || Prototype.BrowserFeatures['Version'] === 7)) {
-      return;
-    }
     var config = {
       '.chzn-select'           : {},
       '.chzn-select-deselect'  : {allow_single_deselect:true},

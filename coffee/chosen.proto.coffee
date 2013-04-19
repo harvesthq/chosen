@@ -37,10 +37,9 @@ class Chosen extends AbstractChosen
       'style': "width: #{this.container_width()};"
       'title': @form_field.title
 
-    base_template = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
+    @container = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
-    @form_field.hide().insert({ after: base_template })
-    @container = $(@container_id)
+    @form_field.hide().insert({ after: @container })
     @dropdown = @container.down('div.chzn-drop')
 
     @search_field = @container.down('input')

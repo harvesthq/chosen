@@ -148,11 +148,11 @@ Copyright (c) 2011 by Harvest
       if (this.form_field.getAttribute("data-placeholder")) {
         this.default_text = this.form_field.getAttribute("data-placeholder");
       } else if (this.is_multiple) {
-        this.default_text = this.options.placeholder_text_multiple || this.options.placeholder_text || "Select Some Options";
+        this.default_text = this.options.placeholder_text_multiple || this.options.placeholder_text || AbstractChosen.default_multiple_text;
       } else {
-        this.default_text = this.options.placeholder_text_single || this.options.placeholder_text || "Select an Option";
+        this.default_text = this.options.placeholder_text_single || this.options.placeholder_text || AbstractChosen.default_single_text;
       }
-      return this.results_none_found = this.form_field.getAttribute("data-no_results_text") || this.options.no_results_text || "No results match";
+      return this.results_none_found = this.form_field.getAttribute("data-no_results_text") || this.options.no_results_text || AbstractChosen.default_no_result_text;
     };
 
     AbstractChosen.prototype.mouse_enter = function() {
@@ -302,6 +302,12 @@ Copyright (c) 2011 by Harvest
       return true;
     };
 
+    AbstractChosen.default_multiple_text = "Select Some Options";
+
+    AbstractChosen.default_single_text = "Select an Option";
+
+    AbstractChosen.default_no_result_text = "No results match";
+
     return AbstractChosen;
 
   })();
@@ -350,7 +356,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.set_up_html = function() {
-      var base_template, container_classes, container_props,
+      var container_classes, container_props,
         _this = this;
       this.container_id = this.form_field.identify().replace(/[^\w]/g, '_') + "_chzn";
       container_classes = ["chzn-container"];
@@ -367,15 +373,14 @@ Copyright (c) 2011 by Harvest
         'style': "width: " + (this.container_width()) + ";",
         'title': this.form_field.title
       };
-      base_template = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
+      this.container = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
         "default": this.default_text
       })) : new Element('div', container_props).update(this.single_temp.evaluate({
         "default": this.default_text
       }));
       this.form_field.hide().insert({
-        after: base_template
+        after: this.container
       });
-      this.container = $(this.container_id);
       this.dropdown = this.container.down('div.chzn-drop');
       this.search_field = this.container.down('input');
       this.search_results = this.container.down('ul.chzn-results');

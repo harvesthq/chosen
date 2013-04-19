@@ -41,11 +41,11 @@ class AbstractChosen
     if @form_field.getAttribute("data-placeholder")
       @default_text = @form_field.getAttribute("data-placeholder")
     else if @is_multiple
-      @default_text = @options.placeholder_text_multiple || @options.placeholder_text || "Select Some Options"
+      @default_text = @options.placeholder_text_multiple || @options.placeholder_text || AbstractChosen.default_multiple_text
     else
-      @default_text = @options.placeholder_text_single || @options.placeholder_text || "Select an Option"
+      @default_text = @options.placeholder_text_single || @options.placeholder_text || AbstractChosen.default_single_text
 
-    @results_none_found = @form_field.getAttribute("data-no_results_text") || @options.no_results_text || "No results match"
+    @results_none_found = @form_field.getAttribute("data-no_results_text") || @options.no_results_text || AbstractChosen.default_no_result_text
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
@@ -138,11 +138,16 @@ class AbstractChosen
 
     width + "px"
 
-  # class methods ============================================================ 
+  # class methods and variables ============================================================ 
 
   @browser_is_supported: ->
     if window.navigator.appName == "Microsoft Internet Explorer"
       return null isnt document.documentMode >= 8
     return true
+
+  @default_multiple_text: "Select Some Options"
+  @default_single_text: "Select an Option"
+  @default_no_result_text: "No results match"
+
 
 root.AbstractChosen = AbstractChosen
