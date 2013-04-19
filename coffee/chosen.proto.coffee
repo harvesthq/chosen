@@ -70,6 +70,17 @@ class Chosen extends AbstractChosen
     @search_results.observe "mouseover", (evt) => this.search_results_mouseover(evt)
     @search_results.observe "mouseout", (evt) => this.search_results_mouseout(evt)
 
+    scrollCallback = (e) ->
+        delta = e.wheelDelta or (e.originalEvent and e.originalEvent.wheelDelta) or -e.detail
+        bottom_overflow = this.scrollTop + this.getHeight() - this.scrollHeight >= 0
+        top_overflow = this.scrollTop <= 0
+        
+        if this.scrollHeight > this.getHeight() and ((delta < 0 and bottom_overflow) or (delta > 0 and top_overflow))
+            e.preventDefault()
+
+    @search_results.observe "DOMMouseScroll", scrollCallback
+    @search_results.observe "mousewheel", scrollCallback
+
     @form_field.observe "liszt:updated", (evt) => this.results_update_field(evt)
     @form_field.observe "liszt:activate", (evt) => this.activate_field(evt)
     @form_field.observe "liszt:open", (evt) => this.container_mousedown(evt)

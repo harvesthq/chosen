@@ -48,6 +48,14 @@ class Chosen extends AbstractChosen
     else
       container_div.html '<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
 
+    container_div.find('.chzn-results').bind 'mousewheel DOMMouseScroll', (e) ->
+        delta = e.wheelDelta or (e.originalEvent and e.originalEvent.wheelDelta) or -e.detail
+        bottom_overflow = this.scrollTop + $(this).outerHeight() - this.scrollHeight >= 0
+        top_overflow = this.scrollTop <= 0
+
+        if this.scrollHeight > $(this).outerHeight() and ((delta < 0 and bottom_overflow) or (delta > 0 and top_overflow))
+            e.preventDefault()
+
     @form_field_jq.hide().after container_div
     @container = ($ '#' + @container_id)
     @dropdown = @container.find('div.chzn-drop').first()
