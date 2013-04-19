@@ -409,8 +409,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.register_observers = function() {
-      var scrollCallback,
-        _this = this;
+      var _this = this;
 
       this.container.observe("mousedown", function(evt) {
         return _this.container_mousedown(evt);
@@ -433,23 +432,12 @@ Copyright (c) 2011 by Harvest
       this.search_results.observe("mouseout", function(evt) {
         return _this.search_results_mouseout(evt);
       });
-      scrollCallback = function(evt) {
-        var bottom_overflow, delta, top_overflow, _ref1;
-
-        if (delta = evt.wheelDelta) {
-          this.scrollTop -= delta;
-          return evt.preventDefault();
-        } else {
-          delta = ((_ref1 = evt.originalEvent) != null ? _ref1.wheelDelta : void 0) || -evt.detail;
-          bottom_overflow = this.scrollTop + $(this).outerHeight() - this.scrollHeight >= 0;
-          top_overflow = this.scrollTop <= 0;
-          if (this.scrollHeight > $(this).outerHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
-            return evt.preventDefault();
-          }
-        }
-      };
-      this.search_results.observe("DOMMouseScroll", scrollCallback);
-      this.search_results.observe("mousewheel", scrollCallback);
+      this.search_results.observe("mousewheel", function(evt) {
+        return _this.search_results_mousewheel(evt);
+      });
+      this.search_results.observe("DOMMouseScroll", function(evt) {
+        return _this.search_results_mousewheel_ff(evt);
+      });
       this.form_field.observe("liszt:updated", function(evt) {
         return _this.results_update_field(evt);
       });
@@ -523,6 +511,23 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.container_mouseup = function(evt) {
       if (evt.target.nodeName === "ABBR" && !this.is_disabled) {
         return this.results_reset(evt);
+      }
+    };
+
+    Chosen.prototype.search_results_mousewheel = function(evt) {
+      this.search_results.scrollTop -= evt.wheelDelta;
+      return evt.preventDefault();
+    };
+
+    Chosen.prototype.search_results_mousewheel_ff = function(evt) {
+      var bottom_overflow, delta, target, top_overflow;
+
+      target = evt.currentTarget;
+      delta = evt.wheelDelta || (evt.originalEvent && evt.originalEvent.wheelDelta) || -evt.detail;
+      bottom_overflow = target.scrollTop + target.getHeight() - target.scrollHeight >= 0;
+      top_overflow = target.scrollTop <= 0;
+      if (target.scrollHeight > target.getHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
+        return evt.preventDefault();
       }
     };
 
