@@ -54,13 +54,10 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.down('div.chzn-search')
       @selected_item = @container.down('.chzn-single')
-    
-    if @form_field.id.length
-      if @form_field_label = $$("label[for=#{@form_field.id}]").first()
-        @form_field_label.observe "click", (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
 
     this.results_build()
     this.set_tab_index()
+    this.set_label_behavior()
     @form_field.fire("liszt:ready", {chosen: this})
 
   register_observers: ->
@@ -240,6 +237,11 @@ class Chosen extends AbstractChosen
       ti = @form_field.tabIndex
       @form_field.tabIndex = -1
       @search_field.tabIndex = ti
+
+  set_label_behavior: () ->
+    if @form_field.id.length
+      if @form_field_label = $$("label[for=#{@form_field.id}]").first()
+        @form_field_label.observe "click", (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field
