@@ -163,7 +163,7 @@ class Chosen extends AbstractChosen
       @choices = 0
     else if not @is_multiple
       @selected_item.addClass("chzn-default").find("span").text(@default_text)
-      if @disable_search or @form_field.options.length <= @disable_search_threshold
+      if @disable_search or not @form_field.options or @form_field.options.length <= @disable_search_threshold
         @container.addClass "chzn-container-single-nosearch"
       else
         @container.removeClass "chzn-container-single-nosearch"
