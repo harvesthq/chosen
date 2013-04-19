@@ -252,6 +252,8 @@
 .chzn-container .chzn-results {
   margin: 0 4px 4px 0;
   max-height: 240px;
+  /* IE Hack */
+  height: expression(this.scrollHeight > 240 ? "240px" : "auto");
   padding: 0 0 0 4px;
   position: relative;
   overflow-x: hidden;
