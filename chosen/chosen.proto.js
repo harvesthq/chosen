@@ -394,6 +394,7 @@ Copyright (c) 2011 by Harvest
       }
       this.results_build();
       this.set_tab_index();
+      this.set_label_behavior();
       return this.form_field.fire("liszt:ready", {
         chosen: this
       });
@@ -647,6 +648,23 @@ Copyright (c) 2011 by Harvest
         ti = this.form_field.tabIndex;
         this.form_field.tabIndex = -1;
         return this.search_field.tabIndex = ti;
+      }
+    };
+
+    Chosen.prototype.set_label_behavior = function() {
+      var _this = this;
+      this.form_field_label = this.form_field.up("label");
+      if (!(this.form_field_label != null)) {
+        this.form_field_label = $$("label[for=" + this.form_field.id + "]").first();
+      }
+      if (this.form_field_label != null) {
+        return this.form_field_label.observe("click", function(evt) {
+          if (_this.is_multiple) {
+            return _this.container_mousedown(evt);
+          } else {
+            return _this.activate_field();
+          }
+        });
       }
     };
 
