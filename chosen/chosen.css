@@ -13,7 +13,7 @@
   border-top: 0;
   position: absolute;
   top: 100%;
-  left: 0;
+  left: -9000px;
   -webkit-box-shadow: 0 4px 5px rgba(0,0,0,.15);
   -moz-box-shadow   : 0 4px 5px rgba(0,0,0,.15);
   box-shadow        : 0 4px 5px rgba(0,0,0,.15);
@@ -25,6 +25,11 @@
   -khtml-box-sizing : border-box;
   box-sizing        : border-box;
 }
+
+.chzn-container .chzn-drop.active {
+  left: 0;
+}
+
 /* @end */
 
 /* @group Single Chosen */
