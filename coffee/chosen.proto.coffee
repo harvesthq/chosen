@@ -17,8 +17,8 @@ class Chosen extends AbstractChosen
     super()
 
     # HTML Templates
-    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
-    @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
+    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
+    @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
@@ -207,16 +207,15 @@ class Chosen extends AbstractChosen
     @result_highlight = null
 
   results_show: ->
-    if not @is_multiple
-      @selected_item.addClassName('chzn-single-with-drop')
-      if @result_single_selected
-        this.result_do_highlight( @result_single_selected )
-    else if @max_selected_options <= @choices
+    if @result_single_selected?
+      this.result_do_highlight @result_single_selected
+    else if @is_multiple and @max_selected_options <= @choices
       @form_field.fire("liszt:maxselected", {chosen: this})
       return false
 
+    @container.addClassName "chzn-with-drop"
     @form_field.fire("liszt:showing_dropdown", {chosen: this})
-    @dropdown.setStyle {"left":0}
+
     @results_showing = true
 
     @search_field.focus()
@@ -225,10 +224,11 @@ class Chosen extends AbstractChosen
     this.winnow_results()
 
   results_hide: ->
-    @selected_item.removeClassName('chzn-single-with-drop') unless @is_multiple
     this.result_clear_highlight()
+
+    @container.removeClassName "chzn-with-drop"
     @form_field.fire("liszt:hiding_dropdown", {chosen: this})
-    @dropdown.setStyle({"left":"-9000px"})
+
     @results_showing = false
 
 
