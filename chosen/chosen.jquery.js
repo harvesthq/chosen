@@ -800,17 +800,19 @@ Copyright (c) 2011 by Harvest
             this.single_deselect_control_build();
           }
         }
-        if (!((this.stay_open || evt.metaKey || evt.ctrlKey) && this.is_multiple)) {
+        if ((this.stay_open || evt.metaKey || evt.ctrlKey) && this.is_multiple) {
+          this.winnow_results();
+        } else {
+          this.search_field.val("");
+          this.search_field_scale();
           this.results_hide();
         }
-        this.search_field.val("");
         if (this.is_multiple || this.form_field.selectedIndex !== this.current_selectedIndex) {
           this.form_field_jq.trigger("change", {
             'selected': this.form_field.options[item.options_index].value
           });
         }
-        this.current_selectedIndex = this.form_field.selectedIndex;
-        return this.search_field_scale();
+        return this.current_selectedIndex = this.form_field.selectedIndex;
       }
     };
 
