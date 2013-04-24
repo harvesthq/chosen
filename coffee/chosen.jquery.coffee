@@ -219,16 +219,15 @@ class Chosen extends AbstractChosen
     @result_highlight = null
 
   results_show: ->
-    if not @is_multiple
-      @selected_item.addClass "chzn-single-with-drop"
-      if @result_single_selected
-        this.result_do_highlight( @result_single_selected )
-    else if @max_selected_options <= @choices
+    if @result_single_selected?
+      this.result_do_highlight @result_single_selected
+    else if @is_multiple and @max_selected_options <= @choices
       @form_field_jq.trigger("liszt:maxselected", {chosen: this})
       return false
 
+    @container.addClass "chzn-with-drop"
     @form_field_jq.trigger("liszt:showing_dropdown", {chosen: this})
-    @dropdown.addClass 'active'
+
     @results_showing = true
 
     @search_field.focus()
@@ -237,10 +236,11 @@ class Chosen extends AbstractChosen
     this.winnow_results()
 
   results_hide: ->
-    @selected_item.removeClass "chzn-single-with-drop" unless @is_multiple
     this.result_clear_highlight()
+
+    @container.removeClass "chzn-with-drop"
     @form_field_jq.trigger("liszt:hiding_dropdown", {chosen: this})
-    @dropdown.removeClass 'active'
+
     @results_showing = false
 
 
