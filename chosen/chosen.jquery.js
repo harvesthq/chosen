@@ -384,9 +384,9 @@ Copyright (c) 2011 by Harvest
       };
       this.container = $("<div />", container_props);
       if (this.is_multiple) {
-        this.container.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
+        this.container.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>');
       } else {
-        this.container.html('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
+        this.container.html('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       }
       this.form_field_jq.hide().after(this.container);
       this.dropdown = this.container.find('div.chzn-drop').first();
@@ -617,22 +617,17 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.results_show = function() {
-      if (!this.is_multiple) {
-        this.selected_item.addClass("chzn-single-with-drop");
-        if (this.result_single_selected) {
-          this.result_do_highlight(this.result_single_selected);
-        }
-      } else if (this.max_selected_options <= this.choices) {
+      if (this.result_single_selected != null) {
+        this.result_do_highlight(this.result_single_selected);
+      } else if (this.is_multiple && this.max_selected_options <= this.choices) {
         this.form_field_jq.trigger("liszt:maxselected", {
           chosen: this
         });
         return false;
       }
+      this.container.addClass("chzn-with-drop");
       this.form_field_jq.trigger("liszt:showing_dropdown", {
         chosen: this
-      });
-      this.dropdown.css({
-        "left": 0
       });
       this.results_showing = true;
       this.search_field.focus();
@@ -641,15 +636,10 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.results_hide = function() {
-      if (!this.is_multiple) {
-        this.selected_item.removeClass("chzn-single-with-drop");
-      }
       this.result_clear_highlight();
+      this.container.removeClass("chzn-with-drop");
       this.form_field_jq.trigger("liszt:hiding_dropdown", {
         chosen: this
-      });
-      this.dropdown.css({
-        "left": "-9000px"
       });
       return this.results_showing = false;
     };

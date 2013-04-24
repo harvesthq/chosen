@@ -44,9 +44,9 @@ class Chosen extends AbstractChosen
     @container = ($ "<div />", container_props)
 
     if @is_multiple
-      @container.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
+      @container.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>'
     else
-      @container.html '<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
+      @container.html '<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
 
     @form_field_jq.hide().after @container
     @dropdown = @container.find('div.chzn-drop').first()
@@ -220,16 +220,15 @@ class Chosen extends AbstractChosen
     @result_highlight = null
 
   results_show: ->
-    if not @is_multiple
-      @selected_item.addClass "chzn-single-with-drop"
-      if @result_single_selected
-        this.result_do_highlight( @result_single_selected )
-    else if @max_selected_options <= @choices
+    if @result_single_selected?
+      this.result_do_highlight @result_single_selected
+    else if @is_multiple and @max_selected_options <= @choices
       @form_field_jq.trigger("liszt:maxselected", {chosen: this})
       return false
 
+    @container.addClass "chzn-with-drop"
     @form_field_jq.trigger("liszt:showing_dropdown", {chosen: this})
-    @dropdown.css {"left":0}
+
     @results_showing = true
 
     @search_field.focus()
@@ -238,10 +237,11 @@ class Chosen extends AbstractChosen
     this.winnow_results()
 
   results_hide: ->
-    @selected_item.removeClass "chzn-single-with-drop" unless @is_multiple
     this.result_clear_highlight()
+
+    @container.removeClass "chzn-with-drop"
     @form_field_jq.trigger("liszt:hiding_dropdown", {chosen: this})
-    @dropdown.css {"left":"-9000px"}
+
     @results_showing = false
 
 
