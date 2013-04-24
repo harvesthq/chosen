@@ -345,7 +345,7 @@ class Chosen extends AbstractChosen
         @selected_item.down("span").update(item.html)
         this.single_deselect_control_build() if @allow_single_deselect
 
-      this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
+      this.results_hide() unless (@stay_open or evt.metaKey or evt.ctrlKey) and @is_multiple
 
       @search_field.value = ""
 
