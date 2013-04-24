@@ -13,7 +13,7 @@
   border-top: 0;
   position: absolute;
   top: 100%;
-  left: -9000px;
+  left: -9999px;
   -webkit-box-shadow: 0 4px 5px rgba(0,0,0,.15);
   -moz-box-shadow   : 0 4px 5px rgba(0,0,0,.15);
   box-shadow        : 0 4px 5px rgba(0,0,0,.15);
@@ -141,7 +141,7 @@
 }
 .chzn-container-single-nosearch .chzn-search {
   position: absolute;
-  left: -9000px;
+  left: -9999px;
 }
 /* @end */
 
@@ -405,9 +405,9 @@
 .chzn-rtl .chzn-choices li { float: right; }
 .chzn-rtl .chzn-choices .search-choice { padding: 3px 5px 3px 19px; margin: 3px 5px 3px 0; }
 .chzn-rtl .chzn-choices .search-choice .search-choice-close { left: 4px; right: auto; }
-.chzn-rtl .chzn-search { left: 9000px; }
+.chzn-rtl .chzn-search { left: 9999px; }
 .chzn-rtl.chzn-with-drop .chzn-search { left: 0px; }
-.chzn-rtl .chzn-drop { left: 9000px; }
+.chzn-rtl .chzn-drop { left: 9999px; }
 .chzn-rtl.chzn-container-single .chzn-results { margin: 0 0 4px 4px; padding: 0 4px 0 0; }
 .chzn-rtl .chzn-results .group-option { padding-left: 0; padding-right: 15px; }
 .chzn-rtl.chzn-container-active.chzn-with-drop .chzn-single div { border-right: none; }
