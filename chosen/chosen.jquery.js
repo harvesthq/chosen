@@ -442,6 +442,12 @@ Copyright (c) 2011 by Harvest
       this.search_results.mouseout(function(evt) {
         _this.search_results_mouseout(evt);
       });
+      this.search_results.bind('mousewheel', function(evt) {
+        _this.search_results_mousewheel(evt);
+      });
+      this.search_results.bind('DOMMouseScroll', function(evt) {
+        _this.search_results_mousewheel_ff(evt);
+      });
       this.form_field_jq.bind("liszt:updated", function(evt) {
         _this.results_update_field(evt);
       });
@@ -516,6 +522,23 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.container_mouseup = function(evt) {
       if (evt.target.nodeName === "ABBR" && !this.is_disabled) {
         return this.results_reset(evt);
+      }
+    };
+
+    Chosen.prototype.search_results_mousewheel = function(evt) {
+      this.search_results[0].scrollTop -= evt.wheelDelta;
+      return evt.preventDefault();
+    };
+
+    Chosen.prototype.search_results_mousewheel_ff = function(evt) {
+      var bottom_overflow, delta, target, top_overflow, _ref1;
+
+      target = evt.currentTarget;
+      delta = ((_ref1 = evt.originalEvent) != null ? _ref1.wheelDelta : void 0) || -evt.detail;
+      bottom_overflow = target.scrollTop + $(target).outerHeight() - target.scrollHeight >= 0;
+      top_overflow = target.scrollTop <= 0;
+      if (target.scrollHeight > $(target).outerHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
+        return evt.preventDefault();
       }
     };
 
