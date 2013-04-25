@@ -48,6 +48,11 @@
     }
   </style>
   <link rel="stylesheet" href="chosen/chosen.css" />
+  <style type="text/css" media="all">
+    /* fix rtl for demo */
+    .chzn-rtl .chzn-search { left: -9000px; }
+    .chzn-rtl .chzn-drop { left: -9000px; }
+  </style>
 </head>
 <body>
   <div id="container">
@@ -1408,6 +1413,40 @@
       <div>
         <em>Multiple Select</em>
         <select data-placeholder="Your Favorite Types of Bear" multiple class="chzn-select-width" tabindex="16">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option selected>Giant Panda</option>
+          <option>Sloth Bear</option>
+          <option>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option>Spectacled Bear</option>
+        </select>
+      </div>
+    </div>
+
+    <h2>Labels work, too</h2>
+    <div class="side-by-side clearfix">
+      <p>Use labels just like you would a standard select</p>
+      <p></p>
+      <div>
+        <em><label for="single-label-example">Click to Highlight Single Select</label></em>
+        <select data-placeholder="Your Favorite Types of Bear" class="chzn-select" style="width:350px;" tabindex="17" id="single-label-example">
+          <option value=""></option>
+          <option selected>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option>Sloth Bear</option>
+          <option>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option>Spectacled Bear</option>
+        </select>
+      </div>
+      <div>
+        <em><label for="multiple-label-example">Click to Highlight Multiple Select</label></em>
+        <select data-placeholder="Your Favorite Types of Bear" multiple class="chzn-select" style="width:350px;" tabindex="18" id="multiple-label-example">
           <option value=""></option>
           <option>American Black Bear</option>
           <option>Asiatic Black Bear</option>

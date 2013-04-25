@@ -41,16 +41,14 @@ class Chosen extends AbstractChosen
       'style': "width: #{this.container_width()};"
       'title': @form_field.title
 
-    container_div = ($ "<div />", container_props)
+    @container = ($ "<div />", container_props)
 
     if @is_multiple
-      container_div.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>'
+      @container.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>'
     else
-      container_div.html '<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
+      @container.html '<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
 
-
-    @form_field_jq.hide().after container_div
-    @container = ($ '#' + @container_id)
+    @form_field_jq.hide().after @container
     @dropdown = @container.find('div.chzn-drop').first()
 
     @search_field = @container.find('input').first()
@@ -65,9 +63,10 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.find('div.chzn-search').first()
       @selected_item = @container.find('.chzn-single').first()
-
+    
     this.results_build()
     this.set_tab_index()
+    this.set_label_behavior()
     @form_field_jq.trigger("liszt:ready", {chosen: this})
 
   register_observers: ->
@@ -237,16 +236,15 @@ class Chosen extends AbstractChosen
     @result_highlight = null
 
   results_show: ->
-    if not @is_multiple
-      @selected_item.addClass "chzn-single-with-drop"
-      if @result_single_selected
-        this.result_do_highlight( @result_single_selected )
-    else if @max_selected_options <= @choices
+    if @result_single_selected?
+      this.result_do_highlight @result_single_selected
+    else if @is_multiple and @max_selected_options <= @choices
       @form_field_jq.trigger("liszt:maxselected", {chosen: this})
       return false
 
+    @container.addClass "chzn-with-drop"
     @form_field_jq.trigger("liszt:showing_dropdown", {chosen: this})
-    @dropdown.css {"left":0}
+
     @results_showing = true
 
     @search_field.focus()
@@ -255,10 +253,11 @@ class Chosen extends AbstractChosen
     this.winnow_results()
 
   results_hide: ->
-    @selected_item.removeClass "chzn-single-with-drop" unless @is_multiple
     this.result_clear_highlight()
+
+    @container.removeClass "chzn-with-drop"
     @form_field_jq.trigger("liszt:hiding_dropdown", {chosen: this})
-    @dropdown.css {"left":"-9000px"}
+
     @results_showing = false
 
 
@@ -267,6 +266,14 @@ class Chosen extends AbstractChosen
       ti = @form_field_jq.attr "tabindex"
       @form_field_jq.attr "tabindex", -1
       @search_field.attr "tabindex", ti
+
+  set_label_behavior: ->
+    @form_field_label = @form_field_jq.parents("label") # first check for a parent label
+    if not @form_field_label.length and @form_field.id.length
+      @form_field_label = $("label[for=#{@form_field.id}]") #next check for a for=#{id}
+
+    if @form_field_label.length > 0
+      @form_field_label.click (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
 
   show_search_field_default: ->
     if @is_multiple and @choices < 1 and not @active_field

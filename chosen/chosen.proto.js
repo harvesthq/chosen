@@ -1,7 +1,7 @@
 // Chosen, a Select Box Enhancer for jQuery and Protoype
 // by Patrick Filler for Harvest, http://getharvest.com
 //
-// Version 0.9.12
+// Version 0.9.13
 // Full source at https://github.com/harvesthq/chosen
 // Copyright (c) 2011 Harvest http://getharvest.com
 
@@ -355,15 +355,15 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.set_default_values = function() {
       Chosen.__super__.set_default_values.call(this);
-      this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
-      this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
+      this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
+      this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
       this.choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
     };
 
     Chosen.prototype.set_up_html = function() {
-      var base_template, container_classes, container_props;
+      var container_classes, container_props;
 
       this.container_id = this.form_field.identify().replace(/[^\w]/g, '_') + "_chzn";
       container_classes = ["chzn-container"];
@@ -380,15 +380,14 @@ Copyright (c) 2011 by Harvest
         'style': "width: " + (this.container_width()) + ";",
         'title': this.form_field.title
       };
-      base_template = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
+      this.container = this.is_multiple ? new Element('div', container_props).update(this.multi_temp.evaluate({
         "default": this.default_text
       })) : new Element('div', container_props).update(this.single_temp.evaluate({
         "default": this.default_text
       }));
       this.form_field.hide().insert({
-        after: base_template
+        after: this.container
       });
-      this.container = $(this.container_id);
       this.dropdown = this.container.down('div.chzn-drop');
       this.search_field = this.container.down('input');
       this.search_results = this.container.down('ul.chzn-results');
@@ -403,6 +402,7 @@ Copyright (c) 2011 by Harvest
       }
       this.results_build();
       this.set_tab_index();
+      this.set_label_behavior();
       return this.form_field.fire("liszt:ready", {
         chosen: this
       });
@@ -639,22 +639,17 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.results_show = function() {
-      if (!this.is_multiple) {
-        this.selected_item.addClassName('chzn-single-with-drop');
-        if (this.result_single_selected) {
-          this.result_do_highlight(this.result_single_selected);
-        }
-      } else if (this.max_selected_options <= this.choices) {
+      if (this.result_single_selected != null) {
+        this.result_do_highlight(this.result_single_selected);
+      } else if (this.is_multiple && this.max_selected_options <= this.choices) {
         this.form_field.fire("liszt:maxselected", {
           chosen: this
         });
         return false;
       }
+      this.container.addClassName("chzn-with-drop");
       this.form_field.fire("liszt:showing_dropdown", {
         chosen: this
-      });
-      this.dropdown.setStyle({
-        "left": 0
       });
       this.results_showing = true;
       this.search_field.focus();
@@ -663,15 +658,10 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.results_hide = function() {
-      if (!this.is_multiple) {
-        this.selected_item.removeClassName('chzn-single-with-drop');
-      }
       this.result_clear_highlight();
+      this.container.removeClassName("chzn-with-drop");
       this.form_field.fire("liszt:hiding_dropdown", {
         chosen: this
-      });
-      this.dropdown.setStyle({
-        "left": "-9000px"
       });
       return this.results_showing = false;
     };
@@ -683,6 +673,24 @@ Copyright (c) 2011 by Harvest
         ti = this.form_field.tabIndex;
         this.form_field.tabIndex = -1;
         return this.search_field.tabIndex = ti;
+      }
+    };
+
+    Chosen.prototype.set_label_behavior = function() {
+      var _this = this;
+
+      this.form_field_label = this.form_field.up("label");
+      if (this.form_field_label == null) {
+        this.form_field_label = $$("label[for=" + this.form_field.id + "]").first();
+      }
+      if (this.form_field_label != null) {
+        return this.form_field_label.observe("click", function(evt) {
+          if (_this.is_multiple) {
+            return _this.container_mousedown(evt);
+          } else {
+            return _this.activate_field();
+          }
+        });
       }
     };
 
