@@ -745,7 +745,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.choices_click = function(evt) {
       evt.preventDefault();
-      if (this.active_field && !($(evt.target).hasClass("search-choice" || $(evt.target).parents('.search-choice').first)) && !this.results_showing) {
+      if (!this.results_showing) {
         return this.results_show();
       }
     };
