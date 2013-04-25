@@ -268,10 +268,11 @@ class Chosen extends AbstractChosen
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
 
-
   choices_click: (evt) ->
     evt.preventDefault()
-    if( @active_field and not(evt.target.hasClassName('search-choice') or evt.target.up('.search-choice')) and not @results_showing )
+    return if @results_showing or not @active_field
+    console.log evt.target.up('.search-choice')
+    unless evt.target.hasClassName('search-choice') or evt.target.up('.search-choice')
       this.results_show()
 
   choice_build: (item) ->

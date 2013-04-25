@@ -281,10 +281,10 @@ class Chosen extends AbstractChosen
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
 
-
   choices_click: (evt) ->
     evt.preventDefault()
-    if( @active_field and not($(evt.target).hasClass "search-choice" or $(evt.target).parents('.search-choice').first) and not @results_showing )
+    return if @results_showing or not @active_field
+    unless $(evt.target).hasClass('.search-choice') or $(evt.target).parents('.search-choice').length > 0
       this.results_show()
 
   choice_build: (item) ->
