@@ -722,10 +722,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.choices_click = function(evt) {
       evt.preventDefault();
-      if (this.results_showing || !this.active_field) {
-        return;
-      }
-      if (!($(evt.target).hasClass('.search-choice') || $(evt.target).parents('.search-choice').length > 0)) {
+      if (!this.results_showing) {
         return this.results_show();
       }
     };

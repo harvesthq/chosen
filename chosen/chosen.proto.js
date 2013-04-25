@@ -709,11 +709,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.choices_click = function(evt) {
       evt.preventDefault();
-      if (this.results_showing || !this.active_field) {
-        return;
-      }
-      console.log(evt.target.up('.search-choice'));
-      if (!(evt.target.hasClassName('search-choice') || evt.target.up('.search-choice'))) {
+      if (!this.results_showing) {
         return this.results_show();
       }
     };

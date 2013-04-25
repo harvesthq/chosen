@@ -270,10 +270,7 @@ class Chosen extends AbstractChosen
 
   choices_click: (evt) ->
     evt.preventDefault()
-    return if @results_showing or not @active_field
-    console.log evt.target.up('.search-choice')
-    unless evt.target.hasClassName('search-choice') or evt.target.up('.search-choice')
-      this.results_show()
+    this.results_show() unless @results_showing
 
   choice_build: (item) ->
     if @is_multiple and @max_selected_options <= @choices
