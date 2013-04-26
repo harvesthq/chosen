@@ -253,7 +253,7 @@ Copyright (c) 2011 by Harvest
       this.search_field_scale();
       switch (stroke) {
         case 8:
-          if (this.is_multiple && this.backstroke_length < 1 && this.choices > 0) {
+          if (this.is_multiple && this.backstroke_length < 1 && this.choices_count() > 0) {
             return this.keydown_backstroke();
           } else if (!this.pending_backstroke) {
             this.result_clear_highlight();

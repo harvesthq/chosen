@@ -106,7 +106,7 @@ class AbstractChosen
 
     switch stroke
       when 8
-        if @is_multiple and @backstroke_length < 1 and @choices > 0
+        if @is_multiple and @backstroke_length < 1 and this.choices_count() > 0
           this.keydown_backstroke()
         else if not @pending_backstroke
           this.result_clear_highlight()
