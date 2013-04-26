@@ -129,10 +129,10 @@ class AbstractChosen
   container_width: ->
     return @options.width if @options.width?
 
-    width = if window.getComputedStyle?
-      parseFloat window.getComputedStyle(@form_field).getPropertyValue('width')
-    else if jQuery? and @form_field_jq?
+    width = if jQuery? and @form_field_jq?
       @form_field_jq.outerWidth()
+    else if window.getComputedStyle?
+      parseFloat window.getComputedStyle(@form_field).getPropertyValue('width')
     else
       @form_field.getWidth()
 
