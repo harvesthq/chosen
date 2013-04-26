@@ -94,6 +94,12 @@ class AbstractChosen
     else
       this.results_show()
 
+  choices: ->
+    c = 0
+    for option in @form_field.options
+      c += 1 if option.selected
+    c
+
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
     this.search_field_scale()

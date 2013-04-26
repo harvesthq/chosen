@@ -23,9 +23,6 @@ class Chosen extends AbstractChosen
     @current_selectedIndex = @form_field.selectedIndex
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
 
-  choices: ->
-    return @form_field_jq.children('option[selected=true]').length
-
   finish_setup: ->
     @form_field_jq.addClass "chzn-done"
 

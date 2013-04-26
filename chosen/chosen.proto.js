@@ -234,6 +234,19 @@ Copyright (c) 2011 by Harvest
       }
     };
 
+    AbstractChosen.prototype.choices = function() {
+      var c, option, _i, _len, _ref;
+      c = 0;
+      _ref = this.form_field.options;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        option = _ref[_i];
+        if (option.selected) {
+          c += 1;
+        }
+      }
+      return c;
+    };
+
     AbstractChosen.prototype.keyup_checker = function(evt) {
       var stroke, _ref;
       stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
@@ -343,10 +356,6 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.finish_setup = function() {
       return this.form_field.addClassName("chzn-done");
-    };
-
-    Chosen.prototype.choices = function() {
-      return this.form_field.select('option[selected=true]').length;
     };
 
     Chosen.prototype.set_default_values = function() {

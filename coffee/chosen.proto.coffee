@@ -13,9 +13,6 @@ class Chosen extends AbstractChosen
   finish_setup: ->
     @form_field.addClassName "chzn-done"
 
-  choices: ->
-    return @form_field.select('option[selected=true]').length
-
   set_default_values: ->
     super()
 
