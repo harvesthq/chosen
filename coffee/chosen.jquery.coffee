@@ -381,7 +381,7 @@ class Chosen extends AbstractChosen
       this.search_field_scale()
 
   result_activate: (el) ->
-    el.addClass("active-result")
+    el.addClass("active-result") unless el.hasClass "disabled-result"
 
   result_deactivate: (el) ->
     el.removeClass("active-result")
@@ -394,7 +394,8 @@ class Chosen extends AbstractChosen
 
       @form_field.options[result_data.options_index].selected = false
       result = $("#" + @container_id + "_o_" + pos)
-      result.removeClass("result-selected").addClass("active-result").show()
+      result.removeClass("result-selected").show()
+      @result_activate result
 
       this.result_clear_highlight()
       this.winnow_results()
@@ -420,7 +421,7 @@ class Chosen extends AbstractChosen
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
-      if not option.disabled and not option.empty
+      if not option.empty
         if option.group
           $('#' + option.dom_id).css('display', 'none')
         else if not (@is_multiple and option.selected)
