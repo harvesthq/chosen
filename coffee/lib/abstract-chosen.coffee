@@ -94,7 +94,7 @@ class AbstractChosen
     else
       this.results_show()
 
-  choices: ->
+  choices_count: ->
     c = 0
     for option in @form_field.options
       c += 1 if option.selected

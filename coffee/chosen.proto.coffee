@@ -165,7 +165,7 @@ class Chosen extends AbstractChosen
     @parsing = true
     @results_data = root.SelectParser.select_to_array @form_field
 
-    if @is_multiple and this.choices() > 0
+    if @is_multiple and this.choices_count() > 0
       @search_choices.select("li.search-choice").invoke("remove")
     else if not @is_multiple
       @selected_item.addClassName("chzn-default").down("span").update(@default_text)
@@ -226,7 +226,7 @@ class Chosen extends AbstractChosen
   results_show: ->
     if @result_single_selected?
       this.result_do_highlight @result_single_selected
-    else if @is_multiple and @max_selected_options <= this.choices()
+    else if @is_multiple and @max_selected_options <= this.choices_count()
       @form_field.fire("liszt:maxselected", {chosen: this})
       return false
 
@@ -264,7 +264,7 @@ class Chosen extends AbstractChosen
       @form_field_label.observe "click", (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
 
   show_search_field_default: ->
-    if @is_multiple and this.choices() < 1 and not @active_field
+    if @is_multiple and this.choices_count() < 1 and not @active_field
       @search_field.value = @default_text
       @search_field.addClassName "default"
     else
@@ -290,7 +290,7 @@ class Chosen extends AbstractChosen
     this.results_show() unless @results_showing
 
   choice_build: (item) ->
-    if @is_multiple and @max_selected_options <= this.choices()
+    if @is_multiple and @max_selected_options <= this.choices_count()
       @form_field.fire("liszt:maxselected", {chosen: this})
       return false
     choice_id = @container_id + "_c_" + item.array_index
@@ -312,7 +312,7 @@ class Chosen extends AbstractChosen
     if this.result_deselect link.readAttribute("rel")
       this.show_search_field_default()
 
-      this.results_hide() if @is_multiple and this.choices() > 0 and @search_field.value.length < 1
+      this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.value.length < 1
 
       link.up('li').remove()
 
@@ -498,7 +498,7 @@ class Chosen extends AbstractChosen
       if prevs.length
         this.result_do_highlight prevs.first()
       else
-        this.results_hide() if this.choices() > 0
+        this.results_hide() if this.choices_count() > 0
         this.result_clear_highlight()
 
   keydown_backstroke: ->

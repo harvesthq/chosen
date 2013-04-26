@@ -234,7 +234,7 @@ Copyright (c) 2011 by Harvest
       }
     };
 
-    AbstractChosen.prototype.choices = function() {
+    AbstractChosen.prototype.choices_count = function() {
       var c, option, _i, _len, _ref;
       c = 0;
       _ref = this.form_field.options;
