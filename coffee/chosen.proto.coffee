@@ -572,10 +572,3 @@ class Chosen extends AbstractChosen
       @search_field.setStyle({'width': w + 'px'})
 
 root.Chosen = Chosen
-
-
-get_side_border_padding = (elmt) ->
-  layout = new Element.Layout(elmt)
-  side_border_padding = layout.get("border-left") + layout.get("border-right") + layout.get("padding-left") + layout.get("padding-right")
-
-root.get_side_border_padding = get_side_border_padding
