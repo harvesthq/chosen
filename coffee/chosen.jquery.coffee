@@ -23,6 +23,9 @@ class Chosen extends AbstractChosen
     @current_selectedIndex = @form_field.selectedIndex
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
 
+  choices: ->
+    return @form_field_jq.children('option[selected=true]').length
+
   finish_setup: ->
     @form_field_jq.addClass "chzn-done"
 
@@ -175,9 +178,8 @@ class Chosen extends AbstractChosen
     @parsing = true
     @results_data = root.SelectParser.select_to_array @form_field
 
-    if @is_multiple and @choices > 0
+    if @is_multiple and this.choices() > 0
       @search_choices.find("li.search-choice").remove()
-      @choices = 0
     else if not @is_multiple
       @selected_item.addClass("chzn-default").find("span").text(@default_text)
       if @disable_search or @form_field.options.length <= @disable_search_threshold
@@ -238,7 +240,7 @@ class Chosen extends AbstractChosen
   results_show: ->
     if @result_single_selected?
       this.result_do_highlight @result_single_selected
-    else if @is_multiple and @max_selected_options <= @choices
+    else if @is_multiple and @max_selected_options <= this.choices()
       @form_field_jq.trigger("liszt:maxselected", {chosen: this})
       return false
 
@@ -276,7 +278,7 @@ class Chosen extends AbstractChosen
       @form_field_label.click (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
 
   show_search_field_default: ->
-    if @is_multiple and @choices < 1 and not @active_field
+    if @is_multiple and this.choices() < 1 and not @active_field
       @search_field.val(@default_text)
       @search_field.addClass "default"
     else
@@ -302,11 +304,10 @@ class Chosen extends AbstractChosen
     this.results_show() unless @results_showing
 
   choice_build: (item) ->
-    if @is_multiple and @max_selected_options <= @choices
+    if @is_multiple and @max_selected_options <= this.choices()
       @form_field_jq.trigger("liszt:maxselected", {chosen: this})
       return false # fire event
     choice_id = @container_id + "_c_" + item.array_index
-    @choices += 1
     if item.disabled
       html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>'
     else
@@ -322,10 +323,9 @@ class Chosen extends AbstractChosen
 
   choice_destroy: (link) ->
     if this.result_deselect (link.attr "rel")
-      @choices -= 1
       this.show_search_field_default()
 
-      this.results_hide() if @is_multiple and @choices > 0 and @search_field.val().length < 1
+      this.results_hide() if @is_multiple and this.choices() > 0 and @search_field.val().length < 1
 
       link.parents('li').first().remove()
 
@@ -507,7 +507,7 @@ class Chosen extends AbstractChosen
       if prev_sibs.length
         this.result_do_highlight prev_sibs.first()
       else
-        this.results_hide() if @choices > 0
+        this.results_hide() if this.choices() > 0
         this.result_clear_highlight()
 
   keydown_backstroke: ->
