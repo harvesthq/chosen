@@ -286,10 +286,6 @@ class Chosen extends AbstractChosen
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
 
-  choices_click: (evt) ->
-    evt.preventDefault()
-    this.results_show() unless @results_showing
-
   choice_build: (item) ->
     if @is_multiple and @max_selected_options <= @choices
       @form_field.fire("liszt:maxselected", {chosen: this})
