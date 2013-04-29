@@ -285,17 +285,17 @@ class Chosen extends AbstractChosen
 
   search_results_mouseup: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    if target.length
+    if target.length and not target.hasClass 'disabled-result'
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
   search_results_mouseover: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    this.result_do_highlight( target ) if target
+    this.result_do_highlight( target ) if target and not target.hasClass 'disabled-result'
 
   search_results_mouseout: (evt) ->
-    this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
+    this.result_clear_highlight() if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
 
   choice_build: (item) ->
     if @is_multiple and @max_selected_options <= @choices
@@ -416,7 +416,7 @@ class Chosen extends AbstractChosen
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
-      if not option.disabled and not option.empty
+      if not option.empty
         if option.group
           $('#' + option.dom_id).css('display', 'none')
         else if not (@is_multiple and option.selected)
@@ -474,7 +474,7 @@ class Chosen extends AbstractChosen
       selected_results = if not @is_multiple then @search_results.find(".result-selected.active-result") else []
       do_high = if selected_results.length then selected_results.first() else @search_results.find(".active-result").first()
 
-      this.result_do_highlight do_high if do_high?
+      this.result_do_highlight do_high if do_high? and not do_high.hasClass 'disabled-result'
 
   no_results: (terms) ->
     no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')

@@ -274,14 +274,14 @@ class Chosen extends AbstractChosen
 
   search_results_mouseup: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
-    if target
+    if target and not target.hasClassName 'disabled-result'
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
   search_results_mouseover: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
-    this.result_do_highlight( target ) if target
+    this.result_do_highlight( target ) if target and not target.hasClassName 'disabled-result'
 
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
@@ -405,7 +405,7 @@ class Chosen extends AbstractChosen
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
-      if not option.disabled and not option.empty
+      if not option.empty
         if option.group
           $(option.dom_id).hide()
         else if not (@is_multiple and option.selected)
@@ -465,7 +465,7 @@ class Chosen extends AbstractChosen
       if not do_high?
         do_high = @search_results.down(".active-result")
 
-      this.result_do_highlight do_high if do_high?
+      this.result_do_highlight do_high if do_high? and not do_high.hasClassName 'disabled-result'
 
   no_results: (terms) ->
     @search_results.insert @no_results_temp.evaluate( terms: terms )
