@@ -476,7 +476,7 @@ class Chosen extends AbstractChosen
 
 
   keydown_arrow: ->
-    actives = @search_results.select("li.active-result")
+    actives = @search_results.select("li.active-result:not('.disabled-result')")
     if actives.length
       if not @result_highlight
         this.result_do_highlight actives.first()
@@ -491,7 +491,7 @@ class Chosen extends AbstractChosen
       this.results_show()
     else if @result_highlight
       sibs = @result_highlight.previousSiblings()
-      actives = @search_results.select("li.active-result")
+      actives = @search_results.select("li.active-result:not('.disabled-result')")
       prevs = sibs.intersect(actives)
 
       if prevs.length

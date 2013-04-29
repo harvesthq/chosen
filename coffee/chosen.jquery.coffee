@@ -487,10 +487,10 @@ class Chosen extends AbstractChosen
 
   keydown_arrow: ->
     if not @result_highlight
-      first_active = @search_results.find("li.active-result").first()
+      first_active = @search_results.find("li.active-result:not('.disabled-result')").first()
       this.result_do_highlight $(first_active) if first_active
     else if @results_showing
-      next_sib = @result_highlight.nextAll("li.active-result").first()
+      next_sib = @result_highlight.nextAll("li.active-result:not('.disabled-result')").first()
       this.result_do_highlight next_sib if next_sib
     this.results_show() if not @results_showing
 
@@ -498,7 +498,7 @@ class Chosen extends AbstractChosen
     if not @results_showing and not @is_multiple
       this.results_show()
     else if @result_highlight
-      prev_sibs = @result_highlight.prevAll("li.active-result")
+      prev_sibs = @result_highlight.prevAll("li.active-result:not('.disabled-result')")
 
       if prev_sibs.length
         this.result_do_highlight prev_sibs.first()

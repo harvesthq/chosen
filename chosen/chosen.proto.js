@@ -1005,7 +1005,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.keydown_arrow = function() {
       var actives, nexts, sibs;
 
-      actives = this.search_results.select("li.active-result");
+      actives = this.search_results.select("li.active-result:not('.disabled-result')");
       if (actives.length) {
         if (!this.result_highlight) {
           this.result_do_highlight(actives.first());
@@ -1029,7 +1029,7 @@ Copyright (c) 2011 by Harvest
         return this.results_show();
       } else if (this.result_highlight) {
         sibs = this.result_highlight.previousSiblings();
-        actives = this.search_results.select("li.active-result");
+        actives = this.search_results.select("li.active-result:not('.disabled-result')");
         prevs = sibs.intersect(actives);
         if (prevs.length) {
           return this.result_do_highlight(prevs.first());
