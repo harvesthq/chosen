@@ -611,12 +611,8 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.result_add_group = function(group) {
-      if (!group.disabled) {
-        group.dom_id = this.container_id + "_g_" + group.array_index;
-        return '<li id="' + group.dom_id + '" class="group-result">' + group.label.escapeHTML() + '</li>';
-      } else {
-        return "";
-      }
+      group.dom_id = this.container_id + "_g_" + group.array_index;
+      return '<li id="' + group.dom_id + '" class="group-result">' + group.label.escapeHTML() + '</li>';
     };
 
     Chosen.prototype.result_do_highlight = function(el) {

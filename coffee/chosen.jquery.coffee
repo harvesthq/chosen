@@ -204,13 +204,9 @@ class Chosen extends AbstractChosen
     @search_results.html content
     @parsing = false
 
-
   result_add_group: (group) ->
-    if not group.disabled
-      group.dom_id = @container_id + "_g_" + group.array_index
-      '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
-    else
-      ""
+    group.dom_id = @container_id + "_g_" + group.array_index
+    '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
 
   result_do_highlight: (el) ->
     if el.length
