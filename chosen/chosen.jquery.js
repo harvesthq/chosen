@@ -449,11 +449,8 @@ Copyright (c) 2011 by Harvest
       this.search_results.mouseout(function(evt) {
         _this.search_results_mouseout(evt);
       });
-      this.search_results.bind('mousewheel', function(evt) {
+      this.search_results.bind('mousewheel DOMMouseScroll', function(evt) {
         _this.search_results_mousewheel(evt);
-      });
-      this.search_results.bind('DOMMouseScroll', function(evt) {
-        _this.search_results_mousewheel_ff(evt);
       });
       this.form_field_jq.bind("liszt:updated", function(evt) {
         _this.results_update_field(evt);
@@ -533,19 +530,15 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.search_results_mousewheel = function(evt) {
-      this.search_results[0].scrollTop -= evt.wheelDelta;
-      return evt.preventDefault();
-    };
+      var delta, _ref1, _ref2;
 
-    Chosen.prototype.search_results_mousewheel_ff = function(evt) {
-      var bottom_overflow, delta, target, top_overflow, _ref1;
-
-      target = evt.currentTarget;
-      delta = ((_ref1 = evt.originalEvent) != null ? _ref1.wheelDelta : void 0) || -evt.detail;
-      bottom_overflow = target.scrollTop + $(target).outerHeight() - target.scrollHeight >= 0;
-      top_overflow = target.scrollTop <= 0;
-      if (target.scrollHeight > $(target).outerHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
-        return evt.preventDefault();
+      delta = -((_ref1 = evt.originalEvent) != null ? _ref1.wheelDelta : void 0) || ((_ref2 = evt.originialEvent) != null ? _ref2.detail : void 0);
+      if (delta != null) {
+        evt.preventDefault();
+        if (evt.type === 'DOMMouseScroll') {
+          delta = delta * 40;
+        }
+        return this.search_results.scrollTop(delta + this.search_results.scrollTop());
       }
     };
 
