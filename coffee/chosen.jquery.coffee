@@ -128,8 +128,10 @@ class Chosen extends AbstractChosen
 
   # scrolling event handler for all but Firefox
   search_results_mousewheel: (evt) ->
-    @search_results[0].scrollTop -= evt.wheelDelta
-    evt.preventDefault()
+    delta = evt.originalEvent?.wheelDelta
+    if delta
+      @search_results[0].scrollTop -= delta
+      evt.preventDefault()
 
   # scrolling event handler for Firefox
   search_results_mousewheel_ff: (evt) ->

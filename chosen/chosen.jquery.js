@@ -533,8 +533,13 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.search_results_mousewheel = function(evt) {
-      this.search_results[0].scrollTop -= evt.wheelDelta;
-      return evt.preventDefault();
+      var delta, _ref1;
+
+      delta = (_ref1 = evt.originalEvent) != null ? _ref1.wheelDelta : void 0;
+      if (delta) {
+        this.search_results[0].scrollTop -= delta;
+        return evt.preventDefault();
+      }
     };
 
     Chosen.prototype.search_results_mousewheel_ff = function(evt) {
