@@ -280,8 +280,8 @@
 }
 
 .chzn-container .chzn-results .active-result.disabled-result {
-  color: gray;
-  cursor: text;
+  color: #ccc;
+  cursor: default;
 }
 .chzn-container .chzn-results .highlighted {
   background-color: #3875d7;
