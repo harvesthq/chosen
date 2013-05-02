@@ -443,7 +443,7 @@ Copyright (c) 2011 by Harvest
         return _this.search_results_mousewheel(evt);
       });
       this.search_results.observe("DOMMouseScroll", function(evt) {
-        return _this.search_results_mousewheel_ff(evt);
+        return _this.search_results_mousewheel(evt);
       });
       this.form_field.observe("liszt:updated", function(evt) {
         return _this.results_update_field(evt);
@@ -522,19 +522,15 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.search_results_mousewheel = function(evt) {
-      this.search_results.scrollTop -= evt.wheelDelta;
-      return evt.preventDefault();
-    };
+      var delta;
 
-    Chosen.prototype.search_results_mousewheel_ff = function(evt) {
-      var bottom_overflow, delta, target, top_overflow;
-
-      target = evt.currentTarget;
-      delta = evt.wheelDelta || (evt.originalEvent && evt.originalEvent.wheelDelta) || -evt.detail;
-      bottom_overflow = target.scrollTop + target.getHeight() - target.scrollHeight >= 0;
-      top_overflow = target.scrollTop <= 0;
-      if (target.scrollHeight > target.getHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
-        return evt.preventDefault();
+      delta = -evt.wheelDelta || evt.detail;
+      if (delta != null) {
+        evt.preventDefault();
+        if (evt.type === 'DOMMouseScroll') {
+          delta = delta * 40;
+        }
+        return this.search_results.scrollTop = delta + this.search_results.scrollTop;
       }
     };
 

@@ -70,7 +70,7 @@ class Chosen extends AbstractChosen
     @search_results.observe "mouseover", (evt) => this.search_results_mouseover(evt)
     @search_results.observe "mouseout", (evt) => this.search_results_mouseout(evt)
     @search_results.observe "mousewheel", (evt) => this.search_results_mousewheel(evt)
-    @search_results.observe "DOMMouseScroll", (evt) => this.search_results_mousewheel_ff(evt) # for Firefox
+    @search_results.observe "DOMMouseScroll", (evt) => this.search_results_mousewheel(evt)
 
     @form_field.observe "liszt:updated", (evt) => this.results_update_field(evt)
     @form_field.observe "liszt:activate", (evt) => this.activate_field(evt)
@@ -116,21 +116,12 @@ class Chosen extends AbstractChosen
   container_mouseup: (evt) ->
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
 
-  # scrolling event handler for all but Firefox
   search_results_mousewheel: (evt) ->
-    @search_results.scrollTop -= evt.wheelDelta
-    evt.preventDefault()
-
-  # scrolling event handler for Firefox
-  search_results_mousewheel_ff: (evt) ->
-    target = evt.currentTarget
-    delta = evt.wheelDelta or (evt.originalEvent and evt.originalEvent.wheelDelta) or -evt.detail
-    bottom_overflow = target.scrollTop + target.getHeight() - target.scrollHeight >= 0
-    top_overflow = target.scrollTop <= 0
-    
-    if target.scrollHeight > target.getHeight() and ((delta < 0 and bottom_overflow) or (delta > 0 and top_overflow))
-        evt.preventDefault()
-
+    delta = -evt.wheelDelta or evt.detail
+    if delta?
+      evt.preventDefault()
+      delta = delta * 40 if evt.type is 'DOMMouseScroll'
+      @search_results.scrollTop = delta + @search_results.scrollTop
 
   blur_test: (evt) ->
     this.close_field() if not @active_field and @container.hasClassName("chzn-container-active")
