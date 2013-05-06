@@ -3,6 +3,26 @@ class SelectParser
   constructor: ->
     @options_index = 0
     @parsed = []
+    @default_options = {}
+    this.setDefaultOptions()
+
+  setDefaultOptions:()->
+    #jQuery
+    if $?fn?chosen_defaults?
+      console.log "Chosen defaults for jQuery"
+      @default_options = $.fn.chosen_defaults
+    #prototype
+    # I know nothing about prototype, so I'd like to apologize for this.
+    else if window.chosen_defaults?
+      console.log "Chosen defaults for prototype"
+      @default_options = window.chosen_defaults
+    #default options for the Select Parser
+    else 
+      console.log "Chosen defaults!"
+      @default_options = {
+        custom_cell_text: (text)->
+          text
+      }
 
   add_node: (child) ->
     if child.nodeName.toUpperCase() is "OPTGROUP"
@@ -30,7 +50,7 @@ class SelectParser
           options_index: @options_index
           value: option.value
           text: option.text
-          html: option.innerHTML
+          html:  if @default_options? then @default_options.custom_cell_text option.innerHTML else option.innerHTML
           selected: option.selected
           disabled: if group_disabled is true then group_disabled else option.disabled
           group_array_index: group_position
