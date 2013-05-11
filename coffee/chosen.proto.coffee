@@ -79,7 +79,11 @@ class Chosen extends AbstractChosen
     @search_field.observe "blur", (evt) => this.input_blur(evt)
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
     @search_field.observe "keydown", (evt) => this.keydown_checker(evt)
+    @search_field.observe "keypress",  (evt) => this.keypress_checker(evt)
     @search_field.observe "focus", (evt) => this.input_focus(evt)
+
+    if @firefox
+      @search_field.observe "text", (evt) => this.results_search()
 
     if @is_multiple
       @search_choices.observe "click", (evt) => this.choices_click(evt)
@@ -523,15 +527,22 @@ class Chosen extends AbstractChosen
         this.result_select(evt) if this.results_showing and not @is_multiple
         @mouse_on_container = false
         break
-      when 13
-        evt.preventDefault()
-        break
       when 38
         evt.preventDefault()
         this.keyup_arrow()
         break
       when 40
         this.keydown_arrow()
+        break
+
+  keypress_checker: (evt) ->
+    stroke = evt.which ? evt.keyCode
+    this.search_field_scale()
+
+    switch stroke
+      when 13
+        evt.preventDefault()
+        this.result_select(evt) if this.results_showing
         break
 
   search_field_scale: ->

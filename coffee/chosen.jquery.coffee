@@ -63,7 +63,7 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.find('div.chzn-search').first()
       @selected_item = @container.find('.chzn-single').first()
-    
+
     this.results_build()
     this.set_tab_index()
     this.set_label_behavior()
@@ -87,7 +87,11 @@ class Chosen extends AbstractChosen
     @search_field.blur (evt) => this.input_blur(evt); return
     @search_field.keyup (evt) => this.keyup_checker(evt); return
     @search_field.keydown (evt) => this.keydown_checker(evt); return
+    @search_field.keypress (evt) => this.keypress_checker(evt); return
     @search_field.focus (evt) => this.input_focus(evt); return
+
+    if @firefox
+      @search_field.bind "text", (evt) => this.results_search(); return
 
     if @is_multiple
       @search_choices.click (evt) => this.choices_click(evt); return
@@ -528,15 +532,22 @@ class Chosen extends AbstractChosen
         this.result_select(evt) if this.results_showing and not @is_multiple
         @mouse_on_container = false
         break
-      when 13
-        evt.preventDefault()
-        break
       when 38
         evt.preventDefault()
         this.keyup_arrow()
         break
       when 40
         this.keydown_arrow()
+        break
+
+  keypress_checker: (evt) ->
+    stroke = evt.which ? evt.keyCode
+    this.search_field_scale()
+
+    switch stroke
+      when 13
+        evt.preventDefault()
+        this.result_select(evt) if this.results_showing
         break
 
   search_field_scale: ->
@@ -563,7 +574,7 @@ class Chosen extends AbstractChosen
         w = @f_width - 10
 
       @search_field.css({'width': w + 'px'})
-  
+
   generate_random_id: ->
     string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()
     while $("#" + string).length > 0

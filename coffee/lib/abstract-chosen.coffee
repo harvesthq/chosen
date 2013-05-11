@@ -36,6 +36,7 @@ class AbstractChosen
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
     @inherit_select_classes = @options.inherit_select_classes || false
+    @firefox = window.navigator.userAgent.toLowerCase().indexOf "firefox" != -1
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -55,7 +56,7 @@ class AbstractChosen
       setTimeout (=> this.container_mousedown()), 50 unless @active_field
     else
       @activate_field() unless @active_field
-  
+
   input_blur: (evt) ->
     if not @mouse_on_container
       @active_field = false
@@ -112,7 +113,6 @@ class AbstractChosen
           this.results_search()
       when 13
         evt.preventDefault()
-        this.result_select(evt) if this.results_showing
       when 27
         this.results_hide() if @results_showing
         return true
@@ -124,7 +124,7 @@ class AbstractChosen
     new_id = this.generate_random_id()
     @form_field.id = new_id
     new_id
-  
+
   generate_random_char: ->
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     rand = Math.floor(Math.random() * chars.length)
@@ -142,7 +142,7 @@ class AbstractChosen
 
     width + "px"
 
-  # class methods and variables ============================================================ 
+  # class methods and variables ============================================================
 
   @browser_is_supported: ->
     if window.navigator.appName == "Microsoft Internet Explorer"
