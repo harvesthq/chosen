@@ -293,12 +293,11 @@ Copyright (c) 2011 by Harvest
     };
 
     AbstractChosen.prototype.container_width = function() {
-      var width;
       if (this.options.width != null) {
         return this.options.width;
+      } else {
+        return "" + this.form_field.offsetWidth + "px";
       }
-      width = window.getComputedStyle != null ? parseFloat(window.getComputedStyle(this.form_field).getPropertyValue('width')) : (typeof jQuery !== "undefined" && jQuery !== null) && (this.form_field_jq != null) ? this.form_field_jq.outerWidth() : this.form_field.getWidth();
-      return width + "px";
     };
 
     AbstractChosen.browser_is_supported = function() {
