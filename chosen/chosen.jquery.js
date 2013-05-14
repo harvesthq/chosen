@@ -1,7 +1,7 @@
-// Chosen, a Select Box Enhancer for jQuery and Protoype
+// Chosen, a Select Box Enhancer for jQuery and Prototype
 // by Patrick Filler for Harvest, http://getharvest.com
 //
-// Version 0.9.13
+// Version 0.9.14
 // Full source at https://github.com/harvesthq/chosen
 // Copyright (c) 2011 Harvest http://getharvest.com
 
@@ -235,6 +235,13 @@ Copyright (c) 2011 by Harvest
       }
     };
 
+    AbstractChosen.prototype.choices_click = function(evt) {
+      evt.preventDefault();
+      if (!this.results_showing) {
+        return this.results_show();
+      }
+    };
+
     AbstractChosen.prototype.keyup_checker = function(evt) {
       var stroke, _ref;
       stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
@@ -431,11 +438,8 @@ Copyright (c) 2011 by Harvest
       this.search_results.mouseout(function(evt) {
         _this.search_results_mouseout(evt);
       });
-      this.search_results.bind('mousewheel', function(evt) {
+      this.search_results.bind('mousewheel DOMMouseScroll', function(evt) {
         _this.search_results_mousewheel(evt);
-      });
-      this.search_results.bind('DOMMouseScroll', function(evt) {
-        _this.search_results_mousewheel_ff(evt);
       });
       this.form_field_jq.bind("liszt:updated", function(evt) {
         _this.results_update_field(evt);
@@ -515,18 +519,14 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.search_results_mousewheel = function(evt) {
-      this.search_results[0].scrollTop -= evt.wheelDelta;
-      return evt.preventDefault();
-    };
-
-    Chosen.prototype.search_results_mousewheel_ff = function(evt) {
-      var bottom_overflow, delta, target, top_overflow, _ref;
-      target = evt.currentTarget;
-      delta = ((_ref = evt.originalEvent) != null ? _ref.wheelDelta : void 0) || -evt.detail;
-      bottom_overflow = target.scrollTop + $(target).outerHeight() - target.scrollHeight >= 0;
-      top_overflow = target.scrollTop <= 0;
-      if (target.scrollHeight > $(target).outerHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
-        return evt.preventDefault();
+      var delta, _ref, _ref1;
+      delta = -((_ref = evt.originalEvent) != null ? _ref.wheelDelta : void 0) || ((_ref1 = evt.originialEvent) != null ? _ref1.detail : void 0);
+      if (delta != null) {
+        evt.preventDefault();
+        if (evt.type === 'DOMMouseScroll') {
+          delta = delta * 40;
+        }
+        return this.search_results.scrollTop(delta + this.search_results.scrollTop());
       }
     };
 
@@ -722,13 +722,6 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.search_results_mouseout = function(evt) {
       if ($(evt.target).hasClass("active-result" || $(evt.target).parents('.active-result').first())) {
         return this.result_clear_highlight();
-      }
-    };
-
-    Chosen.prototype.choices_click = function(evt) {
-      evt.preventDefault();
-      if (!this.results_showing) {
-        return this.results_show();
       }
     };
 

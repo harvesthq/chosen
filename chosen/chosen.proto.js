@@ -1,7 +1,7 @@
-// Chosen, a Select Box Enhancer for jQuery and Protoype
+// Chosen, a Select Box Enhancer for jQuery and Prototype
 // by Patrick Filler for Harvest, http://getharvest.com
 //
-// Version 0.9.13
+// Version 0.9.14
 // Full source at https://github.com/harvesthq/chosen
 // Copyright (c) 2011 Harvest http://getharvest.com
 
@@ -235,6 +235,13 @@ Copyright (c) 2011 by Harvest
       }
     };
 
+    AbstractChosen.prototype.choices_click = function(evt) {
+      evt.preventDefault();
+      if (!this.results_showing) {
+        return this.results_show();
+      }
+    };
+
     AbstractChosen.prototype.keyup_checker = function(evt) {
       var stroke, _ref;
       stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
@@ -426,7 +433,7 @@ Copyright (c) 2011 by Harvest
         return _this.search_results_mousewheel(evt);
       });
       this.search_results.observe("DOMMouseScroll", function(evt) {
-        return _this.search_results_mousewheel_ff(evt);
+        return _this.search_results_mousewheel(evt);
       });
       this.form_field.observe("liszt:updated", function(evt) {
         return _this.results_update_field(evt);
@@ -505,18 +512,14 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.search_results_mousewheel = function(evt) {
-      this.search_results.scrollTop -= evt.wheelDelta;
-      return evt.preventDefault();
-    };
-
-    Chosen.prototype.search_results_mousewheel_ff = function(evt) {
-      var bottom_overflow, delta, target, top_overflow;
-      target = evt.currentTarget;
-      delta = evt.wheelDelta || (evt.originalEvent && evt.originalEvent.wheelDelta) || -evt.detail;
-      bottom_overflow = target.scrollTop + target.getHeight() - target.scrollHeight >= 0;
-      top_overflow = target.scrollTop <= 0;
-      if (target.scrollHeight > target.getHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
-        return evt.preventDefault();
+      var delta;
+      delta = -evt.wheelDelta || evt.detail;
+      if (delta != null) {
+        evt.preventDefault();
+        if (evt.type === 'DOMMouseScroll') {
+          delta = delta * 40;
+        }
+        return this.search_results.scrollTop = delta + this.search_results.scrollTop;
       }
     };
 
@@ -710,13 +713,6 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.search_results_mouseout = function(evt) {
       if (evt.target.hasClassName('active-result') || evt.target.up('.active-result')) {
         return this.result_clear_highlight();
-      }
-    };
-
-    Chosen.prototype.choices_click = function(evt) {
-      evt.preventDefault();
-      if (!this.results_showing) {
-        return this.results_show();
       }
     };
 

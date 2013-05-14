@@ -95,6 +95,10 @@ class AbstractChosen
     else
       this.results_show()
 
+  choices_click: (evt) ->
+    evt.preventDefault()
+    this.results_show() unless @results_showing
+
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
     this.search_field_scale()
