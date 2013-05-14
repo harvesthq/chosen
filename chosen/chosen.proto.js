@@ -612,7 +612,7 @@ Copyright (c) 2011 by Harvest
       maxHeight = parseInt(this.search_results.getStyle('maxHeight'), 10);
       visible_top = this.search_results.scrollTop;
       visible_bottom = maxHeight + visible_top;
-      high_top = this.result_highlight.positionedOffset().top;
+      high_top = this.result_highlight.positionedOffset().top + this.search_results.scrollTop;      
       high_bottom = high_top + this.result_highlight.getHeight();
       if (high_bottom >= visible_bottom) {
         return this.search_results.scrollTop = (high_bottom - maxHeight) > 0 ? high_bottom - maxHeight : 0;
