@@ -143,8 +143,9 @@ class Chosen extends AbstractChosen
     @container.addClassName "chzn-container-active"
     @active_field = true
 
-    @search_field.value = @search_field.value
-    @search_field.focus()
+    if !this.disable_search
+      @search_field.value = @search_field.value
+      @search_field.focus()
 
   test_active_click: (evt) ->
     if evt.target.up('#' + @container_id)
