@@ -131,16 +131,7 @@ class AbstractChosen
     newchar = chars.substring rand, rand+1
 
   container_width: ->
-    return @options.width if @options.width?
-
-    width = if window.getComputedStyle?
-      parseFloat window.getComputedStyle(@form_field).getPropertyValue('width')
-    else if jQuery? and @form_field_jq?
-      @form_field_jq.outerWidth()
-    else
-      @form_field.getWidth()
-
-    width + "px"
+    return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
 
   # class methods and variables ============================================================ 
 
