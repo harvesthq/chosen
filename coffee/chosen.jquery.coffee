@@ -241,7 +241,7 @@ class Chosen extends AbstractChosen
     @search_field.focus()
     @search_field.val @search_field.val()
 
-    this.winnow_results()
+    this.winnow_results() unless @search_field.val() is ''
 
   results_hide: ->
     this.result_clear_highlight()
