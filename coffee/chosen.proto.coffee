@@ -216,6 +216,10 @@ class Chosen extends AbstractChosen
     @result_highlight = null
 
   results_show: ->
+
+    if @search_field.val().length < @min_length
+      return false
+
     if @result_single_selected?
       this.result_do_highlight @result_single_selected
     else if @is_multiple and @max_selected_options <= @choices
