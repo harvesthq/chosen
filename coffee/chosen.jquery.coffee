@@ -63,7 +63,7 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.find('div.chzn-search').first()
       @selected_item = @container.find('.chzn-single').first()
-    
+
     this.results_build()
     this.set_tab_index()
     this.set_label_behavior()
@@ -108,6 +108,8 @@ class Chosen extends AbstractChosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
+
+
       if evt and evt.type is "mousedown" and not @results_showing
         evt.preventDefault()
 
@@ -227,6 +229,10 @@ class Chosen extends AbstractChosen
     @result_highlight = null
 
   results_show: ->
+
+    if @search_field.val().length < @min_length
+      return false
+
     if @result_single_selected?
       this.result_do_highlight @result_single_selected
     else if @is_multiple and @max_selected_options <= @choices
@@ -563,7 +569,7 @@ class Chosen extends AbstractChosen
         w = @f_width - 10
 
       @search_field.css({'width': w + 'px'})
-  
+
   generate_random_id: ->
     string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()
     while $("#" + string).length > 0
