@@ -9,6 +9,7 @@ class Chosen extends AbstractChosen
   setup: ->
     @current_selectedIndex = @form_field.selectedIndex
     @is_rtl = @form_field.hasClassName "chzn-rtl"
+    @previousSearchText = ""
 
   finish_setup: ->
     @form_field.addClassName "chzn-done"
@@ -348,9 +349,7 @@ class Chosen extends AbstractChosen
         @selected_item.down("span").update(item.html)
         this.single_deselect_control_build() if @allow_single_deselect
 
-      unless (evt.metaKey or evt.ctrlKey) and @is_multiple
-        this.results_hide() 
-        this.winnow_results_clear()
+      this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
 
       @search_field.value = ""
 
@@ -395,45 +394,46 @@ class Chosen extends AbstractChosen
     searchText = if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
     regexAnchor = if @search_contains then "" else "^"
 
-    if @previousSearchText isnt searchText and searchText isnt ''
-      regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-      for option in @results_data
-        if not option.disabled and not option.empty
-          if option.group
-            $(option.dom_id).hide()
-          else if not (@is_multiple and option.selected)
-            found = false
-            result_id = option.dom_id
+    return if @previousSearchText is searchText
 
-            if regex.test option.html
-              found = true
-              results += 1
-            else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
-              #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-              parts = option.html.replace(/\[|\]/g, "").split(" ")
-              if parts.length
-                for part in parts
-                  if regex.test part
-                    found = true
-                    results += 1
+    regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    for option in @results_data
+      if not option.disabled and not option.empty
+        if option.group
+          $(option.dom_id).hide()
+        else if not (@is_multiple and option.selected)
+          found = false
+          result_id = option.dom_id
 
-            if found
-              if searchText.length
-                startpos = option.html.search zregex
-                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
-                text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-              else
-                text = option.html
+          if regex.test option.html
+            found = true
+            results += 1
+          else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
+            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
+            parts = option.html.replace(/\[|\]/g, "").split(" ")
+            if parts.length
+              for part in parts
+                if regex.test part
+                  found = true
+                  results += 1
 
-              $(result_id).update text if $(result_id).innerHTML != text
-
-              this.result_activate $(result_id)
-
-              $(@results_data[option.group_array_index].dom_id).setStyle({display: 'list-item'}) if option.group_array_index?
+          if found
+            if searchText.length
+              startpos = option.html.search zregex
+              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
+              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
             else
-              this.result_clear_highlight() if $(result_id) is @result_highlight
-              this.result_deactivate $(result_id)
+              text = option.html
+
+            $(result_id).update text if $(result_id).innerHTML != text
+
+            this.result_activate $(result_id)
+
+            $(@results_data[option.group_array_index].dom_id).setStyle({display: 'list-item'}) if option.group_array_index?
+          else
+            this.result_clear_highlight() if $(result_id) is @result_highlight
+            this.result_deactivate $(result_id)
 
     @previousSearchText = searchText
 

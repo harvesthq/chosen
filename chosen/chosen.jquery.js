@@ -370,7 +370,8 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.setup = function() {
       this.form_field_jq = $(this.form_field);
       this.current_selectedIndex = this.form_field.selectedIndex;
-      return this.is_rtl = this.form_field_jq.hasClass("chzn-rtl");
+      this.is_rtl = this.form_field_jq.hasClass("chzn-rtl");
+      return this.previousSearchText = "";
     };
 
     Chosen.prototype.finish_setup = function() {
@@ -833,7 +834,6 @@ Copyright (c) 2011 by Harvest
         }
         if (!((evt.metaKey || evt.ctrlKey) && this.is_multiple)) {
           this.results_hide();
-          this.winnow_results_clear();
         }
         this.search_field.val("");
         if (this.is_multiple || this.form_field.selectedIndex !== this.current_selectedIndex) {
@@ -888,53 +888,54 @@ Copyright (c) 2011 by Harvest
       results = 0;
       searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
       regexAnchor = this.search_contains ? "" : "^";
-      if (this.previousSearchText !== searchText && searchText !== '') {
-        regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-        zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-        _ref1 = this.results_data;
-        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-          option = _ref1[_i];
-          if (!option.disabled && !option.empty) {
-            if (option.group) {
-              $('#' + option.dom_id).css('display', 'none');
-            } else if (!(this.is_multiple && option.selected)) {
-              found = false;
-              result_id = option.dom_id;
-              result = $("#" + result_id);
-              if (regex.test(option.html)) {
-                found = true;
-                results += 1;
-              } else if (this.enable_split_word_search && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {
-                parts = option.html.replace(/\[|\]/g, "").split(" ");
-                if (parts.length) {
-                  for (_j = 0, _len1 = parts.length; _j < _len1; _j++) {
-                    part = parts[_j];
-                    if (regex.test(part)) {
-                      found = true;
-                      results += 1;
-                    }
+      if (this.previousSearchText === searchText) {
+        return;
+      }
+      regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      _ref1 = this.results_data;
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        option = _ref1[_i];
+        if (!option.disabled && !option.empty) {
+          if (option.group) {
+            $('#' + option.dom_id).css('display', 'none');
+          } else if (!(this.is_multiple && option.selected)) {
+            found = false;
+            result_id = option.dom_id;
+            result = $("#" + result_id);
+            if (regex.test(option.html)) {
+              found = true;
+              results += 1;
+            } else if (this.enable_split_word_search && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {
+              parts = option.html.replace(/\[|\]/g, "").split(" ");
+              if (parts.length) {
+                for (_j = 0, _len1 = parts.length; _j < _len1; _j++) {
+                  part = parts[_j];
+                  if (regex.test(part)) {
+                    found = true;
+                    results += 1;
                   }
                 }
               }
-              if (found) {
-                if (searchText.length) {
-                  startpos = option.html.search(zregex);
-                  text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
-                  text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
-                } else {
-                  text = option.html;
-                }
-                result.html(text);
-                this.result_activate(result);
-                if (option.group_array_index != null) {
-                  $("#" + this.results_data[option.group_array_index].dom_id).css('display', 'list-item');
-                }
+            }
+            if (found) {
+              if (searchText.length) {
+                startpos = option.html.search(zregex);
+                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
+                text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
               } else {
-                if (this.result_highlight && result_id === this.result_highlight.attr('id')) {
-                  this.result_clear_highlight();
-                }
-                this.result_deactivate(result);
+                text = option.html;
               }
+              result.html(text);
+              this.result_activate(result);
+              if (option.group_array_index != null) {
+                $("#" + this.results_data[option.group_array_index].dom_id).css('display', 'list-item');
+              }
+            } else {
+              if (this.result_highlight && result_id === this.result_highlight.attr('id')) {
+                this.result_clear_highlight();
+              }
+              this.result_deactivate(result);
             }
           }
         }
