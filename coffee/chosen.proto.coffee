@@ -9,7 +9,6 @@ class Chosen extends AbstractChosen
   setup: ->
     @current_selectedIndex = @form_field.selectedIndex
     @is_rtl = @form_field.hasClassName "chzn-rtl"
-    @previousSearchText = ""
 
   finish_setup: ->
     @form_field.addClassName "chzn-done"

@@ -22,7 +22,6 @@ class Chosen extends AbstractChosen
     @form_field_jq = $ @form_field
     @current_selectedIndex = @form_field.selectedIndex
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
-    @previousSearchText = ""
 
   finish_setup: ->
     @form_field_jq.addClass "chzn-done"
