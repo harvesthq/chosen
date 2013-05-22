@@ -19,8 +19,6 @@ class Chosen extends AbstractChosen
     # HTML Templates
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>')
-    @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
-    @choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
@@ -281,16 +279,19 @@ class Chosen extends AbstractChosen
     if @is_multiple and @max_selected_options <= @choices
       @form_field.fire("liszt:maxselected", {chosen: this})
       return false
-    choice_id = @container_id + "_c_" + item.array_index
+
     @choices += 1
-    @search_container.insert
-      before: (if item.disabled then @choice_noclose_temp else @choice_temp).evaluate
-        id:       choice_id
-        choice:   item.html
-        position: item.array_index
-    if not item.disabled
-      link = $(choice_id).down('a')
-      link.observe "click", (evt) => this.choice_destroy_link_click(evt)
+
+    choice = new Element('li', { class: "search-choice" }).update("<span>#{item.html}</span>")
+
+    if item.disabled
+      choice.addClassName 'search-choice-disabled'
+    else
+      close_link = new Element('a', { href: '#', class: 'search-choice-close', rel: item.array_index })
+      close_link.observe "click", (evt) => this.choice_destroy_link_click(evt)
+      choice.insert close_link
+
+    @search_container.insert { before: choice }
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()

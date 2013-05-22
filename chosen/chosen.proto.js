@@ -356,8 +356,6 @@ Copyright (c) 2011 by Harvest
       Chosen.__super__.set_default_values.call(this);
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>');
-      this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
-      this.choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
     };
 
@@ -717,7 +715,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.choice_build = function(item) {
-      var choice_id, link,
+      var choice, close_link,
         _this = this;
       if (this.is_multiple && this.max_selected_options <= this.choices) {
         this.form_field.fire("liszt:maxselected", {
@@ -725,21 +723,26 @@ Copyright (c) 2011 by Harvest
         });
         return false;
       }
-      choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
-      this.search_container.insert({
-        before: (item.disabled ? this.choice_noclose_temp : this.choice_temp).evaluate({
-          id: choice_id,
-          choice: item.html,
-          position: item.array_index
-        })
-      });
-      if (!item.disabled) {
-        link = $(choice_id).down('a');
-        return link.observe("click", function(evt) {
+      choice = new Element('li', {
+        "class": "search-choice"
+      }).update("<span>" + item.html + "</span>");
+      if (item.disabled) {
+        choice.addClassName('search-choice-disabled');
+      } else {
+        close_link = new Element('a', {
+          href: '#',
+          "class": 'search-choice-close',
+          rel: item.array_index
+        });
+        close_link.observe("click", function(evt) {
           return _this.choice_destroy_link_click(evt);
         });
+        choice.insert(close_link);
       }
+      return this.search_container.insert({
+        before: choice
+      });
     };
 
     Chosen.prototype.choice_destroy_link_click = function(evt) {
