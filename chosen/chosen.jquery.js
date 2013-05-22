@@ -726,7 +726,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.choice_build = function(item) {
-      var choice_id, html, link,
+      var choice, close_link,
         _this = this;
       if (this.is_multiple && this.max_selected_options <= this.choices) {
         this.form_field_jq.trigger("liszt:maxselected", {
@@ -734,18 +734,24 @@ Copyright (c) 2011 by Harvest
         });
         return false;
       }
-      choice_id = this.container_id + "_c_" + item.array_index;
       this.choices += 1;
+      choice = $('<li />', {
+        "class": "search-choice"
+      }).html("<span>" + item.html + "</span>");
       if (item.disabled) {
-        html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>';
+        choice.addClass("search-choice-disabled");
       } else {
-        html = '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>';
+        close_link = $('<a />', {
+          href: '#',
+          "class": 'search-choice-close',
+          rel: item.array_index
+        });
+        close_link.click(function(evt) {
+          return _this.choice_destroy_link_click(evt);
+        });
+        choice.append(close_link);
       }
-      this.search_container.before(html);
-      link = $('#' + choice_id).find("a").first();
-      return link.click(function(evt) {
-        return _this.choice_destroy_link_click(evt);
-      });
+      return this.search_container.before(choice);
     };
 
     Chosen.prototype.choice_destroy_link_click = function(evt) {
