@@ -402,12 +402,12 @@ class Chosen extends AbstractChosen
     results = 0
 
     searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
-    regexAnchor = if @search_contains then "" else "^"
-
     return if @previousSearchText is searchText
-       
+
+    regexAnchor = if @search_contains then "" else "^"   
     regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+
     for option in @results_data
       if not option.disabled and not option.empty
         if option.group
