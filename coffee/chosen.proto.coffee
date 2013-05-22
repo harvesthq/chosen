@@ -292,9 +292,6 @@ class Chosen extends AbstractChosen
     this.results_show() unless @results_showing
 
   choice_build: (item) ->
-    if @is_multiple and @max_selected_options <= this.choices_count()
-      @form_field.fire("liszt:maxselected", {chosen: this})
-      return false
     choice_id = @container_id + "_c_" + item.array_index
     @selected_option_count = null
     @search_container.insert
@@ -342,6 +339,10 @@ class Chosen extends AbstractChosen
       high = @result_highlight
       this.result_clear_highlight()
 
+      if @is_multiple and @max_selected_options <= this.choices_count()
+        @form_field.fire("liszt:maxselected", {chosen: this})
+        return false
+
       if @is_multiple
         this.result_deactivate high
       else
@@ -354,7 +355,7 @@ class Chosen extends AbstractChosen
       position = high.id.substr(high.id.lastIndexOf("_") + 1 )
       item = @results_data[position]
       item.selected = true
-
+      
       @form_field.options[item.options_index].selected = true
       @selected_option_count = null
 
@@ -387,7 +388,7 @@ class Chosen extends AbstractChosen
 
       @form_field.options[result_data.options_index].selected = false
       @selected_option_count = null
-      
+
       result = $(@container_id + "_o_" + pos)
       result.removeClassName("result-selected").addClassName("active-result").show()
 

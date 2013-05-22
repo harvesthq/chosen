@@ -303,9 +303,6 @@ class Chosen extends AbstractChosen
     this.results_show() unless @results_showing
 
   choice_build: (item) ->
-    if @is_multiple and @max_selected_options <= this.choices_count()
-      @form_field_jq.trigger("liszt:maxselected", {chosen: this})
-      return false # fire event
     choice_id = @container_id + "_c_" + item.array_index
     if item.disabled
       html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>'
@@ -351,6 +348,10 @@ class Chosen extends AbstractChosen
 
       this.result_clear_highlight()
 
+      if @is_multiple and @max_selected_options <= this.choices_count()
+        @form_field_jq.trigger("liszt:maxselected", {chosen: this})
+        return false
+
       if @is_multiple
         this.result_deactivate high
       else
@@ -395,7 +396,7 @@ class Chosen extends AbstractChosen
 
       @form_field.options[result_data.options_index].selected = false
       @selected_option_count = null
-      
+
       result = $("#" + @container_id + "_o_" + pos)
       result.removeClass("result-selected").addClass("active-result").show()
 
