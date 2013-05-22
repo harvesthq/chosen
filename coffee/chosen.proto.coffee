@@ -163,6 +163,8 @@ class Chosen extends AbstractChosen
 
   results_build: ->
     @parsing = true
+    @selected_option_count = null
+
     @results_data = root.SelectParser.select_to_array @form_field
 
     if @is_multiple and this.choices_count() > 0
@@ -294,6 +296,7 @@ class Chosen extends AbstractChosen
       @form_field.fire("liszt:maxselected", {chosen: this})
       return false
     choice_id = @container_id + "_c_" + item.array_index
+    @selected_option_count = null
     @search_container.insert
       before: (if item.disabled then @choice_noclose_temp else @choice_temp).evaluate
         id:       choice_id
@@ -310,6 +313,7 @@ class Chosen extends AbstractChosen
 
   choice_destroy: (link) ->
     if this.result_deselect link.readAttribute("rel")
+      @selected_option_count = null
       this.show_search_field_default()
 
       this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.value.length < 1
@@ -320,6 +324,7 @@ class Chosen extends AbstractChosen
 
   results_reset: ->
     @form_field.options[0].selected = true
+    @selected_option_count = null
     @selected_item.down("span").update(@default_text)
     @selected_item.addClassName("chzn-default") if not @is_multiple
     this.show_search_field_default()
@@ -351,6 +356,7 @@ class Chosen extends AbstractChosen
       item.selected = true
 
       @form_field.options[item.options_index].selected = true
+      @selected_option_count = null
 
       if @is_multiple
         this.choice_build item
@@ -380,6 +386,8 @@ class Chosen extends AbstractChosen
       result_data.selected = false
 
       @form_field.options[result_data.options_index].selected = false
+      @selected_option_count = null
+      
       result = $(@container_id + "_o_" + pos)
       result.removeClassName("result-selected").addClassName("active-result").show()
 

@@ -173,6 +173,8 @@ class Chosen extends AbstractChosen
 
   results_build: ->
     @parsing = true
+    @selected_option_count = null
+
     @results_data = root.SelectParser.select_to_array @form_field
 
     if @is_multiple and this.choices_count() > 0
@@ -330,6 +332,7 @@ class Chosen extends AbstractChosen
 
   results_reset: ->
     @form_field.options[0].selected = true
+    @selected_option_count = null
     @selected_item.find("span").text @default_text
     @selected_item.addClass("chzn-default") if not @is_multiple
     this.show_search_field_default()
@@ -362,6 +365,7 @@ class Chosen extends AbstractChosen
       item.selected = true
 
       @form_field.options[item.options_index].selected = true
+      @selected_option_count = null
 
       if @is_multiple
         this.choice_build item
@@ -390,6 +394,8 @@ class Chosen extends AbstractChosen
       result_data.selected = false
 
       @form_field.options[result_data.options_index].selected = false
+      @selected_option_count = null
+      
       result = $("#" + @container_id + "_o_" + pos)
       result.removeClass("result-selected").addClass("active-result").show()
 

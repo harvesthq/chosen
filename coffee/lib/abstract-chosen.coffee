@@ -95,10 +95,13 @@ class AbstractChosen
       this.results_show()
 
   choices_count: ->
-    c = 0
+    return @selected_option_count if @selected_option_count?
+
+    @selected_option_count = 0
     for option in @form_field.options
-      c += 1 if option.selected
-    c
+      @selected_option_count += 1 if option.selected
+    
+    return @selected_option_count
 
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode

@@ -235,16 +235,19 @@ Copyright (c) 2011 by Harvest
     };
 
     AbstractChosen.prototype.choices_count = function() {
-      var c, option, _i, _len, _ref;
-      c = 0;
+      var option, _i, _len, _ref;
+      if (this.selected_option_count != null) {
+        return this.selected_option_count;
+      }
+      this.selected_option_count = 0;
       _ref = this.form_field.options;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
         if (option.selected) {
-          c += 1;
+          this.selected_option_count += 1;
         }
       }
-      return c;
+      return this.selected_option_count;
     };
 
     AbstractChosen.prototype.keyup_checker = function(evt) {
@@ -578,6 +581,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.results_build = function() {
       var content, data, _i, _len, _ref;
       this.parsing = true;
+      this.selected_option_count = null;
       this.results_data = root.SelectParser.select_to_array(this.form_field);
       if (this.is_multiple && this.choices_count() > 0) {
         this.search_choices.find("li.search-choice").remove();
@@ -787,6 +791,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.results_reset = function() {
       this.form_field.options[0].selected = true;
+      this.selected_option_count = null;
       this.selected_item.find("span").text(this.default_text);
       if (!this.is_multiple) {
         this.selected_item.addClass("chzn-default");
@@ -822,6 +827,7 @@ Copyright (c) 2011 by Harvest
         item = this.results_data[position];
         item.selected = true;
         this.form_field.options[item.options_index].selected = true;
+        this.selected_option_count = null;
         if (this.is_multiple) {
           this.choice_build(item);
         } else {
@@ -858,6 +864,7 @@ Copyright (c) 2011 by Harvest
       if (!this.form_field.options[result_data.options_index].disabled) {
         result_data.selected = false;
         this.form_field.options[result_data.options_index].selected = false;
+        this.selected_option_count = null;
         result = $("#" + this.container_id + "_o_" + pos);
         result.removeClass("result-selected").addClass("active-result").show();
         this.result_clear_highlight();
