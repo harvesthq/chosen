@@ -298,7 +298,7 @@ class Chosen extends AbstractChosen
     choice = $('<li />', { class: "search-choice" }).html("<span>#{item.html}</span>")
 
     if item.disabled
-      choice.addClass "search-choice-disabled"
+      choice.addClass 'search-choice-disabled'
     else
       close_link = $('<a />', { href: '#', class: 'search-choice-close',  rel: item.array_index })
       close_link.click (evt) => this.choice_destroy_link_click(evt)
