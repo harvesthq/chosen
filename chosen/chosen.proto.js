@@ -867,6 +867,7 @@ Copyright (c) 2011 by Harvest
       results = 0;
       searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
       if (this.previousSearchText === searchText) {
+        this.winnow_results_set_highlight();
         return;
       }
       regexAnchor = this.search_contains ? "" : "^";

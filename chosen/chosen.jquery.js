@@ -868,6 +868,7 @@ Copyright (c) 2011 by Harvest
       results = 0;
       searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
       if (this.previousSearchText === searchText) {
+        this.winnow_results_set_highlight();
         return;
       }
       regexAnchor = this.search_contains ? "" : "^";

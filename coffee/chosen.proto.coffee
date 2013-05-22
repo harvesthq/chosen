@@ -391,12 +391,15 @@ class Chosen extends AbstractChosen
     results = 0
 
     searchText = if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
-    return if @previousSearchText is searchText
+    
+    if @previousSearchText is searchText
+      this.winnow_results_set_highlight()
+      return
 
     regexAnchor = if @search_contains then "" else "^"
     regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    
+
     for option in @results_data
       if not option.disabled and not option.empty
         if option.group
