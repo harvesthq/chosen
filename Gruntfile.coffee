@@ -18,17 +18,17 @@ module.exports = (grunt) ->
       options:
         banner: "<%= comments %>"
       jquery:
-        src: ["public/javascripts/chosen.jquery.js"]
-        dest: "public/javascripts/chosen.jquery.js"
+        src: ["public/chosen.jquery.js"]
+        dest: "public/chosen.jquery.js"
       proto:
-        src: ["public/javascripts/chosen.proto.js"]
-        dest: "public/javascripts/chosen.proto.js"
+        src: ["public/chosen.proto.js"]
+        dest: "public/chosen.proto.js"
 
     coffee:
       compile:
         files:
-          'public/javascripts/chosen.jquery.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.jquery.coffee']
-          'public/javascripts/chosen.proto.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.proto.coffee']
+          'public/chosen.jquery.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.jquery.coffee']
+          'public/chosen.proto.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.proto.coffee']
 
     uglify:
       options:
@@ -37,8 +37,8 @@ module.exports = (grunt) ->
         banner: "<%= comments %>"
       my_target:
         files:
-          'public/javascripts/chosen.jquery.min.js': ['public/javascripts/chosen.jquery.js']
-          'public/javascripts/chosen.proto.min.js': ['public/javascripts/chosen.proto.js']
+          'public/chosen.jquery.min.js': ['public/chosen.jquery.js']
+          'public/chosen.proto.min.js': ['public/chosen.proto.js']
 
     watch:
       scripts:
