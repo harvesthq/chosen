@@ -19,8 +19,6 @@ class Chosen extends AbstractChosen
     # HTML Templates
     @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>')
-    @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
-    @choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
@@ -70,7 +68,7 @@ class Chosen extends AbstractChosen
     @search_results.observe "mouseover", (evt) => this.search_results_mouseover(evt)
     @search_results.observe "mouseout", (evt) => this.search_results_mouseout(evt)
     @search_results.observe "mousewheel", (evt) => this.search_results_mousewheel(evt)
-    @search_results.observe "DOMMouseScroll", (evt) => this.search_results_mousewheel_ff(evt) # for Firefox
+    @search_results.observe "DOMMouseScroll", (evt) => this.search_results_mousewheel(evt)
 
     @form_field.observe "liszt:updated", (evt) => this.results_update_field(evt)
     @form_field.observe "liszt:activate", (evt) => this.activate_field(evt)
@@ -116,21 +114,12 @@ class Chosen extends AbstractChosen
   container_mouseup: (evt) ->
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
 
-  # scrolling event handler for all but Firefox
   search_results_mousewheel: (evt) ->
-    @search_results.scrollTop -= evt.wheelDelta
-    evt.preventDefault()
-
-  # scrolling event handler for Firefox
-  search_results_mousewheel_ff: (evt) ->
-    target = evt.currentTarget
-    delta = evt.wheelDelta or (evt.originalEvent and evt.originalEvent.wheelDelta) or -evt.detail
-    bottom_overflow = target.scrollTop + target.getHeight() - target.scrollHeight >= 0
-    top_overflow = target.scrollTop <= 0
-    
-    if target.scrollHeight > target.getHeight() and ((delta < 0 and bottom_overflow) or (delta > 0 and top_overflow))
-        evt.preventDefault()
-
+    delta = -evt.wheelDelta or evt.detail
+    if delta?
+      evt.preventDefault()
+      delta = delta * 40 if evt.type is 'DOMMouseScroll'
+      @search_results.scrollTop = delta + @search_results.scrollTop
 
   blur_test: (evt) ->
     this.close_field() if not @active_field and @container.hasClassName("chzn-container-active")
@@ -213,7 +202,7 @@ class Chosen extends AbstractChosen
       visible_top = @search_results.scrollTop
       visible_bottom = maxHeight + visible_top
 
-      high_top = @result_highlight.positionedOffset().top
+      high_top = @result_highlight.positionedOffset().top + @search_results.scrollTop
       high_bottom = high_top + @result_highlight.getHeight()
 
       if high_bottom >= visible_bottom
@@ -287,21 +276,17 @@ class Chosen extends AbstractChosen
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
 
-  choices_click: (evt) ->
-    evt.preventDefault()
-    this.results_show() unless @results_showing
-
   choice_build: (item) ->
-    choice_id = @container_id + "_c_" + item.array_index
-    @selected_option_count = null
-    @search_container.insert
-      before: (if item.disabled then @choice_noclose_temp else @choice_temp).evaluate
-        id:       choice_id
-        choice:   item.html
-        position: item.array_index
-    if not item.disabled
-      link = $(choice_id).down('a')
-      link.observe "click", (evt) => this.choice_destroy_link_click(evt)
+    choice = new Element('li', { class: "search-choice" }).update("<span>#{item.html}</span>")
+
+    if item.disabled
+      choice.addClassName 'search-choice-disabled'
+    else
+      close_link = new Element('a', { href: '#', class: 'search-choice-close', rel: item.array_index })
+      close_link.observe "click", (evt) => this.choice_destroy_link_click(evt)
+      choice.insert close_link
+
+    @search_container.insert { before: choice }
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
@@ -310,7 +295,6 @@ class Chosen extends AbstractChosen
 
   choice_destroy: (link) ->
     if this.result_deselect link.readAttribute("rel")
-      @selected_option_count = null
       this.show_search_field_default()
 
       this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.value.length < 1
@@ -578,10 +562,3 @@ class Chosen extends AbstractChosen
       @search_field.setStyle({'width': w + 'px'})
 
 root.Chosen = Chosen
-
-
-get_side_border_padding = (elmt) ->
-  layout = new Element.Layout(elmt)
-  side_border_padding = layout.get("border-left") + layout.get("border-right") + layout.get("padding-left") + layout.get("padding-right")
-
-root.get_side_border_padding = get_side_border_padding

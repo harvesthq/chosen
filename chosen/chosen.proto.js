@@ -1,7 +1,7 @@
-// Chosen, a Select Box Enhancer for jQuery and Protoype
+// Chosen, a Select Box Enhancer for jQuery and Prototype
 // by Patrick Filler for Harvest, http://getharvest.com
 //
-// Version 0.9.13
+// Version 0.9.14
 // Full source at https://github.com/harvesthq/chosen
 // Copyright (c) 2011 Harvest http://getharvest.com
 
@@ -250,6 +250,13 @@ Copyright (c) 2011 by Harvest
       return this.selected_option_count;
     };
 
+    AbstractChosen.prototype.choices_click = function(evt) {
+      evt.preventDefault();
+      if (!this.results_showing) {
+        return this.results_show();
+      }
+    };
+
     AbstractChosen.prototype.keyup_checker = function(evt) {
       var stroke, _ref;
       stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
@@ -301,12 +308,11 @@ Copyright (c) 2011 by Harvest
     };
 
     AbstractChosen.prototype.container_width = function() {
-      var width;
       if (this.options.width != null) {
         return this.options.width;
+      } else {
+        return "" + this.form_field.offsetWidth + "px";
       }
-      width = window.getComputedStyle != null ? parseFloat(window.getComputedStyle(this.form_field).getPropertyValue('width')) : (typeof jQuery !== "undefined" && jQuery !== null) && (this.form_field_jq != null) ? this.form_field_jq.outerWidth() : this.form_field.getWidth();
-      return width + "px";
     };
 
     AbstractChosen.browser_is_supported = function() {
@@ -338,7 +344,7 @@ Copyright (c) 2011 by Harvest
 
 
 (function() {
-  var Chosen, get_side_border_padding, root,
+  var Chosen, root,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -365,8 +371,6 @@ Copyright (c) 2011 by Harvest
       Chosen.__super__.set_default_values.call(this);
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>');
-      this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
-      this.choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
     };
 
@@ -442,7 +446,7 @@ Copyright (c) 2011 by Harvest
         return _this.search_results_mousewheel(evt);
       });
       this.search_results.observe("DOMMouseScroll", function(evt) {
-        return _this.search_results_mousewheel_ff(evt);
+        return _this.search_results_mousewheel(evt);
       });
       this.form_field.observe("liszt:updated", function(evt) {
         return _this.results_update_field(evt);
@@ -521,18 +525,14 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.search_results_mousewheel = function(evt) {
-      this.search_results.scrollTop -= evt.wheelDelta;
-      return evt.preventDefault();
-    };
-
-    Chosen.prototype.search_results_mousewheel_ff = function(evt) {
-      var bottom_overflow, delta, target, top_overflow;
-      target = evt.currentTarget;
-      delta = evt.wheelDelta || (evt.originalEvent && evt.originalEvent.wheelDelta) || -evt.detail;
-      bottom_overflow = target.scrollTop + target.getHeight() - target.scrollHeight >= 0;
-      top_overflow = target.scrollTop <= 0;
-      if (target.scrollHeight > target.getHeight() && ((delta < 0 && bottom_overflow) || (delta > 0 && top_overflow))) {
-        return evt.preventDefault();
+      var delta;
+      delta = -evt.wheelDelta || evt.detail;
+      if (delta != null) {
+        evt.preventDefault();
+        if (evt.type === 'DOMMouseScroll') {
+          delta = delta * 40;
+        }
+        return this.search_results.scrollTop = delta + this.search_results.scrollTop;
       }
     };
 
@@ -625,7 +625,7 @@ Copyright (c) 2011 by Harvest
       maxHeight = parseInt(this.search_results.getStyle('maxHeight'), 10);
       visible_top = this.search_results.scrollTop;
       visible_bottom = maxHeight + visible_top;
-      high_top = this.result_highlight.positionedOffset().top;
+      high_top = this.result_highlight.positionedOffset().top + this.search_results.scrollTop;
       high_bottom = high_top + this.result_highlight.getHeight();
       if (high_bottom >= visible_bottom) {
         return this.search_results.scrollTop = (high_bottom - maxHeight) > 0 ? high_bottom - maxHeight : 0;
@@ -729,31 +729,28 @@ Copyright (c) 2011 by Harvest
       }
     };
 
-    Chosen.prototype.choices_click = function(evt) {
-      evt.preventDefault();
-      if (!this.results_showing) {
-        return this.results_show();
-      }
-    };
-
     Chosen.prototype.choice_build = function(item) {
-      var choice_id, link,
+      var choice, close_link,
         _this = this;
-      choice_id = this.container_id + "_c_" + item.array_index;
-      this.selected_option_count = null;
-      this.search_container.insert({
-        before: (item.disabled ? this.choice_noclose_temp : this.choice_temp).evaluate({
-          id: choice_id,
-          choice: item.html,
-          position: item.array_index
-        })
-      });
-      if (!item.disabled) {
-        link = $(choice_id).down('a');
-        return link.observe("click", function(evt) {
+      choice = new Element('li', {
+        "class": "search-choice"
+      }).update("<span>" + item.html + "</span>");
+      if (item.disabled) {
+        choice.addClassName('search-choice-disabled');
+      } else {
+        close_link = new Element('a', {
+          href: '#',
+          "class": 'search-choice-close',
+          rel: item.array_index
+        });
+        close_link.observe("click", function(evt) {
           return _this.choice_destroy_link_click(evt);
         });
+        choice.insert(close_link);
       }
+      return this.search_container.insert({
+        before: choice
+      });
     };
 
     Chosen.prototype.choice_destroy_link_click = function(evt) {
@@ -766,7 +763,6 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.choice_destroy = function(link) {
       if (this.result_deselect(link.readAttribute("rel"))) {
-        this.selected_option_count = null;
         this.show_search_field_default();
         if (this.is_multiple && this.choices_count() > 0 && this.search_field.value.length < 1) {
           this.results_hide();
@@ -1127,13 +1123,5 @@ Copyright (c) 2011 by Harvest
   })(AbstractChosen);
 
   root.Chosen = Chosen;
-
-  get_side_border_padding = function(elmt) {
-    var layout, side_border_padding;
-    layout = new Element.Layout(elmt);
-    return side_border_padding = layout.get("border-left") + layout.get("border-right") + layout.get("padding-left") + layout.get("padding-right");
-  };
-
-  root.get_side_border_padding = get_side_border_padding;
 
 }).call(this);
