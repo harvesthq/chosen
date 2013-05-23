@@ -32,7 +32,6 @@ class AbstractChosen
     @disable_search = @options.disable_search || false
     @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
     @search_contains = @options.search_contains || false
-    @choices = 0
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
     @inherit_select_classes = @options.inherit_select_classes || false
@@ -96,13 +95,26 @@ class AbstractChosen
     else
       this.results_show()
 
+  choices_count: ->
+    return @selected_option_count if @selected_option_count?
+
+    @selected_option_count = 0
+    for option in @form_field.options
+      @selected_option_count += 1 if option.selected
+    
+    return @selected_option_count
+
+  choices_click: (evt) ->
+    evt.preventDefault()
+    this.results_show() unless @results_showing
+
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
     this.search_field_scale()
 
     switch stroke
       when 8
-        if @is_multiple and @backstroke_length < 1 and @choices > 0
+        if @is_multiple and @backstroke_length < 1 and this.choices_count() > 0
           this.keydown_backstroke()
         else if not @pending_backstroke
           this.result_clear_highlight()
@@ -128,16 +140,7 @@ class AbstractChosen
     newchar = chars.substring rand, rand+1
 
   container_width: ->
-    return @options.width if @options.width?
-      
-    width = if window.getComputedStyle?
-      parseFloat window.getComputedStyle(@form_field).getPropertyValue('width')
-    else if jQuery?
-      @form_field_jq.outerWidth()
-    else
-      @form_field.getWidth()
-
-    width + "px"
+    return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
 
   # class methods and variables ============================================================ 
 

@@ -78,6 +78,7 @@ class Chosen extends AbstractChosen
     @search_results.mouseup (evt) => this.search_results_mouseup(evt); return
     @search_results.mouseover (evt) => this.search_results_mouseover(evt); return
     @search_results.mouseout (evt) => this.search_results_mouseout(evt); return
+    @search_results.bind 'mousewheel DOMMouseScroll', (evt) => this.search_results_mousewheel(evt); return
 
     @form_field_jq.bind "liszt:updated", (evt) => this.results_update_field(evt); return
     @form_field_jq.bind "liszt:activate", (evt) => this.activate_field(evt); return
@@ -92,7 +93,6 @@ class Chosen extends AbstractChosen
       @search_choices.click (evt) => this.choices_click(evt); return
     else
       @container.click (evt) => evt.preventDefault(); return # gobble click of anchor
-
 
   search_field_disabled: ->
     @is_disabled = @form_field_jq[0].disabled
@@ -124,6 +124,13 @@ class Chosen extends AbstractChosen
 
   container_mouseup: (evt) ->
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
+
+  search_results_mousewheel: (evt) ->
+    delta = -evt.originalEvent?.wheelDelta or evt.originialEvent?.detail
+    if delta?
+      evt.preventDefault()
+      delta = delta * 40 if evt.type is 'DOMMouseScroll'
+      @search_results.scrollTop(delta + @search_results.scrollTop())
 
   blur_test: (evt) ->
     this.close_field() if not @active_field and @container.hasClass "chzn-container-active"
@@ -157,11 +164,12 @@ class Chosen extends AbstractChosen
 
   results_build: ->
     @parsing = true
+    @selected_option_count = null
+
     @results_data = root.SelectParser.select_to_array @form_field
 
-    if @is_multiple and @choices > 0
+    if @is_multiple and this.choices_count() > 0
       @search_choices.find("li.search-choice").remove()
-      @choices = 0
     else if not @is_multiple
       @selected_item.addClass("chzn-default").find("span").text(@default_text)
       if @disable_search or @form_field.options.length <= @disable_search_threshold
@@ -222,7 +230,7 @@ class Chosen extends AbstractChosen
   results_show: ->
     if @result_single_selected?
       this.result_do_highlight @result_single_selected
-    else if @is_multiple and @max_selected_options <= @choices
+    else if @is_multiple and @max_selected_options <= this.choices_count()
       @form_field_jq.trigger("liszt:maxselected", {chosen: this})
       return false
 
@@ -260,7 +268,7 @@ class Chosen extends AbstractChosen
       @form_field_label.click (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
 
   show_search_field_default: ->
-    if @is_multiple and @choices < 1 and not @active_field
+    if @is_multiple and this.choices_count() < 1 and not @active_field
       @search_field.val(@default_text)
       @search_field.addClass "default"
     else
@@ -281,25 +289,17 @@ class Chosen extends AbstractChosen
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
 
-
-  choices_click: (evt) ->
-    evt.preventDefault()
-    if( @active_field and not($(evt.target).hasClass "search-choice" or $(evt.target).parents('.search-choice').first) and not @results_showing )
-      this.results_show()
-
   choice_build: (item) ->
-    if @is_multiple and @max_selected_options <= @choices
-      @form_field_jq.trigger("liszt:maxselected", {chosen: this})
-      return false # fire event
-    choice_id = @container_id + "_c_" + item.array_index
-    @choices += 1
+    choice = $('<li />', { class: "search-choice" }).html("<span>#{item.html}</span>")
+
     if item.disabled
-      html = '<li class="search-choice search-choice-disabled" id="' + choice_id + '"><span>' + item.html + '</span></li>'
+      choice.addClass 'search-choice-disabled'
     else
-      html = '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>'
-    @search_container.before  html
-    link = $('#' + choice_id).find("a").first()
-    link.click (evt) => this.choice_destroy_link_click(evt)
+      close_link = $('<a />', { href: '#', class: 'search-choice-close',  rel: item.array_index })
+      close_link.click (evt) => this.choice_destroy_link_click(evt)
+      choice.append close_link
+    
+    @search_container.before  choice
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
@@ -308,10 +308,9 @@ class Chosen extends AbstractChosen
 
   choice_destroy: (link) ->
     if this.result_deselect (link.attr "rel")
-      @choices -= 1
       this.show_search_field_default()
 
-      this.results_hide() if @is_multiple and @choices > 0 and @search_field.val().length < 1
+      this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.val().length < 1
 
       link.parents('li').first().remove()
 
@@ -319,6 +318,7 @@ class Chosen extends AbstractChosen
 
   results_reset: ->
     @form_field.options[0].selected = true
+    @selected_option_count = null
     @selected_item.find("span").text @default_text
     @selected_item.addClass("chzn-default") if not @is_multiple
     this.show_search_field_default()
@@ -337,6 +337,10 @@ class Chosen extends AbstractChosen
 
       this.result_clear_highlight()
 
+      if @is_multiple and @max_selected_options <= this.choices_count()
+        @form_field_jq.trigger("liszt:maxselected", {chosen: this})
+        return false
+
       if @is_multiple
         this.result_deactivate high
       else
@@ -351,6 +355,7 @@ class Chosen extends AbstractChosen
       item.selected = true
 
       @form_field.options[item.options_index].selected = true
+      @selected_option_count = null
 
       if @is_multiple
         this.choice_build item
@@ -382,6 +387,8 @@ class Chosen extends AbstractChosen
       result_data.selected = false
 
       @form_field.options[result_data.options_index].selected = false
+      @selected_option_count = null
+
       result = $("#" + @container_id + "_o_" + pos)
       result.removeClass("result-selected").addClass("active-result").show()
 
@@ -496,7 +503,7 @@ class Chosen extends AbstractChosen
       if prev_sibs.length
         this.result_do_highlight prev_sibs.first()
       else
-        this.results_hide() if @choices > 0
+        this.results_hide() if this.choices_count() > 0
         this.result_clear_highlight()
 
   keydown_backstroke: ->
@@ -573,8 +580,3 @@ class Chosen extends AbstractChosen
     string
 
 root.Chosen = Chosen
-
-get_side_border_padding = (elmt) ->
-  side_border_padding = elmt.outerWidth() - elmt.width()
-
-root.get_side_border_padding = get_side_border_padding
