@@ -339,7 +339,7 @@ class Chosen extends AbstractChosen
       position = high.id.substr(high.id.lastIndexOf("_") + 1 )
       item = @results_data[position]
       item.selected = true
-      
+
       @form_field.options[item.options_index].selected = true
       @selected_option_count = null
 
