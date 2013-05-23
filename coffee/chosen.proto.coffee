@@ -349,14 +349,15 @@ class Chosen extends AbstractChosen
         @selected_item.down("span").update(item.html)
         this.single_deselect_control_build() if @allow_single_deselect
 
-      this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
-
-      @search_field.value = ""
+      if (@stay_open or evt.metaKey or evt.ctrlKey) and @is_multiple
+        this.winnow_results()
+      else
+        @search_field.val "" 
+        this.search_field_scale()
+        this.results_hide()
 
       @form_field.simulate("change") if typeof Event.simulate is 'function' && (@is_multiple || @form_field.selectedIndex != @current_selectedIndex)
       @current_selectedIndex = @form_field.selectedIndex
-
-      this.search_field_scale()
 
   result_activate: (el) ->
     el.addClassName("active-result")

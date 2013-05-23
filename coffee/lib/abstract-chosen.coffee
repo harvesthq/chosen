@@ -35,6 +35,7 @@ class AbstractChosen
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
     @inherit_select_classes = @options.inherit_select_classes || false
+    @stay_open = @options.stay_open or false
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")

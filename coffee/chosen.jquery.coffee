@@ -363,13 +363,16 @@ class Chosen extends AbstractChosen
         @selected_item.find("span").first().text item.text
         this.single_deselect_control_build() if @allow_single_deselect
 
-      this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
-
-      @search_field.val ""
+      if (@stay_open or evt.metaKey or evt.ctrlKey) and @is_multiple
+        this.winnow_results()
+      else
+        @search_field.val "" 
+        this.search_field_scale()
+        this.results_hide()
 
       @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
       @current_selectedIndex = @form_field.selectedIndex
-      this.search_field_scale()
+      
 
   result_activate: (el) ->
     el.addClass("active-result")
