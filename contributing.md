@@ -113,18 +113,18 @@ these guidelines is the best way to get your work included in Chosen.
 
    ```bash
    # Clone your fork of the repo into the current directory
-   git clone https://github.com/<your-username>/<repo-name>
+   git clone https://github.com/harvesthq/chosen
    # Navigate to the newly cloned directory
-   cd <repo-name>
+   cd chosen
    # Assign the original repo to a remote called "upstream"
-   git remote add upstream https://github.com/<upstream-owner>/<repo-name>
+   git remote add upstream https://github.com/harvesthq/chosen
    ```
 
 2. If you cloned a while ago, get the latest changes from upstream:
 
    ```bash
-   git checkout <dev-branch>
-   git pull upstream <dev-branch>
+   git checkout master
+   git pull upstream master
    ```
 
 3. Create a new topic branch (off the main project development branch) to
@@ -143,7 +143,7 @@ these guidelines is the best way to get your work included in Chosen.
 5. Locally merge (or rebase) the upstream development branch into your topic branch:
 
    ```bash
-   git pull [--rebase] upstream <dev-branch>
+   git pull [--rebase] upstream master
    ```
 
 6. Push your topic branch up to your fork:
