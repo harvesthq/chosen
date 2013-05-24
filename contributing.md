@@ -4,9 +4,9 @@ Please take a moment to review this document in order to make the contribution
 process easy and effective for everyone involved.
 
 Following these guidelines helps to communicate that you respect the time of
-the developers managing and developing this open source project. In return,
-they should reciprocate that respect in addressing your issue or assessing
-patches and features.
+the project maintainers who give their time to share this project freely. 
+In return, the maintainers will reciprocate that respect in addressing your 
+issue or assessing your pull requests.
 
 _**Please Note:** These guidelines are adapted from [@necolas](https://github.com/necolas)'s 
 [issue-guidelines](https://github.com/necolas/issue-guidelines) and serve as
@@ -77,30 +77,36 @@ fits with the scope and aims of the project. It's up to *you* to make a strong
 case to convince the project's developers of the merits of this feature. Please
 provide as much detail and context as possible.
 
-Just because a feature request is popular doesn't mean it's a project fit and 
-saying no to seemingly good ideas is part of building something great. Adding 
-every feature to Chosen will result in a bloated, unusable code mess. Don't 
-dispair if your feature request isn't accepted, take action! Fork the project, 
-build your idea and share it with others. This is progress, my friends!
+Building something great means choosing features carefully. It is much, much 
+easier to add features than it is to take them away. Additions to Chosen
+will be evaluated on a combination of scope (how well it fits into the project),
+maintenance burden and general usefulness.
+
+Building something great often means saying no to seemingly good ideas. Don't 
+dispair if your feature request isn't accepted, take action! Fork the 
+repository, build your idea and share it with others. We released Chosen under
+the MIT License for this purpose precisely. Open source works best when smart 
+and dedicated people riff off of each others' ideas to make even greater things. 
+
 
 
 <a name="pull-requests"></a>
 ## Pull requests
 
-Good pull requests - patches, improvements, new features - are a fantastic
-help. They should remain focused in scope and avoid containing unrelated
-commits.
+Good pull requests - patches, improvements, new features - are a fantastic help. 
+They should remain focused in scope and avoid containing unrelated commits.
 
 **Please ask first** before embarking on any significant pull request (e.g.
 implementing features, refactoring code, porting to a different language),
 otherwise you risk spending a lot of time working on something that the
 project's developers might not want to merge into the project.
 
-Please adhere to the coding conventions used throughout a project (indentation,
-accurate comments, etc.) and any other requirements (such as test coverage).
+Please use the [git flow for pull requesets](#git-flow) and follow Chosen's 
+[code conventions](#code-conventions) bevore submitting your work. Adhering to 
+these guidelines is the best way to get your work included in Chosen.
 
-Adhering to the following this process is the best way to get your work
-included in the project:
+<a name="git-flow"></a>
+#### Git Flow for pull requests
 
 1. [Fork](http://help.github.com/fork-a-repo/) the project, clone your fork,
    and configure the remotes:
@@ -150,4 +156,14 @@ included in the project:
     with a clear title and description.
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project owner to
-license your work under the same license as that used by the project.
+license your work under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
+
+<a name="code-conventions"></a>
+#### Chosen Code Conventions
+
+1. Make all changes in Coffeescript files, **not** JavaScript files.
+2. For feature changes, update both jQuery *and* Prototype versions
+3. Use `npm install -d` to install the correct development dependencies.
+4. Use `cake build` or `cake watch` to generate Chosen's JavaScript file 
+   and minified version.
+5. Don't touch the `VERSION` file
