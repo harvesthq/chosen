@@ -278,6 +278,12 @@
   cursor: pointer;
   display: list-item;
 }
+
+.chzn-container .chzn-results .disabled-result {
+  color: #ccc;
+  cursor: default;
+  display: list-item;
+}
 .chzn-container .chzn-results .highlighted {
   background-color: #3875d7;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3875d7', endColorstr='#2a62bc', GradientType=0 );  
@@ -308,7 +314,12 @@
   padding-left: 15px;
 }
 .chzn-container-multi .chzn-drop .result-selected {
-  display: none;
+  color: #ccc;
+  cursor: default;
+  display: list-item;
+}
+.chzn-container-multi .chzn-drop .result-selected em {
+  background: transparent;
 }
 .chzn-container .chzn-results-scroll {
   background: white;
