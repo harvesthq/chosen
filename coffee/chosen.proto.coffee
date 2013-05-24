@@ -460,14 +460,12 @@ class Chosen extends AbstractChosen
 
 
   keydown_arrow: ->
-    actives = @search_results.select("li.active-result")
-    if actives.length
-      if @results_showing
-        sibs = @result_highlight.nextSiblings()
-        nexts = sibs.intersect(actives)
-        this.result_do_highlight nexts.first() if nexts.length
-      else
-        this.results_show()
+    if @results_showing and @result_highlight
+      sibs = @result_highlight.nextSiblings()
+      nexts = sibs.intersect(actives)
+      this.result_do_highlight nexts.first() if nexts.length
+    else
+      this.results_show()
 
   keyup_arrow: ->
     if not @results_showing and not @is_multiple

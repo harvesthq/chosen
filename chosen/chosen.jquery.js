@@ -994,13 +994,14 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.keydown_arrow = function() {
       var next_sib;
 
-      if (this.results_showing) {
+      if (this.results_showing && this.result_highlight) {
         next_sib = this.result_highlight.nextAll("li.active-result").first();
         if (next_sib) {
-          this.result_do_highlight(next_sib);
+          return this.result_do_highlight(next_sib);
         }
+      } else {
+        return this.results_show();
       }
-      return this.results_show();
     };
 
     Chosen.prototype.keyup_arrow = function() {

@@ -470,10 +470,11 @@ class Chosen extends AbstractChosen
     @search_results.find(".no-results").remove()
 
   keydown_arrow: ->
-    if @results_showing
+    if @results_showing and @result_highlight
       next_sib = @result_highlight.nextAll("li.active-result").first()
       this.result_do_highlight next_sib if next_sib
-    this.results_show()
+    else
+      this.results_show()
 
   keyup_arrow: ->
     if not @results_showing and not @is_multiple
