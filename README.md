@@ -17,26 +17,9 @@ We welcome all to participate in making Chosen the best software it can be. The 
 * [Feature requests](CONTRIBUTING.md#features)
 * [Pull requests](CONTRIBUTING.md#pull-requests)
 
-### Using CoffeeScript & Cake
-
-First, make sure you have the proper CoffeeScript / Cake set-up in place. We have added a package.json that makes this easy:
-
-```
-npm install -d
-```
-
-This will install `coffee-script` and `uglifyjs`.
-
-Once you're configured, building the JavasScript from the command line is easy:
-
-    cake build                # build Chosen from source
-    cake watch                # watch coffee/ for changes and build Chosen
-    
-If you're interested, you can find the recipes in Cakefile.
-
-
 ### Chosen Credits
 
-- Built by [Harvest](http://www.getharvest.com/). Want to work on projects like this? [We’re hiring](http://www.getharvest.com/careers)!
-- Concept and development by [Patrick Filler](http://www.patrickfiller.com/)
+- Concept and development by [Patrick Filler](http://patrickfiller.com) for [Harvest](http://getharvest.com/).
 - Design and CSS by [Matthew Lettini](http://matthewlettini.com/)
+- Repository maintained by [@pfiller](http://github.com/pfiller), [@kenearley](http://github.com/kenearley) and [@stof](http://github.com/stof).
+- Chosen includes [contributions by many fine folks](https://github.com/harvesthq/chosen/contributors).
