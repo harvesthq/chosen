@@ -102,7 +102,7 @@ otherwise you risk spending a lot of time working on something that the
 project's developers might not want to merge into the project.
 
 Please use the [git flow for pull requesets](#git-flow) and follow Chosen's 
-[code conventions](#code-conventions) bevore submitting your work. Adhering to 
+[code conventions](#code-conventions) before submitting your work. Adhering to 
 these guidelines is the best way to get your work included in Chosen.
 
 <a name="git-flow"></a>
