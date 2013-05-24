@@ -114,7 +114,6 @@ class Chosen extends AbstractChosen
       if not (evt? and ($ evt.target).hasClass "search-choice-close")
         if not @active_field
           @search_field.val "" if @is_multiple
-          $(document).click @click_test_action
           this.results_show()
         else if not @is_multiple and evt and (($(evt.target)[0] == @selected_item[0]) || $(evt.target).parents("a.chzn-single").length)
           evt.preventDefault()
@@ -136,8 +135,6 @@ class Chosen extends AbstractChosen
     this.close_field() if not @active_field and @container.hasClass "chzn-container-active"
 
   close_field: ->
-    $(document).unbind "click", @click_test_action
-
     @active_field = false
     this.results_hide()
 
@@ -154,13 +151,6 @@ class Chosen extends AbstractChosen
 
     @search_field.val(@search_field.val())
     @search_field.focus()
-
-
-  test_active_click: (evt) ->
-    if $(evt.target).parents('#' + @container_id).length
-      @active_field = true
-    else
-      this.close_field()
 
   results_build: ->
     @parsing = true

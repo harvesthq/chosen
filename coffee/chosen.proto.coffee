@@ -104,7 +104,6 @@ class Chosen extends AbstractChosen
       if not (evt? and evt.target.hasClassName "search-choice-close")
         if not @active_field
           @search_field.clear() if @is_multiple
-          document.observe "click", @click_test_action
           this.results_show()
         else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chzn-single"))
           this.results_toggle()
@@ -125,8 +124,6 @@ class Chosen extends AbstractChosen
     this.close_field() if not @active_field and @container.hasClassName("chzn-container-active")
 
   close_field: ->
-    document.stopObserving "click", @click_test_action
-
     @active_field = false
     this.results_hide()
 
@@ -143,12 +140,6 @@ class Chosen extends AbstractChosen
 
     @search_field.value = @search_field.value
     @search_field.focus()
-
-  test_active_click: (evt) ->
-    if evt.target.up('#' + @container_id)
-      @active_field = true
-    else
-      this.close_field()
 
   results_build: ->
     @parsing = true
