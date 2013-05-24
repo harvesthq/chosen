@@ -223,9 +223,7 @@ class Chosen extends AbstractChosen
     @result_highlight = null
 
   results_show: ->
-    if @result_single_selected?
-      this.result_do_highlight @result_single_selected
-    else if @is_multiple and @max_selected_options <= this.choices_count()
+    if @is_multiple and @max_selected_options <= this.choices_count()
       @form_field_jq.trigger("liszt:maxselected", {chosen: this})
       return false
 
