@@ -8,7 +8,7 @@ the developers managing and developing this open source project. In return,
 they should reciprocate that respect in addressing your issue or assessing
 patches and features.
 
-_**Please Note:** These guidelines are adapted from @necolas's 
+_**Please Note:** These guidelines are adapted from [@necolas](https://github.com/necolas)'s 
 [issue-guidelines](https://github.com/necolas/issue-guidelines) and serve as
 an excellent starting point for contributing to any open source project._
 
