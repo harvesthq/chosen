@@ -351,11 +351,18 @@ class Chosen extends AbstractChosen
 
       this.search_field_scale()
 
-  result_activate: (el) ->
-    el.addClassName("active-result") unless el.hasClassName("disabled-result")
+  result_activate: (el, option) ->
+    if option.disabled
+      el.addClassName("disabled-result")
+    else if @is_multiple and option.selected
+      el.addClassName("result-selected")
+    else
+      el.addClassName("active-result")
 
   result_deactivate: (el) ->
     el.removeClassName("active-result")
+    el.removeClassName("result-selected")
+    el.removeClassName("disabled-result")
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]
@@ -395,7 +402,7 @@ class Chosen extends AbstractChosen
       if not option.empty
         if option.group
           $(option.dom_id).hide()
-        else if not (@is_multiple and option.selected)
+        else
           found = false
           result_id = option.dom_id
 
@@ -421,7 +428,7 @@ class Chosen extends AbstractChosen
 
             $(result_id).update text if $(result_id).innerHTML != text
 
-            this.result_activate $(result_id)
+            this.result_activate $(result_id), option
 
             $(@results_data[option.group_array_index].dom_id).setStyle({display: 'list-item'}) if option.group_array_index?
           else
