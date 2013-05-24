@@ -8,16 +8,14 @@ Chosen is a library for making long, unwieldy select boxes more user friendly.
 For documentation, usage, and examples, see:  
 http://harvesthq.github.io/chosen/
 
-### Contributing to Chosen
+### Contributing to this project
 
-Contributions and pull requests are very welcome. Please follow these guidelines when submitting new code.
+We welcome all to participate in making Chosen the best software it can be. The repository is maintained by only a few people, but has accepted contributions from over 50 authors after reviewing hundreds of pull requests related to thousands of issues. You can help reduce the maintainers workload (and increase your chance of having an accepted contribution to Chosen) by following the
+[guidelines for contributing](CONTRIBUTING.md).
 
-1. Make all changes in Coffeescript files, **not** JavaScript files.
-2. For feature changes, update both jQuery *and* Prototype versions
-3. Use `npm install -d` to install the correct development dependencies.
-4. Use `cake build` or `cake watch` to generate Chosen's JavaScript file and minified version.
-5. Don't touch the `VERSION` file
-6. Submit a Pull Request using GitHub.
+* [Bug reports](CONTRIBUTING.md#bugs)
+* [Feature requests](CONTRIBUTING.md#features)
+* [Pull requests](CONTRIBUTING.md#pull-requests)
 
 ### Using CoffeeScript & Cake
 
