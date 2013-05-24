@@ -1,4 +1,4 @@
-# Chosen, a Select Box Enhancer for jQuery and Protoype
+# Chosen, a Select Box Enhancer for jQuery and Prototype
 ## by Patrick Filler for [Harvest](http://getharvest.com)
 
 Available for use under the [MIT License](http://en.wikipedia.org/wiki/MIT_License)
