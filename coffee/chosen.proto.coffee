@@ -131,7 +131,6 @@ class Chosen extends AbstractChosen
     this.results_hide()
 
     @container.removeClassName "chzn-container-active"
-    this.winnow_results_clear()
     this.clear_backstroke()
 
     this.show_search_field_default()
@@ -435,16 +434,6 @@ class Chosen extends AbstractChosen
       this.no_results(searchText)
     else
       this.winnow_results_set_highlight()
-
-  winnow_results_clear: ->
-    @search_field.clear()
-    lis = @search_results.select("li")
-
-    for li in lis
-      if li.hasClassName("group-result")
-        li.show()
-      else if not @is_multiple or not li.hasClassName("result-selected")
-        this.result_activate li
 
   winnow_results_set_highlight: ->
     if not @result_highlight
