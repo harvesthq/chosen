@@ -291,7 +291,7 @@ class Chosen extends AbstractChosen
     this.result_do_highlight( target ) if target and not target.hasClass 'disabled-result'
 
   search_results_mouseout: (evt) ->
-    this.result_clear_highlight() if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+    this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
 
   choice_build: (item) ->
     if @is_multiple and @max_selected_options <= @choices
