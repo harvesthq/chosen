@@ -73,6 +73,12 @@ fits with the scope and aims of the project. It's up to *you* to make a strong
 case to convince the project's developers of the merits of this feature. Please
 provide as much detail and context as possible.
 
+Just because a feature request is popular doesn't mean it's a project fit and 
+saying no to seemingly good ideas is part of building something great. Adding 
+every feature to Chosen will result in a bloated, unusable code mess. Don't 
+dispair if your feature request isn't accepted, take action! Fork the project, 
+build your idea and share it with others. This is progress, my friends!
+
 
 <a name="pull-requests"></a>
 ## Pull requests
