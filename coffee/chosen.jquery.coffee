@@ -335,7 +335,7 @@ class Chosen extends AbstractChosen
         return false
 
       if @is_multiple
-        this.result_deactivate high
+        high.removeClass("active-result")
       else
         @search_results.find(".result-selected").removeClass "result-selected"
         @result_single_selected = high

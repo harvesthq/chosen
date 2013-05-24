@@ -321,12 +321,12 @@ class Chosen extends AbstractChosen
         return false
 
       if @is_multiple
-        this.result_deactivate high
+        high.removeClassName("active-result")
       else
         @search_results.descendants(".result-selected").invoke "removeClassName", "result-selected"
         @selected_item.removeClassName("chzn-default")
         @result_single_selected = high
-
+      
       high.addClassName("result-selected")
 
       position = high.id.substr(high.id.lastIndexOf("_") + 1 )

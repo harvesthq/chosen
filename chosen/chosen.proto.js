@@ -824,7 +824,7 @@ Copyright (c) 2011 by Harvest
           return false;
         }
         if (this.is_multiple) {
-          this.result_deactivate(high);
+          high.removeClassName("active-result");
         } else {
           this.search_results.descendants(".result-selected").invoke("removeClassName", "result-selected");
           this.selected_item.removeClassName("chzn-default");
