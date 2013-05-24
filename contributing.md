@@ -77,12 +77,12 @@ fits with the scope and aims of the project. It's up to *you* to make a strong
 case to convince the project's developers of the merits of this feature. Please
 provide as much detail and context as possible.
 
-Building something great means choosing features carefully. It is much, much 
-easier to add features than it is to take them away. Additions to Chosen
-will be evaluated on a combination of scope (how well it fits into the project),
-maintenance burden and general usefulness.
+Building something great means choosing features carefully especially because it
+is much, much easier to add features than it is to take them away. Additions 
+to Chosen will be evaluated on a combination of scope (how well it fits into the 
+project), maintenance burden and general usefulness.
 
-Building something great often means saying no to seemingly good ideas. Don't 
+Creating something great often means saying no to seemingly good ideas. Don't 
 dispair if your feature request isn't accepted, take action! Fork the 
 repository, build your idea and share it with others. We released Chosen under
 the MIT License for this purpose precisely. Open source works best when smart 
@@ -162,8 +162,24 @@ license your work under the [MIT License](http://en.wikipedia.org/wiki/MIT_Licen
 #### Chosen Code Conventions
 
 1. Make all changes in Coffeescript files, **not** JavaScript files.
-2. For feature changes, update both jQuery *and* Prototype versions
-3. Use `npm install -d` to install the correct development dependencies.
-4. Use `cake build` or `cake watch` to generate Chosen's JavaScript file 
-   and minified version.
-5. Don't touch the `VERSION` file
+2. Use [cake](#cake) to build the JavaScript files.
+3. For feature changes, update both jQuery *and* Prototype versions
+4. Don't touch the `VERSION` file
+
+<a name="cake"></a>
+#### Using CoffeeScript and Cake
+
+First, make sure you have the proper CoffeeScript / Cake set-up in place. We have added a package.json that makes this easy:
+
+```
+npm install -d
+```
+
+This will install `coffee-script` and `uglifyjs`.
+
+Once you're configured, building the JavasScript from the command line is easy:
+
+    cake build                # build Chosen from source
+    cake watch                # watch coffee/ for changes and build Chosen
+    
+If you're interested, you can find the recipes in Cakefile.
