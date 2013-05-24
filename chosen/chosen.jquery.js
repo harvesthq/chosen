@@ -988,22 +988,15 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.keydown_arrow = function() {
-      var first_active, next_sib;
+      var next_sib;
 
-      if (!this.result_highlight) {
-        first_active = this.search_results.find("li.active-result").first();
-        if (first_active) {
-          this.result_do_highlight($(first_active));
-        }
-      } else if (this.results_showing) {
+      if (this.results_showing) {
         next_sib = this.result_highlight.nextAll("li.active-result").first();
         if (next_sib) {
           this.result_do_highlight(next_sib);
         }
       }
-      if (!this.results_showing) {
-        return this.results_show();
-      }
+      return this.results_show();
     };
 
     Chosen.prototype.keyup_arrow = function() {
