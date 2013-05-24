@@ -131,7 +131,6 @@ class Chosen extends AbstractChosen
     this.results_hide()
 
     @container.removeClassName "chzn-container-active"
-    this.winnow_results_clear()
     this.clear_backstroke()
 
     this.show_search_field_default()
@@ -211,9 +210,7 @@ class Chosen extends AbstractChosen
     @result_highlight = null
 
   results_show: ->
-    if @result_single_selected?
-      this.result_do_highlight @result_single_selected
-    else if @is_multiple and @max_selected_options <= this.choices_count()
+    if @is_multiple and @max_selected_options <= this.choices_count()
       @form_field.fire("liszt:maxselected", {chosen: this})
       return false
 
@@ -260,14 +257,14 @@ class Chosen extends AbstractChosen
 
   search_results_mouseup: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
-    if target and not target.hasClassName 'disabled-result'
+    if target
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
   search_results_mouseover: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
-    this.result_do_highlight( target ) if target and not target.hasClassName 'disabled-result'
+    this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
@@ -324,12 +321,12 @@ class Chosen extends AbstractChosen
         return false
 
       if @is_multiple
-        this.result_deactivate high
+        high.removeClassName("active-result")
       else
         @search_results.descendants(".result-selected").invoke "removeClassName", "result-selected"
         @selected_item.removeClassName("chzn-default")
         @result_single_selected = high
-
+      
       high.addClassName("result-selected")
 
       position = high.id.substr(high.id.lastIndexOf("_") + 1 )
@@ -354,11 +351,18 @@ class Chosen extends AbstractChosen
 
       this.search_field_scale()
 
-  result_activate: (el) ->
-    el.addClassName("active-result")
+  result_activate: (el, option) ->
+    if option.disabled
+      el.addClassName("disabled-result")
+    else if @is_multiple and option.selected
+      el.addClassName("result-selected")
+    else
+      el.addClassName("active-result")
 
   result_deactivate: (el) ->
     el.removeClassName("active-result")
+    el.removeClassName("result-selected")
+    el.removeClassName("disabled-result")
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]
@@ -398,7 +402,7 @@ class Chosen extends AbstractChosen
       if not option.empty
         if option.group
           $(option.dom_id).hide()
-        else if not (@is_multiple and option.selected)
+        else
           found = false
           result_id = option.dom_id
 
@@ -424,7 +428,7 @@ class Chosen extends AbstractChosen
 
             $(result_id).update text if $(result_id).innerHTML != text
 
-            this.result_activate $(result_id)
+            this.result_activate $(result_id), option
 
             $(@results_data[option.group_array_index].dom_id).setStyle({display: 'list-item'}) if option.group_array_index?
           else
@@ -436,16 +440,6 @@ class Chosen extends AbstractChosen
     else
       this.winnow_results_set_highlight()
 
-  winnow_results_clear: ->
-    @search_field.clear()
-    lis = @search_results.select("li")
-
-    for li in lis
-      if li.hasClassName("group-result")
-        li.show()
-      else if not @is_multiple or not li.hasClassName("result-selected")
-        this.result_activate li
-
   winnow_results_set_highlight: ->
     if not @result_highlight
 
@@ -455,7 +449,7 @@ class Chosen extends AbstractChosen
       if not do_high?
         do_high = @search_results.down(".active-result")
 
-      this.result_do_highlight do_high if do_high? and not do_high.hasClassName 'disabled-result'
+      this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
     @search_results.insert @no_results_temp.evaluate( terms: terms )
@@ -466,22 +460,19 @@ class Chosen extends AbstractChosen
 
 
   keydown_arrow: ->
-    actives = @search_results.select("li.active-result:not('.disabled-result')")
-    if actives.length
-      if not @result_highlight
-        this.result_do_highlight actives.first()
-      else if @results_showing
-        sibs = @result_highlight.nextSiblings()
-        nexts = sibs.intersect(actives)
-        this.result_do_highlight nexts.first() if nexts.length
-      this.results_show() if not @results_showing
+    if @results_showing and @result_highlight
+      sibs = @result_highlight.nextSiblings()
+      nexts = sibs.intersect(actives)
+      this.result_do_highlight nexts.first() if nexts.length
+    else
+      this.results_show()
 
   keyup_arrow: ->
     if not @results_showing and not @is_multiple
       this.results_show()
     else if @result_highlight
       sibs = @result_highlight.previousSiblings()
-      actives = @search_results.select("li.active-result:not('.disabled-result')")
+      actives = @search_results.select("li.active-result")
       prevs = sibs.intersect(actives)
 
       if prevs.length
