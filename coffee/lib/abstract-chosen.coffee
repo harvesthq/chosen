@@ -63,8 +63,9 @@ class AbstractChosen
   result_add_option: (option) ->
     option.dom_id = @container_id + "_o_" + option.array_index
 
-    classes = if option.selected and @is_multiple then [] else ["active-result"]
-    classes.push "disabled-result" if option.disabled
+    classes = []
+    classes.push "active-result" if !option.disabled and !(option.selected and @is_multiple)
+    classes.push "disabled-result" if option.disabled and !(option.selected and @is_multiple)
     classes.push "result-selected" if option.selected
     classes.push "group-option" if option.group_array_index?
     classes.push option.classes if option.classes != ""

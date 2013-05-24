@@ -193,8 +193,11 @@ Copyright (c) 2011 by Harvest
       var classes, style;
 
       option.dom_id = this.container_id + "_o_" + option.array_index;
-      classes = option.selected && this.is_multiple ? [] : ["active-result"];
-      if (option.disabled) {
+      classes = [];
+      if (!option.disabled && !(option.selected && this.is_multiple)) {
+        classes.push("active-result");
+      }
+      if (option.disabled && !(option.selected && this.is_multiple)) {
         classes.push("disabled-result");
       }
       if (option.selected) {
@@ -718,7 +721,7 @@ Copyright (c) 2011 by Harvest
       var target;
 
       target = evt.target.hasClassName("active-result") ? evt.target : evt.target.up(".active-result");
-      if (target && !target.hasClassName('disabled-result')) {
+      if (target) {
         this.result_highlight = target;
         this.result_select(evt);
         return this.search_field.focus();
@@ -729,7 +732,7 @@ Copyright (c) 2011 by Harvest
       var target;
 
       target = evt.target.hasClassName("active-result") ? evt.target : evt.target.up(".active-result");
-      if (target && !target.hasClassName('disabled-result')) {
+      if (target) {
         return this.result_do_highlight(target);
       }
     };
@@ -857,7 +860,9 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.result_activate = function(el) {
-      return el.addClassName("active-result");
+      if (!el.hasClassName("disabled-result")) {
+        return el.addClassName("active-result");
+      }
     };
 
     Chosen.prototype.result_deactivate = function(el) {
@@ -989,7 +994,7 @@ Copyright (c) 2011 by Harvest
         if (do_high == null) {
           do_high = this.search_results.down(".active-result");
         }
-        if ((do_high != null) && !do_high.hasClassName('disabled-result')) {
+        if (do_high != null) {
           return this.result_do_highlight(do_high);
         }
       }
@@ -1015,7 +1020,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.keydown_arrow = function() {
       var actives, nexts, sibs;
 
-      actives = this.search_results.select("li.active-result:not('.disabled-result')");
+      actives = this.search_results.select("li.active-result");
       if (actives.length) {
         if (!this.result_highlight) {
           this.result_do_highlight(actives.first());
@@ -1039,7 +1044,7 @@ Copyright (c) 2011 by Harvest
         return this.results_show();
       } else if (this.result_highlight) {
         sibs = this.result_highlight.previousSiblings();
-        actives = this.search_results.select("li.active-result:not('.disabled-result')");
+        actives = this.search_results.select("li.active-result");
         prevs = sibs.intersect(actives);
         if (prevs.length) {
           return this.result_do_highlight(prevs.first());

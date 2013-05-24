@@ -260,14 +260,14 @@ class Chosen extends AbstractChosen
 
   search_results_mouseup: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
-    if target and not target.hasClassName 'disabled-result'
+    if target
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
   search_results_mouseover: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
-    this.result_do_highlight( target ) if target and not target.hasClassName 'disabled-result'
+    this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
@@ -355,7 +355,7 @@ class Chosen extends AbstractChosen
       this.search_field_scale()
 
   result_activate: (el) ->
-    el.addClassName("active-result")
+    el.addClassName("active-result") unless el.hasClassName("disabled-result")
 
   result_deactivate: (el) ->
     el.removeClassName("active-result")
@@ -455,7 +455,7 @@ class Chosen extends AbstractChosen
       if not do_high?
         do_high = @search_results.down(".active-result")
 
-      this.result_do_highlight do_high if do_high? and not do_high.hasClassName 'disabled-result'
+      this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
     @search_results.insert @no_results_temp.evaluate( terms: terms )
@@ -466,7 +466,7 @@ class Chosen extends AbstractChosen
 
 
   keydown_arrow: ->
-    actives = @search_results.select("li.active-result:not('.disabled-result')")
+    actives = @search_results.select("li.active-result")
     if actives.length
       if not @result_highlight
         this.result_do_highlight actives.first()
@@ -481,7 +481,7 @@ class Chosen extends AbstractChosen
       this.results_show()
     else if @result_highlight
       sibs = @result_highlight.previousSiblings()
-      actives = @search_results.select("li.active-result:not('.disabled-result')")
+      actives = @search_results.select("li.active-result")
       prevs = sibs.intersect(actives)
 
       if prevs.length

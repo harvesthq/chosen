@@ -273,14 +273,14 @@ class Chosen extends AbstractChosen
 
   search_results_mouseup: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    if target.length and not target.hasClass 'disabled-result'
+    if target.length
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
   search_results_mouseover: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    this.result_do_highlight( target ) if target and not target.hasClass 'disabled-result'
+    this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
@@ -368,7 +368,7 @@ class Chosen extends AbstractChosen
       this.search_field_scale()
 
   result_activate: (el) ->
-    el.addClass("active-result")
+    el.addClass("active-result") unless el.hasClass("disabled-result")
 
   result_deactivate: (el) ->
     el.removeClass("active-result")
@@ -467,7 +467,7 @@ class Chosen extends AbstractChosen
       selected_results = if not @is_multiple then @search_results.find(".result-selected.active-result") else []
       do_high = if selected_results.length then selected_results.first() else @search_results.find(".active-result").first()
 
-      this.result_do_highlight do_high if do_high? and not do_high.hasClass 'disabled-result'
+      this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
     no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
@@ -480,10 +480,10 @@ class Chosen extends AbstractChosen
 
   keydown_arrow: ->
     if not @result_highlight
-      first_active = @search_results.find("li.active-result:not('.disabled-result')").first()
+      first_active = @search_results.find("li.active-result").first()
       this.result_do_highlight $(first_active) if first_active
     else if @results_showing
-      next_sib = @result_highlight.nextAll("li.active-result:not('.disabled-result')").first()
+      next_sib = @result_highlight.nextAll("li.active-result").first()
       this.result_do_highlight next_sib if next_sib
     this.results_show() if not @results_showing
 
@@ -491,7 +491,7 @@ class Chosen extends AbstractChosen
     if not @results_showing and not @is_multiple
       this.results_show()
     else if @result_highlight
-      prev_sibs = @result_highlight.prevAll("li.active-result:not('.disabled-result')")
+      prev_sibs = @result_highlight.prevAll("li.active-result")
 
       if prev_sibs.length
         this.result_do_highlight prev_sibs.first()
