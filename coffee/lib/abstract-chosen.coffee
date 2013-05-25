@@ -116,6 +116,8 @@ class AbstractChosen
         if @is_multiple and @backstroke_length < 1 and this.choices_count() > 0
           this.keydown_backstroke()
         else if not @pending_backstroke
+          if @backstroke_length < 1
+            return this.results_reset(evt)
           this.result_clear_highlight()
           this.results_search()
       when 13
@@ -124,6 +126,9 @@ class AbstractChosen
       when 27
         this.results_hide() if @results_showing
         return true
+      when 46
+        if @allow_single_deselect and not @results_showing and @current_value !== ""
+            return this.results_reset(evt)
       when 9, 38, 40, 16, 91, 17
         # don't do anything on these keys
       else this.results_search()
