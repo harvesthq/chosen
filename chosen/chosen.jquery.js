@@ -939,7 +939,18 @@ Copyright (c) 2011 by Harvest
         }
       }
       if (results < 1 && searchText.length) {
-        return this.no_results(searchText);
+        // baitao.ji 2013-05-26
+        if(searchText.charAt(searchText.length - 1)==' ') {
+          var item = {};
+          item.html = searchText.substr(0, searchText.length-1);
+          item.disabled = false;
+          item.array_index = 0;
+          this.search_field.val("");
+          this.results_hide();
+          return this.choice_build(item);
+        }
+        else
+          return this.no_results(searchText);
       } else {
         return this.winnow_results_set_highlight();
       }
