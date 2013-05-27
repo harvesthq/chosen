@@ -81,6 +81,7 @@ class Chosen extends AbstractChosen
     @search_results.bind 'mousewheel DOMMouseScroll', (evt) => this.search_results_mousewheel(evt); return
 
     @form_field_jq.bind "liszt:updated", (evt) => this.results_update_field(evt); return
+    @form_field_jq.bind "liszt:reset", (evt) => this.results_reset(evt); return
     @form_field_jq.bind "liszt:activate", (evt) => this.activate_field(evt); return
     @form_field_jq.bind "liszt:open", (evt) => this.container_mousedown(evt); return
 
