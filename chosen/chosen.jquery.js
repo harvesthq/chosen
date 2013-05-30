@@ -60,7 +60,8 @@
             disabled: group_disabled === true ? group_disabled : option.disabled,
             group_array_index: group_position,
             classes: option.className,
-            style: option.style.cssText
+            style: option.style.cssText,
+            title: option.title
           });
         } else {
           this.parsed.push({
@@ -202,7 +203,9 @@ Copyright (c) 2011 by Harvest
           classes.push(option.classes);
         }
         style = option.style.cssText !== "" ? " style=\"" + option.style + "\"" : "";
-        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' + style + '>' + option.html + '</li>';
+        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' +
+             (option.title != null ? ' title="' + option.title.replace(/'/g, "\\'") + '"': '') +
+            style + '>' + option.html + '</li>';
       } else {
         return "";
       }
