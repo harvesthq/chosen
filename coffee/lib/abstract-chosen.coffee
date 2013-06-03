@@ -71,7 +71,7 @@ class AbstractChosen
 
       style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
 
-      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + option.html + '</li>'
+      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + option.search_text + '</li>'
     else
       ""
 

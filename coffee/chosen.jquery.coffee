@@ -177,24 +177,31 @@ class Chosen extends AbstractChosen
       else
         @container.removeClass "chzn-container-single-nosearch"
 
-    content = ''
-    for data in @results_data
-      if data.group
-        content += this.result_add_group data
-      else if !data.empty
-        content += this.result_add_option data
-        if data.selected and @is_multiple
-          this.choice_build data
-        else if data.selected and not @is_multiple
-          @selected_item.removeClass("chzn-default").find("span").text data.text
-          this.single_deselect_control_build() if @allow_single_deselect
+    this.results_option_build();
 
     this.search_field_disabled()
     this.show_search_field_default()
     this.search_field_scale()
 
-    @search_results.html content
     @parsing = false
+
+  results_option_build: () ->
+    content = ''
+    for data in @results_data
+      if data.group && data.search_match
+        content += this.result_add_group data
+      else if !data.empty && data.search_match
+        content += this.result_add_option data
+        ###
+        if data.selected and @is_multiple
+          this.choice_build data
+        else if data.selected and not @is_multiple
+          @selected_item.removeClass("chzn-default").find("span").text data.text
+          this.single_deselect_control_build() if @allow_single_deselect
+        ###
+
+    @search_results.html content
+
 
 
   result_add_group: (group) ->
@@ -415,14 +422,17 @@ class Chosen extends AbstractChosen
     for option in @results_data
       if not option.disabled and not option.empty
         if option.group
-          $('#' + option.dom_id).css('display', 'none')
+          #$('#' + option.dom_id).css('display', 'none')
+          option.search_match = false
         else if not (@is_multiple and option.selected)
           found = false
-          result_id = option.dom_id
-          result = $("#" + result_id)
+          option.search_match = false
+          #result_id = option.dom_id
+          #result = $("#" + result_id)
 
           if regex.test option.html
             found = true
+            option.search_match = true
             results += 1
           else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
@@ -431,6 +441,7 @@ class Chosen extends AbstractChosen
               for part in parts
                 if regex.test part
                   found = true
+                  option.search_match = false
                   results += 1
 
           if found
@@ -441,17 +452,23 @@ class Chosen extends AbstractChosen
             else
               text = option.html
 
-            result.html(text)
-            this.result_activate result
+            option.search_text = text
 
-            $("#" + @results_data[option.group_array_index].dom_id).css('display', 'list-item') if option.group_array_index?
-          else
-            this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
-            this.result_deactivate result
+            #result.html(text)
+            #this.result_activate result
+
+            @results_data[option.group_array_index].search_match = true if option.group_array_index?
+
+            #$("#" + @results_data[option.group_array_index].dom_id).css('display', 'list-item') if option.group_array_index?
+          #else
+            #this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
+            #this.result_deactivate result
 
     if results < 1 and searchText.length
       this.no_results searchText
     else
+      console.dir @results_data
+      this.results_option_build()
       this.winnow_results_set_highlight()
 
   winnow_results_clear: ->
