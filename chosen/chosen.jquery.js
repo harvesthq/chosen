@@ -898,9 +898,13 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.single_deselect_control_build = function() {
-      if (this.allow_single_deselect && this.selected_item.find("abbr").length < 1) {
-        return this.selected_item.find("span").first().after("<abbr class=\"search-choice-close\"></abbr>");
+      if (!this.allow_single_deselect) {
+        return;
       }
+      if (!this.selected_item.find("abbr").length) {
+        this.selected_item.find("span").first().after("<abbr class=\"search-choice-close\"></abbr>");
+      }
+      return this.selected_item.addClass("chzn-single-with-deselect");
     };
 
     Chosen.prototype.winnow_results = function() {

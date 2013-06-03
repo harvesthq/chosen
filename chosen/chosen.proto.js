@@ -892,11 +892,15 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.single_deselect_control_build = function() {
-      if (this.allow_single_deselect && !this.selected_item.down("abbr")) {
-        return this.selected_item.down("span").insert({
+      if (!this.allow_single_deselect) {
+        return;
+      }
+      if (!this.selected_item.down("abbr")) {
+        this.selected_item.down("span").insert({
           after: "<abbr class=\"search-choice-close\"></abbr>"
         });
       }
+      return this.selected_item.addClassName("chzn-single-with-deselect");
     };
 
     Chosen.prototype.winnow_results = function() {
