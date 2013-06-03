@@ -3,10 +3,10 @@
 Please take a moment to review this document in order to make the contribution
 process easy and effective for everyone involved.
 
-Following these guidelines helps to communicate that you respect the time of
-the project maintainers who give their time to share this project freely. 
-In return, the maintainers will reciprocate that respect in addressing your 
-issue or assessing your pull requests.
+Following these guidelines will help us get back to you more quickly, and will 
+show that you care about making Chosen better just like we do. In return, we'll 
+do our best to respond to your issue or pull request as soon as possible with 
+the same respect.
 
 _**Please Note:** These guidelines are adapted from [@necolas](https://github.com/necolas)'s 
 [issue-guidelines](https://github.com/necolas/issue-guidelines) and serve as
@@ -15,12 +15,13 @@ an excellent starting point for contributing to any open source project._
 
 ## Using the issue tracker
 
-The issue tracker is the preferred channel for [bug reports](#bugs),
-[features requests](#features) and [submitting pull
-requests](#pull-requests), but please respect the following restrictions:
+The [issue tracker](https://github.com/harvesthq/chosen/issues) is the 
+preferred channel for [bug reports](#bugs), [features requests](#features) 
+and [submitting pull requests](#pull-requests), but please respect the 
+following restrictions:
 
 * Please **do not** use the issue tracker for personal support requests (use
-  [Stack Overflow](http://stackoverflow.com) or IRC).
+  [Stack Overflow](http://stackoverflow.com)).
 
 * Please **do not** derail or troll issues. Keep the discussion on topic and
   respect the opinions of others.
@@ -30,25 +31,26 @@ requests](#pull-requests), but please respect the following restrictions:
 ## Bug reports
 
 A bug is a _demonstrable problem_ that is caused by the code in the repository.
-Good bug reports are extremely helpful - thank you!
+Good bug reports are extremely helpful &mdash; thank you!
 
 Guidelines for bug reports:
 
-1. **Use the GitHub issue search** &mdash; check if the issue has already been
+1. **Use the [GitHub issue search](https://github.com/harvesthq/chosen/search?type=Issues)** &mdash; check if the issue has already been
    reported.
 
-2. **Check if the issue has been fixed** &mdash; try to reproduce it using the
+2. **Check if the bug has already been fixed** &mdash; try to reproduce it using the
    repository's latest `master` changes.
 
 3. **Isolate the problem** &mdash; ideally create a [reduced test
    case](http://css-tricks.com/6263-reduced-test-cases/) and a live example 
    (perhaps a [fiddle](http://jsfiddle.net)).
 
-A good bug report shouldn't leave others needing to chase you up for more
+A good bug report shouldn't leave others needing to contact you for more
 information. Please try to be as detailed as possible in your report. What is
 your environment? What steps will reproduce the issue? What browser(s) and OS
-experience the problem? What would you expect to be the outcome? All these
-details will help people to fix any potential bugs.
+experience the problem? What outcome did you expect, and how did it differ from 
+what you actually saw? All these details will help people to fix any potential 
+bugs.
 
 Example:
 
@@ -93,7 +95,7 @@ and dedicated people riff off of each others' ideas to make even greater things.
 <a name="pull-requests"></a>
 ## Pull requests
 
-Good pull requests - patches, improvements, new features - are a fantastic help. 
+Good pull requests - patches, improvements, new features &mdash; are a fantastic help. 
 They should remain focused in scope and avoid containing unrelated commits.
 
 **Please ask first** before embarking on any significant pull request (e.g.
@@ -113,7 +115,7 @@ these guidelines is the best way to get your work included in Chosen.
 
    ```bash
    # Clone your fork of the repo into the current directory
-   git clone https://github.com/harvesthq/chosen
+   git clone git@github.com:<YOUR_USERNAME>/chosen.git
    # Navigate to the newly cloned directory
    cd chosen
    # Assign the original repo to a remote called "upstream"
@@ -161,7 +163,7 @@ license your work under the [MIT License](http://en.wikipedia.org/wiki/MIT_Licen
 <a name="code-conventions"></a>
 #### Chosen Code Conventions
 
-1. Make all changes in Coffeescript files, **not** JavaScript files.
+1. Make all changes in CoffeeScript files, **not** JavaScript files.
 2. Use [cake](#cake) to build the JavaScript files.
 3. For feature changes, update both jQuery *and* Prototype versions
 4. Don't touch the `VERSION` file
@@ -169,7 +171,7 @@ license your work under the [MIT License](http://en.wikipedia.org/wiki/MIT_Licen
 <a name="cake"></a>
 #### Using CoffeeScript and Cake
 
-First, make sure you have the proper CoffeeScript / Cake set-up in place. We have added a package.json that makes this easy:
+First, make sure you have the proper CoffeeScript / Cake setup in place. We have added a package.json that makes this easy:
 
 ```
 npm install -d
@@ -177,9 +179,9 @@ npm install -d
 
 This will install `coffee-script` and `uglifyjs`.
 
-Once you're configured, building the JavasScript from the command line is easy:
+Once you're configured, building the JavaScript from the command line is easy:
 
     cake build                # build Chosen from source
     cake watch                # watch coffee/ for changes and build Chosen
     
-If you're interested, you can find the recipes in Cakefile.
+If you're interested, you can find the recipes in [Cakefile](https://github.com/harvesthq/chosen/blob/master/Cakefile).
