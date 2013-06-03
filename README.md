@@ -29,7 +29,7 @@ npm install -d
 
 This will install `coffee-script` and `uglifyjs`.
 
-Once you're configured, building the JavasScript from the command line is easy:
+Once you're configured, building the JavaScript from the command line is easy:
 
     cake build                # build Chosen from source
     cake watch                # watch coffee/ for changes and build Chosen
