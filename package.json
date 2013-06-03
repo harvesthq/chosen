@@ -25,5 +25,33 @@
       "type": "MIT",
       "url": "https://github.com/harvesthq/chosen/blob/master/LICENSE.md"
     }
-  ]
+  ],
+  "jqueryJSON": {
+    "title": "Chosen",
+    "keywords": [
+      "select",
+      "multiselect",
+      "dropdown"
+    ],
+    "author": {
+      "url": "http://getharvest.com"
+    },
+    "maintainers": [
+      {
+        "name": "Patrick Filler"
+      },
+      {
+        "name": "Christophe Coevoet"
+      },
+      {
+        "name": "Ken Earley"
+      }
+    ],
+    "homepage": "https://github.com/harvesthq/chosen",
+    "docs": "https://github.com/harvesthq/chosen",
+    "bugs": "https://github.com/harvesthq/chosen/issues",
+    "dependencies": {
+      "jquery": ">=1.4.4"
+    }
+  }
 }
