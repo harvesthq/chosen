@@ -63,7 +63,9 @@ module.exports = (grunt) ->
       tag_release:
         command: "git tag -a #{version_tag()} -m 'Version #{version()}'" 
       push_repo:
-        commmand: "git push; git push --tags"
+        commmand: "git push"
+      push_tags:
+        commmand: "git push --tags"
         options:
           callback: (err, stdout, stderr, cb) ->
             if err
@@ -85,7 +87,7 @@ module.exports = (grunt) ->
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify']
 
   grunt.registerTask 'release', 'build, tag the current release, and push', () ->
-    grunt.task.run ['shell:with_clean_repo', 'shell:without_existing_tag', 'build', 'package_jquery', 'shell:tag_release', 'shell:push_repo']
+    grunt.task.run ['shell:with_clean_repo', 'shell:without_existing_tag', 'build', 'package_jquery', 'shell:tag_release', 'shell:push_repo', 'shell:push_tags']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () =>
     src = "package.json"
