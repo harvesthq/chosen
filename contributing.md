@@ -101,7 +101,8 @@ They should remain focused in scope and avoid containing unrelated commits.
 **Please ask first** before embarking on any significant pull request (e.g.
 implementing features, refactoring code, porting to a different language),
 otherwise you risk spending a lot of time working on something that the
-project's developers might not want to merge into the project.
+project's developers might not want to merge into the project. You can solicit
+feedback and opinions in an open feature request thread or create a new one.
 
 Please use the [git flow for pull requesets](#git-flow) and follow Chosen's 
 [code conventions](#code-conventions) before submitting your work. Adhering to 
