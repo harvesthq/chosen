@@ -1,4 +1,8 @@
 module.exports = (grunt) ->
+  version = ->
+    grunt.file.readJSON("package.json").version
+  version_tag = ->
+    "v#{version()}"
 
   grunt.initConfig
     pkg: grunt.file.readJSON("package.json")
@@ -45,12 +49,43 @@ module.exports = (grunt) ->
         files: ['coffee/**/*.coffee']
         tasks: ['build']
 
+    shell:
+      with_clean_repo:
+        command: 'git diff --exit-code'
+      without_existing_tag:
+        command: 'git tag'
+        options:
+          callback: (err, stdout, stderr, cb) ->
+            if stdout.split("\n").indexOf( version_tag() ) >= 0
+              throw 'This tag has already been committed to the repo.'
+            else
+              cb()
+      tag_release:
+        command: "git tag -a #{version_tag()} -m 'Version #{version()}'" 
+      push_repo:
+        commmand: "git push; git push --tags"
+        options:
+          callback: (err, stdout, stderr, cb) ->
+            if err
+              console.log "Failure to tag caught"
+              grunt.task.run 'shell:untag_release'
+              throw 'Failed to tag. Removing tag.'
+            else
+              console.log "Successfully tagged #{version_tag()}: https://github.com/harvesthq/chosen/tree/#{version_tag()}"
+            cb()
+      untag_release:
+        command: "git tag -d #{version_tag()}"
+
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-shell'
 
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify']
+
+  grunt.registerTask 'release', 'build, tag the current release, and push', () ->
+    grunt.task.run ['shell:with_clean_repo', 'shell:without_existing_tag', 'build', 'package_jquery', 'shell:tag_release', 'shell:push_repo']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () =>
     src = "package.json"
@@ -60,7 +95,7 @@ module.exports = (grunt) ->
       "name": pkg.name
       "title": pkg.title
       "description": pkg.description
-      "version": pkg.version
+      "version": version()
       "licenses": pkg.licenses
     json2 = pkg.jqueryJSON
     json1[key] = json2[key] for key of json2
