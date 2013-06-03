@@ -63,9 +63,16 @@ module.exports = (grunt) ->
       tag_release:
         command: "git tag -a #{version_tag()} -m 'Version #{version()}'" 
       push_repo:
-        commmand: "git push"
+        commmand: "git push origin"
+        options:
+          callback: (err, stdout, stderr, cb) ->
+            if err
+              throw err
+            else
+              console.log "Successfully tagged #{version_tag()}: https://github.com/harvesthq/chosen/tree/#{version_tag()}"
+            cb()
       push_tags:
-        commmand: "git push --tags"
+        commmand: "git push origin --tags"
         options:
           callback: (err, stdout, stderr, cb) ->
             if err
