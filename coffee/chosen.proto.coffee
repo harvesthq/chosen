@@ -249,7 +249,7 @@ class Chosen extends AbstractChosen
   set_label_behavior: ->
     @form_field_label = @form_field.up("label") # first check for a parent label
     if not @form_field_label?
-      @form_field_label = $$("label[for=#{@form_field.id}]").first() #next check for a for=#{id}
+      @form_field_label = $$("label[for='#{@form_field.id}']").first() #next check for a for=#{id}
 
     if @form_field_label?
       @form_field_label.observe "click", (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
