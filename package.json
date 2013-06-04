@@ -47,8 +47,8 @@
         "name": "Ken Earley"
       }
     ],
-    "homepage": "https://github.com/harvesthq/chosen",
-    "docs": "https://github.com/harvesthq/chosen",
+    "homepage": "http://harvesthq.github.io/chosen/",
+    "docs": "http://harvesthq.github.io/chosen/",
     "bugs": "https://github.com/harvesthq/chosen/issues",
     "dependencies": {
       "jquery": ">=1.4.4"
