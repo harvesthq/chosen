@@ -2,15 +2,21 @@
   "name": "chosen",
   "title": "Chosen",
   "description": "Chosen is a JavaScript plugin that makes long, unwieldy select boxes much more user-friendly. It is currently available in both jQuery and Prototype flavors.",
+  "version": "0.9.14",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/harvesthq/chosen/blob/master/LICENSE.md"
+    }
+  ],
   "keywords": [
     "select",
     "multiselect",
     "dropdown"
   ],
-  "version": "0.9.15",
   "author": {
-    "name": "harvest",
-    "url": "http://getharvest.com"
+    "url": "http://getharvest.com",
+    "name": "harvest"
   },
   "maintainers": [
     {
@@ -21,12 +27,6 @@
     },
     {
       "name": "Ken Earley"
-    }
-  ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/harvesthq/chosen/blob/master/LICENSE.md"
     }
   ],
   "homepage": "https://github.com/harvesthq/chosen",
