@@ -127,7 +127,6 @@ module.exports = (grunt) ->
     pkg = grunt.file.readJSON(src)
     json1 =
       "name": pkg.name
-      "title": pkg.title
       "description": pkg.description
       "version": version()
       "licenses": pkg.licenses
