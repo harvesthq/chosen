@@ -14,7 +14,6 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "coffee-script": ">= 1.6",
-    "uglify-js": ">= 1.2.5 <2.0",
     "grunt-contrib-coffee": "~0.6.4",
     "grunt-contrib-uglify": "~0.2.0",
     "grunt-contrib-concat": "~0.1.3",
