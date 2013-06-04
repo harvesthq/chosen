@@ -67,6 +67,7 @@ module.exports = (grunt) ->
             if stdout.split("\n").indexOf( version_tag() ) >= 0
               throw 'This tag has already been committed to the repo.'
             else
+              grunt.task.run 'shell:tag_release'
               cb()
 
       tag_release:
