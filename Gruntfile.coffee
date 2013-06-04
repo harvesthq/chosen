@@ -44,6 +44,11 @@ module.exports = (grunt) ->
           'public/chosen.jquery.min.js': ['public/chosen.jquery.js']
           'public/chosen.proto.min.js': ['public/chosen.proto.js']
 
+    cssmin:
+      my_target:
+        src: 'public/chosen.css'
+        dest: 'public/chosen.min.css'
+
     watch:
       scripts:
         files: ['coffee/**/*.coffee']
@@ -115,10 +120,11 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-css'
   grunt.loadNpmTasks 'grunt-shell'
 
   grunt.registerTask 'default', ['build']
-  grunt.registerTask 'build', ['coffee', 'concat', 'uglify']
+  grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
   grunt.registerTask 'release', ['build', 'package_jquery', 'shell:with_clean_repo']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () =>
