@@ -15,7 +15,7 @@
 
     <!-- CSS: implied media="all" -->
     <link rel="stylesheet" href="docsupport/style.css">
-    <link rel="stylesheet" href="chosen.css" />
+    <link rel="stylesheet" href="chosen.min.css" />
     
     <!--[if lt IE 9]>
       <script type="text/javascript">
@@ -38,7 +38,11 @@
         </header>
         <div id="container">
           <h2 class="intro">Chosen is a JavaScript plugin that makes long, unwieldy select boxes much more user-friendly. It is currently available in both jQuery and Prototype flavors.</h2>
-          <a href="https://github.com/harvesthq/chosen/">Project page on GitHub</a>
+          <ul>
+            <li><a href="https://github.com/harvesthq/chosen/">Project page on GitHub</a></li>
+            <li><a href="example.jquery.html">Example jQuery Implementation</a></li>
+            <li><a href="example.proto.html">Example Prototype Implementation</a></li>
+          </ul>
 
           <h2>Standard Select</h2>
           <div class="side-by-side clearfix">
@@ -1340,7 +1344,7 @@
           
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-        <script src="chosen.jquery.js" type="text/javascript"></script>
+        <script src="chosen.jquery.min.js" type="text/javascript"></script>
         <script type="text/javascript">
           $(".chzn-select").chosen();
           $(".chzn-select-deselect").chosen({allow_single_deselect:true});
