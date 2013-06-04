@@ -52,6 +52,14 @@ module.exports = (grunt) ->
     shell:
       with_clean_repo:
         command: 'git diff --exit-code'
+        options:
+          callback: (err, stdout, stderr, cb) ->
+            if err
+              throw 'Not a clean repo'
+            else
+              grunt.task.run 'shell:without_existing_tag'
+            cb()
+
       without_existing_tag:
         command: 'git tag'
         options:
@@ -60,30 +68,48 @@ module.exports = (grunt) ->
               throw 'This tag has already been committed to the repo.'
             else
               cb()
+
       tag_release:
         command: "git tag -a #{version_tag()} -m 'Version #{version()}'" 
-      push_repo:
-        commmand: "git push origin"
         options:
+          callback: (err, stdout, stderr, cb) ->
+            if err
+              throw 'Could not tag the release'
+            else
+              grunt.task.run 'shell:push_repo'
+              cb()
+
+      push_repo:
+        command: "git push"
+        options:
+          stdout: true
           callback: (err, stdout, stderr, cb) ->
             if err
               throw err
             else
+              grunt.task.run 'shell:push_tags'
               console.log "Successfully tagged #{version_tag()}: https://github.com/harvesthq/chosen/tree/#{version_tag()}"
             cb()
+      
       push_tags:
-        commmand: "git push origin --tags"
+        command: "git push --tags"
         options:
+          stdout: true
           callback: (err, stdout, stderr, cb) ->
             if err
               console.log "Failure to tag caught"
               grunt.task.run 'shell:untag_release'
-              throw 'Failed to tag. Removing tag.'
             else
               console.log "Successfully tagged #{version_tag()}: https://github.com/harvesthq/chosen/tree/#{version_tag()}"
             cb()
+
       untag_release:
         command: "git tag -d #{version_tag()}"
+        options:
+          callback: (err, stdout, stderr, cb) ->
+            console.log "Removing tag #{version_tag()}"
+            cb()
+
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
@@ -93,8 +119,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify']
 
-  grunt.registerTask 'release', 'build, tag the current release, and push', () ->
-    grunt.task.run ['shell:with_clean_repo', 'shell:without_existing_tag', 'build', 'package_jquery', 'shell:tag_release', 'shell:push_repo', 'shell:push_tags']
+  grunt.registerTask 'release', ['shell:with_clean_repo']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () =>
     src = "package.json"
