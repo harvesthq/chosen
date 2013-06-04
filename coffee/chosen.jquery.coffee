@@ -400,7 +400,9 @@ class Chosen extends AbstractChosen
       return false
 
   single_deselect_control_build: ->
-    @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" if @allow_single_deselect and @selected_item.find("abbr").length < 1
+    return unless @allow_single_deselect
+    @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" unless @selected_item.find("abbr").length
+    @selected_item.addClass("chzn-single-with-deselect")
 
   winnow_results: ->
     this.no_results_clear()

@@ -73,6 +73,10 @@
   -ms-text-overflow: ellipsis;
   text-overflow: ellipsis;
 }
+.chzn-container-single .chzn-single-with-deselect span {
+  margin-right: 38px;
+}
+
 .chzn-container-single .chzn-single abbr {
   display: block;
   position: absolute;
@@ -395,6 +399,7 @@
 .chzn-rtl { text-align: right; }
 .chzn-rtl .chzn-single { padding: 0 8px 0 0; overflow: visible; }
 .chzn-rtl .chzn-single span { margin-left: 26px; margin-right: 0; direction: rtl; }
+.chzn-rtl .chzn-single-with-deselect span { margin-left: 38px; }
 
 .chzn-rtl .chzn-single div { left: 3px; right: auto; }
 .chzn-rtl .chzn-single abbr {
