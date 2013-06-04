@@ -119,7 +119,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify']
 
-  grunt.registerTask 'release', ['shell:with_clean_repo']
+  grunt.registerTask 'release', ['build', 'package_jquery', 'shell:with_clean_repo']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () =>
     src = "package.json"
