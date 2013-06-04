@@ -86,10 +86,9 @@ module.exports = (grunt) ->
           stdout: true
           callback: (err, stdout, stderr, cb) ->
             if err
-              throw err
+              grunt.task.run 'shell:untag_release'
             else
               grunt.task.run 'shell:push_tags'
-              console.log "Successfully tagged #{version_tag()}: https://github.com/harvesthq/chosen/tree/#{version_tag()}"
             cb()
       
       push_tags:
