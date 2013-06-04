@@ -91,12 +91,6 @@
 
 }).call(this);
 
-/*
-Chosen source: generate output using 'cake build'
-Copyright (c) 2011 by Harvest
-*/
-
-
 (function() {
   var AbstractChosen, root;
 
@@ -334,12 +328,6 @@ Copyright (c) 2011 by Harvest
   root.AbstractChosen = AbstractChosen;
 
 }).call(this);
-
-/*
-Chosen source: generate output using 'cake build'
-Copyright (c) 2011 by Harvest
-*/
-
 
 (function() {
   var Chosen, root, _ref,
