@@ -63,11 +63,14 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
-  grunt.registerTask 'bump_patch', ['bump:patch', 'package_jquery', 'build']
-  grunt.registerTask 'bump_minor', ['bump:minor', 'package_jquery', 'build']
-  grunt.registerTask 'bump_major', ['bump:major', 'package_jquery', 'build']
+  grunt.registerTask 'bump_patch', ['bump:patch', 'package_jquery', 'build', 'app_version']
+  grunt.registerTask 'bump_minor', ['bump:minor', 'package_jquery', 'build', 'app_version']
+  grunt.registerTask 'bump_major', ['bump:major', 'package_jquery', 'build', 'app_version']
 
-  grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () =>
+  grunt.registerTask 'app_version', 'Display the version number', () ->
+    console.log "Chosen version: #{version()}"
+
+  grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () ->
     src = "package.json"
     dest = "chosen.jquery.json"
     pkg = grunt.file.readJSON(src)
