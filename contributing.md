@@ -95,7 +95,7 @@ and dedicated people riff off of each others' ideas to make even greater things.
 <a name="pull-requests"></a>
 ## Pull requests
 
-Good pull requests - patches, improvements, new features &mdash; are a fantastic help. 
+Good pull requests &mdash; patches, improvements, new features &mdash; are a fantastic help. 
 They should remain focused in scope and avoid containing unrelated commits.
 
 **Please ask first** before embarking on any significant pull request (e.g.
