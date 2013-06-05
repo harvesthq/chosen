@@ -1,7 +1,7 @@
 // Chosen, a Select Box Enhancer for jQuery and Prototype
 // by Patrick Filler for Harvest, http://getharvest.com
 //
-// Version 0.9.14
+// Version 0.9.15
 // Full source at https://github.com/harvesthq/chosen
 // Copyright (c) 2011 Harvest http://getharvest.com
 
@@ -691,7 +691,7 @@ Copyright (c) 2011 by Harvest
 
       this.form_field_label = this.form_field.up("label");
       if (this.form_field_label == null) {
-        this.form_field_label = $$("label[for=" + this.form_field.id + "]").first();
+        this.form_field_label = $$("label[for='" + this.form_field.id + "']").first();
       }
       if (this.form_field_label != null) {
         return this.form_field_label.observe("click", function(evt) {
@@ -895,11 +895,15 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.single_deselect_control_build = function() {
-      if (this.allow_single_deselect && !this.selected_item.down("abbr")) {
-        return this.selected_item.down("span").insert({
+      if (!this.allow_single_deselect) {
+        return;
+      }
+      if (!this.selected_item.down("abbr")) {
+        this.selected_item.down("span").insert({
           after: "<abbr class=\"search-choice-close\"></abbr>"
         });
       }
+      return this.selected_item.addClassName("chzn-single-with-deselect");
     };
 
     Chosen.prototype.winnow_results = function() {

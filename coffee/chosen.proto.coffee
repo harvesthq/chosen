@@ -242,7 +242,7 @@ class Chosen extends AbstractChosen
   set_label_behavior: ->
     @form_field_label = @form_field.up("label") # first check for a parent label
     if not @form_field_label?
-      @form_field_label = $$("label[for=#{@form_field.id}]").first() #next check for a for=#{id}
+      @form_field_label = $$("label[for='#{@form_field.id}']").first() #next check for a for=#{id}
 
     if @form_field_label?
       @form_field_label.observe "click", (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
@@ -386,7 +386,9 @@ class Chosen extends AbstractChosen
       return false
 
   single_deselect_control_build: ->
-    @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } if @allow_single_deselect and not @selected_item.down("abbr")
+    return unless @allow_single_deselect
+    @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } unless @selected_item.down("abbr")
+    @selected_item.addClassName("chzn-single-with-deselect")
 
   winnow_results: ->
     this.no_results_clear()
