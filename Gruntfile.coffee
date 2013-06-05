@@ -54,78 +54,18 @@ module.exports = (grunt) ->
         files: ['coffee/**/*.coffee']
         tasks: ['build']
 
-    shell:
-      with_clean_repo:
-        command: 'git diff --exit-code'
-        options:
-          callback: (err, stdout, stderr, cb) ->
-            if err
-              throw 'Not a clean repo'
-            else
-              grunt.task.run 'shell:without_existing_tag'
-            cb()
-
-      without_existing_tag:
-        command: 'git tag'
-        options:
-          callback: (err, stdout, stderr, cb) ->
-            if stdout.split("\n").indexOf( version_tag() ) >= 0
-              throw 'This tag has already been committed to the repo.'
-            else
-              grunt.task.run 'shell:tag_release'
-              cb()
-
-      tag_release:
-        command: "git tag -a #{version_tag()} -m 'Version #{version()}'" 
-        options:
-          callback: (err, stdout, stderr, cb) ->
-            if err
-              throw 'Could not tag the release'
-            else
-              grunt.task.run 'shell:push_repo'
-              cb()
-
-      push_repo:
-        command: "git push"
-        options:
-          stdout: true
-          callback: (err, stdout, stderr, cb) ->
-            if err
-              grunt.task.run 'shell:untag_release'
-            else
-              grunt.task.run 'shell:push_tags'
-            cb()
-      
-      push_tags:
-        command: "git push --tags"
-        options:
-          stdout: true
-          callback: (err, stdout, stderr, cb) ->
-            if err
-              console.log "Failure to tag caught"
-              grunt.task.run 'shell:untag_release'
-            else
-              console.log "Successfully tagged #{version_tag()}: https://github.com/harvesthq/chosen/tree/#{version_tag()}"
-            cb()
-
-      untag_release:
-        command: "git tag -d #{version_tag()}"
-        options:
-          callback: (err, stdout, stderr, cb) ->
-            console.log "Removing tag #{version_tag()}"
-            cb()
-
-
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-css'
-  grunt.loadNpmTasks 'grunt-shell'
+  grunt.loadNpmTasks 'grunt-bump'
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
-  grunt.registerTask 'release', ['build', 'package_jquery', 'shell:with_clean_repo']
+  grunt.registerTask 'bump_patch', ['bump:patch', 'package_jquery', 'build']
+  grunt.registerTask 'bump_minor', ['bump:minor', 'package_jquery', 'build']
+  grunt.registerTask 'bump_major', ['bump:major', 'package_jquery', 'build']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () =>
     src = "package.json"
