@@ -115,6 +115,16 @@ module.exports = (grunt) ->
             console.log "Removing tag #{version_tag()}"
             cb()
 
+    copy:
+      dist:
+        files: [
+          { src: ["public/*"], dest: "dist/", expand: true, flatten: true, filter: 'isFile' }
+          { src: ["public/docsupport/**"], dest: "dist/docsupport/", expand: true, flatten: true, filter: 'isFile' }
+        ]
+
+    clean:
+      dist: ["dist/"]
+
     build_gh_pages:
       gh_pages: {}
 
@@ -124,11 +134,14 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-css'
   grunt.loadNpmTasks 'grunt-shell'
+  grunt.loadNpmTasks 'grunt-contrib-copy'
+  grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-build-gh-pages'
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
   grunt.registerTask 'release', ['build', 'package_jquery', 'shell:with_clean_repo']
+  grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () =>
     src = "package.json"
