@@ -434,7 +434,7 @@ class Chosen extends AbstractChosen
             results += 1
           else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = subbedHtml.replace(/\[|\]/g, "").split(" ");
+            parts = subbedHtml.replace(/\[|\]/g, "").split(" ")
             if parts.length
               for part in parts
                 if regex.test part
