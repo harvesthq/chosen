@@ -892,7 +892,7 @@ Copyright (c) 2011 by Harvest
       this.no_results_clear();
       results = 0;
       searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
-      regexAnchor = this.search_contains ? "" : "^ ";
+      regexAnchor = this.search_contains ? "" : "^ *";
       regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       regexHtml = /(<[^>]+>)/g;
