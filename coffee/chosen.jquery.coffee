@@ -167,6 +167,8 @@ class Chosen extends AbstractChosen
     @selected_option_count = null
 
     @results_data = root.SelectParser.select_to_array @form_field
+    if @results_data_callback and typeof @results_data_callback == "function"
+      @results_data = @results_data_callback(@results_data, root)
 
     if @is_multiple and this.choices_count() > 0
       @search_choices.find("li.search-choice").remove()
@@ -186,7 +188,7 @@ class Chosen extends AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          @selected_item.removeClass("chzn-default").find("span").text data.text
+          @selected_item.removeClass("chzn-default").find("span").html data.html
           this.single_deselect_control_build() if @allow_single_deselect
 
     this.search_field_disabled()
@@ -360,7 +362,7 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.choice_build item
       else
-        @selected_item.find("span").first().text item.text
+        @selected_item.find("span").first().html item.html
         this.single_deselect_control_build() if @allow_single_deselect
 
       this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
@@ -410,9 +412,12 @@ class Chosen extends AbstractChosen
     results = 0
 
     searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
-    regexAnchor = if @search_contains then "" else "^"
+    regexAnchor = if @search_contains then "" else "^ *"
     regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+
+    regexHtml = /(<[^>]+>)/g
+    subHtml = (match) -> new Array(match.length + 1).join(" ")
 
     for option in @results_data
       if not option.disabled and not option.empty
@@ -423,12 +428,13 @@ class Chosen extends AbstractChosen
           result_id = option.dom_id
           result = $("#" + result_id)
 
-          if regex.test option.html
+          subbedHtml = option.html.replace(regexHtml, subHtml);
+          if regex.test subbedHtml
             found = true
             results += 1
           else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
+            parts = subbedHtml.replace(/\[|\]/g, "").split(" ")
             if parts.length
               for part in parts
                 if regex.test part
@@ -437,7 +443,7 @@ class Chosen extends AbstractChosen
 
           if found
             if searchText.length
-              startpos = option.html.search zregex
+              startpos = subbedHtml.search zregex
               text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
             else
