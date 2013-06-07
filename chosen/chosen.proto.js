@@ -1006,13 +1006,13 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.keydown_arrow = function() {
-      var nexts, sibs;
+      var next_sib;
 
       if (this.results_showing && this.result_highlight) {
-        sibs = this.result_highlight.nextSiblings();
-        nexts = sibs.intersect(actives);
-        if (nexts.length) {
-          return this.result_do_highlight(nexts.first());
+        next_sib = this.result_highlight.next('.active-result');
+        if (next_sib) {
+          console.dir(next_sib);
+          return this.result_do_highlight(next_sib);
         }
       } else {
         return this.results_show();

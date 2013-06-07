@@ -463,9 +463,8 @@ class Chosen extends AbstractChosen
 
   keydown_arrow: ->
     if @results_showing and @result_highlight
-      sibs = @result_highlight.nextSiblings()
-      nexts = sibs.intersect(actives)
-      this.result_do_highlight nexts.first() if nexts.length
+      next_sib = @result_highlight.next('.active-result')
+      this.result_do_highlight next_sib if next_sib
     else
       this.results_show()
 
