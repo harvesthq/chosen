@@ -318,6 +318,10 @@ Copyright (c) 2011 by Harvest
       if (this.options.width != null) {
         return this.options.width;
       } else {
+		// Fixing problem when the select is not displayed.
+        if ( this.form_field.offsetWidth == 0 ) {
+          return "" + $(this.form_field).width() + "px";
+        }
         return "" + this.form_field.offsetWidth + "px";
       }
     };
