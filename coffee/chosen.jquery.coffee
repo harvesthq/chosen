@@ -453,7 +453,7 @@ class Chosen extends AbstractChosen
 
     if results < 1 and searchText.length
       this.no_results searchText
-    else
+    else if not this.is_multiple or searchText.length
       this.winnow_results_set_highlight()
 
   winnow_results_clear: ->
@@ -533,7 +533,7 @@ class Chosen extends AbstractChosen
         @backstroke_length = this.search_field.val().length
         break
       when 9
-        this.result_select(evt) if this.results_showing and not @is_multiple
+        this.result_select(evt) if this.results_showing and (not @is_multiple or this.result_highlight)
         @mouse_on_container = false
         break
       when 13
