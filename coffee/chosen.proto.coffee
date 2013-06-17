@@ -228,10 +228,11 @@ class Chosen extends AbstractChosen
     this.winnow_results()
 
   results_hide: ->
-    this.result_clear_highlight()
+    if @results_showing
+      this.result_clear_highlight()
 
-    @container.removeClassName "chzn-with-drop"
-    @form_field.fire("liszt:hiding_dropdown", {chosen: this})
+      @container.removeClassName "chzn-with-drop"
+      @form_field.fire("liszt:hiding_dropdown", {chosen: this})
 
     @results_showing = false
 
