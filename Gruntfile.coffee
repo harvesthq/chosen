@@ -62,12 +62,6 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
-  grunt.registerTask 'bump_patch', ['bump:patch', 'package_jquery', 'build', 'app_version']
-  grunt.registerTask 'bump_minor', ['bump:minor', 'package_jquery', 'build', 'app_version']
-  grunt.registerTask 'bump_major', ['bump:major', 'package_jquery', 'build', 'app_version']
-
-  grunt.registerTask 'app_version', 'Display the version number', () ->
-    console.log "Chosen version: #{version()}"
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () ->
     src = "package.json"
@@ -82,3 +76,8 @@ module.exports = (grunt) ->
     json1[key] = json2[key] for key of json2
     json1.author.name = pkg.author
     grunt.file.write('chosen.jquery.json', JSON.stringify(json1, null, 2))
+
+  grunt.registerTask 'bumpit', (type) ->
+    type = if type then type else 'patch'
+    grunt.task.run("bump:#{type}")
+    grunt.task.run('package_jquery')
