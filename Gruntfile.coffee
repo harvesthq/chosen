@@ -58,10 +58,10 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-css'
-  grunt.loadNpmTasks 'grunt-bump'
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
+  grunt.registerTask 'release', ['build', 'package_jquery']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () ->
     src = "package.json"
@@ -76,8 +76,3 @@ module.exports = (grunt) ->
     json1[key] = json2[key] for key of json2
     json1.author.name = pkg.author
     grunt.file.write('chosen.jquery.json', JSON.stringify(json1, null, 2))
-
-  grunt.registerTask 'bumpit', (type) ->
-    type = if type then type else 'patch'
-    grunt.task.run("bump:#{type}")
-    grunt.task.run('package_jquery')
