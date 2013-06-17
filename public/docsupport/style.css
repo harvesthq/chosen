@@ -1,0 +1,116 @@
+/* Reset */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
+
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after, q:before, q:after { content: ""; content: none; }
+ins { background-color: #ff9; color: #000; text-decoration: none; } 
+mark { background-color: #ff9; color: #000; font-style: italic; font-weight: bold; }
+del { text-decoration: line-through; }
+abbr[title], dfn[title] { border-bottom: 1px dotted; cursor: help; }
+table { border-collapse: collapse; border-spacing: 0; }
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
+input, select { vertical-align: middle; }
+
+body { font:13px/1.231 sans-serif; *font-size:small; } /* Hack retained to preserve specificity */
+select, input, textarea, button { font:99% sans-serif; }
+pre, code, kbd, samp { font-family: monospace, sans-serif; }
+
+
+body { background: #EEE; color: #444; line-height: 1.4em; }
+
+header h1 { color: black; font-size: 2em; line-height: 1.1em; display: inline-block; height: 27px; margin: 20px 0 25px; }
+
+div#content { background: white; border: 1px solid #ccc; border-width: 0 1px 1px; margin: 0 auto; padding: 40px 50px 40px; width: 738px; }
+
+footer { color: #999; padding-top: 40px; font-size: 0.8em; text-align: center; }
+
+body { font-family: sans-serif; font-size: 1em; }
+
+p { margin: 0 0 .7em; max-width: 700px; }
+
+h2 { border-bottom: 1px solid #ccc; font-size: 1.2em; margin: 3em 0 1em 0; font-weight: bold;}
+h3 { font-weight: bold; }
+
+h2.intro { border-bottom: none; font-size: 1em; font-weight: normal; margin-top:0; }
+
+ul li { list-style: disc; margin-left: 1em; margin-bottom: 1.25em; }
+ol li { margin-left: 1.25em; }
+ol ul, ul ul { margin: .25em 0 0; }
+ol ul li, ul ul li { list-style-type: circle; margin: 0 0 .25em 1em; }
+
+li > p { margin-top: .25em; }
+
+div.side-by-side { width: 100%; margin-bottom: 1em; }
+div.side-by-side > div { float: left; width: 49%; }
+div.side-by-side > div > em { margin-bottom: 10px; display: block; }
+
+.faqs em { display: block; }
+
+.clearfix:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+a { color: #F36C00; outline: none; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+ul.credits li { margin-bottom: .25em; }
+
+strong { font-weight: bold; }
+
+/* Tweak navbar brand link to be super sleek
+-------------------------------------------------- */
+.oss-bar {
+  top: 0;
+  right: 20px;
+  position: fixed;
+  z-index: 1030;
+}
+.oss-bar ul {
+  float: right;
+  margin: 0;
+  list-style: none;
+}
+.oss-bar ul li {
+  list-style: none;
+  float: left;
+  line-height: 0;
+  margin: 0;
+}
+.oss-bar ul li a {
+   -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing:     border-box;
+   box-sizing:        border-box;
+  border: 0;
+  margin-top: -10px;
+  display: block;
+  height: 58px;  
+  background: #F36C00 url(oss-credit.png) no-repeat 20px 22px;
+  padding: 22px 20px 12px 20px;
+  text-indent: 120%; /* stupid padding */
+  white-space: nowrap;
+  overflow: hidden;
+  -webkit-transition: all 0.10s ease-in-out;
+  -moz-transition: all 0.10s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+.oss-bar ul li a:hover {
+  margin-top: 0px;
+}
+.oss-bar a.harvest {
+  width: 196px;
+  background-color: #F36C00;
+  background-position: -142px 22px;
+  padding-right: 22px; /* optical illusion */
+}
+.oss-bar a.fork {
+  width: 162px;
+  background-color: #333333;
+}
