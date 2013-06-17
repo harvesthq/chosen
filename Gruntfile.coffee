@@ -38,7 +38,6 @@ module.exports = (grunt) ->
       options:
         mangle:
           except: ['jQuery', 'AbstractChosen', 'Chosen', 'SelectParser']
-        banner: "<%= comments %>"
       minified_chosen_js:
         files:
           'public/chosen.jquery.min.js': ['public/chosen.jquery.js']
