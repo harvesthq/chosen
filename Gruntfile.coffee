@@ -53,15 +53,32 @@ module.exports = (grunt) ->
         files: ['coffee/**/*.coffee']
         tasks: ['build']
 
+    copy:
+      dist:
+        files: [
+          { src: ["public/*"], dest: "dist/", expand: true, flatten: true, filter: 'isFile' }
+          { src: ["public/docsupport/**"], dest: "dist/docsupport/", expand: true, flatten: true, filter: 'isFile' }
+        ]
+
+    clean:
+      dist: ["dist/"]
+
+    build_gh_pages:
+      gh_pages: {}
+
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-contrib-copy'
+  grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-css'
+  grunt.loadNpmTasks 'grunt-build-gh-pages'
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
   grunt.registerTask 'release', ['build', 'package_jquery']
+  grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () ->
     src = "package.json"
