@@ -37,7 +37,7 @@ module.exports = (grunt) ->
     uglify:
       options:
         mangle:
-          except: ['jQuery']
+          except: ['jQuery', 'AbstractChosen', 'Chosen', 'SelectParser']
         banner: "<%= comments %>"
       my_target:
         files:
