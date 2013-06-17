@@ -1,7 +1,3 @@
-###
-Chosen source: generate output using 'cake build'
-Copyright (c) 2011 by Harvest
-###
 root = this
 
 class Chosen extends AbstractChosen

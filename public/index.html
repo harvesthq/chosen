@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Chosen - a JavaScript plugin for jQuery and Prototype - makes select boxes better</title>
+    <meta name="description" content="">
+    <meta name="author" content="Patrick Filler, Harvest">
+    
+    <!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- CSS: implied media="all" -->
+    <link rel="stylesheet" href="docsupport/style.css">
+    <link rel="stylesheet" href="chosen.min.css" />
+    
+    <!--[if lt IE 9]>
+      <script type="text/javascript">
+      (function(){
+        var html5elements = "address|article|aside|audio|canvas|command|datalist|details|dialog|figure|figcaption|footer|header|hgroup|keygen|mark|meter|menu|nav|progress|ruby|section|time|video".split('|');
+        for(var i = 0; i < html5elements.length; i++){
+          document.createElement(html5elements[i]);
+        }
+
+      })();
+      </script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div id="container">
+      <div id="content">
+        <header>
+          <h1>Chosen</h1>
+        </header>
+        <div id="container">
+          <h2 class="intro">Chosen is a JavaScript plugin that makes long, unwieldy select boxes much more user-friendly. It is currently available in both jQuery and Prototype flavors.</h2>
+          <ul>
+            <li><a href="https://github.com/harvesthq/chosen/">Project page on GitHub</a></li>
+            <li><a href="example.jquery.html">Example jQuery Implementation</a></li>
+            <li><a href="example.proto.html">Example Prototype Implementation</a></li>
+          </ul>
+
+          <h2>FAQs</h2>
+          <ul class="faqs">
+            <li>
+              <h3>Something doesn't work. Can you fix it?</h3>
+              <p>Yes! Please report all issues using the <a href="http://github.com/harvesthq/chosen/issues">GitHub issue tracking tool</a>. Please include the plugin version (jQuery or Prototype), browser and OS. The more information provided, the easier it is to fix a problem.</p>
+            </li>
+            <li>
+              <h3>What browsers are supported?</h3>
+              <p>All modern browsers are supported (Firefox, Chrome, Safari and IE9). Legacy support for IE8 is also enabled.</p>
+            </li>
+          <ul>
+            
+          <h2>Credits</h2>
+
+          <ul class="credits">
+            <li>Concept and development by <a href="http://patrickfiller.com">Patrick Filler</a> for <a href="https://getharvest.com">Harvest</a>.</li>
+            <li>Design and CSS by <a href="http://matthewlettini.com">Matthew Lettini</a>.</li>
+            <li>Repository maintained by <a href="https://github.com/pfiller">@pfiller</a>, <a href="https://github.com/kenearley">@kenearley</a>, and <a href="https://github.com/stof">@stof</a>.</li>
+            <li>Chosen includes <a href="https://github.com/harvesthq/chosen/contributors">contributions by many fine folks</a>.</li>
+          </ul>
+
+          <footer>
+            &copy; 2011 <a href="http://www.getharvest.com/">Harvest</a> - Chosen is licensed under the <a href="http://en.wikipedia.org/wiki/MIT_License">MIT license</a>.
+          </footer>
+          
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <script src="chosen.jquery.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+          $(".chzn-select").chosen();
+          $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+        </script>
+        
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-103886-18']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+      </div>
+    </div>
+    <div class="oss-bar">
+      <ul>
+        <li><a class="fork" href="https://github.com/harvesthq/chosen">Fork on Github</a></li>
+        <li><a class="harvest" href="http://www.getharvest.com/">Built by Harvest</a></li>
+      </ul>
+    </div>
+  </body>
+</html>
