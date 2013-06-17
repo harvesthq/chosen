@@ -37,15 +37,15 @@ module.exports = (grunt) ->
     uglify:
       options:
         mangle:
-          except: ['jQuery']
+          except: ['jQuery', 'AbstractChosen', 'Chosen', 'SelectParser']
         banner: "<%= comments %>"
-      my_target:
+      minified_chosen_js:
         files:
           'public/chosen.jquery.min.js': ['public/chosen.jquery.js']
           'public/chosen.proto.min.js': ['public/chosen.proto.js']
 
     cssmin:
-      my_target:
+      minified_chosen_css:
         src: 'public/chosen.css'
         dest: 'public/chosen.min.css'
 
@@ -53,67 +53,6 @@ module.exports = (grunt) ->
       scripts:
         files: ['coffee/**/*.coffee']
         tasks: ['build']
-
-    shell:
-      with_clean_repo:
-        command: 'git diff --exit-code'
-        options:
-          callback: (err, stdout, stderr, cb) ->
-            if err
-              throw 'Not a clean repo'
-            else
-              grunt.task.run 'shell:without_existing_tag'
-            cb()
-
-      without_existing_tag:
-        command: 'git tag'
-        options:
-          callback: (err, stdout, stderr, cb) ->
-            if stdout.split("\n").indexOf( version_tag() ) >= 0
-              throw 'This tag has already been committed to the repo.'
-            else
-              grunt.task.run 'shell:tag_release'
-              cb()
-
-      tag_release:
-        command: "git tag -a #{version_tag()} -m 'Version #{version()}'" 
-        options:
-          callback: (err, stdout, stderr, cb) ->
-            if err
-              throw 'Could not tag the release'
-            else
-              grunt.task.run 'shell:push_repo'
-              cb()
-
-      push_repo:
-        command: "git push"
-        options:
-          stdout: true
-          callback: (err, stdout, stderr, cb) ->
-            if err
-              grunt.task.run 'shell:untag_release'
-            else
-              grunt.task.run 'shell:push_tags'
-            cb()
-      
-      push_tags:
-        command: "git push --tags"
-        options:
-          stdout: true
-          callback: (err, stdout, stderr, cb) ->
-            if err
-              console.log "Failure to tag caught"
-              grunt.task.run 'shell:untag_release'
-            else
-              console.log "Successfully tagged #{version_tag()}: https://github.com/harvesthq/chosen/tree/#{version_tag()}"
-            cb()
-
-      untag_release:
-        command: "git tag -d #{version_tag()}"
-        options:
-          callback: (err, stdout, stderr, cb) ->
-            console.log "Removing tag #{version_tag()}"
-            cb()
 
     copy:
       dist:
@@ -132,18 +71,24 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-watch'
-  grunt.loadNpmTasks 'grunt-css'
-  grunt.loadNpmTasks 'grunt-shell'
   grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-contrib-clean'
+  grunt.loadNpmTasks 'grunt-css'
   grunt.loadNpmTasks 'grunt-build-gh-pages'
+  grunt.loadNpmTasks 'grunt-bump'
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
   grunt.registerTask 'release', ['build', 'package_jquery', 'shell:with_clean_repo']
   grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
+  grunt.registerTask 'bump_patch', ['bump:patch', 'package_jquery', 'build', 'app_version']
+  grunt.registerTask 'bump_minor', ['bump:minor', 'package_jquery', 'build', 'app_version']
+  grunt.registerTask 'bump_major', ['bump:major', 'package_jquery', 'build', 'app_version']
 
-  grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () =>
+  grunt.registerTask 'app_version', 'Display the version number', () ->
+    console.log "Chosen version: #{version()}"
+
+  grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () ->
     src = "package.json"
     dest = "chosen.jquery.json"
     pkg = grunt.file.readJSON(src)
