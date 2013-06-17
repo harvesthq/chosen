@@ -95,7 +95,7 @@ and dedicated people riff off of each others' ideas to make even greater things.
 <a name="pull-requests"></a>
 ## Pull requests
 
-Good pull requests - patches, improvements, new features &mdash; are a fantastic help. 
+Good pull requests &mdash; patches, improvements, new features &mdash; are a fantastic help. 
 They should remain focused in scope and avoid containing unrelated commits.
 
 **Please ask first** before embarking on any significant pull request (e.g.
@@ -165,24 +165,24 @@ license your work under the [MIT License](http://en.wikipedia.org/wiki/MIT_Licen
 #### Chosen Code Conventions
 
 1. Make all changes in CoffeeScript files, **not** JavaScript files.
-2. Use [cake](#cake) to build the JavaScript files.
+2. Use [Grunt](#grunt) to build the JavaScript files.
 3. For feature changes, update both jQuery *and* Prototype versions
-4. Don't touch the `VERSION` file
+4. Don't manually update the version number in `package.json`. This is done using a Grunt task on deployment.
 
-<a name="cake"></a>
-#### Using CoffeeScript and Cake
+<a name="grunt"></a>
+#### Using CoffeeScript and Grunt
 
-First, make sure you have the proper CoffeeScript / Cake setup in place. We have added a package.json that makes this easy:
+First, make sure you have the proper CoffeeScript / Grunt setup in place. We have added a package.json that makes this easy:
 
 ```
-npm install -d
+npm install
 ```
 
-This will install `coffee-script` and `uglifyjs`.
+This will install all the necessary Grunt plugins
 
 Once you're configured, building the JavaScript from the command line is easy:
 
-    cake build                # build Chosen from source
-    cake watch                # watch coffee/ for changes and build Chosen
+    grunt build                # build Chosen from source
+    grunt watch                # watch coffee/ for changes and build Chosen
     
-If you're interested, you can find the recipes in [Cakefile](https://github.com/harvesthq/chosen/blob/master/Cakefile).
+If you're interested, you can find the task in [Gruntfile.coffee](https://github.com/harvesthq/chosen/blob/master/Gruntfile.coffee).

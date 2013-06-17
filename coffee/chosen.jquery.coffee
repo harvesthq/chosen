@@ -1,7 +1,3 @@
-###
-Chosen source: generate output using 'cake build'
-Copyright (c) 2011 by Harvest
-###
 root = this
 $ = jQuery
 
@@ -142,7 +138,6 @@ class Chosen extends AbstractChosen
     this.results_hide()
 
     @container.removeClass "chzn-container-active"
-    this.winnow_results_clear()
     this.clear_backstroke()
 
     this.show_search_field_default()
@@ -203,13 +198,9 @@ class Chosen extends AbstractChosen
     @search_results.html content
 
 
-
   result_add_group: (group) ->
-    if not group.disabled
-      group.dom_id = @container_id + "_g_" + group.array_index
-      '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
-    else
-      ""
+    group.dom_id = @container_id + "_g_" + group.array_index
+    '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
 
   result_do_highlight: (el) ->
     if el.length
@@ -235,9 +226,7 @@ class Chosen extends AbstractChosen
     @result_highlight = null
 
   results_show: ->
-    if @result_single_selected?
-      this.result_do_highlight @result_single_selected
-    else if @is_multiple and @max_selected_options <= this.choices_count()
+    if @is_multiple and @max_selected_options <= this.choices_count()
       @form_field_jq.trigger("liszt:maxselected", {chosen: this})
       return false
 
@@ -252,10 +241,11 @@ class Chosen extends AbstractChosen
     this.winnow_results()
 
   results_hide: ->
-    this.result_clear_highlight()
+    if @results_showing
+      this.result_clear_highlight()
 
-    @container.removeClass "chzn-with-drop"
-    @form_field_jq.trigger("liszt:hiding_dropdown", {chosen: this})
+      @container.removeClass "chzn-with-drop"
+      @form_field_jq.trigger("liszt:hiding_dropdown", {chosen: this})
 
     @results_showing = false
 
@@ -349,7 +339,7 @@ class Chosen extends AbstractChosen
         return false
 
       if @is_multiple
-        this.result_deactivate high
+        high.removeClass("active-result")
       else
         @search_results.find(".result-selected").removeClass "result-selected"
         @result_single_selected = high
@@ -378,11 +368,16 @@ class Chosen extends AbstractChosen
       @current_selectedIndex = @form_field.selectedIndex
       this.search_field_scale()
 
-  result_activate: (el) ->
-    el.addClass("active-result")
+  result_activate: (el, option) ->
+    if option.disabled
+      el.addClass("disabled-result")
+    else if @is_multiple and option.selected
+      el.addClass("result-selected")
+    else
+      el.addClass("active-result")
 
   result_deactivate: (el) ->
-    el.removeClass("active-result")
+    el.removeClass("active-result result-selected disabled-result")
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]
@@ -407,7 +402,9 @@ class Chosen extends AbstractChosen
       return false
 
   single_deselect_control_build: ->
-    @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" if @allow_single_deselect and @selected_item.find("abbr").length < 1
+    return unless @allow_single_deselect
+    @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" unless @selected_item.find("abbr").length
+    @selected_item.addClass("chzn-single-with-deselect")
 
   winnow_results: ->
     this.no_results_clear()
@@ -420,7 +417,7 @@ class Chosen extends AbstractChosen
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
-      if not option.disabled and not option.empty
+      if not option.empty
         if option.group
           #$('#' + option.dom_id).css('display', 'none')
           option.search_match = false
@@ -455,7 +452,7 @@ class Chosen extends AbstractChosen
             option.search_text = text
 
             #result.html(text)
-            #this.result_activate result
+            #this.result_activate result, option
 
             @results_data[option.group_array_index].search_match = true if option.group_array_index?
 
@@ -470,17 +467,6 @@ class Chosen extends AbstractChosen
       console.dir @results_data
       this.results_option_build()
       this.winnow_results_set_highlight()
-
-  winnow_results_clear: ->
-    @search_field.val ""
-    lis = @search_results.find("li")
-
-    for li in lis
-      li = $(li)
-      if li.hasClass "group-result"
-        li.css('display', 'auto')
-      else if not @is_multiple or not li.hasClass "result-selected"
-        this.result_activate li
 
   winnow_results_set_highlight: ->
     if not @result_highlight
@@ -500,13 +486,11 @@ class Chosen extends AbstractChosen
     @search_results.find(".no-results").remove()
 
   keydown_arrow: ->
-    if not @result_highlight
-      first_active = @search_results.find("li.active-result").first()
-      this.result_do_highlight $(first_active) if first_active
-    else if @results_showing
+    if @results_showing and @result_highlight
       next_sib = @result_highlight.nextAll("li.active-result").first()
       this.result_do_highlight next_sib if next_sib
-    this.results_show() if not @results_showing
+    else
+      this.results_show()
 
   keyup_arrow: ->
     if not @results_showing and not @is_multiple
