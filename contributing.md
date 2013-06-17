@@ -167,7 +167,7 @@ license your work under the [MIT License](http://en.wikipedia.org/wiki/MIT_Licen
 1. Make all changes in CoffeeScript files, **not** JavaScript files.
 2. Use [Grunt](#grunt) to build the JavaScript files.
 3. For feature changes, update both jQuery *and* Prototype versions
-4. Don't touch the `package.json` file
+4. Don't manually update the version number in `package.json`. This is done using a Grunt task on deployment.
 
 <a name="grunt"></a>
 #### Using CoffeeScript and Grunt
