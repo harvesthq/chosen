@@ -151,7 +151,7 @@ class Chosen extends AbstractChosen
 
     @results_data = root.SelectParser.select_to_array @form_field
 
-    if @is_multiple and this.choices_count() > 0
+    if @is_multiple
       @search_choices.select("li.search-choice").invoke("remove")
     else if not @is_multiple
       @selected_item.addClassName("chzn-default").down("span").update(@default_text)
