@@ -253,7 +253,7 @@
 
     AbstractChosen.prototype.choices_click = function(evt) {
       evt.preventDefault();
-      if (!this.results_showing) {
+      if (!(this.results_showing || this.is_disabled)) {
         return this.results_show();
       }
     };
