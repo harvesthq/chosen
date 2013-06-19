@@ -575,7 +575,7 @@
       this.parsing = true;
       this.selected_option_count = null;
       this.results_data = root.SelectParser.select_to_array(this.form_field);
-      if (this.is_multiple && this.choices_count() > 0) {
+      if (this.is_multiple) {
         this.search_choices.select("li.search-choice").invoke("remove");
       } else if (!this.is_multiple) {
         this.selected_item.addClassName("chzn-default").down("span").update(this.default_text);
