@@ -57,19 +57,18 @@ class AbstractChosen
       setTimeout (=> this.blur_test()), 100
 
   result_add_option: (option) ->
-    if not option.disabled
-      option.dom_id = @container_id + "_o_" + option.array_index
+    option.dom_id = @container_id + "_o_" + option.array_index
 
-      classes = if option.selected and @is_multiple then [] else ["active-result"]
-      classes.push "result-selected" if option.selected
-      classes.push "group-option" if option.group_array_index?
-      classes.push option.classes if option.classes != ""
+    classes = []
+    classes.push "active-result" if !option.disabled and !(option.selected and @is_multiple)
+    classes.push "disabled-result" if option.disabled and !(option.selected and @is_multiple)
+    classes.push "result-selected" if option.selected
+    classes.push "group-option" if option.group_array_index?
+    classes.push option.classes if option.classes != ""
 
-      style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
+    style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
 
-      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + option.html + '</li>'
-    else
-      ""
+    '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + option.html + '</li>'
 
   results_update_field: ->
     this.set_default_text()
@@ -101,7 +100,7 @@ class AbstractChosen
 
   choices_click: (evt) ->
     evt.preventDefault()
-    this.results_show() unless @results_showing
+    this.results_show() unless @results_showing or @is_disabled
 
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
