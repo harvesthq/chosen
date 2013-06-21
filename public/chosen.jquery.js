@@ -340,7 +340,7 @@
 
   $ = typeof jQuery !== "undefined" && jQuery !== null ? jQuery : Zepto;
 
-  if ($ === Zepto) {
+  if ((typeof Zepto !== "undefined" && Zepto !== null) && $ === Zepto) {
     $.extend($.fn, {
       outerHeight: function(margin) {
         if (margin) {
@@ -361,9 +361,6 @@
       },
       width: function() {
         return this[0].getBoundingClientRect().width - parseInt(this.css('border-left-width'), 10) - parseInt(this.css('border-right-width'), 10) - parseInt(this.css('padding-left'), 10) - parseInt(this.css('padding-right'), 10);
-      },
-      disabled: function() {
-        return typeof (this[0].getAttribute('disabled')) === "string";
       }
     });
   }
@@ -912,6 +909,7 @@
       regexAnchor = this.search_contains ? "" : "^";
       regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      console.log("Winnow");
       _ref1 = this.results_data;
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         option = _ref1[_i];
@@ -919,10 +917,12 @@
           if (option.group) {
             $('#' + option.dom_id).css('display', 'none');
           } else {
+            console.log(option);
             found = false;
             result_id = option.dom_id;
             result = $("#" + result_id);
             if (regex.test(option.html)) {
+              console.log("YOLO");
               found = true;
               results += 1;
             } else if (this.enable_split_word_search && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {

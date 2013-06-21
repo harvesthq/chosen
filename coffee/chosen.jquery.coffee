@@ -1,7 +1,7 @@
 root = this
 $ = if jQuery? then jQuery else Zepto
 
-if $ is Zepto
+if Zepto? and $ is Zepto
   $.extend($.fn, {
     outerHeight: (margin) ->
       if margin
@@ -17,8 +17,6 @@ if $ is Zepto
         return this[0].getBoundingClientRect().width
     width: ->
       return this[0].getBoundingClientRect().width - parseInt(this.css('border-left-width'), 10) - parseInt(this.css('border-right-width'), 10) - parseInt(this.css('padding-left'), 10) - parseInt(this.css('padding-right'), 10)
-    disabled: ->
-      return typeof(this[0].getAttribute('disabled')) is "string"
   })
 
 $.extend($.fn, {
@@ -429,16 +427,20 @@ class Chosen extends AbstractChosen
     regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
+    console.log "Winnow"
+
     for option in @results_data
       if not option.empty
         if option.group
           $('#' + option.dom_id).css('display', 'none')
         else
+          console.log option
           found = false
           result_id = option.dom_id
           result = $("#" + result_id)
 
           if regex.test option.html
+            console.log "YOLO"
             found = true
             results += 1
           else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
