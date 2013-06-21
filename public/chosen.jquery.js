@@ -903,7 +903,6 @@
       regexAnchor = this.search_contains ? "" : "^";
       regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      console.log("Winnow");
       _ref1 = this.results_data;
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         option = _ref1[_i];
@@ -911,12 +910,10 @@
           if (option.group) {
             $('#' + option.dom_id).css('display', 'none');
           } else {
-            console.log(option);
             found = false;
             result_id = option.dom_id;
             result = $("#" + result_id);
             if (regex.test(option.html)) {
-              console.log("YOLO");
               found = true;
               results += 1;
             } else if (this.enable_split_word_search && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {
@@ -1082,8 +1079,6 @@
         });
         div.text(this.search_field.val());
         $('body').append(div);
-        console.log(div);
-        console.log(div.width());
         w = div.width() + 25;
         div.remove();
         if (!this.f_width) {
@@ -1092,7 +1087,6 @@
         if (w > this.f_width - 10) {
           w = this.f_width - 10;
         }
-        console.log("-----");
         return this.search_field.css({
           'width': w + 'px'
         });

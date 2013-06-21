@@ -427,20 +427,16 @@ class Chosen extends AbstractChosen
     regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
-    console.log "Winnow"
-
     for option in @results_data
       if not option.empty
         if option.group
           $('#' + option.dom_id).css('display', 'none')
         else
-          console.log option
           found = false
           result_id = option.dom_id
           result = $("#" + result_id)
 
           if regex.test option.html
-            console.log "YOLO"
             found = true
             results += 1
           else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
@@ -565,8 +561,6 @@ class Chosen extends AbstractChosen
       div = $('<div />', { 'style' : style_block })
       div.text @search_field.val()
       $('body').append div
-      console.log(div)
-      console.log(div.width())
       w = div.width() + 25
       div.remove()
 
@@ -575,7 +569,6 @@ class Chosen extends AbstractChosen
       if( w > @f_width-10 )
         w = @f_width - 10
 
-      console.log "-----"
       @search_field.css({'width': w + 'px'})
   
   generate_random_id: ->
