@@ -8,15 +8,15 @@ if Zepto? and $ is Zepto
         return this[0].getBoundingClientRect().height + parseInt(this.css('margin-top'), 10) + parseInt(this.css('margin-bottom'), 10)
       else
         return this[0].getBoundingClientRect().height
-    # height: ->
-      # return this[0].getBoundingClientRect().height - parseInt(this.css('border-top-width'), 10) - parseInt(this.css('border-bottom-width'), 10) - parseInt(this.css('padding-top'), 10) - parseInt(this.css('padding-bottom'), 10)
+    height: ->
+      return this[0].getBoundingClientRect().height - parseInt(this.css('border-top-width'), 10) - parseInt(this.css('border-bottom-width'), 10) - parseInt(this.css('padding-top'), 10) - parseInt(this.css('padding-bottom'), 10)
     outerWidth: (margin) ->
       if margin
         return this[0].getBoundingClientRect().width + parseInt(this.css('margin-left'), 10) + parseInt(this.css('margin-right'), 10)
       else
         return this[0].getBoundingClientRect().width
-    # width: ->
-      # return this[0].getBoundingClientRect().width - parseInt(this.css('border-left-width'), 10) - parseInt(this.css('border-right-width'), 10) - parseInt(this.css('padding-left'), 10) - parseInt(this.css('padding-right'), 10)
+    width: ->
+      return this[0].getBoundingClientRect().width - parseInt(this.css('border-left-width'), 10) - parseInt(this.css('border-right-width'), 10) - parseInt(this.css('padding-left'), 10) - parseInt(this.css('padding-right'), 10)
   })
 
 $.extend($.fn, {
