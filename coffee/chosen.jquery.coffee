@@ -1,7 +1,25 @@
 root = this
-$ = jQuery
+$ = if jQuery? then jQuery else Zepto
 
-$.fn.extend({
+if Zepto? and $ is Zepto
+  $.extend($.fn, {
+    outerHeight: (margin) ->
+      if margin
+        return this[0].getBoundingClientRect().height + parseInt(this.css('margin-top'), 10) + parseInt(this.css('margin-bottom'), 10)
+      else
+        return this[0].getBoundingClientRect().height
+    height: ->
+      return this[0].getBoundingClientRect().height - parseInt(this.css('border-top-width'), 10) - parseInt(this.css('border-bottom-width'), 10) - parseInt(this.css('padding-top'), 10) - parseInt(this.css('padding-bottom'), 10)
+    outerWidth: (margin) ->
+      if margin
+        return this[0].getBoundingClientRect().width + parseInt(this.css('margin-left'), 10) + parseInt(this.css('margin-right'), 10)
+      else
+        return this[0].getBoundingClientRect().width
+    width: ->
+      return this[0].getBoundingClientRect().width - parseInt(this.css('border-left-width'), 10) - parseInt(this.css('border-right-width'), 10) - parseInt(this.css('padding-left'), 10) - parseInt(this.css('padding-right'), 10)
+  })
+
+$.extend($.fn, {
   chosen: (options) ->
     # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
     # Continue on if running IE document type but in compatibility mode
@@ -534,7 +552,7 @@ class Chosen extends AbstractChosen
       h = 0
       w = 0
 
-      style_block = "position:absolute; left: -1000px; top: -1000px; display:none;"
+      style_block = "position:absolute; left: -1000px; top: -1000px;"
       styles = ['font-size','font-style', 'font-weight', 'font-family','line-height', 'text-transform', 'letter-spacing']
 
       for style in styles
@@ -543,7 +561,6 @@ class Chosen extends AbstractChosen
       div = $('<div />', { 'style' : style_block })
       div.text @search_field.val()
       $('body').append div
-
       w = div.width() + 25
       div.remove()
 
