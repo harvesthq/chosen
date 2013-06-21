@@ -349,18 +349,12 @@
           return this[0].getBoundingClientRect().height;
         }
       },
-      height: function() {
-        return this[0].getBoundingClientRect().height - parseInt(this.css('border-top-width'), 10) - parseInt(this.css('border-bottom-width'), 10) - parseInt(this.css('padding-top'), 10) - parseInt(this.css('padding-bottom'), 10);
-      },
       outerWidth: function(margin) {
         if (margin) {
           return this[0].getBoundingClientRect().width + parseInt(this.css('margin-left'), 10) + parseInt(this.css('margin-right'), 10);
         } else {
           return this[0].getBoundingClientRect().width;
         }
-      },
-      width: function() {
-        return this[0].getBoundingClientRect().width - parseInt(this.css('border-left-width'), 10) - parseInt(this.css('border-right-width'), 10) - parseInt(this.css('padding-left'), 10) - parseInt(this.css('padding-right'), 10);
       }
     });
   }
@@ -1077,7 +1071,7 @@
       if (this.is_multiple) {
         h = 0;
         w = 0;
-        style_block = "position:absolute; left: -1000px; top: -1000px; display:none;";
+        style_block = "position:absolute; left: -1000px; top: -1000px;";
         styles = ['font-size', 'font-style', 'font-weight', 'font-family', 'line-height', 'text-transform', 'letter-spacing'];
         for (_i = 0, _len = styles.length; _i < _len; _i++) {
           style = styles[_i];
@@ -1088,6 +1082,8 @@
         });
         div.text(this.search_field.val());
         $('body').append(div);
+        console.log(div);
+        console.log(div.width());
         w = div.width() + 25;
         div.remove();
         if (!this.f_width) {
@@ -1096,6 +1092,7 @@
         if (w > this.f_width - 10) {
           w = this.f_width - 10;
         }
+        console.log("-----");
         return this.search_field.css({
           'width': w + 'px'
         });
