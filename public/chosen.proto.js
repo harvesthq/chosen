@@ -580,8 +580,10 @@
       } else if (!this.is_multiple) {
         this.selected_item.addClassName("chzn-default").down("span").update(this.default_text);
         if (this.disable_search || this.form_field.options.length <= this.disable_search_threshold) {
+          this.search_field.readOnly = true;
           this.container.addClassName("chzn-container-single-nosearch");
         } else {
+          this.search_field.readOnly = false;
           this.container.removeClassName("chzn-container-single-nosearch");
         }
       }
