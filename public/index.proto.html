@@ -14,7 +14,7 @@
       <header>
         <h1>Chosen - Prototype Example</h1>
       </header>
-      <p>Chosen is a JavaScript plugin for jQuery and  Prototype that makes long, unwieldy select boxes much more user-friendly. For more information (including usage, explanation and faqs), check out the <a href="http://harvesthq.github.com/chosen/">online documentation</a>.</p>
+      <p>Chosen is a JavaScript plugin for jQuery and Prototype that makes long, unwieldy select boxes much more user-friendly. For more information (including usage, explanation and faqs), check out the <a href="http://harvesthq.github.com/chosen/">online documentation</a>.</p>
       
       <h2>Standard Select</h2>
       <div class="side-by-side clearfix">
@@ -1339,8 +1339,7 @@
             <h3>Updating Chosen Dynamically</h3>
             <p>If you need to update the options in your select field and want Chosen to pick up the changes, you'll need to trigger the "liszt:updated" event on the field. Chosen will re-build itself based on the updated content.</p>
             <ul>
-              <li><strong>jQuery Version:</strong> <code>$("#form_field").trigger("liszt:updated");</code></li>
-              <li><strong>Prototype Version:</strong> <code>Event.fire($("form_field"), "liszt:updated");</code></li>
+              <p><code>Event.fire($("form_field"), "liszt:updated");</code></p>
             </ul>
           </li>
         </ul>
@@ -1417,13 +1416,42 @@
         </div>
       </div>
 
-      <h2>Setup (for Prototype)</h2>
+      <h2>Setup</h2>
       <p>Using Chosen is easy as can be.</p>
       <ol>
         <li>Download the plugin and copy the chosen files to your app.</li>
         <li>Activate the plugin by creating a new instance of Chosen: New Chosen(<em>some_form_field</em>,<em>some_options</em>);</li>
         <li><a href="http://www.youtube.com/watch?feature=player_detailpage&v=UkSPUDpe0U8#t=11s">Disco</a>.</li>
       </ol>
+
+      <h2>FAQs</h2>
+      <ul class="faqs">
+        <li>
+          <h3>Something doesn't work. Can you fix it?</h3>
+          <p>Yes! Please report all issues using the <a href="http://github.com/harvesthq/chosen/issues">GitHub issue tracking tool</a>. Please include the plugin version (jQuery or Prototype), browser and OS. The more information provided, the easier it is to fix a problem.</p>
+        </li>
+        <li>
+          <h3>What browsers are supported?</h3>
+          <p>All modern browsers are supported (Firefox, Chrome, Safari and IE9). Legacy support for IE8 is also enabled.</p>
+        </li>
+      <ul>
+        
+      <h2>Credits</h2>
+
+      <ul class="credits">
+        <li>Concept and development by <a href="http://patrickfiller.com">Patrick Filler</a> for <a href="https://getharvest.com">Harvest</a>.</li>
+        <li>Design and CSS by <a href="http://matthewlettini.com">Matthew Lettini</a>.</li>
+        <li>Repository maintained by <a href="https://github.com/pfiller">@pfiller</a>, <a href="https://github.com/kenearley">@kenearley</a>, and <a href="https://github.com/stof">@stof</a>.</li>
+        <li>Chosen includes <a href="https://github.com/harvesthq/chosen/contributors">contributions by many fine folks</a>.</li>
+      </ul>
+
+      <footer>
+        &copy; 2011 <a href="http://www.getharvest.com/">Harvest</a> - Chosen is licensed under the <a href="http://en.wikipedia.org/wiki/MIT_License">MIT license</a>.
+      </footer>
+
+
+
+
     </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js" type="text/javascript"></script>
