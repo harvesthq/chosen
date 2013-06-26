@@ -58,7 +58,7 @@ module.exports = (grunt) ->
     copy:
       dist:
         files: [
-          { src: ["public/*"], dest: "dist/", expand: true, flatten: true, filter: 'isFile' }
+          { cwd: "public", src: ["index.html", "index.proto.html", "chosen.jquery.js", "chosen.jquery.min.js", "chosen.proto.js", "chosen.proto.min.js", "chosen.css", "chosen-sprite.png", "chosen-sprite@2x.png"], dest: "dist/", expand: true, flatten: true, filter: 'isFile' }
           { src: ["public/docsupport/**"], dest: "dist/docsupport/", expand: true, flatten: true, filter: 'isFile' }
         ]
 
