@@ -345,6 +345,7 @@ class Chosen extends AbstractChosen
 
       @search_field.value = ""
 
+      @form_field.fire("liszt:selected", {chosen: this})
       @form_field.simulate("change") if typeof Event.simulate is 'function' && (@is_multiple || @form_field.selectedIndex != @current_selectedIndex)
       @current_selectedIndex = @form_field.selectedIndex
 
