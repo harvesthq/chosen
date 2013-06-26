@@ -864,20 +864,6 @@
       }
     };
 
-    Chosen.prototype.result_activate = function(el, option) {
-      if (option.disabled) {
-        return el.addClass("disabled-result");
-      } else if (this.is_multiple && option.selected) {
-        return el.addClass("result-selected");
-      } else {
-        return el.addClass("active-result");
-      }
-    };
-
-    Chosen.prototype.result_deactivate = function(el) {
-      return el.removeClass("active-result result-selected disabled-result");
-    };
-
     Chosen.prototype.result_deselect = function(pos) {
       var result, result_data;
 

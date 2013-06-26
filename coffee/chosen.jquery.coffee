@@ -372,17 +372,6 @@ class Chosen extends AbstractChosen
       @current_selectedIndex = @form_field.selectedIndex
       this.search_field_scale()
 
-  result_activate: (el, option) ->
-    if option.disabled
-      el.addClass("disabled-result")
-    else if @is_multiple and option.selected
-      el.addClass("result-selected")
-    else
-      el.addClass("active-result")
-
-  result_deactivate: (el) ->
-    el.removeClass("active-result result-selected disabled-result")
-
   result_deselect: (pos) ->
     result_data = @results_data[pos]
 
