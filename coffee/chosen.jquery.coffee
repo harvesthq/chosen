@@ -358,7 +358,7 @@ class Chosen extends AbstractChosen
       this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
 
       @search_field.val ""
-
+      @form_field_jq.trigger("liszt:selected",{chosen:this})
       @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
       @current_selectedIndex = @form_field.selectedIndex
       this.search_field_scale()

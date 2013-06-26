@@ -823,6 +823,9 @@
           this.results_hide();
         }
         this.search_field.val("");
+        this.form_field_jq.trigger("liszt:selected", {
+          chosen: this
+        });
         if (this.is_multiple || this.form_field.selectedIndex !== this.current_selectedIndex) {
           this.form_field_jq.trigger("change", {
             'selected': this.form_field.options[item.options_index].value
