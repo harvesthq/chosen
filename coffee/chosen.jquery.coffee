@@ -468,7 +468,6 @@ class Chosen extends AbstractChosen
     if results < 1 and searchText.length
       this.no_results searchText
     else
-      console.dir @results_data
       this.results_option_build()
       this.winnow_results_set_highlight()
 

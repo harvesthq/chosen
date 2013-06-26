@@ -964,7 +964,6 @@
       if (results < 1 && searchText.length) {
         return this.no_results(searchText);
       } else {
-        console.dir(this.results_data);
         this.results_option_build();
         return this.winnow_results_set_highlight();
       }
