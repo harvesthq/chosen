@@ -423,13 +423,10 @@ class Chosen extends AbstractChosen
     for option in @results_data
       if not option.empty
         if option.group
-          #$('#' + option.dom_id).css('display', 'none')
           option.search_match = false
         else if not (@is_multiple and option.selected)
           found = false
           option.search_match = false
-          #result_id = option.dom_id
-          #result = $("#" + result_id)
 
           if regex.test option.html
             found = true
@@ -455,15 +452,7 @@ class Chosen extends AbstractChosen
 
             option.search_text = text
 
-            #result.html(text)
-            #this.result_activate result, option
-
             @results_data[option.group_array_index].search_match = true if option.group_array_index?
-
-            #$("#" + @results_data[option.group_array_index].dom_id).css('display', 'list-item') if option.group_array_index?
-          #else
-            #this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
-            #this.result_deactivate result
 
     if results < 1 and searchText.length
       this.no_results searchText
