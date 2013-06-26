@@ -595,14 +595,16 @@
           this.container.removeClass("chzn-container-single-nosearch");
         }
       }
-      this.results_option_build();
+      this.results_option_build({
+        first: true
+      });
       this.search_field_disabled();
       this.show_search_field_default();
       this.search_field_scale();
       return this.parsing = false;
     };
 
-    Chosen.prototype.results_option_build = function() {
+    Chosen.prototype.results_option_build = function(options) {
       var content, data, _i, _len, _ref1;
 
       content = '';
@@ -613,14 +615,16 @@
           content += this.result_add_group(data);
         } else if (!data.empty && data.search_match) {
           content += this.result_add_option(data);
-          /*
-          if data.selected and @is_multiple
-            this.choice_build data
-          else if data.selected and not @is_multiple
-            @selected_item.removeClass("chzn-default").find("span").text data.text
-            this.single_deselect_control_build() if @allow_single_deselect
-          */
-
+        }
+        if (options != null ? options.first : void 0) {
+          if (data.selected && this.is_multiple) {
+            this.choice_build(data);
+          } else if (data.selected && !this.is_multiple) {
+            this.selected_item.removeClass("chzn-default").find("span").text(data.text);
+            if (this.allow_single_deselect) {
+              this.single_deselect_control_build();
+            }
+          }
         }
       }
       return this.search_results.html(content);

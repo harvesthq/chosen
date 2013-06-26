@@ -174,7 +174,8 @@ class Chosen extends AbstractChosen
         @search_field.prop('readonly', false)
         @container.removeClass "chzn-container-single-nosearch"
 
-    this.results_option_build();
+    this.results_option_build
+      first: true
 
     this.search_field_disabled()
     this.show_search_field_default()
@@ -182,23 +183,24 @@ class Chosen extends AbstractChosen
 
     @parsing = false
 
-  results_option_build: () ->
+  results_option_build: (options) ->
     content = ''
     for data in @results_data
       if data.group && data.search_match
         content += this.result_add_group data
       else if !data.empty && data.search_match
         content += this.result_add_option data
-        ###
+
+      # this select logic pins on an awkward flag
+      # we can make it better
+      if options?.first
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
           @selected_item.removeClass("chzn-default").find("span").text data.text
           this.single_deselect_control_build() if @allow_single_deselect
-        ###
 
     @search_results.html content
-
 
   result_add_group: (group) ->
     group.dom_id = @container_id + "_g_" + group.array_index
