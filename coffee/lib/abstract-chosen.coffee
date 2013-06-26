@@ -100,7 +100,7 @@ class AbstractChosen
 
   choices_click: (evt) ->
     evt.preventDefault()
-    this.results_show() unless @results_showing
+    this.results_show() unless @results_showing or @is_disabled
 
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode

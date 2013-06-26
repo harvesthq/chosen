@@ -253,7 +253,7 @@
 
     AbstractChosen.prototype.choices_click = function(evt) {
       evt.preventDefault();
-      if (!this.results_showing) {
+      if (!(this.results_showing || this.is_disabled)) {
         return this.results_show();
       }
     };
@@ -583,13 +583,15 @@
       this.parsing = true;
       this.selected_option_count = null;
       this.results_data = root.SelectParser.select_to_array(this.form_field);
-      if (this.is_multiple && this.choices_count() > 0) {
+      if (this.is_multiple) {
         this.search_choices.find("li.search-choice").remove();
       } else if (!this.is_multiple) {
         this.selected_item.addClass("chzn-default").find("span").text(this.default_text);
         if (this.disable_search || this.form_field.options.length <= this.disable_search_threshold) {
+          this.search_field.prop('readonly', true);
           this.container.addClass("chzn-container-single-nosearch");
         } else {
+          this.search_field.prop('readonly', false);
           this.container.removeClass("chzn-container-single-nosearch");
         }
       }
