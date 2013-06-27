@@ -574,10 +574,10 @@
       } else if (!this.is_multiple) {
         this.selected_item.addClass("chzn-default").find("span").text(this.default_text);
         if (this.disable_search || this.form_field.options.length <= this.disable_search_threshold) {
-          this.search_field.prop('readonly', true);
+          this.search_field[0].readOnly = true;
           this.container.addClass("chzn-container-single-nosearch");
         } else {
-          this.search_field.prop('readonly', false);
+          this.search_field[0].readOnly = false;
           this.container.removeClass("chzn-container-single-nosearch");
         }
       }
