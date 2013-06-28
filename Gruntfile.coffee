@@ -74,6 +74,13 @@ module.exports = (grunt) ->
         src: ['public/**/*']
         dest: 'chosen.zip'
 
+    dom_munger:
+      download_links:
+        src: 'public/index.html'
+        options:
+          callback: ($) ->
+            $("#latest_version").attr("href", "https://raw.github.com/harvesthq/chosen/#{version_tag()}/chosen.zip").text("Stable Version (#{version_tag()})")
+
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-concat'
@@ -83,6 +90,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-css'
   grunt.loadNpmTasks 'grunt-build-gh-pages'
   grunt.loadNpmTasks 'grunt-zip'
+  grunt.loadNpmTasks 'grunt-dom-munger'
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
