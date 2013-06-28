@@ -68,6 +68,12 @@ module.exports = (grunt) ->
     build_gh_pages:
       gh_pages: {}
 
+    zip:
+      assets:
+        cwd: 'public'
+        src: ['public/**/*']
+        dest: 'chosen.zip'
+
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-concat'
@@ -76,8 +82,9 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-css'
   grunt.loadNpmTasks 'grunt-build-gh-pages'
+  grunt.loadNpmTasks 'grunt-zip'
 
-  grunt.registerTask 'default', ['build']
+  grunt.registerTask 'default', ['build', 'zip:assets']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
   grunt.registerTask 'release', ['build', 'package_jquery']
   grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
