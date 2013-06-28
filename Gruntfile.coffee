@@ -76,7 +76,7 @@ module.exports = (grunt) ->
         src: 'public/index.html'
         options:
           callback: ($) ->
-            $("#latest_version").attr("href", "https://raw.github.com/harvesthq/chosen/#{version_tag()}/chosen.zip").text("Stable Version (#{version_tag()})")
+            $("#latest_version").attr("href", "http://chosen.getharvest.com.s3.amazonaws.com/chosen_#{version_tag()}.zip").text("Stable Version (#{version_tag()})")
 
     zip:
       chosen:
