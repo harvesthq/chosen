@@ -84,7 +84,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-build-gh-pages'
   grunt.loadNpmTasks 'grunt-zip'
 
-  grunt.registerTask 'default', ['build', 'zip:assets']
+  grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
   grunt.registerTask 'release', ['build', 'package_jquery']
   grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
