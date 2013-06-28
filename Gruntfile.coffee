@@ -3,6 +3,8 @@ module.exports = (grunt) ->
     grunt.file.readJSON("package.json").version
   version_tag = ->
     "v#{version()}"
+  aws = ->
+    grunt.file.readJSON 'grunt-aws.json'
 
   grunt.initConfig
     pkg: grunt.file.readJSON("package.json")
@@ -64,15 +66,10 @@ module.exports = (grunt) ->
 
     clean:
       dist: ["dist/"]
+      chosen_zip: ["chosen.zip"]
 
     build_gh_pages:
       gh_pages: {}
-
-    zip:
-      assets:
-        cwd: 'public'
-        src: ['public/**/*']
-        dest: 'chosen.zip'
 
     dom_munger:
       download_links:
@@ -80,6 +77,25 @@ module.exports = (grunt) ->
         options:
           callback: ($) ->
             $("#latest_version").attr("href", "https://raw.github.com/harvesthq/chosen/#{version_tag()}/chosen.zip").text("Stable Version (#{version_tag()})")
+
+    zip:
+      chosen:
+        cwd: 'public/'
+        src: ['public/*']
+        dest: 'chosen.zip'
+
+    s3:
+      options: aws()
+      master:
+        upload: [
+          src: 'chosen.zip'
+          dest: "chosen_master.zip"
+        ]
+      latest_version:
+        upload: [
+          src: 'chosen.zip'
+          dest: "chosen_#{version_tag()}.zip"
+        ]
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
@@ -91,10 +107,12 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-build-gh-pages'
   grunt.loadNpmTasks 'grunt-zip'
   grunt.loadNpmTasks 'grunt-dom-munger'
+  grunt.loadNpmTasks 'grunt-s3'
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
-  grunt.registerTask 'release', ['build', 'package_jquery', 'zip:assets', 'dom_munger:download_links']
+  grunt.registerTask 'merge', ['build', 'zip:chosen', 's3:master', 'clean:chosen_zip']
+  grunt.registerTask 'release', ['build', 'zip:chosen', 'package_jquery', 'dom_munger:download_links', 's3:master', 's3:latest_version', 'clean:chosen_zip']
   grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () ->
