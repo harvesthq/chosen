@@ -875,7 +875,9 @@
         result = $("#" + this.container_id + "_o_" + pos);
         result.removeClass("result-selected").addClass("active-result").show();
         this.result_clear_highlight();
-        this.winnow_results();
+        if (this.results_showing) {
+          this.winnow_results();
+        }
         this.form_field_jq.trigger("change", {
           deselected: this.form_field.options[result_data.options_index].value
         });

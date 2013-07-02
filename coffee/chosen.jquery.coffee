@@ -385,7 +385,7 @@ class Chosen extends AbstractChosen
       result.removeClass("result-selected").addClass("active-result").show()
 
       this.result_clear_highlight()
-      this.winnow_results()
+      this.winnow_results() if @results_showing
 
       @form_field_jq.trigger "change", {deselected: @form_field.options[result_data.options_index].value}
       this.search_field_scale()
