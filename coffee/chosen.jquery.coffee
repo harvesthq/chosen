@@ -413,7 +413,7 @@ class Chosen extends AbstractChosen
       if not option.empty
         if option.group
           option.search_match = false
-        else if not (@is_multiple and option.selected)
+        else
           option.search_match = false
 
           if regex.test option.html

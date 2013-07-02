@@ -913,7 +913,7 @@
         if (!option.empty) {
           if (option.group) {
             option.search_match = false;
-          } else if (!(this.is_multiple && option.selected)) {
+          } else {
             option.search_match = false;
             if (regex.test(option.html)) {
               option.search_match = true;
