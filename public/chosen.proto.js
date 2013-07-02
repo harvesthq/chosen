@@ -593,8 +593,6 @@
     };
 
     Chosen.prototype.results_build = function() {
-      var content, data, _i, _len, _ref1;
-
       this.parsing = true;
       this.selected_option_count = null;
       this.results_data = root.SelectParser.select_to_array(this.form_field);
@@ -610,25 +608,12 @@
           this.container.removeClassName("chzn-container-single-nosearch");
         }
       }
-      content = '';
-      _ref1 = this.results_data;
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        data = _ref1[_i];
-        if (data.group) {
-          content += this.result_add_group(data);
-        } else if (!data.empty) {
-          content += this.result_add_option(data);
-          if (data.selected && this.is_multiple) {
-            this.choice_build(data);
-          } else if (data.selected && !this.is_multiple) {
-            this.single_set_selected_text(data.text);
-          }
-        }
-      }
+      this.search_results.update(this.results_option_build({
+        first: true
+      }));
       this.search_field_disabled();
       this.show_search_field_default();
       this.search_field_scale();
-      this.search_results.update(content);
       return this.parsing = false;
     };
 

@@ -162,22 +162,12 @@ class Chosen extends AbstractChosen
         @search_field.readOnly = false
         @container.removeClassName "chzn-container-single-nosearch"
 
-    content = ''
-    for data in @results_data
-      if data.group
-        content += this.result_add_group data
-      else if !data.empty
-        content += this.result_add_option data
-        if data.selected and @is_multiple
-          this.choice_build data
-        else if data.selected and not @is_multiple
-          this.single_set_selected_text(data.text)
+    @search_results.update(this.results_option_build({first:true}))
 
     this.search_field_disabled()
     this.show_search_field_default()
     this.search_field_scale()
 
-    @search_results.update content
     @parsing = false
 
   result_add_group: (group) ->
