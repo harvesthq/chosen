@@ -348,19 +348,6 @@ class Chosen extends AbstractChosen
 
     @selected_item.down("span").update(text)
 
-  result_activate: (el, option) ->
-    if option.disabled
-      el.addClassName("disabled-result")
-    else if @is_multiple and option.selected
-      el.addClassName("result-selected")
-    else
-      el.addClassName("active-result")
-
-  result_deactivate: (el) ->
-    el.removeClassName("active-result")
-    el.removeClassName("result-selected")
-    el.removeClassName("disabled-result")
-
   result_deselect: (pos) ->
     result_data = @results_data[pos]
 

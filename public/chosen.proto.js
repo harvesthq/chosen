@@ -922,22 +922,6 @@
       return this.selected_item.down("span").update(text);
     };
 
-    Chosen.prototype.result_activate = function(el, option) {
-      if (option.disabled) {
-        return el.addClassName("disabled-result");
-      } else if (this.is_multiple && option.selected) {
-        return el.addClassName("result-selected");
-      } else {
-        return el.addClassName("active-result");
-      }
-    };
-
-    Chosen.prototype.result_deactivate = function(el) {
-      el.removeClassName("active-result");
-      el.removeClassName("result-selected");
-      return el.removeClassName("disabled-result");
-    };
-
     Chosen.prototype.result_deselect = function(pos) {
       var result, result_data;
 
