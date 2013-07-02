@@ -4,7 +4,8 @@ module.exports = (grunt) ->
   version_tag = ->
     "v#{version()}"
   aws = ->
-    grunt.file.readJSON 'grunt-aws.json'
+    file = 'grunt-aws.json'
+    if grunt.file.exists file then grunt.file.readJSON file else {}
 
   grunt.initConfig
     pkg: grunt.file.readJSON("package.json")
