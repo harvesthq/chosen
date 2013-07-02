@@ -404,7 +404,7 @@ class Chosen extends AbstractChosen
 
     results = 0
 
-    searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
+    searchText = this.get_search_text()
     regexAnchor = if @search_contains then "" else "^"
     regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
@@ -446,6 +446,9 @@ class Chosen extends AbstractChosen
     else
       this.results_option_build()
       this.winnow_results_set_highlight()
+
+  get_search_text: ->
+    if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
 
   winnow_results_set_highlight: ->
 
