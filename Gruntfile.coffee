@@ -3,6 +3,8 @@ module.exports = (grunt) ->
     grunt.file.readJSON("package.json").version
   version_tag = ->
     "v#{version()}"
+  version_url = ->
+    "http://chosen.getharvest.com.s3.amazonaws.com/chosen_#{version_tag()}.zip"
   aws = ->
     file = 'grunt-aws.json'
     if grunt.file.exists file then grunt.file.readJSON file else {}
@@ -77,7 +79,7 @@ module.exports = (grunt) ->
         src: 'public/index.html'
         options:
           callback: ($) ->
-            $("#latest_version").attr("href", "http://chosen.getharvest.com.s3.amazonaws.com/chosen_#{version_tag()}.zip").text("Stable Version (#{version_tag()})")
+            $("#latest_version").attr("href", version_url()).text("Stable Version (#{version_tag()})")
 
     zip:
       chosen:
@@ -125,6 +127,7 @@ module.exports = (grunt) ->
       "description": pkg.description
       "version": version()
       "licenses": pkg.licenses
+      "download": version_url()
     json2 = pkg.jqueryJSON
     json1[key] = json2[key] for key of json2
     json1.author.name = pkg.author
