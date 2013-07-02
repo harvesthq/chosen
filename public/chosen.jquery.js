@@ -204,7 +204,7 @@
           }
         }
       }
-      return this.search_results.html(content);
+      return content;
     };
 
     AbstractChosen.prototype.result_add_option = function(option) {
@@ -618,9 +618,9 @@
           this.container.removeClass("chzn-container-single-nosearch");
         }
       }
-      this.results_option_build({
+      this.search_results.html(this.results_option_build({
         first: true
-      });
+      }));
       this.search_field_disabled();
       this.show_search_field_default();
       this.search_field_scale();
@@ -953,7 +953,7 @@
         this.search_results.html("");
         return this.no_results(searchText);
       } else {
-        this.results_option_build();
+        this.search_results.html(this.results_option_build());
         return this.winnow_results_set_highlight();
       }
     };

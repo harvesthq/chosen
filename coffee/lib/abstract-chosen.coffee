@@ -72,7 +72,7 @@ class AbstractChosen
         else if data.selected and not @is_multiple
           this.single_set_selected_text(data.text)
 
-    @search_results.html content
+    content
 
   result_add_option: (option) ->
     option.dom_id = @container_id + "_o_" + option.array_index

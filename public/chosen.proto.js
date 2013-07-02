@@ -204,7 +204,7 @@
           }
         }
       }
-      return this.search_results.html(content);
+      return content;
     };
 
     AbstractChosen.prototype.result_add_option = function(option) {
