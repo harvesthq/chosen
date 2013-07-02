@@ -112,9 +112,9 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
-  grunt.registerTask 'merge', ['build', 'zip:chosen', 's3:master', 'clean:chosen_zip']
-  grunt.registerTask 'release', ['build', 'zip:chosen', 'package_jquery', 'dom_munger:download_links', 's3:master', 's3:latest_version', 'clean:chosen_zip']
-  grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
+  grunt.registerTask 'master-s3', ['build', 'zip:chosen', 's3:master', 'clean:chosen_zip']
+  grunt.registerTask 'update-s3', ['build', 'zip:chosen', 'package_jquery', 'dom_munger:download_links', 's3:master', 's3:latest_version', 'clean:chosen_zip']
+  grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages', 'update-s3']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () ->
     src = "package.json"
