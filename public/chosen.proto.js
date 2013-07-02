@@ -967,16 +967,14 @@
     Chosen.prototype.winnow_results_set_highlight = function() {
       var do_high;
 
-      if (!this.result_highlight) {
-        if (!this.is_multiple) {
-          do_high = this.search_results.down(".result-selected.active-result");
-        }
-        if (do_high == null) {
-          do_high = this.search_results.down(".active-result");
-        }
-        if (do_high != null) {
-          return this.result_do_highlight(do_high);
-        }
+      if (!this.is_multiple) {
+        do_high = this.search_results.down(".result-selected.active-result");
+      }
+      if (do_high == null) {
+        do_high = this.search_results.down(".active-result");
+      }
+      if (do_high != null) {
+        return this.result_do_highlight(do_high);
       }
     };
 

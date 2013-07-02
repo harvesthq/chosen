@@ -378,15 +378,13 @@ class Chosen extends AbstractChosen
     if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
 
   winnow_results_set_highlight: ->
-    if not @result_highlight
+    if not @is_multiple
+      do_high = @search_results.down(".result-selected.active-result")
 
-      if not @is_multiple
-        do_high = @search_results.down(".result-selected.active-result")
+    if not do_high?
+      do_high = @search_results.down(".active-result")
 
-      if not do_high?
-        do_high = @search_results.down(".active-result")
-
-      this.result_do_highlight do_high if do_high?
+    this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
     @search_results.insert @no_results_temp.evaluate( terms: terms )
