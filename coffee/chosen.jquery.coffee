@@ -450,12 +450,11 @@ class Chosen extends AbstractChosen
       this.winnow_results_set_highlight()
 
   winnow_results_set_highlight: ->
-    if not @result_highlight
 
-      selected_results = if not @is_multiple then @search_results.find(".result-selected.active-result") else []
-      do_high = if selected_results.length then selected_results.first() else @search_results.find(".active-result").first()
+    selected_results = if not @is_multiple then @search_results.find(".result-selected.active-result") else []
+    do_high = if selected_results.length then selected_results.first() else @search_results.find(".active-result").first()
 
-      this.result_do_highlight do_high if do_high?
+    this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
     no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
