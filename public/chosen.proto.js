@@ -916,7 +916,7 @@
 
       this.no_results_clear();
       results = 0;
-      searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
+      searchText = this.get_search_text();
       regexAnchor = this.search_contains ? "" : "^";
       regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
@@ -974,6 +974,14 @@
         return this.no_results(searchText);
       } else {
         return this.winnow_results_set_highlight();
+      }
+    };
+
+    Chosen.prototype.get_search_text = function() {
+      if (this.search_field.value === this.default_text) {
+        return "";
+      } else {
+        return this.search_field.value.strip().escapeHTML();
       }
     };
 

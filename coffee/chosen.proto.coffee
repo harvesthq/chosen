@@ -389,7 +389,7 @@ class Chosen extends AbstractChosen
 
     results = 0
 
-    searchText = if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
+    searchText = this.get_search_text()
     regexAnchor = if @search_contains then "" else "^"
     regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
@@ -435,6 +435,9 @@ class Chosen extends AbstractChosen
       this.no_results(searchText)
     else
       this.winnow_results_set_highlight()
+
+  get_search_text: ->
+    if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
 
   winnow_results_set_highlight: ->
     if not @result_highlight
