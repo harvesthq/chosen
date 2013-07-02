@@ -948,6 +948,7 @@
         }
       }
       if (results < 1 && searchText.length) {
+        this.search_results.html("");
         return this.no_results(searchText);
       } else {
         this.results_option_build();

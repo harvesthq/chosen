@@ -444,6 +444,7 @@ class Chosen extends AbstractChosen
             @results_data[option.group_array_index].search_match = true if option.group_array_index?
 
     if results < 1 and searchText.length
+      @search_results.html ""
       this.no_results searchText
     else
       this.results_option_build()
