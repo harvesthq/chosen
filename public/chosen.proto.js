@@ -933,7 +933,9 @@
         result = $(this.container_id + "_o_" + pos);
         result.removeClassName("result-selected").addClassName("active-result").show();
         this.result_clear_highlight();
-        this.winnow_results();
+        if (this.results_showing) {
+          this.winnow_results();
+        }
         if (typeof Event.simulate === 'function') {
           this.form_field.simulate("change");
         }

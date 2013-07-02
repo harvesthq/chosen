@@ -361,7 +361,7 @@ class Chosen extends AbstractChosen
       result.removeClassName("result-selected").addClassName("active-result").show()
 
       this.result_clear_highlight()
-      this.winnow_results()
+      this.winnow_results() if @results_showing
 
       @form_field.simulate("change") if typeof Event.simulate is 'function'
       this.search_field_scale()
