@@ -154,7 +154,7 @@ class Chosen extends AbstractChosen
     if @is_multiple
       @search_choices.select("li.search-choice").invoke("remove")
     else if not @is_multiple
-      @selected_item.addClassName("chzn-default").down("span").update(@default_text)
+      this.single_set_selected_text()
       if @disable_search or @form_field.options.length <= @disable_search_threshold
         @search_field.readOnly = true
         @container.addClassName "chzn-container-single-nosearch"
@@ -171,8 +171,7 @@ class Chosen extends AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          @selected_item.removeClassName("chzn-default").down("span").update( data.html )
-          this.single_deselect_control_build() if @allow_single_deselect
+          this.single_set_selected_text(data.text)
 
     this.search_field_disabled()
     this.show_search_field_default()
@@ -298,8 +297,7 @@ class Chosen extends AbstractChosen
   results_reset: ->
     @form_field.options[0].selected = true
     @selected_option_count = null
-    @selected_item.down("span").update(@default_text)
-    @selected_item.addClassName("chzn-default") if not @is_multiple
+    this.single_set_selected_text()
     this.show_search_field_default()
     this.results_reset_cleanup()
     @form_field.simulate("change") if typeof Event.simulate is 'function'
@@ -323,7 +321,6 @@ class Chosen extends AbstractChosen
         high.removeClassName("active-result")
       else
         @search_results.descendants(".result-selected").invoke "removeClassName", "result-selected"
-        @selected_item.removeClassName("chzn-default")
         @result_single_selected = high
       
       high.addClassName("result-selected")
@@ -338,8 +335,7 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.choice_build item
       else
-        @selected_item.down("span").update(item.html)
-        this.single_deselect_control_build() if @allow_single_deselect
+        this.single_set_selected_text(item.text)
 
       this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
 
@@ -349,6 +345,15 @@ class Chosen extends AbstractChosen
       @current_selectedIndex = @form_field.selectedIndex
 
       this.search_field_scale()
+
+  single_set_selected_text: (text=@default_text) ->
+    if text is @default_text
+      @selected_item.addClassName("chzn-default")
+    else
+      this.single_deselect_control_build()
+      @selected_item.removeClassName("chzn-default")
+
+    @selected_item.down("span").update(text)
 
   result_activate: (el, option) ->
     if option.disabled
