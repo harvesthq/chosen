@@ -2,3 +2,7 @@
 node_modules
 .project
 dist/
+public/*.js
+public/*.min.css
+grunt-aws.json
+chosen.zip
