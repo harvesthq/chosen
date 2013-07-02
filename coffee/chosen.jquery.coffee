@@ -166,7 +166,7 @@ class Chosen extends AbstractChosen
     if @is_multiple
       @search_choices.find("li.search-choice").remove()
     else if not @is_multiple
-      @selected_item.addClass("chzn-default").find("span").text(@default_text)
+      this.single_set_selected_text()
       if @disable_search or @form_field.options.length <= @disable_search_threshold
         @search_field.prop('readonly', true)
         @container.addClass "chzn-container-single-nosearch"
@@ -197,7 +197,7 @@ class Chosen extends AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          @selected_item.removeClass("chzn-default").find("span").text data.text
+          this.single_set_selected_text(data.text)
           this.single_deselect_control_build() if @allow_single_deselect
 
     @search_results.html content
@@ -320,8 +320,7 @@ class Chosen extends AbstractChosen
   results_reset: ->
     @form_field.options[0].selected = true
     @selected_option_count = null
-    @selected_item.find("span").text @default_text
-    @selected_item.addClass("chzn-default") if not @is_multiple
+    this.single_set_selected_text()
     this.show_search_field_default()
     this.results_reset_cleanup()
     @form_field_jq.trigger "change"
@@ -347,7 +346,6 @@ class Chosen extends AbstractChosen
       else
         @search_results.find(".result-selected").removeClass "result-selected"
         @result_single_selected = high
-        @selected_item.removeClass("chzn-default")
 
       high.addClass "result-selected"
 
@@ -361,7 +359,7 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.choice_build item
       else
-        @selected_item.find("span").first().text item.text
+        this.single_set_selected_text(item.text)
         this.single_deselect_control_build() if @allow_single_deselect
 
       this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
@@ -371,6 +369,14 @@ class Chosen extends AbstractChosen
       @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
       @current_selectedIndex = @form_field.selectedIndex
       this.search_field_scale()
+
+  single_set_selected_text: (text=@default_text) ->
+    if text is @default_text
+      @selected_item.addClass("chzn-default")
+    else
+      @selected_item.removeClass("chzn-default")
+
+    @selected_item.find("span").text(text)
 
   result_deselect: (pos) ->
     result_data = @results_data[pos]

@@ -586,7 +586,7 @@
       if (this.is_multiple) {
         this.search_choices.find("li.search-choice").remove();
       } else if (!this.is_multiple) {
-        this.selected_item.addClass("chzn-default").find("span").text(this.default_text);
+        this.single_set_selected_text();
         if (this.disable_search || this.form_field.options.length <= this.disable_search_threshold) {
           this.search_field.prop('readonly', true);
           this.container.addClass("chzn-container-single-nosearch");
@@ -620,7 +620,7 @@
           if (data.selected && this.is_multiple) {
             this.choice_build(data);
           } else if (data.selected && !this.is_multiple) {
-            this.selected_item.removeClass("chzn-default").find("span").text(data.text);
+            this.single_set_selected_text(data.text);
             if (this.allow_single_deselect) {
               this.single_deselect_control_build();
             }
@@ -799,10 +799,7 @@
     Chosen.prototype.results_reset = function() {
       this.form_field.options[0].selected = true;
       this.selected_option_count = null;
-      this.selected_item.find("span").text(this.default_text);
-      if (!this.is_multiple) {
-        this.selected_item.addClass("chzn-default");
-      }
+      this.single_set_selected_text();
       this.show_search_field_default();
       this.results_reset_cleanup();
       this.form_field_jq.trigger("change");
@@ -834,7 +831,6 @@
         } else {
           this.search_results.find(".result-selected").removeClass("result-selected");
           this.result_single_selected = high;
-          this.selected_item.removeClass("chzn-default");
         }
         high.addClass("result-selected");
         position = high_id.substr(high_id.lastIndexOf("_") + 1);
@@ -845,7 +841,7 @@
         if (this.is_multiple) {
           this.choice_build(item);
         } else {
-          this.selected_item.find("span").first().text(item.text);
+          this.single_set_selected_text(item.text);
           if (this.allow_single_deselect) {
             this.single_deselect_control_build();
           }
@@ -862,6 +858,18 @@
         this.current_selectedIndex = this.form_field.selectedIndex;
         return this.search_field_scale();
       }
+    };
+
+    Chosen.prototype.single_set_selected_text = function(text) {
+      if (text == null) {
+        text = this.default_text;
+      }
+      if (text === this.default_text) {
+        this.selected_item.addClass("chzn-default");
+      } else {
+        this.selected_item.removeClass("chzn-default");
+      }
+      return this.selected_item.find("span").text(text);
     };
 
     Chosen.prototype.result_deselect = function(pos) {
