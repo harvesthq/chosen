@@ -618,7 +618,7 @@
           this.container.removeClass("chzn-container-single-nosearch");
         }
       }
-      this.search_results.html(this.results_option_build({
+      this.update_results_content(this.results_option_build({
         first: true
       }));
       this.search_field_disabled();
@@ -674,6 +674,10 @@
       this.search_field.focus();
       this.search_field.val(this.search_field.val());
       return this.winnow_results();
+    };
+
+    Chosen.prototype.update_results_content = function(content) {
+      return this.search_results.html(content);
     };
 
     Chosen.prototype.results_hide = function() {
@@ -950,10 +954,10 @@
         }
       }
       if (results < 1 && searchText.length) {
-        this.search_results.html("");
+        this.update_results_content("");
         return this.no_results(searchText);
       } else {
-        this.search_results.html(this.results_option_build());
+        this.update_results_content(this.results_option_build());
         return this.winnow_results_set_highlight();
       }
     };
