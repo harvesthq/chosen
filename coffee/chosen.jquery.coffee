@@ -183,24 +183,6 @@ class Chosen extends AbstractChosen
 
     @parsing = false
 
-  results_option_build: (options) ->
-    content = ''
-    for data in @results_data
-      if data.group && data.search_match
-        content += this.result_add_group data
-      else if !data.empty && data.search_match
-        content += this.result_add_option data
-
-      # this select logic pins on an awkward flag
-      # we can make it better
-      if options?.first
-        if data.selected and @is_multiple
-          this.choice_build data
-        else if data.selected and not @is_multiple
-          this.single_set_selected_text(data.text)
-
-    @search_results.html content
-
   result_add_group: (group) ->
     group.dom_id = @container_id + "_g_" + group.array_index
     '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'

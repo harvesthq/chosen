@@ -184,6 +184,29 @@
       }
     };
 
+    AbstractChosen.prototype.results_option_build = function(options) {
+      var content, data, _i, _len, _ref;
+
+      content = '';
+      _ref = this.results_data;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        data = _ref[_i];
+        if (data.group && data.search_match) {
+          content += this.result_add_group(data);
+        } else if (!data.empty && data.search_match) {
+          content += this.result_add_option(data);
+        }
+        if (options != null ? options.first : void 0) {
+          if (data.selected && this.is_multiple) {
+            this.choice_build(data);
+          } else if (data.selected && !this.is_multiple) {
+            this.single_set_selected_text(data.text);
+          }
+        }
+      }
+      return this.search_results.html(content);
+    };
+
     AbstractChosen.prototype.result_add_option = function(option) {
       var classes, style;
 

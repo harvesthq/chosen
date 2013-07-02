@@ -56,6 +56,24 @@ class AbstractChosen
       @active_field = false
       setTimeout (=> this.blur_test()), 100
 
+  results_option_build: (options) ->
+    content = ''
+    for data in @results_data
+      if data.group && data.search_match
+        content += this.result_add_group data
+      else if !data.empty && data.search_match
+        content += this.result_add_option data
+
+      # this select logic pins on an awkward flag
+      # we can make it better
+      if options?.first
+        if data.selected and @is_multiple
+          this.choice_build data
+        else if data.selected and not @is_multiple
+          this.single_set_selected_text(data.text)
+
+    @search_results.html content
+
   result_add_option: (option) ->
     option.dom_id = @container_id + "_o_" + option.array_index
 
