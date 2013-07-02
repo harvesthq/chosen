@@ -198,7 +198,6 @@ class Chosen extends AbstractChosen
           this.choice_build data
         else if data.selected and not @is_multiple
           this.single_set_selected_text(data.text)
-          this.single_deselect_control_build() if @allow_single_deselect
 
     @search_results.html content
 
@@ -360,7 +359,6 @@ class Chosen extends AbstractChosen
         this.choice_build item
       else
         this.single_set_selected_text(item.text)
-        this.single_deselect_control_build() if @allow_single_deselect
 
       this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
 
@@ -374,6 +372,7 @@ class Chosen extends AbstractChosen
     if text is @default_text
       @selected_item.addClass("chzn-default")
     else
+      this.single_deselect_control_build()
       @selected_item.removeClass("chzn-default")
 
     @selected_item.find("span").text(text)

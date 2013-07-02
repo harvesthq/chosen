@@ -621,9 +621,6 @@
             this.choice_build(data);
           } else if (data.selected && !this.is_multiple) {
             this.single_set_selected_text(data.text);
-            if (this.allow_single_deselect) {
-              this.single_deselect_control_build();
-            }
           }
         }
       }
@@ -842,9 +839,6 @@
           this.choice_build(item);
         } else {
           this.single_set_selected_text(item.text);
-          if (this.allow_single_deselect) {
-            this.single_deselect_control_build();
-          }
         }
         if (!((evt.metaKey || evt.ctrlKey) && this.is_multiple)) {
           this.results_hide();
@@ -867,6 +861,7 @@
       if (text === this.default_text) {
         this.selected_item.addClass("chzn-default");
       } else {
+        this.single_deselect_control_build();
         this.selected_item.removeClass("chzn-default");
       }
       return this.selected_item.find("span").text(text);
