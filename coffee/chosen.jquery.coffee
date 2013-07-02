@@ -168,10 +168,10 @@ class Chosen extends AbstractChosen
     else if not @is_multiple
       this.single_set_selected_text()
       if @disable_search or @form_field.options.length <= @disable_search_threshold
-        @search_field.prop('readonly', true)
+        @search_field[0].readOnly = true
         @container.addClass "chzn-container-single-nosearch"
       else
-        @search_field.prop('readonly', false)
+        @search_field[0].readOnly = false
         @container.removeClass "chzn-container-single-nosearch"
 
     this.results_option_build
