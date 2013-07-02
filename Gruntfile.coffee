@@ -106,7 +106,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-contrib-clean'
-  grunt.loadNpmTasks 'grunt-css'
+  grunt.loadNpmTasks 'grunt-contrib-cssmin'
   grunt.loadNpmTasks 'grunt-build-gh-pages'
   grunt.loadNpmTasks 'grunt-zip'
   grunt.loadNpmTasks 'grunt-dom-munger'
