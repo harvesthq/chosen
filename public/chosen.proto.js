@@ -608,7 +608,7 @@
           this.container.removeClassName("chzn-container-single-nosearch");
         }
       }
-      this.search_results.update(this.results_option_build({
+      this.update_results_content(this.results_option_build({
         first: true
       }));
       this.search_field_disabled();
@@ -662,6 +662,10 @@
       this.search_field.focus();
       this.search_field.value = this.search_field.value;
       return this.winnow_results();
+    };
+
+    Chosen.prototype.update_results_content = function(content) {
+      return this.search_results.update(content);
     };
 
     Chosen.prototype.results_hide = function() {

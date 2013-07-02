@@ -162,7 +162,7 @@ class Chosen extends AbstractChosen
         @search_field.readOnly = false
         @container.removeClassName "chzn-container-single-nosearch"
 
-    @search_results.update(this.results_option_build({first:true}))
+    this.update_results_content this.results_option_build({first:true})
 
     this.search_field_disabled()
     this.show_search_field_default()
@@ -210,6 +210,9 @@ class Chosen extends AbstractChosen
     @search_field.value = @search_field.value
 
     this.winnow_results()
+
+  update_results_content: (content) ->
+    @search_results.update content
 
   results_hide: ->
     if @results_showing
