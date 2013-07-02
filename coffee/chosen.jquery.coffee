@@ -414,11 +414,9 @@ class Chosen extends AbstractChosen
         if option.group
           option.search_match = false
         else if not (@is_multiple and option.selected)
-          found = false
           option.search_match = false
 
           if regex.test option.html
-            found = true
             option.search_match = true
             results += 1
           else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
@@ -427,11 +425,10 @@ class Chosen extends AbstractChosen
             if parts.length
               for part in parts
                 if regex.test part
-                  found = true
-                  option.search_match = false
+                  option.search_match = true
                   results += 1
 
-          if found
+          if option.search_match
             if searchText.length
               startpos = option.html.search zregex
               text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)

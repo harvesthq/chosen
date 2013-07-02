@@ -897,7 +897,7 @@
     };
 
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, regexAnchor, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref1;
+      var option, part, parts, regex, regexAnchor, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref1;
 
       this.no_results_clear();
       results = 0;
@@ -912,10 +912,8 @@
           if (option.group) {
             option.search_match = false;
           } else if (!(this.is_multiple && option.selected)) {
-            found = false;
             option.search_match = false;
             if (regex.test(option.html)) {
-              found = true;
               option.search_match = true;
               results += 1;
             } else if (this.enable_split_word_search && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {
@@ -924,14 +922,13 @@
                 for (_j = 0, _len1 = parts.length; _j < _len1; _j++) {
                   part = parts[_j];
                   if (regex.test(part)) {
-                    found = true;
-                    option.search_match = false;
+                    option.search_match = true;
                     results += 1;
                   }
                 }
               }
             }
-            if (found) {
+            if (option.search_match) {
               if (searchText.length) {
                 startpos = option.html.search(zregex);
                 text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
