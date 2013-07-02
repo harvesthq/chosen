@@ -257,6 +257,63 @@
       }
     };
 
+    AbstractChosen.prototype.winnow_results = function() {
+      var option, part, parts, regex, regexAnchor, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref;
+
+      this.no_results_clear();
+      results = 0;
+      searchText = this.get_search_text();
+      regexAnchor = this.search_contains ? "" : "^";
+      regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      _ref = this.results_data;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        option = _ref[_i];
+        if (!option.empty) {
+          if (option.group) {
+            option.search_match = false;
+          } else {
+            option.search_match = false;
+            if (regex.test(option.html)) {
+              option.search_match = true;
+              results += 1;
+            } else if (this.enable_split_word_search && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {
+              parts = option.html.replace(/\[|\]/g, "").split(" ");
+              if (parts.length) {
+                for (_j = 0, _len1 = parts.length; _j < _len1; _j++) {
+                  part = parts[_j];
+                  if (regex.test(part)) {
+                    option.search_match = true;
+                    results += 1;
+                  }
+                }
+              }
+            }
+            if (option.search_match) {
+              if (searchText.length) {
+                startpos = option.html.search(zregex);
+                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
+                text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
+              } else {
+                text = option.html;
+              }
+              option.search_text = text;
+              if (option.group_array_index != null) {
+                this.results_data[option.group_array_index].search_match = true;
+              }
+            }
+          }
+        }
+      }
+      if (results < 1 && searchText.length) {
+        this.update_results_content("");
+        return this.no_results(searchText);
+      } else {
+        this.update_results_content(this.results_option_build());
+        return this.winnow_results_set_highlight();
+      }
+    };
+
     AbstractChosen.prototype.choices_count = function() {
       var option, _i, _len, _ref;
 
@@ -903,63 +960,6 @@
         this.selected_item.find("span").first().after("<abbr class=\"search-choice-close\"></abbr>");
       }
       return this.selected_item.addClass("chzn-single-with-deselect");
-    };
-
-    Chosen.prototype.winnow_results = function() {
-      var option, part, parts, regex, regexAnchor, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref1;
-
-      this.no_results_clear();
-      results = 0;
-      searchText = this.get_search_text();
-      regexAnchor = this.search_contains ? "" : "^";
-      regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      _ref1 = this.results_data;
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        option = _ref1[_i];
-        if (!option.empty) {
-          if (option.group) {
-            option.search_match = false;
-          } else {
-            option.search_match = false;
-            if (regex.test(option.html)) {
-              option.search_match = true;
-              results += 1;
-            } else if (this.enable_split_word_search && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {
-              parts = option.html.replace(/\[|\]/g, "").split(" ");
-              if (parts.length) {
-                for (_j = 0, _len1 = parts.length; _j < _len1; _j++) {
-                  part = parts[_j];
-                  if (regex.test(part)) {
-                    option.search_match = true;
-                    results += 1;
-                  }
-                }
-              }
-            }
-            if (option.search_match) {
-              if (searchText.length) {
-                startpos = option.html.search(zregex);
-                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
-                text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
-              } else {
-                text = option.html;
-              }
-              option.search_text = text;
-              if (option.group_array_index != null) {
-                this.results_data[option.group_array_index].search_match = true;
-              }
-            }
-          }
-        }
-      }
-      if (results < 1 && searchText.length) {
-        this.update_results_content("");
-        return this.no_results(searchText);
-      } else {
-        this.update_results_content(this.results_option_build());
-        return this.winnow_results_set_highlight();
-      }
     };
 
     Chosen.prototype.get_search_text = function() {

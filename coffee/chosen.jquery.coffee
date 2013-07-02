@@ -388,54 +388,6 @@ class Chosen extends AbstractChosen
     @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" unless @selected_item.find("abbr").length
     @selected_item.addClass("chzn-single-with-deselect")
 
-  winnow_results: ->
-    this.no_results_clear()
-
-    results = 0
-
-    searchText = this.get_search_text()
-    regexAnchor = if @search_contains then "" else "^"
-    regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-
-    for option in @results_data
-      if not option.empty
-        if option.group
-          option.search_match = false
-        else
-          option.search_match = false
-
-          if regex.test option.html
-            option.search_match = true
-            results += 1
-          else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  option.search_match = true
-                  results += 1
-
-          if option.search_match
-            if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
-              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-            else
-              text = option.html
-
-            option.search_text = text
-
-            @results_data[option.group_array_index].search_match = true if option.group_array_index?
-
-    if results < 1 and searchText.length
-      this.update_results_content ""
-      this.no_results searchText
-    else
-      this.update_results_content this.results_option_build()
-      this.winnow_results_set_highlight()
-
   get_search_text: ->
     if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
 

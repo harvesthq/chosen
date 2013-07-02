@@ -387,58 +387,6 @@ class Chosen extends AbstractChosen
     @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } unless @selected_item.down("abbr")
     @selected_item.addClassName("chzn-single-with-deselect")
 
-  winnow_results: ->
-    this.no_results_clear()
-
-    results = 0
-
-    searchText = this.get_search_text()
-    regexAnchor = if @search_contains then "" else "^"
-    regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-
-    for option in @results_data
-      if not option.empty
-        if option.group
-          $(option.dom_id).hide()
-        else
-          found = false
-          result_id = option.dom_id
-
-          if regex.test option.html
-            found = true
-            results += 1
-          else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  found = true
-                  results += 1
-
-          if found
-            if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
-              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-            else
-              text = option.html
-
-            $(result_id).update text if $(result_id).innerHTML != text
-
-            this.result_activate $(result_id), option
-
-            $(@results_data[option.group_array_index].dom_id).setStyle({display: 'list-item'}) if option.group_array_index?
-          else
-            this.result_clear_highlight() if $(result_id) is @result_highlight
-            this.result_deactivate $(result_id)
-
-    if results < 1 and searchText.length
-      this.no_results(searchText)
-    else
-      this.winnow_results_set_highlight()
-
   get_search_text: ->
     if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
 
