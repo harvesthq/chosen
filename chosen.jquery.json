@@ -8,6 +8,7 @@
       "url": "https://github.com/harvesthq/chosen/blob/master/LICENSE.md"
     }
   ],
+  "download": "https://github.com/harvesthq/chosen/releases",
   "title": "Chosen",
   "keywords": [
     "select",
