@@ -3,11 +3,6 @@ module.exports = (grunt) ->
     grunt.file.readJSON("package.json").version
   version_tag = ->
     "v#{version()}"
-  version_url = ->
-    "http://chosen.getharvest.com.s3.amazonaws.com/chosen_#{version_tag()}.zip"
-  aws = ->
-    file = 'grunt-aws.json'
-    if grunt.file.exists file then grunt.file.readJSON file else {}
 
   grunt.initConfig
     pkg: grunt.file.readJSON("package.json")
@@ -87,19 +82,6 @@ module.exports = (grunt) ->
         src: ['public/**/*']
         dest: 'chosen.zip'
 
-    s3:
-      options: aws()
-      master:
-        upload: [
-          src: 'chosen.zip'
-          dest: "chosen_master.zip"
-        ]
-      latest_version:
-        upload: [
-          src: 'chosen.zip'
-          dest: "chosen_#{version_tag()}.zip"
-        ]
-
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-concat'
@@ -110,12 +92,9 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-build-gh-pages'
   grunt.loadNpmTasks 'grunt-zip'
   grunt.loadNpmTasks 'grunt-dom-munger'
-  grunt.loadNpmTasks 'grunt-s3'
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
-  grunt.registerTask 'master-s3', ['build', 'zip:chosen', 's3:master', 'clean:chosen_zip']
-  grunt.registerTask 'update-s3', ['build', 'zip:chosen', 'dom_munger:download_links', 's3:master', 's3:latest_version', 'package_jquery', 'clean:chosen_zip']
   grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () ->
@@ -127,7 +106,6 @@ module.exports = (grunt) ->
       "description": pkg.description
       "version": version()
       "licenses": pkg.licenses
-      "download": version_url()
     json2 = pkg.jqueryJSON
     json1[key] = json2[key] for key of json2
     json1.author.name = pkg.author

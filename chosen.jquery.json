@@ -8,7 +8,7 @@
       "url": "https://github.com/harvesthq/chosen/blob/master/LICENSE.md"
     }
   ],
-  "download": "http://chosen.getharvest.com.s3.amazonaws.com/chosen_v0.11.1.zip",
+  "download": "https://github.com/harvesthq/chosen/releases",
   "title": "Chosen",
   "keywords": [
     "select",
