@@ -84,7 +84,7 @@ module.exports = (grunt) ->
     zip:
       chosen:
         cwd: 'public/'
-        src: ['public/*']
+        src: ['public/**/*']
         dest: 'chosen.zip'
 
     s3:
