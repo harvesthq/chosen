@@ -52,6 +52,7 @@
         "name": "Ken Earley"
       }
     ],
+    "download": "https://github.com/harvesthq/chosen/releases",
     "homepage": "http://harvesthq.github.io/chosen/",
     "docs": "http://harvesthq.github.io/chosen/",
     "bugs": "https://github.com/harvesthq/chosen/issues",
