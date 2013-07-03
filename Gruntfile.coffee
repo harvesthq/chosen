@@ -96,6 +96,7 @@ module.exports = (grunt) ->
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
   grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
+  grunt.registerTask 'prep_release', ['build','zip:chosen','package_jquery']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () ->
     src = "package.json"
