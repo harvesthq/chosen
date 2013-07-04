@@ -1,9 +1,8 @@
-@import "compass/css3/box-shadow";
 @import "compass/css3/box-sizing";
 @import "compass/css3/images";
 @import "compass/css3/border-radius";
-@import "compass/css3/background-clip";
-@import "compass/typography/text/ellipsis";
+
+$experimental-support-for-svg: true;
 
 /* @group Base */
 .chzn-container {
@@ -21,7 +20,7 @@
   position: absolute;
   top: 100%;
   left: -9999px;
-  @include box-shadow(0 4px 5px rgba(0,0,0,.15));
+  box-shadow: 0 4px 5px rgba(#000,.15);
   z-index: 1010;
   width: 100%;
   @include box-sizing(border-box);
@@ -35,13 +34,12 @@
 
 /* @group Single Chosen */
 .chzn-container-single .chzn-single {
-  background-color: #ffffff;
-  @include background(linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%));
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee', GradientType=0 );
-  @include border-radius(5px);
-  @include background-clip(padding-box);
-  border: 1px solid #aaaaaa;
-  @include box-shadow(0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1));
+  background-color: #fff;
+  @include background(linear-gradient(top, #fff 20%, #f6f6f6 50%, #eee 52%, #f4f4f4 100%));
+  border-radius: 5px;
+  background-clip: padding-box;
+  border: 1px solid #aaa;
+  box-shadow: 0 0 3px #fff inset, 0 1px 1px rgba(#000,.1);
   display: block;
   overflow: hidden;
   white-space: nowrap;
@@ -49,7 +47,7 @@
   height: 23px;
   line-height: 24px;
   padding: 0 0 0 8px;
-  color: #444444;
+  color: #444;
   text-decoration: none;
 }
 .chzn-container-single .chzn-default {
@@ -60,7 +58,7 @@
   display: block;
   overflow: hidden;
   white-space: nowrap;
-  @include ellipsis;
+  text-overflow: ellipsis;
 }
 .chzn-container-single .chzn-single-with-deselect span {
   margin-right: 38px;
@@ -105,7 +103,7 @@
 }
 .chzn-container-single .chzn-search input {
   background: #fff url('chosen-sprite.png') no-repeat 100% -20px;
-  @include background(url('chosen-sprite.png') no-repeat 100% -20px, linear-gradient(#eeeeee 1%, #ffffff 15%));
+  @include background(url('chosen-sprite.png') no-repeat 100% -20px, linear-gradient(#eee 1%, #fff 15%));
   margin: 1px 0;
   padding: 4px 20px 4px 5px;
   outline: 0;
@@ -117,8 +115,8 @@
 }
 .chzn-container-single .chzn-drop {
   margin-top: -1px;
-  @include border-radius(0 0 4px 4px);
-  @include background-clip(padding-box);
+  border-radius: 0 0 4px 4px;
+  background-clip: padding-box;
 }
 .chzn-container-single-nosearch .chzn-search {
   position: absolute;
@@ -129,7 +127,7 @@
 /* @group Multi Chosen */
 .chzn-container-multi .chzn-choices {
   background-color: #fff;
-  @include background-image(linear-gradient(#eeeeee 1%, #ffffff 15%));
+  @include background-image(linear-gradient(#eee 1%, #fff 15%));
   border: 1px solid #aaa;
   margin: 0;
   padding: 0;
@@ -160,20 +158,19 @@
   padding: 5px;
   margin: 1px 0;
   outline: 0;
-  @include box-shadow(none);
+  box-shadow: none;
 }
 .chzn-container-multi .chzn-choices .search-field .default {
   color: #999;
 }
 .chzn-container-multi .chzn-choices .search-choice {
-  @include border-radius(3px);
-  @include background-clip(padding-box);
+  border-radius: 3px;
+  background-clip: padding-box;
   background-color: #e4e4e4;
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4f4f4', endColorstr='#eeeeee', GradientType=0 ); 
-  @include background-image(linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%)); 
-  @include box-shadow(0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05));
+  @include background-image(linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%)); 
+  box-shadow: 0 0 2px #fff inset, 0 1px 0 rgba(#000,.05);
   color: #333;
-  border: 1px solid #aaaaaa;
+  border: 1px solid #aaa;
   line-height: 13px;
   padding: 3px 20px 3px 5px;
   margin: 3px 0 3px 5px;
@@ -182,10 +179,9 @@
 }
 .chzn-container-multi .chzn-choices .search-choice.search-choice-disabled {
   background-color: #e4e4e4;
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4f4f4', endColorstr='#eeeeee', GradientType=0 );
-  @include background-image(linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%));
+  @include background-image(linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%));
   color: #666;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   padding-right: 5px;
 }
 .chzn-container-multi .chzn-choices .search-choice-focus {
@@ -245,7 +241,6 @@
 }
 .chzn-container .chzn-results .highlighted {
   background-color: #3875d7;
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3875d7', endColorstr='#2a62bc', GradientType=0 );  
   @include background-image(linear-gradient(#3875d7 20%, #2a62bc 90%));
   color: #fff;
 }
@@ -304,15 +299,14 @@
 
 /* @group Active  */
 .chzn-container-active .chzn-single {
-  @include box-shadow(0 0 5px rgba(0,0,0,.3));
+  box-shadow: 0 0 5px rgba(#000,.3);
   border: 1px solid #5897fb;
 }
 .chzn-container-active.chzn-with-drop .chzn-single {
   border: 1px solid #aaa;
-  @include box-shadow(0 1px 0 #fff inset);
+  box-shadow: 0 1px 0 #fff inset;
   background-color: #eee;
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff', GradientType=0 );
-  @include background-image(linear-gradient(#eeeeee 20%, #ffffff 80%));
+  @include background-image(linear-gradient(#eee 20%, #fff 80%));
   @include border-bottom-radius(0);
 }
 .chzn-container-active.chzn-with-drop .chzn-single div {
@@ -323,7 +317,7 @@
   background-position: -18px 2px;
 }
 .chzn-container-active .chzn-choices {
-  @include box-shadow(0 0 5px rgba(0,0,0,.3));
+  box-shadow: 0 0 5px rgba(#000,.3);
   border: 1px solid #5897fb;
 }
 .chzn-container-active .chzn-choices .search-field input {
@@ -365,7 +359,7 @@
 .chzn-rtl.chzn-container-active.chzn-with-drop .chzn-single div { border-right: none; }
 .chzn-rtl .chzn-search input {
   background: #fff url('chosen-sprite.png') no-repeat -30px -20px;
-  @include background(url('chosen-sprite.png') no-repeat -30px -20px, linear-gradient(#eeeeee 1%, #ffffff 15%));
+  @include background(url('chosen-sprite.png') no-repeat -30px -20px, linear-gradient(#eee 1%, #fff 15%));
   padding: 4px 5px 4px 20px;
   direction: rtl;
 }
