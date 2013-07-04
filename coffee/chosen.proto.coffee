@@ -215,6 +215,15 @@ class Chosen extends AbstractChosen
     @container.addClassName "chzn-with-drop"
     @form_field.fire("liszt:showing_dropdown", {chosen: this})
 
+    windowHeight = document.viewport.getHeight()
+    dropdownTop = @container.cumulativeOffset()[1] + @container.getHeight() - document.viewport.getScrollOffsets().top
+    totalHeight = @dropdown.getHeight() + dropdownTop
+
+    if totalHeight > windowHeight
+      @dropdown.addClassName 'chzn-above'
+    else
+      @dropdown.removeClassName 'chzn-above'
+
     @results_showing = true
 
     @search_field.focus()

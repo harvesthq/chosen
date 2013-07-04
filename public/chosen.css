@@ -26,6 +26,16 @@
   box-sizing        : border-box;
 }
 
+.chzn-container .chzn-drop.chzn-above {
+  top:auto;
+  bottom:29px;
+  border:solid #aaa;
+  border-width:1px 1px 0 1px;
+  -webkit-box-shadow: 0 -4px 5px rgba(0,0,0,.15);
+  -moz-box-shadow   : 0 -4px 5px rgba(0,0,0,.15);
+  box-shadow        : 0 -4px 5px rgba(0,0,0,.15);
+}
+
 .chzn-container.chzn-with-drop .chzn-drop {
   left: 0;
 }
