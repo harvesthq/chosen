@@ -22,6 +22,15 @@ class Chosen extends AbstractChosen
   finish_setup: ->
     @form_field_jq.addClass "chzn-done"
 
+  container_width: ->
+    if @options.width?
+      return @options.width
+    else
+      if @form_field.offsetWidth is 0
+        return @form_field_jq.width() + "px"
+      else
+        return "#{@form_field.offsetWidth}px"
+
   set_up_html: ->
     @container_id = if @form_field.id.length then @form_field.id.replace(/[^\w]/g, '_') else this.generate_field_id()
     @container_id += "_chzn"
