@@ -47,8 +47,9 @@ module.exports = (grunt) ->
 
     compass:
       chosen_css:
-        files:
-          'public/chosen.css': 'sass/chosen.scss'
+        options:
+          specify:
+            ['sass/chosen.scss']
 
     cssmin:
       minified_chosen_css:
