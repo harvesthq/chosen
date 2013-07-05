@@ -1,8 +1,6 @@
 @import "compass/css3/box-sizing";
 @import "compass/css3/images";
 
-$experimental-support-for-svg: true;
-
 /* @group Base */
 .chzn-container {
   font-size: 13px;
@@ -282,7 +280,6 @@ $experimental-support-for-svg: true;
     .chzn-single {
       border: 1px solid #aaa;
       box-shadow: 0 1px 0 #fff inset;
-      background-color: #eee;
       @include background-image(linear-gradient(#eee 20%, #fff 80%));
       -moz-border-radius-bottomleft: 0;
       border-bottom-left-radius: 0;
