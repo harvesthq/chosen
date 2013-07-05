@@ -202,21 +202,31 @@ $experimental-support-for-svg: true;
       }
     }
   }
+  .chzn-results {
+    margin: 0;
+    padding: 0;
+  }
+  .chzn-drop .result-selected {
+    color: #ccc;
+    cursor: default;
+    display: list-item;
+    em {
+      background: transparent;
+    }
+  }
 }
 /* @end */
 
 /* @group Results */
-.chzn-container{
-  .chzn-results {
-    margin: 0 4px 4px 0;
-    max-height: 240px;
-    padding: 0 0 0 4px;
-    position: relative;
-    overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .chzn-results li {
+.chzn-container .chzn-results {
+  margin: 0 4px 4px 0;
+  max-height: 240px;
+  padding: 0 0 0 4px;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  li {
     display: none;
     line-height: 15px;
     padding: 5px 6px;
@@ -257,44 +267,6 @@ $experimental-support-for-svg: true;
     em {
       background: #feffde;
       font-style: normal;
-    }
-  }
-  .chzn-results-scroll {
-    background: #fff;
-    margin: 0 4px;
-    position: absolute;
-    text-align: center;
-    width: 321px; /* This should by dynamic with js */
-    z-index: 1;
-    span {
-      display: inline-block;
-      height: 17px;
-      text-indent: -5000px;
-      width: 9px;
-    }
-  }
-  .chzn-results-scroll-down {
-    bottom: 0;
-    span {
-      background: url('chosen-sprite.png') no-repeat -4px -3px;
-    }
-  }
-  .chzn-results-scroll-up span {
-    background: url('chosen-sprite.png') no-repeat -22px -3px;
-  }
-}
-
-.chzn-container-multi{
-  .chzn-results {
-    margin: 0;
-    padding: 0;
-  }
-  .chzn-drop .result-selected {
-    color: #ccc;
-    cursor: default;
-    display: list-item;
-    em {
-      background: transparent;
     }
   }
 }
@@ -406,18 +378,18 @@ $experimental-support-for-svg: true;
     padding: 4px 5px 4px 20px;
     direction: rtl;
   }
-}
-
-.chzn-container-single.chzn-rtl{
-  .chzn-single div b {
-    background-position: 6px 2px;
-  }
-  &.chzn-with-drop{
+  &.chzn-container-single{
     .chzn-single div b {
-      background-position: -12px 2px;
+      background-position: 6px 2px;
+    }
+    &.chzn-with-drop{
+      .chzn-single div b {
+        background-position: -12px 2px;
+      }
     }
   }
 }
+
 /* @end */
 
 /* @group Retina compatibility */
