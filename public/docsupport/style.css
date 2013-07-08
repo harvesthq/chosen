@@ -64,6 +64,48 @@ ul.credits li { margin-bottom: .25em; }
 
 strong { font-weight: bold; }
 
+.button {
+  background: #fafafa;
+  background: -webkit-linear-gradient(top, #ffffff, #eeeeee);
+  background: -moz-linear-gradient(top, #ffffff, #eeeeee);
+  background: -o-linear-gradient(top, #ffffff, #eeeeee);
+  background: linear-gradient(to bottom, #ffffff, #eeeeee);
+  border: 1px solid #bbbbbb;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  color: #555555;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Helvetica Neue", Arial, Verdana, "Nimbus Sans L", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  height: 31px;
+  line-height: 28px;
+  outline: none;
+  padding: 0 13px;
+  text-shadow: 0 1px 0 white;
+  text-decoration: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.button-blue {
+  background: #1385e5;
+  background: -webkit-linear-gradient(top, #53b2fc, #1385e5);
+  background: -moz-linear-gradient(top, #53b2fc, #1385e5);
+  background: -o-linear-gradient(top, #53b2fc, #1385e5);
+  background: linear-gradient(to bottom, #53b2fc, #1385e5);
+  border-color: #075fa9;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+}
+
+
 /* Tweak navbar brand link to be super sleek
 -------------------------------------------------- */
 .oss-bar {

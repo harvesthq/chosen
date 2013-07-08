@@ -1,7 +1,7 @@
 {
   "author": "harvest",
   "name": "chosen",
-  "version": "0.10.0",
+  "version": "0.11.1",
   "description": "Chosen is a JavaScript plugin that makes long, unwieldy select boxes much more user-friendly. It is currently available in both jQuery and Prototype flavors.",
   "repository": {
     "type": "git",
@@ -20,8 +20,11 @@
     "grunt-contrib-watch": "~0.3.1",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-clean": "~0.4.1",
-    "grunt-css": "~0.5.4",
-    "grunt-build-gh-pages": "0.0.4"
+    "grunt-contrib-cssmin": "~0.6.1",
+    "grunt-build-gh-pages": "0.0.4",
+    "grunt-zip": "~0.9.2",
+    "grunt-dom-munger": "~2.0.1",
+    "grunt-s3": "~0.2.0-alpha.2"
   },
   "licenses": [
     {
