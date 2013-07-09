@@ -220,8 +220,10 @@ class Chosen extends AbstractChosen
     totalHeight = @dropdown.getHeight() + dropdownTop
 
     if totalHeight > windowHeight
+      @container.addClassName 'chzn-above'
       @dropdown.addClassName 'chzn-above'
     else
+      @container.removeClassName 'chzn-above'
       @dropdown.removeClassName 'chzn-above'
 
     @results_showing = true
@@ -236,6 +238,7 @@ class Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       @container.removeClassName "chzn-with-drop"
+      @container.removeClassName "chzn-above"
       @form_field.fire("liszt:hiding_dropdown", {chosen: this})
 
     @results_showing = false
