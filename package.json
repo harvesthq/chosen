@@ -36,7 +36,10 @@
     "keywords": [
       "select",
       "multiselect",
-      "dropdown"
+      "dropdown",
+      "form",
+      "input",
+      "ui"
     ],
     "author": {
       "url": "http://getharvest.com"
