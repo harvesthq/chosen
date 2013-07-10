@@ -86,7 +86,7 @@ class AbstractChosen
 
     style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
 
-    '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + option.search_text + '</li>'
+    """<li id="#{option.dom_id}" class="#{classes.join(' ')}"#{style}>#{option.search_text}</li>"""
 
   results_update_field: ->
     this.set_default_text()
