@@ -3,5 +3,6 @@ node_modules
 .project
 dist/
 public/*.js
-public/*.min.css
+public/*.css
 chosen.zip
+.sass-cache
