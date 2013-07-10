@@ -4,5 +4,4 @@ node_modules
 dist/
 public/*.js
 public/*.min.css
-grunt-aws.json
 chosen.zip
