@@ -213,19 +213,4 @@ class AbstractChosen
   @default_single_text: "Select an Option"
   @default_no_result_text: "No results match"
 
-  @escapeExpression: (text) ->
-    if not text? or text is false
-      return ""
-    unless /[\&\<\>\"\'\`]/.test(text)
-      return text
-    map =
-      "<": "&lt;"
-      ">": "&gt;"
-      '"': "&quot;"
-      "'": "&#x27;"
-      "`": "&#x60;"
-    unsafe_chars = /&(?!\w+;)|[\<\>\"\'\`]/g
-    text.replace unsafe_chars, (chr) ->
-      map[chr] || "&amp;"
-
 root.AbstractChosen = AbstractChosen
