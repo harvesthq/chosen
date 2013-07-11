@@ -258,6 +258,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       background: #f4f4f4;
     }
     &.group-result {
+      display: list-item;
       color: #999;
       font-weight: bold;
       cursor: default;
