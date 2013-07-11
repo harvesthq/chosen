@@ -1,7 +1,7 @@
 // Chosen, a Select Box Enhancer for jQuery and Prototype
 // by Patrick Filler for Harvest, http://getharvest.com
 //
-// Version 0.11.1
+// Version 0.12.1
 // Full source at https://github.com/harvesthq/chosen
 // Copyright (c) 2011 Harvest http://getharvest.com
 
@@ -184,6 +184,29 @@
       }
     };
 
+    AbstractChosen.prototype.results_option_build = function(options) {
+      var content, data, _i, _len, _ref;
+
+      content = '';
+      _ref = this.results_data;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        data = _ref[_i];
+        if (data.group && data.search_match) {
+          content += this.result_add_group(data);
+        } else if (!data.empty && data.search_match) {
+          content += this.result_add_option(data);
+        }
+        if (options != null ? options.first : void 0) {
+          if (data.selected && this.is_multiple) {
+            this.choice_build(data);
+          } else if (data.selected && !this.is_multiple) {
+            this.single_set_selected_text(data.text);
+          }
+        }
+      }
+      return content;
+    };
+
     AbstractChosen.prototype.result_add_option = function(option) {
       var classes, style;
 
@@ -205,7 +228,7 @@
         classes.push(option.classes);
       }
       style = option.style.cssText !== "" ? " style=\"" + option.style + "\"" : "";
-      return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' + style + '>' + option.html + '</li>';
+      return "<li id=\"" + option.dom_id + "\" class=\"" + (classes.join(' ')) + "\"" + style + ">" + option.search_text + "</li>";
     };
 
     AbstractChosen.prototype.results_update_field = function() {
@@ -231,6 +254,63 @@
         return this.winnow_results();
       } else {
         return this.results_show();
+      }
+    };
+
+    AbstractChosen.prototype.winnow_results = function() {
+      var option, part, parts, regex, regexAnchor, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref;
+
+      this.no_results_clear();
+      results = 0;
+      searchText = this.get_search_text();
+      regexAnchor = this.search_contains ? "" : "^";
+      regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      _ref = this.results_data;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        option = _ref[_i];
+        if (!option.empty) {
+          if (option.group) {
+            option.search_match = false;
+          } else {
+            option.search_match = false;
+            if (regex.test(option.html)) {
+              option.search_match = true;
+              results += 1;
+            } else if (this.enable_split_word_search && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {
+              parts = option.html.replace(/\[|\]/g, "").split(" ");
+              if (parts.length) {
+                for (_j = 0, _len1 = parts.length; _j < _len1; _j++) {
+                  part = parts[_j];
+                  if (regex.test(part)) {
+                    option.search_match = true;
+                    results += 1;
+                  }
+                }
+              }
+            }
+            if (option.search_match) {
+              if (searchText.length) {
+                startpos = option.html.search(zregex);
+                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
+                text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
+              } else {
+                text = option.html;
+              }
+              option.search_text = text;
+              if (option.group_array_index != null) {
+                this.results_data[option.group_array_index].search_match = true;
+              }
+            }
+          }
+        }
+      }
+      if (results < 1 && searchText.length) {
+        this.update_results_content("");
+        return this.no_results(searchText);
+      } else {
+        this.update_results_content(this.results_option_build());
+        return this.winnow_results_set_highlight();
       }
     };
 
@@ -580,15 +660,13 @@
     };
 
     Chosen.prototype.results_build = function() {
-      var content, data, _i, _len, _ref1;
-
       this.parsing = true;
       this.selected_option_count = null;
       this.results_data = root.SelectParser.select_to_array(this.form_field);
       if (this.is_multiple) {
         this.search_choices.find("li.search-choice").remove();
       } else if (!this.is_multiple) {
-        this.selected_item.addClass("chzn-default").find("span").text(this.default_text);
+        this.single_set_selected_text();
         if (this.disable_search || this.form_field.options.length <= this.disable_search_threshold) {
           this.search_field[0].readOnly = true;
           this.container.addClass("chzn-container-single-nosearch");
@@ -597,28 +675,12 @@
           this.container.removeClass("chzn-container-single-nosearch");
         }
       }
-      content = '';
-      _ref1 = this.results_data;
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        data = _ref1[_i];
-        if (data.group) {
-          content += this.result_add_group(data);
-        } else if (!data.empty) {
-          content += this.result_add_option(data);
-          if (data.selected && this.is_multiple) {
-            this.choice_build(data);
-          } else if (data.selected && !this.is_multiple) {
-            this.selected_item.removeClass("chzn-default").find("span").text(data.text);
-            if (this.allow_single_deselect) {
-              this.single_deselect_control_build();
-            }
-          }
-        }
-      }
+      this.update_results_content(this.results_option_build({
+        first: true
+      }));
       this.search_field_disabled();
       this.show_search_field_default();
       this.search_field_scale();
-      this.search_results.html(content);
       return this.parsing = false;
     };
 
@@ -669,6 +731,10 @@
       this.search_field.focus();
       this.search_field.val(this.search_field.val());
       return this.winnow_results();
+    };
+
+    Chosen.prototype.update_results_content = function(content) {
+      return this.search_results.html(content);
     };
 
     Chosen.prototype.results_hide = function() {
@@ -791,10 +857,7 @@
     Chosen.prototype.results_reset = function() {
       this.form_field.options[0].selected = true;
       this.selected_option_count = null;
-      this.selected_item.find("span").text(this.default_text);
-      if (!this.is_multiple) {
-        this.selected_item.addClass("chzn-default");
-      }
+      this.single_set_selected_text();
       this.show_search_field_default();
       this.results_reset_cleanup();
       this.form_field_jq.trigger("change");
@@ -826,7 +889,6 @@
         } else {
           this.search_results.find(".result-selected").removeClass("result-selected");
           this.result_single_selected = high;
-          this.selected_item.removeClass("chzn-default");
         }
         high.addClass("result-selected");
         position = high_id.substr(high_id.lastIndexOf("_") + 1);
@@ -837,10 +899,7 @@
         if (this.is_multiple) {
           this.choice_build(item);
         } else {
-          this.selected_item.find("span").first().text(item.text);
-          if (this.allow_single_deselect) {
-            this.single_deselect_control_build();
-          }
+          this.single_set_selected_text(item.text);
         }
         if (!((evt.metaKey || evt.ctrlKey) && this.is_multiple)) {
           this.results_hide();
@@ -856,18 +915,17 @@
       }
     };
 
-    Chosen.prototype.result_activate = function(el, option) {
-      if (option.disabled) {
-        return el.addClass("disabled-result");
-      } else if (this.is_multiple && option.selected) {
-        return el.addClass("result-selected");
-      } else {
-        return el.addClass("active-result");
+    Chosen.prototype.single_set_selected_text = function(text) {
+      if (text == null) {
+        text = this.default_text;
       }
-    };
-
-    Chosen.prototype.result_deactivate = function(el) {
-      return el.removeClass("active-result result-selected disabled-result");
+      if (text === this.default_text) {
+        this.selected_item.addClass("chzn-default");
+      } else {
+        this.single_deselect_control_build();
+        this.selected_item.removeClass("chzn-default");
+      }
+      return this.selected_item.find("span").text(text);
     };
 
     Chosen.prototype.result_deselect = function(pos) {
@@ -881,7 +939,9 @@
         result = $("#" + this.container_id + "_o_" + pos);
         result.removeClass("result-selected").addClass("active-result").show();
         this.result_clear_highlight();
-        this.winnow_results();
+        if (this.results_showing) {
+          this.winnow_results();
+        }
         this.form_field_jq.trigger("change", {
           deselected: this.form_field.options[result_data.options_index].value
         });
@@ -902,78 +962,21 @@
       return this.selected_item.addClass("chzn-single-with-deselect");
     };
 
-    Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, regexAnchor, result, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref1;
-
-      this.no_results_clear();
-      results = 0;
-      searchText = this.search_field.val() === this.default_text ? "" : $('<div/>').text($.trim(this.search_field.val())).html();
-      regexAnchor = this.search_contains ? "" : "^";
-      regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-      _ref1 = this.results_data;
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        option = _ref1[_i];
-        if (!option.empty) {
-          if (option.group) {
-            $('#' + option.dom_id).css('display', 'none');
-          } else {
-            found = false;
-            result_id = option.dom_id;
-            result = $("#" + result_id);
-            if (regex.test(option.html)) {
-              found = true;
-              results += 1;
-            } else if (this.enable_split_word_search && (option.html.indexOf(" ") >= 0 || option.html.indexOf("[") === 0)) {
-              parts = option.html.replace(/\[|\]/g, "").split(" ");
-              if (parts.length) {
-                for (_j = 0, _len1 = parts.length; _j < _len1; _j++) {
-                  part = parts[_j];
-                  if (regex.test(part)) {
-                    found = true;
-                    results += 1;
-                  }
-                }
-              }
-            }
-            if (found) {
-              if (searchText.length) {
-                startpos = option.html.search(zregex);
-                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
-                text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
-              } else {
-                text = option.html;
-              }
-              result.html(text);
-              this.result_activate(result, option);
-              if (option.group_array_index != null) {
-                $("#" + this.results_data[option.group_array_index].dom_id).css('display', 'list-item');
-              }
-            } else {
-              if (this.result_highlight && result_id === this.result_highlight.attr('id')) {
-                this.result_clear_highlight();
-              }
-              this.result_deactivate(result);
-            }
-          }
-        }
-      }
-      if (results < 1 && searchText.length) {
-        return this.no_results(searchText);
+    Chosen.prototype.get_search_text = function() {
+      if (this.search_field.val() === this.default_text) {
+        return "";
       } else {
-        return this.winnow_results_set_highlight();
+        return $('<div/>').text($.trim(this.search_field.val())).html();
       }
     };
 
     Chosen.prototype.winnow_results_set_highlight = function() {
       var do_high, selected_results;
 
-      if (!this.result_highlight) {
-        selected_results = !this.is_multiple ? this.search_results.find(".result-selected.active-result") : [];
-        do_high = selected_results.length ? selected_results.first() : this.search_results.find(".active-result").first();
-        if (do_high != null) {
-          return this.result_do_highlight(do_high);
-        }
+      selected_results = !this.is_multiple ? this.search_results.find(".result-selected.active-result") : [];
+      do_high = selected_results.length ? selected_results.first() : this.search_results.find(".active-result").first();
+      if (do_high != null) {
+        return this.result_do_highlight(do_high);
       }
     };
 
