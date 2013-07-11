@@ -217,6 +217,12 @@ class Chosen extends AbstractChosen
     @container.addClass "chzn-with-drop"
     @form_field_jq.trigger("liszt:showing_dropdown", {chosen: this})
 
+    windowHeight = $(window).height()
+    dropdownTop = @container.offset().top + @container.height() - $(window).scrollTop()
+    totalHeight = @dropdown.height() + dropdownTop
+
+    @dropdown.add(@container).toggleClass 'chzn-above', totalHeight > windowHeight
+
     @results_showing = true
 
     @search_field.focus()
@@ -231,7 +237,7 @@ class Chosen extends AbstractChosen
     if @results_showing
       this.result_clear_highlight()
 
-      @container.removeClass "chzn-with-drop"
+      @container.removeClass "chzn-with-drop chzn-above"
       @form_field_jq.trigger("liszt:hiding_dropdown", {chosen: this})
 
     @results_showing = false
