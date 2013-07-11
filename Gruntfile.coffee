@@ -45,14 +45,22 @@ module.exports = (grunt) ->
           'public/chosen.jquery.min.js': ['public/chosen.jquery.js']
           'public/chosen.proto.min.js': ['public/chosen.proto.js']
 
+    compass:
+      chosen_css:
+        options:
+          specify:
+            ['sass/chosen.scss']
+
     cssmin:
       minified_chosen_css:
+        options:
+          banner: "<%= minified_comments %>"
         src: 'public/chosen.css'
         dest: 'public/chosen.min.css'
 
     watch:
       scripts:
-        files: ['coffee/**/*.coffee']
+        files: ['coffee/**/*.coffee', 'sass/*.scss']
         tasks: ['build']
 
     copy:
@@ -88,13 +96,14 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-contrib-clean'
+  grunt.loadNpmTasks 'grunt-contrib-compass'
   grunt.loadNpmTasks 'grunt-contrib-cssmin'
   grunt.loadNpmTasks 'grunt-build-gh-pages'
   grunt.loadNpmTasks 'grunt-zip'
   grunt.loadNpmTasks 'grunt-dom-munger'
 
   grunt.registerTask 'default', ['build']
-  grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'cssmin']
+  grunt.registerTask 'build', ['coffee', 'compass', 'concat', 'uglify', 'cssmin']
   grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
   grunt.registerTask 'prep_release', ['build','zip:chosen','package_jquery']
 
