@@ -126,18 +126,8 @@ class AbstractChosen
           option.search_match = false
 
           search_string = if option.group then option.label else option.html
-
-          if regex.test search_string
-            option.search_match = true
-            results += 1
-          else if @enable_split_word_search and (search_string.indexOf(" ") >= 0 or search_string.indexOf("[") == 0)
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = search_string.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  option.search_match = true
-                  results += 1
+          option.search_match = this.search_string_match(search_string, regex)
+          results += 1 if option.search_match
 
           if option.search_match and not option.group
             if searchText.length
@@ -161,6 +151,17 @@ class AbstractChosen
     else
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
+
+  search_string_match: (search_string, regex) ->
+    if regex.test search_string
+      return true
+    else if @enable_split_word_search and (search_string.indexOf(" ") >= 0 or search_string.indexOf("[") == 0)
+      #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
+      parts = search_string.replace(/\[|\]/g, "").split(" ")
+      if parts.length
+        for part in parts
+          if regex.test part
+            return true
 
   choices_count: ->
     return @selected_option_count if @selected_option_count?
