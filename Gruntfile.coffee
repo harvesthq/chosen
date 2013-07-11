@@ -64,7 +64,7 @@ module.exports = (grunt) ->
 
     clean:
       dist: ["dist/"]
-      chosen_zip: ["chosen.zip"]
+      chosen_zip: ["*.zip"]
 
     build_gh_pages:
       gh_pages: {}
@@ -80,7 +80,7 @@ module.exports = (grunt) ->
       chosen:
         cwd: 'public/'
         src: ['public/**/*']
-        dest: 'chosen.zip'
+        dest: "chosen_#{version_tag()}.zip"
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
