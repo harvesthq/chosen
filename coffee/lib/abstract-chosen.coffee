@@ -50,7 +50,7 @@ class AbstractChosen
       setTimeout (=> this.container_mousedown()), 50 unless @active_field
     else
       @activate_field() unless @active_field
-  
+
   input_blur: (evt) ->
     if not @mouse_on_container
       @active_field = false
@@ -193,7 +193,7 @@ class AbstractChosen
     new_id = this.generate_random_id()
     @form_field.id = new_id
     new_id
-  
+
   generate_random_char: ->
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     rand = Math.floor(Math.random() * chars.length)
@@ -213,5 +213,19 @@ class AbstractChosen
   @default_single_text: "Select an Option"
   @default_no_result_text: "No results match"
 
+  @escapeExpression: (text) ->
+    if not text? or text is false
+      return ""
+    unless /[\&\<\>\"\'\`]/.test(text)
+      return text
+    map =
+      "<": "&lt;"
+      ">": "&gt;"
+      '"': "&quot;"
+      "'": "&#x27;"
+      "`": "&#x60;"
+    unsafe_chars = /&(?!\w+;)|[\<\>\"\'\`]/g
+    text.replace unsafe_chars, (chr) ->
+      map[chr] || "&amp;"
 
 root.AbstractChosen = AbstractChosen
