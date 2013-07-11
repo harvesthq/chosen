@@ -60,7 +60,7 @@ class AbstractChosen
   results_option_build: (options) ->
     content = ''
     for data in @results_data
-      if data.group && data.search_match
+      if data.group && (data.search_match || data.group_match)
         content += this.result_add_group data
       else if !data.empty && data.search_match
         content += this.result_add_option data
@@ -120,9 +120,10 @@ class AbstractChosen
 
     for option in @results_data
       if not option.empty
-        if option.group and not @search_groups
-          option.search_match = false
-        else
+
+        option.group_match = false if option.group
+
+        unless option.group and not @search_groups
           option.search_match = false
 
           search_string = if option.group then option.label else option.html
@@ -139,7 +140,7 @@ class AbstractChosen
 
             option.search_text = text
 
-            @results_data[option.group_array_index].search_match = true if option.group_array_index?
+            @results_data[option.group_array_index].group_match = true if option.group_array_index?
           
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
