@@ -182,10 +182,6 @@ class Chosen extends AbstractChosen
 
     @parsing = false
 
-  result_add_group: (group) ->
-    group.dom_id = @container_id + "_g_" + group.array_index
-    '<li id="' + group.dom_id + '" class="group-result">' + $("<div />").text(group.label).html() + '</li>'
-
   result_do_highlight: (el) ->
     if el.length
       this.result_clear_highlight()

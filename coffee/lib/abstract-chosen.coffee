@@ -89,6 +89,10 @@ class AbstractChosen
 
     """<li id="#{option.dom_id}" class="#{classes.join(' ')}"#{style}>#{option.search_text}</li>"""
 
+  result_add_group: (group) ->
+    group.dom_id = @container_id + "_g_" + group.array_index
+    """<li id="#{group.dom_id}" class="group-result">#{group.search_text}</li>"""
+
   results_update_field: ->
     this.set_default_text()
     this.results_reset_cleanup() if not @is_multiple
@@ -130,13 +134,13 @@ class AbstractChosen
           option.search_match = this.search_string_match(search_string, regex)
           results += 1 if option.search_match
 
-          if option.search_match and not option.group
+          if option.search_match
             if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
+              startpos = search_string.search zregex
+              text = search_string.substr(0, startpos + searchText.length) + '</em>' + search_string.substr(startpos + searchText.length)
               text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
             else
-              text = option.html
+              text = search_string
 
             option.search_text = text
 
@@ -144,7 +148,7 @@ class AbstractChosen
           
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
-            option.search_text = option.html
+            option.search_text = search_string
 
     if results < 1 and searchText.length
       this.update_results_content ""
