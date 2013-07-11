@@ -150,6 +150,10 @@ class AbstractChosen
             option.search_text = text
 
             @results_data[option.group_array_index].search_match = true if option.group_array_index?
+          
+          else if option.group_array_index? and @results_data[option.group_array_index].search_match
+            option.search_match = true
+            option.search_text = option.html
 
     if results < 1 and searchText.length
       this.update_results_content ""
