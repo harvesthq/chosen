@@ -331,6 +331,7 @@
   cursor: default;
   color: #999;
   font-weight: bold;
+  display: list-item;
 }
 .chzn-container .chzn-results .group-option {
   padding-left: 15px;
