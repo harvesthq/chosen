@@ -31,6 +31,7 @@ class AbstractChosen
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
     @inherit_select_classes = @options.inherit_select_classes || false
+    @search_groups = @options.search_groups || true
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -119,24 +120,26 @@ class AbstractChosen
 
     for option in @results_data
       if not option.empty
-        if option.group
+        if option.group and not @search_groups
           option.search_match = false
         else
           option.search_match = false
 
-          if regex.test option.html
+          search_string = if option.group then option.label else option.html
+
+          if regex.test search_string
             option.search_match = true
             results += 1
-          else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
+          else if @enable_split_word_search and (search_string.indexOf(" ") >= 0 or search_string.indexOf("[") == 0)
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
+            parts = search_string.replace(/\[|\]/g, "").split(" ")
             if parts.length
               for part in parts
                 if regex.test part
                   option.search_match = true
                   results += 1
 
-          if option.search_match
+          if option.search_match and not option.group
             if searchText.length
               startpos = option.html.search zregex
               text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
