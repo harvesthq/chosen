@@ -130,25 +130,20 @@ class AbstractChosen
         unless option.group and not @group_search
           option.search_match = false
 
-          search_string = if option.group then option.label else option.html
-          option.search_match = this.search_string_match(search_string, regex)
+          option.search_text = if option.group then option.label else option.html
+          option.search_match = this.search_string_match(option.search_text, regex)
           results += 1 if option.search_match
 
           if option.search_match
             if searchText.length
-              startpos = search_string.search zregex
-              text = search_string.substr(0, startpos + searchText.length) + '</em>' + search_string.substr(startpos + searchText.length)
-              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-            else
-              text = search_string
-
-            option.search_text = text
+              startpos = option.search_text.search zregex
+              text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
+              option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
             @results_data[option.group_array_index].group_match = true if option.group_array_index?
           
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
-            option.search_text = search_string
 
     if results < 1 and searchText.length
       this.update_results_content ""
