@@ -353,9 +353,6 @@ class Chosen extends AbstractChosen
       @form_field.options[result_data.options_index].selected = false
       @selected_option_count = null
 
-      result = $(@container_id + "_o_" + pos)
-      result.removeClassName("result-selected").addClassName("active-result").show()
-
       this.result_clear_highlight()
       this.winnow_results() if @results_showing
 
