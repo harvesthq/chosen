@@ -314,8 +314,7 @@ class Chosen extends AbstractChosen
       
       high.addClassName("result-selected")
 
-      position = high.id.substr(high.id.lastIndexOf("_") + 1 )
-      item = @results_data[position]
+      item = @results_data[ high.getAttribute("data-array_index") ]
       item.selected = true
 
       @form_field.options[item.options_index].selected = true

@@ -312,7 +312,6 @@ class Chosen extends AbstractChosen
   result_select: (evt) ->
     if @result_highlight
       high = @result_highlight
-      high_id = high.attr "id"
 
       this.result_clear_highlight()
 
@@ -328,8 +327,7 @@ class Chosen extends AbstractChosen
 
       high.addClass "result-selected"
 
-      position = high_id.substr(high_id.lastIndexOf("_") + 1 )
-      item = @results_data[position]
+      item = @results_data[ high[0].getAttribute("data-array_index") ]
       item.selected = true
 
       @form_field.options[item.options_index].selected = true
