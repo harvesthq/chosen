@@ -76,8 +76,6 @@ class AbstractChosen
     content
 
   result_add_option: (option) ->
-    option.dom_id = @container_id + "_o_" + option.array_index
-
     classes = []
     classes.push "active-result" if !option.disabled and !(option.selected and @is_multiple)
     classes.push "disabled-result" if option.disabled and !(option.selected and @is_multiple)
@@ -87,7 +85,7 @@ class AbstractChosen
 
     style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
 
-    """<li id="#{option.dom_id}" class="#{classes.join(' ')}"#{style} data-array_index="#{option.array_index}">#{option.search_text}</li>"""
+    """<li class="#{classes.join(' ')}"#{style} data-array_index="#{option.array_index}">#{option.search_text}</li>"""
 
   result_add_group: (group) ->
     """<li class="group-result">#{group.search_text}</li>"""
