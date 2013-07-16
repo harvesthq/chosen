@@ -90,8 +90,7 @@ class AbstractChosen
     """<li id="#{option.dom_id}" class="#{classes.join(' ')}"#{style}>#{option.search_text}</li>"""
 
   result_add_group: (group) ->
-    group.dom_id = @container_id + "_g_" + group.array_index
-    """<li id="#{group.dom_id}" class="group-result">#{group.search_text}</li>"""
+    """<li class="group-result">#{group.search_text}</li>"""
 
   results_update_field: ->
     this.set_default_text()
