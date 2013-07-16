@@ -85,7 +85,7 @@ class AbstractChosen
 
     style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
 
-    """<li class="#{classes.join(' ')}"#{style} data-array_index="#{option.array_index}">#{option.search_text}</li>"""
+    """<li class="#{classes.join(' ')}"#{style} data-option-array-index="#{option.array_index}">#{option.search_text}</li>"""
 
   result_add_group: (group) ->
     """<li class="group-result">#{group.search_text}</li>"""

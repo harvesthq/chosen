@@ -325,7 +325,7 @@ class Chosen extends AbstractChosen
 
       high.addClass "result-selected"
 
-      item = @results_data[ high[0].getAttribute("data-array_index") ]
+      item = @results_data[ high[0].getAttribute("data-option-array-index") ]
       item.selected = true
 
       @form_field.options[item.options_index].selected = true
