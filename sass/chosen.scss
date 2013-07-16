@@ -123,6 +123,56 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
 }
 /* @end */
 
+/* @group Results */
+.chzn-container .chzn-results {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0 4px 4px 0;
+  padding: 0 0 0 4px;
+  max-height: 240px;
+  -webkit-overflow-scrolling: touch;
+  li {
+    display: none;
+    margin: 0;
+    padding: 5px 6px;
+    list-style: none;
+    line-height: 15px;
+    &.active-result {
+      display: list-item;
+      cursor: pointer;
+    }
+    &.disabled-result {
+      display: list-item;
+      color: #ccc;
+      cursor: default;
+    }
+    &.highlighted {
+      background-color: #3875d7;
+      @include background-image(linear-gradient(#3875d7 20%, #2a62bc 90%));
+      color: #fff;
+    }
+    &.no-results {
+      display: list-item;
+      background: #f4f4f4;
+    }
+    &.group-result {
+      display: list-item;
+      color: #999;
+      font-weight: bold;
+      cursor: default;
+    }
+    &.group-option {
+      padding-left: 15px;
+    }
+    em {
+      font-style: normal;
+      text-decoration: underline;
+    }
+  }
+}
+/* @end */
+
 /* @group Multi Chosen */
 .chzn-container-multi{
   .chzn-choices {
@@ -211,65 +261,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     display: list-item;
     color: #ccc;
     cursor: default;
-    em {
-      background: transparent;
-    }
-  }
-}
-/* @end */
-
-/* @group Results */
-.chzn-container .chzn-results {
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
-  margin: 0 4px 4px 0;
-  padding: 0 0 0 4px;
-  max-height: 240px;
-  -webkit-overflow-scrolling: touch;
-  li {
-    display: none;
-    margin: 0;
-    padding: 5px 6px;
-    list-style: none;
-    line-height: 15px;
-    &.active-result {
-      display: list-item;
-      cursor: pointer;
-    }
-    &.disabled-result {
-      display: list-item;
-      color: #ccc;
-      cursor: default;
-      em {
-        background: transparent;
-      }
-    }
-    &.highlighted {
-      background-color: #3875d7;
-      @include background-image(linear-gradient(#3875d7 20%, #2a62bc 90%));
-      color: #fff;
-      em {
-        background: transparent;
-      }
-    }
-    &.no-results {
-      display: list-item;
-      background: #f4f4f4;
-    }
-    &.group-result {
-      display: list-item;
-      color: #999;
-      font-weight: bold;
-      cursor: default;
-    }
-    &.group-option {
-      padding-left: 15px;
-    }
-    em {
-      background: #feffde;
-      font-style: normal;
-    }
   }
 }
 /* @end */
