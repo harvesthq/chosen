@@ -482,11 +482,5 @@ class Chosen extends AbstractChosen
         w = @f_width - 10
 
       @search_field.css({'width': w + 'px'})
-  
-  generate_random_id: ->
-    string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()
-    while $("#" + string).length > 0
-      string += this.generate_random_char()
-    string
 
 root.Chosen = Chosen

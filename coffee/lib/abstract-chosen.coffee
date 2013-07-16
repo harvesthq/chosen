@@ -194,16 +194,6 @@ class AbstractChosen
         # don't do anything on these keys
       else this.results_search()
 
-  generate_field_id: ->
-    new_id = this.generate_random_id()
-    @form_field.id = new_id
-    new_id
-
-  generate_random_char: ->
-    chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    rand = Math.floor(Math.random() * chars.length)
-    newchar = chars.substring rand, rand+1
-
   container_width: ->
     return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
 
