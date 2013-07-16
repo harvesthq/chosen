@@ -23,19 +23,17 @@ class Chosen extends AbstractChosen
     @form_field_jq.addClass "chzn-done"
 
   set_up_html: ->
-    @container_id = if @form_field.id.length then @form_field.id.replace(/[^\w]/g, '_') else this.generate_field_id()
-    @container_id += "_chzn"
-
     container_classes = ["chzn-container"]
     container_classes.push "chzn-container-" + (if @is_multiple then "multi" else "single")
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chzn-rtl" if @is_rtl
 
     container_props =
-      'id': @container_id
       'class': container_classes.join ' '
       'style': "width: #{this.container_width()};"
       'title': @form_field.title
+
+    container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chzn" if @form_field.id.length
 
     @container = ($ "<div />", container_props)
 
