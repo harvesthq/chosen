@@ -140,7 +140,7 @@ class Chosen extends AbstractChosen
     @search_field.focus()
 
   test_active_click: (evt) ->
-    if evt.target.up('#' + @container_id)
+    if evt.target.up('.chzn-container') is @container
       @active_field = true
     else
       this.close_field()

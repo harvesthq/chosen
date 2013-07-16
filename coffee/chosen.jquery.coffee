@@ -152,7 +152,7 @@ class Chosen extends AbstractChosen
 
 
   test_active_click: (evt) ->
-    if $(evt.target).parents('#' + @container_id).length
+    if @container[0] is $(evt.target).parents('.chzn-container')[0]
       @active_field = true
     else
       this.close_field()
