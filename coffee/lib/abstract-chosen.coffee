@@ -27,6 +27,7 @@ class AbstractChosen
     @disable_search_threshold = @options.disable_search_threshold || 0
     @disable_search = @options.disable_search || false
     @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
+    @group_search = if @options.group_search? then @options.group_search else true
     @search_contains = @options.search_contains || false
     @single_backstroke_delete = @options.single_backstroke_delete || false
     @max_selected_options = @options.max_selected_options || Infinity
@@ -50,7 +51,7 @@ class AbstractChosen
       setTimeout (=> this.container_mousedown()), 50 unless @active_field
     else
       @activate_field() unless @active_field
-  
+
   input_blur: (evt) ->
     if not @mouse_on_container
       @active_field = false
@@ -59,7 +60,7 @@ class AbstractChosen
   results_option_build: (options) ->
     content = ''
     for data in @results_data
-      if data.group && data.search_match
+      if data.group && (data.search_match || data.group_match)
         content += this.result_add_group data
       else if !data.empty && data.search_match
         content += this.result_add_option data
@@ -87,6 +88,10 @@ class AbstractChosen
     style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
 
     """<li id="#{option.dom_id}" class="#{classes.join(' ')}"#{style}>#{option.search_text}</li>"""
+
+  result_add_group: (group) ->
+    group.dom_id = @container_id + "_g_" + group.array_index
+    """<li id="#{group.dom_id}" class="group-result">#{group.search_text}</li>"""
 
   results_update_field: ->
     this.set_default_text()
@@ -119,34 +124,26 @@ class AbstractChosen
 
     for option in @results_data
       if not option.empty
-        if option.group
-          option.search_match = false
-        else
+
+        option.group_match = false if option.group
+
+        unless option.group and not @group_search
           option.search_match = false
 
-          if regex.test option.html
-            option.search_match = true
-            results += 1
-          else if @enable_split_word_search and (option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0)
-            #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
-            if parts.length
-              for part in parts
-                if regex.test part
-                  option.search_match = true
-                  results += 1
+          option.search_text = if option.group then option.label else option.html
+          option.search_match = this.search_string_match(option.search_text, regex)
+          results += 1 if option.search_match
 
           if option.search_match
             if searchText.length
-              startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
-              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-            else
-              text = option.html
+              startpos = option.search_text.search zregex
+              text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
+              option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
-            option.search_text = text
-
-            @results_data[option.group_array_index].search_match = true if option.group_array_index?
+            @results_data[option.group_array_index].group_match = true if option.group_array_index?
+          
+          else if option.group_array_index? and @results_data[option.group_array_index].search_match
+            option.search_match = true
 
     if results < 1 and searchText.length
       this.update_results_content ""
@@ -154,6 +151,17 @@ class AbstractChosen
     else
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
+
+  search_string_match: (search_string, regex) ->
+    if regex.test search_string
+      return true
+    else if @enable_split_word_search and (search_string.indexOf(" ") >= 0 or search_string.indexOf("[") == 0)
+      #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
+      parts = search_string.replace(/\[|\]/g, "").split(" ")
+      if parts.length
+        for part in parts
+          if regex.test part
+            return true
 
   choices_count: ->
     return @selected_option_count if @selected_option_count?
@@ -193,7 +201,7 @@ class AbstractChosen
     new_id = this.generate_random_id()
     @form_field.id = new_id
     new_id
-  
+
   generate_random_char: ->
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     rand = Math.floor(Math.random() * chars.length)
@@ -212,6 +220,5 @@ class AbstractChosen
   @default_multiple_text: "Select Some Options"
   @default_single_text: "Select an Option"
   @default_no_result_text: "No results match"
-
 
 root.AbstractChosen = AbstractChosen
