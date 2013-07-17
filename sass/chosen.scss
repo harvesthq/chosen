@@ -98,7 +98,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     margin: 0;
     padding: 3px 4px;
     white-space: nowrap;
-    input {
+    input[type="text"] {
       @include box-sizing(border-box);
       margin: 1px 0;
       padding: 4px 20px 4px 5px;
@@ -158,7 +158,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     }
     &.group-result {
       display: list-item;
-      color: #999;
       font-weight: bold;
       cursor: default;
     }
@@ -196,7 +195,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       margin: 0;
       padding: 0;
       white-space: nowrap;
-      input {
+      input[type="text"] {
         margin: 1px 0;
         padding: 5px;
         height: 15px;
@@ -292,7 +291,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   .chzn-choices {
     border: 1px solid #5897fb;
     box-shadow: 0 0 5px rgba(#000,.3);
-    li.search-field input {
+    li.search-field input[type="text"] {
       color: #111 !important;
     }
   }
@@ -337,7 +336,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   }
   .chzn-choices li {
     float: right;
-    &.search-field input {
+    &.search-field input[type="text"] {
       direction: rtl;
     }
     &.search-choice {
@@ -364,7 +363,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   &.chzn-container-active.chzn-with-drop .chzn-single div {
     border-right: none;
   }
-  .chzn-search input {
+  .chzn-search input[type="text"] {
     padding: 4px 5px 4px 20px;
     background: #fff $chosen-sprite no-repeat -30px -20px;
     @include background($chosen-sprite no-repeat -30px -20px, linear-gradient(#eee 1%, #fff 15%));
@@ -386,10 +385,10 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
 
 /* @group Retina compatibility */
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-resolution: 144dpi)  {
-  .chzn-rtl .chzn-search input,
+  .chzn-rtl .chzn-search input[type="text"],
   .chzn-container-single .chzn-single abbr,
   .chzn-container-single .chzn-single div b,
-  .chzn-container-single .chzn-search input,
+  .chzn-container-single .chzn-search input[type="text"],
   .chzn-container-multi .chzn-choices .search-choice .search-choice-close,
   .chzn-container .chzn-results-scroll-down span,
   .chzn-container .chzn-results-scroll-up span {
