@@ -76,8 +76,6 @@ class AbstractChosen
     content
 
   result_add_option: (option) ->
-    option.dom_id = @container_id + "_o_" + option.array_index
-
     classes = []
     classes.push "active-result" if !option.disabled and !(option.selected and @is_multiple)
     classes.push "disabled-result" if option.disabled and !(option.selected and @is_multiple)
@@ -87,11 +85,10 @@ class AbstractChosen
 
     style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
 
-    """<li id="#{option.dom_id}" class="#{classes.join(' ')}"#{style}>#{option.search_text}</li>"""
+    """<li class="#{classes.join(' ')}"#{style} data-option-array-index="#{option.array_index}">#{option.search_text}</li>"""
 
   result_add_group: (group) ->
-    group.dom_id = @container_id + "_g_" + group.array_index
-    """<li id="#{group.dom_id}" class="group-result">#{group.search_text}</li>"""
+    """<li class="group-result">#{group.search_text}</li>"""
 
   results_update_field: ->
     this.set_default_text()
@@ -196,16 +193,6 @@ class AbstractChosen
       when 9, 38, 40, 16, 91, 17
         # don't do anything on these keys
       else this.results_search()
-
-  generate_field_id: ->
-    new_id = this.generate_random_id()
-    @form_field.id = new_id
-    new_id
-
-  generate_random_char: ->
-    chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    rand = Math.floor(Math.random() * chars.length)
-    newchar = chars.substring rand, rand+1
 
   container_width: ->
     return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"

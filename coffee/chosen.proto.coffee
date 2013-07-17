@@ -18,18 +18,17 @@ class Chosen extends AbstractChosen
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
-    @container_id = @form_field.identify().replace(/[^\w]/g, '_') + "_chzn"
-
     container_classes = ["chzn-container"]
     container_classes.push "chzn-container-" + (if @is_multiple then "multi" else "single")
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chzn-rtl" if @is_rtl
 
     container_props =
-      'id': @container_id
       'class': container_classes.join ' '
       'style': "width: #{this.container_width()};"
       'title': @form_field.title
+
+    container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chzn" if @form_field.id.length
 
     @container = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
@@ -140,7 +139,7 @@ class Chosen extends AbstractChosen
     @search_field.focus()
 
   test_active_click: (evt) ->
-    if evt.target.up('#' + @container_id)
+    if evt.target.up('.chzn-container') is @container
       @active_field = true
     else
       this.close_field()
@@ -314,8 +313,7 @@ class Chosen extends AbstractChosen
       
       high.addClassName("result-selected")
 
-      position = high.id.substr(high.id.lastIndexOf("_") + 1 )
-      item = @results_data[position]
+      item = @results_data[ high.getAttribute("data-option-array-index") ]
       item.selected = true
 
       @form_field.options[item.options_index].selected = true
@@ -352,9 +350,6 @@ class Chosen extends AbstractChosen
 
       @form_field.options[result_data.options_index].selected = false
       @selected_option_count = null
-
-      result = $(@container_id + "_o_" + pos)
-      result.removeClassName("result-selected").addClassName("active-result").show()
 
       this.result_clear_highlight()
       this.winnow_results() if @results_showing
