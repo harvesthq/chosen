@@ -144,6 +144,7 @@ class AbstractChosen
 
     if results < 1 and searchText.length
       this.update_results_content ""
+      this.result_clear_highlight()
       this.no_results searchText
     else
       this.update_results_content this.results_option_build()
