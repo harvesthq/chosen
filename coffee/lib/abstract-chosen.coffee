@@ -96,6 +96,7 @@ class AbstractChosen
     this.result_clear_highlight()
     @result_single_selected = null
     this.results_build()
+    this.winnow_results() if @results_showing
 
   results_toggle: ->
     if @results_showing
