@@ -467,10 +467,10 @@ class Chosen extends AbstractChosen
       w = Element.measure(div, 'width') + 25
       div.remove()
 
-      @f_width = @container.getWidth() unless @f_width
+      f_width = @container.getWidth()
 
-      if( w > @f_width-10 )
-        w = @f_width - 10
+      if( w > f_width-10 )
+        w = f_width - 10
 
       @search_field.setStyle({'width': w + 'px'})
 
