@@ -399,3 +399,8 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   }
 }
 /* @end */
+
+/* @group Select all options */
+.chzn-select-all { background: #f8f8f8; border-top: 1px solid #ededed; color: #346f9b; cursor:pointer; display: block; font-size: 12px; font-weight: bold; padding: 6px; text-align: center; text-decoration: none; }
+.chzn-select-all:hover { background: #eee; }
+/* @end */
