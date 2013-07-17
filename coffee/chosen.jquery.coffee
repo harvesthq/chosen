@@ -234,10 +234,10 @@ class Chosen extends AbstractChosen
     @results_showing = false
 
   select_all_setup: ->
-    select_all_temp = $("<a />", { class: "chzn-select-all" }).html("Select all options")
-    @dropdown.append(select_all_temp)
-    @select_all_link = @dropdown.find(".chzn-select-all").first()
-    @select_all_link.click((evt) => this.select_all_options(evt))
+    @select_all_link = $("<a />", { class: "chzn-select-all" })
+                        .html("Select all options")
+                        .click((evt) => this.select_all_options(evt))
+    @dropdown.append(@select_all_link)
 
   select_all_options: (evt) ->
     evt.preventDefault()
