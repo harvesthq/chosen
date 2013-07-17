@@ -23,19 +23,17 @@ class Chosen extends AbstractChosen
     @form_field_jq.addClass "chzn-done"
 
   set_up_html: ->
-    @container_id = if @form_field.id.length then @form_field.id.replace(/[^\w]/g, '_') else this.generate_field_id()
-    @container_id += "_chzn"
-
     container_classes = ["chzn-container"]
     container_classes.push "chzn-container-" + (if @is_multiple then "multi" else "single")
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chzn-rtl" if @is_rtl
 
     container_props =
-      'id': @container_id
       'class': container_classes.join ' '
       'style': "width: #{this.container_width()};"
       'title': @form_field.title
+
+    container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chzn" if @form_field.id.length
 
     @container = ($ "<div />", container_props)
 
@@ -152,7 +150,7 @@ class Chosen extends AbstractChosen
 
 
   test_active_click: (evt) ->
-    if $(evt.target).parents('#' + @container_id).length
+    if @container.is($(evt.target).closest('.chzn-container'))
       @active_field = true
     else
       this.close_field()
@@ -312,7 +310,6 @@ class Chosen extends AbstractChosen
   result_select: (evt) ->
     if @result_highlight
       high = @result_highlight
-      high_id = high.attr "id"
 
       this.result_clear_highlight()
 
@@ -328,8 +325,7 @@ class Chosen extends AbstractChosen
 
       high.addClass "result-selected"
 
-      position = high_id.substr(high_id.lastIndexOf("_") + 1 )
-      item = @results_data[position]
+      item = @results_data[ high[0].getAttribute("data-option-array-index") ]
       item.selected = true
 
       @form_field.options[item.options_index].selected = true
@@ -365,9 +361,6 @@ class Chosen extends AbstractChosen
 
       @form_field.options[result_data.options_index].selected = false
       @selected_option_count = null
-
-      result = $("#" + @container_id + "_o_" + pos)
-      result.removeClass("result-selected").addClass("active-result").show()
 
       this.result_clear_highlight()
       this.winnow_results() if @results_showing
@@ -489,11 +482,5 @@ class Chosen extends AbstractChosen
         w = @f_width - 10
 
       @search_field.css({'width': w + 'px'})
-  
-  generate_random_id: ->
-    string = "sel" + this.generate_random_char() + this.generate_random_char() + this.generate_random_char()
-    while $("#" + string).length > 0
-      string += this.generate_random_char()
-    string
 
 root.Chosen = Chosen
