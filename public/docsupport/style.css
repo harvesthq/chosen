@@ -172,3 +172,16 @@ strong { font-weight: bold; }
   text-align: left;
 }
 
+#content pre[class*=language-] {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+#content pre[class*=language-] code {
+  font-size: 14px;
+}
+
+#content code[class*=language-] {
+  font-size: 12px;
+  padding: 2px 4px;
+}

@@ -2,11 +2,13 @@
 <html lang="en"> 
 <head>
   <link rel="stylesheet" href="docsupport/style.css">
+  <link rel="stylesheet" href="docsupport/prism.css">
   <link rel="stylesheet" href="chosen.css">
   <style type="text/css" media="all">
     /* fix rtl for demo */
     .chzn-rtl .chzn-drop { left: -9000px; }
   </style>
+  <script src="docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
   <div id="container">
@@ -19,6 +21,14 @@
       <h2>Options</h2>
       <p>Options available to pass into Chosen on instantiation.</p>
 
+<pre>
+  <code class="language-javascript">$(".my_select_box").chosen(
+    disable_search_threshold: 10,
+    no_results_text: 'Oops, nothing found!',
+    width: "95%"
+  );</code>
+</pre>
+
       <table class="docs-table">
         <tr>
           <th>Option</th><th>Default</th><th>Description</th>
@@ -26,7 +36,7 @@
         <tr>
           <td>allow_single_deselect</td>
           <td>false</td>
-          <td>When a single select box isn't a required field, you can set allow_single_deselect: true and Chosen will add a UI element for option deselection. This will only work if the first option has blank text.</td>
+          <td>When a single select box isn't a required field, you can set <code class="language-javascript">allow_single_deselect: true</code> and Chosen will add a UI element for option deselection. This will only work if the first option has blank text.</td>
         </tr>
         <tr>
           <td>disable_search</td>
@@ -36,7 +46,7 @@
         <tr>
           <td>disable_search_threshold</td>
           <td>0</td>
-          <td>The disable_search_threshold option can be specified to hide the search input on single selects if there are fewer than (n) options.</td>
+          <td>The <code class="language-javascript">disable_search_threshold</code> option can be specified to hide the search input on single selects if there are fewer than (n) options.</td>
         </tr>
         <tr>
           <td>enable_split_word_search</td>
@@ -88,6 +98,14 @@
       <h2>Attributes</h2>
       <p>Attributes placed on the select tag or its options that are carried over to Chosen.</p>
 
+<pre>
+  <code class="language-markup">&lt;select class="my_select_box" data-placeholder="Select Your Options"&gt;
+      &lt;option value="1"&gt;Option 1&lt;/option&gt;
+      &lt;option value="2" selected&gt;Option 2&lt;/option&gt;
+      &lt;option value="3" disabled&gt;Option 3&lt;/option&gt;
+    &lt;/select&gt;</code>
+</pre>
+
       <table class="docs-table">
         <tr>
           <th>Attribute</th><th>Description</th>
@@ -108,6 +126,15 @@
 
       <h2>Classes</h2>
       <p>Classes placed on the select tag that are carried over to Chosen.</p>
+
+<pre>
+  <code class="language-markup">&lt;select class="my_select_box chzn-rtl"&gt;
+      &lt;option value="1" &gt;Option 1&lt;/option&gt;
+      &lt;option value="2" &gt;Option 2&lt;/option&gt;
+      &lt;option value="3" &gt;Option 3&lt;/option&gt;
+    &lt;/select&gt;</code>
+</pre>
+
       <table class="docs-table">
         <tr>
           <th>Classname</th>
