@@ -20,8 +20,9 @@
       <p>Chosen has a number of options and attributes that allow you to have full control of your select boxes.</p>
 
       <h2>Options</h2>
-      <p>Options available to pass into Chosen on instantiation.</p>
+      <p>The following options are available to pass into Chosen on instantiation.</p>
 
+      <h3>Example:</h3>
 <pre>
   <code class="language-javascript">$(".my_select_box").chosen(
     disable_search_threshold: 10,
@@ -37,74 +38,76 @@
         <tr>
           <td>allow_single_deselect</td>
           <td>false</td>
-          <td>When a single select box isn't a required field, you can set <code class="language-javascript">allow_single_deselect: true</code> and Chosen will add a UI element for option deselection. This will only work if the first option has blank text.</td>
+          <td>When a select box isn’t a required field, you can set <code class="language-javascript">allow_single_deselect: true</code> and Chosen will add a UI element to deselect the last remaining selected option. This will only work if the first option has blank text.</td>
         </tr>
         <tr>
           <td>disable_search</td>
           <td>false</td>
-          <td>Do not display the search field.</td>
+          <td>Chosen will not display the search field when <code class="language-javascript">disable_search: true</code></td>
         </tr>
         <tr>
           <td>disable_search_threshold</td>
           <td>0</td>
-          <td>The <code class="language-javascript">disable_search_threshold</code> option can be specified to hide the search input on single selects if there are fewer than (n) options.</td>
+          <td>Hide the search input on single selects if there are fewer than (n) options</td>
         </tr>
         <tr>
           <td>enable_split_word_search</td>
           <td>true</td>
-          <td>By default, searching will match on any word within an option tag. Set this option to false if you want to only match on the entire text of an option tag.</td>
+          <td>By default, searching will match on any word within an option tag. Set this option to <code class="language-javascript">false</code> if you want to only match on the entire text of an option tag.</td>
         </tr>
         <tr>
           <td>inherit_select_classes</td>
           <td>false</td>
-          <td>To copy classes from the original select to the corresponding Chosen select, set this option to true</td>
+          <td>To copy classes from the original select to the corresponding Chosen select, set this option to <code class="language-javascript">true</code></td>
         </tr>
         <tr>
         <tr>
           <td>max_selected_options</td>
           <td>Infinity</td>
-          <td>Limit how many options the user can select. When the limit reached <code class="language-javascript">liszt:maxselected</code> event is triggered.</td>
+          <td>Limit how many options the user can select. When the limit is reached, the <code class="language-javascript">liszt:maxselected</code> event is triggered.</td>
         </tr>
         <tr>
           <td>no_results_text</td>
           <td>"No results match"</td>
-          <td>Setting the "No results" search text is as easy as passing an option when you create Chosen</td>
+          <td>The text to be displayed when no matching results are found</td>
         </tr>
         <tr>
           <td>placeholder_text_multiple</td>
           <td>"Select Some Options"</td>
-          <td>A string that is set on the placeholder attribute for Chosen multiple select search fields.</td>
+          <td>The text to be displayed as a placeholder when no options are selected for a multiple select</td>
         </tr>
         </tr>
           <td>placeholder_text_single</td>
           <td>"Select an Option"</td>
-          <td>A string that is set on the placeholder attribute for Chosen single select search fields.</td>
+          <td>The text to be displayed as a placeholder when no options are selected for a single select</td>
         </tr>
         <tr>
           <td>search_contains</td>
           <td>false</td>
-          <td>By default, Chosen matches starting at the beginning of a word. Setting this option to true will allow matches starting from within a word.</td>
+          <td>By default, Chosen's search matches starting at the beginning of a word. Setting this option to <code class="language-javascript">true</code> allows matches starting from anywhere within a word.</td>
         </tr>
         <tr>
           <td>single_backstroke_delete</td>
           <td>false</td>
-          <td>By default, on multiple selects, pressing delete once will highlight the last selection. Pressing again will remove it. Setting this option to true will remove it on the first press.</td>
+          <td>By default, on multiple selects, pressing delete once will highlight the last selection, and pressing again will remove it. Setting this option to <code class="language-javascript">true</code> will remove it on the first press.</td>
         <tr>
           <td>width</td>
           <td>auto</td>
-          <td>Using a custom width with Chosen is as easy as passing an option when you create Chosen</td>
+          <td>The width of the Chosen select box</td>
         </tr>
       </table>
 
       <h2>Attributes</h2>
-      <p>Attributes placed on the select tag or its options that are carried over to Chosen.</p>
+      <p>Certain attributes placed on the select tag or its options can be used to configure Chosen.</p>
+
+      <h3>Example:</h3>
 
 <pre>
   <code class="language-markup">&lt;select class="my_select_box" data-placeholder="Select Your Options"&gt;
-      &lt;option value="1"&gt;Option 1&lt;/option&gt;
-      &lt;option value="2" selected&gt;Option 2&lt;/option&gt;
-      &lt;option value="3" disabled&gt;Option 3&lt;/option&gt;
-    &lt;/select&gt;</code>
+    &lt;option value="1"&gt;Option 1&lt;/option&gt;
+    &lt;option value="2" selected&gt;Option 2&lt;/option&gt;
+    &lt;option value="3" disabled&gt;Option 3&lt;/option&gt;
+  &lt;/select&gt;</code>
 </pre>
 
       <table class="docs-table">
@@ -113,27 +116,29 @@
         </tr>
         <tr>
           <td>data-placeholder</td>
-          <td>default to "Select an Option" or "Select Some Options" depending on whether the select is single or multiple.</td>
+          <td>Defaults to "Select an Option" for single selects or "Select Some Options" for multiple selects</td>
         </tr>
         <tr>
           <td>multiple</td>
-          <td>Using the attribute multiple on your select box will carry through to the Chosen select</td>
+          <td>The attribute <code class="language-html">multiple</code> on your select box dictates whether Chosen will render a multiple or single select</td>
         </tr>
         <tr>
           <td>selected, disabled</td>
-          <td>Chosen automatically highlights selected options and disables disabled options.</td>
+          <td>Chosen automatically highlights selected options and disables disabled options</td>
         </tr>
       </table>
 
       <h2>Classes</h2>
-      <p>Classes placed on the select tag that are carried over to Chosen.</p>
+      <p>Classes placed on the select tag can be used to configure Chosen.</p>
+
+      <h3>Example:</h3>
 
 <pre>
   <code class="language-markup">&lt;select class="my_select_box chzn-rtl"&gt;
-      &lt;option value="1" &gt;Option 1&lt;/option&gt;
-      &lt;option value="2" &gt;Option 2&lt;/option&gt;
-      &lt;option value="3" &gt;Option 3&lt;/option&gt;
-    &lt;/select&gt;</code>
+    &lt;option value="1"&gt;Option 1&lt;/option&gt;
+    &lt;option value="2"&gt;Option 2&lt;/option&gt;
+    &lt;option value="3"&gt;Option 3&lt;/option&gt;
+  &lt;/select&gt;</code>
 </pre>
 
       <table class="docs-table">
@@ -143,8 +148,8 @@
         <tr>
           <td>chzn-rtl</td>
           <td>
-            Chosen supports right to left select boxes too. Just add "chzn-rtl" to your select tags and you are good to go.
-            <strong>Note:</strong> The chzn-rtl class will pass through to the Chosen select even when the <code class="language-javascript">inherit_select_classes</code> option is set to false.
+            <p>Chosen supports right-to-left text in select boxes. Add the class <code class="language-html">chzn-rtl</code> to your select tag to support right-to-left text options.</p>
+            <p><strong>Note:</strong> The <code class="language-html">chzn-rtl</code> class will pass through to the Chosen select even when the <code class="language-javascript">inherit_select_classes</code> option is set to false.</p>
           </td>
         <tr>
       </table>

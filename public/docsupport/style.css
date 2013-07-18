@@ -179,6 +179,7 @@ strong { font-weight: bold; }
 
 #content pre[class*=language-] code {
   font-size: 14px;
+  padding: 0;
 }
 
 #content code[class*=language-] {
