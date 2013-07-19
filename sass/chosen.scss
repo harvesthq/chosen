@@ -103,12 +103,15 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       margin: 1px 0;
       padding: 4px 20px 4px 5px;
       width: 100%;
+      height: auto;
       outline: 0;
       border: 1px solid #aaa;
       background: #fff $chosen-sprite no-repeat 100% -20px;
       @include background($chosen-sprite no-repeat 100% -20px, linear-gradient(#eee 1%, #fff 15%));
       font-size: 1em;
       font-family: sans-serif;
+      line-height: normal;
+      border-radius: 0;
     }
   }
   .chzn-drop {
@@ -206,6 +209,8 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
         color: #666;
         font-size: 100%;
         font-family: sans-serif;
+        line-height: normal;
+        border-radius: 0;
       }
       .default {
         color: #999;
