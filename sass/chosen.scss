@@ -1,5 +1,6 @@
 @import "compass/css3/box-sizing";
 @import "compass/css3/images";
+@import "compass/css3/user-interface";
 
 $chosen-sprite: image-url('chosen-sprite.png');
 $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
@@ -12,6 +13,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   font-size: 13px;
   zoom: 1;
   *display: inline;
+  @include user-select(none);
   .chzn-drop {
     position: absolute;
     top: 100%;
