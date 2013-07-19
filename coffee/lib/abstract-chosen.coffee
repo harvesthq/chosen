@@ -78,6 +78,8 @@ class AbstractChosen
     content
 
   result_add_option: (option) ->
+    return '' unless this.include_option_in_results(option)
+
     classes = []
     classes.push "active-result" if !option.disabled and !(option.selected and @is_multiple)
     classes.push "disabled-result" if option.disabled and !(option.selected and @is_multiple)
@@ -123,7 +125,7 @@ class AbstractChosen
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
-      if not option.empty
+      if this.include_option_in_results(option)
 
         option.group_match = false if option.group
 
@@ -200,6 +202,13 @@ class AbstractChosen
 
   container_width: ->
     return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
+
+  include_option_in_results: (option) ->
+    return false if not @display_selected_options and option.selected
+    return false if not @display_disabled_options and option.disabled
+    return false if option.empty
+
+    return true
 
   # class methods and variables ============================================================ 
 
