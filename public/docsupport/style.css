@@ -156,3 +156,33 @@ strong { font-weight: bold; }
   width: 162px;
   background-color: #333333;
 }
+
+.docs-table th, .docs-table td {
+  border: 1px solid #000;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.docs-table td:last-child {
+  white-space: normal;
+}
+
+.docs-table th {
+  font-weight: bold;
+  text-align: left;
+}
+
+#content pre[class*=language-] {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+#content pre[class*=language-] code {
+  font-size: 14px;
+  padding: 0;
+}
+
+#content code[class*=language-] {
+  font-size: 12px;
+  padding: 2px 4px;
+}
