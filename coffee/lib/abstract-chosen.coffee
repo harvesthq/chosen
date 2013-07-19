@@ -127,20 +127,25 @@ class AbstractChosen
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
+      results_group = null
+
       if this.include_option_in_results(option)
 
         if option.group
           option.group_match = false
           option.active_options = 0
 
-        @results_data[option.group_array_index].active_options += 1 if option.group_array_index?
-
+        if option.group_array_index? and @results_data[option.group_array_index]
+          results_group = @results_data[option.group_array_index]
+          results += 1 if results_group.active_options is 0 and results_group.search_match
+          results_group.active_options += 1
+                
         unless option.group and not @group_search
           option.search_match = false
 
           option.search_text = if option.group then option.label else option.html
           option.search_match = this.search_string_match(option.search_text, regex)
-          results += 1 if option.search_match
+          results += 1 if option.search_match and not option.group
 
           if option.search_match
             if searchText.length
@@ -148,7 +153,7 @@ class AbstractChosen
               text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
-            @results_data[option.group_array_index].group_match = true if option.group_array_index?
+            results_group.group_match = true if results_group?
           
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
