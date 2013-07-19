@@ -157,6 +157,44 @@
           </td>
         <tr>
       </table>
+
+      <h2>Events</h2>
+      <p>Chosen fires events to which you can attach listeners.</p>
+
+      <h3>Example:</h3>
+
+<pre>
+  <code class="language-javascript">$('.chzn-select').bind('change', function(evt, params) {
+    do_something(evt, params);
+  });</code>
+</pre>
+
+      <table class="docs-table">
+        <tr>
+          <th>Event</th><th>Description</th>
+        </tr>
+        <tr>
+          <td>change</td>
+          <td>Chosen triggers the standard DOM event whenever a selection is made (it also includes a selected or deselected parameter that tells you which option was changed).</td>
+        </tr>
+        <tr>
+          <td>liszt:ready</td>
+          <td>after Chosen has been fully instantiated.</td>
+        </tr>
+        <tr>
+          <td>liszt:maxselected</td>
+          <td>triggered if <code class="language-javascript">max_selected_options</code> is set and that total is broken.</td>
+        </tr>
+        <tr>
+          <td>liszt:showing_dropdown</td>
+          <td>triggered when the dropdown is opened</td>
+        </tr>
+        <tr>
+          <td>liszt:hiding_dropdown</td>
+          <td>triggered when the dropdown is closed</td>
+        </tr>
+      </table>
+
     </div>
   </div>
   <div class="oss-bar">
