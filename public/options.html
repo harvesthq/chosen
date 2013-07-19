@@ -38,17 +38,17 @@
         <tr>
           <td>allow_single_deselect</td>
           <td>false</td>
-          <td>When a select box isn’t a required field, you can set <code class="language-javascript">allow_single_deselect: true</code> and Chosen will add a UI element to deselect the last remaining selected option. This will only work if the first option has blank text.</td>
+          <td>When set to <code class="language-javascript">true</code> on a single select, Chosen adds a UI element which selects the first elment (if it is blank).</td>
         </tr>
         <tr>
           <td>disable_search</td>
           <td>false</td>
-          <td>Chosen will not display the search field when <code class="language-javascript">disable_search: true</code></td>
+          <td>When set to <code class="language-javascript">true</code>, Chosen will not display the search field (single selects only).</td>
         </tr>
         <tr>
           <td>disable_search_threshold</td>
           <td>0</td>
-          <td>Hide the search input on single selects if there are fewer than (n) options</td>
+          <td>Hide the search input on single selects if there are fewer than (n) options.</td>
         </tr>
         <tr>
           <td>enable_split_word_search</td>
@@ -58,13 +58,13 @@
         <tr>
           <td>inherit_select_classes</td>
           <td>false</td>
-          <td>To copy classes from the original select to the corresponding Chosen select, set this option to <code class="language-javascript">true</code></td>
+          <td>When set to <code class="language-javascript">true</code>, Chosen will grab any classes on the original select field and add them to Chosen's container div.</td>
         </tr>
         <tr>
         <tr>
           <td>max_selected_options</td>
           <td>Infinity</td>
-          <td>Limit how many options the user can select. When the limit is reached, the <code class="language-javascript">liszt:maxselected</code> event is triggered.</td>
+          <td>Limits how many options the user can select. When the limit is reached, the <code class="language-javascript">liszt:maxselected</code> event is triggered.</td>
         </tr>
         <tr>
           <td>no_results_text</td>
@@ -75,12 +75,12 @@
         <tr>
           <td>placeholder_text_multiple</td>
           <td>"Select Some Options"</td>
-          <td>The text to be displayed as a placeholder when no options are selected for a multiple select</td>
+          <td>The text to be displayed as a placeholder when no options are selected for a multiple select.</td>
         </tr>
         </tr>
           <td>placeholder_text_single</td>
           <td>"Select an Option"</td>
-          <td>The text to be displayed as a placeholder when no options are selected for a single select</td>
+          <td>The text to be displayed as a placeholder when no options are selected for a single select.</td>
         </tr>
         <tr>
           <td>search_contains</td>
@@ -117,15 +117,18 @@
         </tr>
         <tr>
           <td>data-placeholder</td>
-          <td>Defaults to "Select an Option" for single selects or "Select Some Options" for multiple selects</td>
+          <td>
+            </p>The text to be displayed as a placeholder when no options are selected for a select. Defaults to "Select an Option" for single selects or "Select Some Options" for multiple selects.</p>
+            <p><strong>Note:</strong>This attribute overrides anything set in the <code class="language-javascript">placeholder_text_multiple</code> or <code class="language-javascript">placeholder_text_single</code> options.</p>
+          </td>
         </tr>
         <tr>
           <td>multiple</td>
-          <td>The attribute <code class="language-html">multiple</code> on your select box dictates whether Chosen will render a multiple or single select</td>
+          <td>The attribute <code class="language-html">multiple</code> on your select box dictates whether Chosen will render a multiple or single select.</td>
         </tr>
         <tr>
           <td>selected, disabled</td>
-          <td>Chosen automatically highlights selected options and disables disabled options</td>
+          <td>Chosen automatically highlights selected options and disables disabled options.</td>
         </tr>
       </table>
 
