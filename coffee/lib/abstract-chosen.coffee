@@ -127,6 +127,8 @@ class AbstractChosen
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
+
+      option.search_match = false
       results_group = null
 
       if this.include_option_in_results(option)
@@ -141,7 +143,6 @@ class AbstractChosen
           results_group.active_options += 1
                 
         unless option.group and not @group_search
-          option.search_match = false
 
           option.search_text = if option.group then option.label else option.html
           option.search_match = this.search_string_match(option.search_text, regex)
