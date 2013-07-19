@@ -69,7 +69,8 @@
         <tr>
           <td>no_results_text</td>
           <td>"No results match"</td>
-          <td>The text to be displayed when no matching results are found</td>
+          <td>The text to be displayed when no matching results are found. The current search is shown at the end of the text (e.g. 
+           No reults match "Bad Search").</td>
         </tr>
         <tr>
           <td>placeholder_text_multiple</td>
@@ -84,7 +85,7 @@
         <tr>
           <td>search_contains</td>
           <td>false</td>
-          <td>By default, Chosen's search matches starting at the beginning of a word. Setting this option to <code class="language-javascript">true</code> allows matches starting from anywhere within a word.</td>
+          <td>By default, Chosen's search matches starting at the beginning of a word. Setting this option to <code class="language-javascript">true</code> allows matches starting from anywhere within a word. This is especially useful for options that include a lot of special characters or phrases in ()'s and []'s.</td>
         </tr>
         <tr>
           <td>single_backstroke_delete</td>
@@ -92,8 +93,8 @@
           <td>By default, on multiple selects, pressing delete once will highlight the last selection, and pressing again will remove it. Setting this option to <code class="language-javascript">true</code> will remove it on the first press.</td>
         <tr>
           <td>width</td>
-          <td>auto</td>
-          <td>The width of the Chosen select box</td>
+          <td>Original select width.</td>
+          <td>The width of the Chosen select box. By default, Chosen attempts to match the width of the select box you are replacing. If your select is hidden when Chosen is instantiated, you must specify a width or the select will show up with a width of 0.</td>
         </tr>
       </table>
 
