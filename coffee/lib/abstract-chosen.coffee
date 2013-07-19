@@ -92,6 +92,8 @@ class AbstractChosen
     """<li class="#{classes.join(' ')}"#{style} data-option-array-index="#{option.array_index}">#{option.search_text}</li>"""
 
   result_add_group: (group) ->
+    return '' unless group.active_options > 0
+
     """<li class="group-result">#{group.search_text}</li>"""
 
   results_update_field: ->
@@ -127,7 +129,11 @@ class AbstractChosen
     for option in @results_data
       if this.include_option_in_results(option)
 
-        option.group_match = false if option.group
+        if option.group
+          option.group_match = false
+          option.active_options = 0
+
+        @results_data[option.group_array_index].active_options += 1 if option.group_array_index?
 
         unless option.group and not @group_search
           option.search_match = false
