@@ -159,12 +159,12 @@
       </table>
 
       <h2>Events</h2>
-      <p>Chosen fires events to which you can attach listeners.</p>
+      <p>Chosen triggers a number of standard and custom events on the original select field.</p>
 
       <h3>Example:</h3>
 
 <pre>
-  <code class="language-javascript">$('.chzn-select').bind('change', function(evt, params) {
+  <code class="language-javascript">$('select').on('change', function(evt, params) {
     do_something(evt, params);
   });</code>
 </pre>
@@ -175,7 +175,10 @@
         </tr>
         <tr>
           <td>change</td>
-          <td>Chosen triggers the standard DOM event whenever a selection is made (it also includes a selected or deselected parameter that tells you which option was changed).</td>
+          <td>
+            <p>Chosen triggers the standard DOM event whenever a selection is made (it also includes a selected or deselected parameter that tells you which option was changed).</p>
+            <p><strong>Note:</strong> in order to use change in the Prototype version, you have to include the <a href="https://github.com/kangax/protolicious/blob/5b56fdafcd7d7662c9d648534225039b2e78e371/event.simulate.js">Event.simulate</a> class. The selected and deselected parameters are not available for Prototype.</p>
+          </td>
         </tr>
         <tr>
           <td>liszt:ready</td>
@@ -187,11 +190,11 @@
         </tr>
         <tr>
           <td>liszt:showing_dropdown</td>
-          <td>triggered when the dropdown is opened</td>
+          <td>triggered when Chosen's dropdown is opened.</td>
         </tr>
         <tr>
           <td>liszt:hiding_dropdown</td>
-          <td>triggered when the dropdown is closed</td>
+          <td>triggered when Chosen's dropdown is closed.</td>
         </tr>
       </table>
 
