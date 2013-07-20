@@ -5,10 +5,14 @@ $.fn.extend({
     # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
     # Continue on if running IE document type but in compatibility mode
     return this unless AbstractChosen.browser_is_supported()
-    this.each((input_field) ->
+    this.each (input_field) ->
       $this = $ this
-      $this.data('chosen', new Chosen(this, options)) unless $this.hasClass "chzn-done"
-    )
+      chosen = $this.data('chosen')
+      if options == 'destroy'
+        return chosen.destroy() if chosen
+      else
+        return $this.data('chosen', new Chosen(this, options)) unless chosen
+
 })
 
 class Chosen extends AbstractChosen
@@ -86,6 +90,22 @@ class Chosen extends AbstractChosen
       @search_choices.bind 'click.chosen', (evt) => this.choices_click(evt); return
     else
       @container.bind 'click.chosen', (evt) => evt.preventDefault(); return # gobble click of anchor
+
+  destroy: ->
+    $(document).unbind '.chosen'
+    @container.unbind '.chosen'
+    @search_results.unbind '.chosen'
+    @form_field_jq.unbind '.chosen'
+    @search_field.unbind '.chosen'
+    if @is_multiple
+      @search_choices.unbind '.chosen'
+
+    if @search_field.attr "tabindex"
+      @form_field_jq.attr "tabindex", @search_field.attr("tabindex")
+
+    @container.remove()
+    @form_field_jq.data('chosen', null)
+    @form_field_jq.show()
 
   search_field_disabled: ->
     @is_disabled = @form_field_jq[0].disabled
