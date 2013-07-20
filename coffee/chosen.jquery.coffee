@@ -63,41 +63,41 @@ class Chosen extends AbstractChosen
     @form_field_jq.trigger("liszt:ready", {chosen: this})
 
   register_observers: ->
-    @container.mousedown (evt) => this.container_mousedown(evt); return
-    @container.mouseup (evt) => this.container_mouseup(evt); return
-    @container.mouseenter (evt) => this.mouse_enter(evt); return
-    @container.mouseleave (evt) => this.mouse_leave(evt); return
+    @container.bind 'mousedown.chosen', (evt) => this.container_mousedown(evt); return
+    @container.bind 'mouseup.chosen', (evt) => this.container_mouseup(evt); return
+    @container.bind 'mouseenter.chosen', (evt) => this.mouse_enter(evt); return
+    @container.bind 'mouseleave.chosen', (evt) => this.mouse_leave(evt); return
 
-    @search_results.mouseup (evt) => this.search_results_mouseup(evt); return
-    @search_results.mouseover (evt) => this.search_results_mouseover(evt); return
-    @search_results.mouseout (evt) => this.search_results_mouseout(evt); return
-    @search_results.bind 'mousewheel DOMMouseScroll', (evt) => this.search_results_mousewheel(evt); return
+    @search_results.bind 'mouseup.chosen', (evt) => this.search_results_mouseup(evt); return
+    @search_results.bind 'mouseover.chosen', (evt) => this.search_results_mouseover(evt); return
+    @search_results.bind 'mouseout.chosen', (evt) => this.search_results_mouseout(evt); return
+    @search_results.bind 'mousewheel.chosen DOMMouseScroll.chosen', (evt) => this.search_results_mousewheel(evt); return
 
-    @form_field_jq.bind "liszt:updated", (evt) => this.results_update_field(evt); return
-    @form_field_jq.bind "liszt:activate", (evt) => this.activate_field(evt); return
-    @form_field_jq.bind "liszt:open", (evt) => this.container_mousedown(evt); return
+    @form_field_jq.bind "liszt:updated.chosen", (evt) => this.results_update_field(evt); return
+    @form_field_jq.bind "liszt:activate.chosen", (evt) => this.activate_field(evt); return
+    @form_field_jq.bind "liszt:open.chosen", (evt) => this.container_mousedown(evt); return
 
-    @search_field.blur (evt) => this.input_blur(evt); return
-    @search_field.keyup (evt) => this.keyup_checker(evt); return
-    @search_field.keydown (evt) => this.keydown_checker(evt); return
-    @search_field.focus (evt) => this.input_focus(evt); return
+    @search_field.bind 'blur.chosen', (evt) => this.input_blur(evt); return
+    @search_field.bind 'keyup.chosen', (evt) => this.keyup_checker(evt); return
+    @search_field.bind 'keydown.chosen', (evt) => this.keydown_checker(evt); return
+    @search_field.bind 'focus.chosen', (evt) => this.input_focus(evt); return
 
     if @is_multiple
-      @search_choices.click (evt) => this.choices_click(evt); return
+      @search_choices.bind 'click.chosen', (evt) => this.choices_click(evt); return
     else
-      @container.click (evt) => evt.preventDefault(); return # gobble click of anchor
+      @container.bind 'click.chosen', (evt) => evt.preventDefault(); return # gobble click of anchor
 
   search_field_disabled: ->
     @is_disabled = @form_field_jq[0].disabled
     if(@is_disabled)
       @container.addClass 'chzn-disabled'
       @search_field[0].disabled = true
-      @selected_item.unbind "focus", @activate_action if !@is_multiple
+      @selected_item.unbind "focus.chosen", @activate_action if !@is_multiple
       this.close_field()
     else
       @container.removeClass 'chzn-disabled'
       @search_field[0].disabled = false
-      @selected_item.bind "focus", @activate_action if !@is_multiple
+      @selected_item.bind "focus.chosen", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
     if !@is_disabled
@@ -107,7 +107,7 @@ class Chosen extends AbstractChosen
       if not (evt? and ($ evt.target).hasClass "search-choice-close")
         if not @active_field
           @search_field.val "" if @is_multiple
-          $(document).click @click_test_action
+          $(document).bind 'click.chosen', @click_test_action
           this.results_show()
         else if not @is_multiple and evt and (($(evt.target)[0] == @selected_item[0]) || $(evt.target).parents("a.chzn-single").length)
           evt.preventDefault()
@@ -129,7 +129,7 @@ class Chosen extends AbstractChosen
     this.close_field() if not @active_field and @container.hasClass "chzn-container-active"
 
   close_field: ->
-    $(document).unbind "click", @click_test_action
+    $(document).unbind "click.chosen", @click_test_action
 
     @active_field = false
     this.results_hide()
@@ -242,7 +242,7 @@ class Chosen extends AbstractChosen
       @form_field_label = $("label[for='#{@form_field.id}']") #next check for a for=#{id}
 
     if @form_field_label.length > 0
-      @form_field_label.click (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
+      @form_field_label.bind 'click.chosen', (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
 
   show_search_field_default: ->
     if @is_multiple and this.choices_count() < 1 and not @active_field
@@ -273,7 +273,7 @@ class Chosen extends AbstractChosen
       choice.addClass 'search-choice-disabled'
     else
       close_link = $('<a />', { href: '#', class: 'search-choice-close',  rel: item.array_index })
-      close_link.click (evt) => this.choice_destroy_link_click(evt)
+      close_link.bind 'click.chosen', (evt) => this.choice_destroy_link_click(evt)
       choice.append close_link
     
     @search_container.before  choice
