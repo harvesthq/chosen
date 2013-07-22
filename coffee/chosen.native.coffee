@@ -49,6 +49,18 @@ find_parent = (el, check) ->
     # If we get beyond the <html> element, consider it not found
     current_node = null if current_node = document
   return current_node
+  
+find_next_sibling = (el, check) ->
+  current_sibling = el.nextSibling
+  until current_sibling is null or check current_sibling
+    current_sibling = current_sibling.nextSibling
+  return current_sibling
+
+find_prev_sibling = (el, check) ->
+  current_sibling = el.previousSibling
+  until current_sibling is null or check current_sibling
+    current_sibling = current_sibling.previousSibling
+  return current_sibling
 
 class Chosen extends AbstractChosen
 
@@ -232,17 +244,17 @@ class Chosen extends AbstractChosen
       @result_highlight = el
       add_class @result_highlight, "highlighted"
 
-      maxHeight = parseInt @search_results.style.maxHeight, 10
+      maxHeight = parseInt window.getComputedStyle(@search_results, null).getPropertyValue('max-height'), 10
       visible_top = @search_results.scrollTop
       visible_bottom = maxHeight + visible_top
 
-      high_top = @result_highlight.offsetTop + @search_results.scrollTop
-      high_bottom = high_top + @result_highlight.outerHeight
+      high_top = @result_highlight.offsetTop
+      high_bottom = high_top + @result_highlight.clientHeight
 
       if high_bottom >= visible_bottom
-        @search_results.scrollTop if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
+        @search_results.scrollTop = if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
       else if high_top < visible_top
-        @search_results.scrollTop high_top
+        @search_results.scrollTop = high_top
 
   result_clear_highlight: ->
     remove_class @result_highlight, "highlighted" if @result_highlight
@@ -465,7 +477,7 @@ class Chosen extends AbstractChosen
 
   keydown_arrow: ->
     if @results_showing and @result_highlight
-      next_sib = @result_highlight.nextAll("li.active-result").first()
+      next_sib = find_next_sibling @result_highlight, (el) => el.nodeName.toUpperCase() == "LI" and has_class el, "active-result"
       this.result_do_highlight next_sib if next_sib
     else
       this.results_show()
@@ -474,10 +486,10 @@ class Chosen extends AbstractChosen
     if not @results_showing and not @is_multiple
       this.results_show()
     else if @result_highlight
-      prev_sibs = @result_highlight.prevAll("li.active-result")
+      prev_sib = find_prev_sibling @result_highlight, (el) => el.nodeName.toUpperCase() == "LI" and has_class el, "active-result"
 
-      if prev_sibs.length
-        this.result_do_highlight prev_sibs.first()
+      if prev_sib?
+        this.result_do_highlight prev_sib
       else
         this.results_hide() if this.choices_count() > 0
         this.result_clear_highlight()
