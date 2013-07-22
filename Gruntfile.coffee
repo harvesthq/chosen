@@ -28,12 +28,16 @@ module.exports = (grunt) ->
       proto:
         src: ["public/chosen.proto.js"]
         dest: "public/chosen.proto.js"
+      native:
+        src: ["public/chosen.native.js"]
+        dest: "public/chosen.native.js"
 
     coffee:
       compile:
         files:
           'public/chosen.jquery.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.jquery.coffee']
           'public/chosen.proto.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.proto.coffee']
+          'public/chosen.native.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.native.coffee']
 
     uglify:
       options:
@@ -44,6 +48,7 @@ module.exports = (grunt) ->
         files:
           'public/chosen.jquery.min.js': ['public/chosen.jquery.js']
           'public/chosen.proto.min.js': ['public/chosen.proto.js']
+          'public/chosen.native.min.js': ['public/chosen.native.js']
 
     compass:
       chosen_css:
