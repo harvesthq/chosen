@@ -15,8 +15,11 @@ class @Chosen extends AbstractChosen
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_options: () ->
-    for option of AbstractChosen.default_options
-      @options[option] = @options[option] || Chosen.default_options[option] || AbstractChosen.default_options[option]
+    options = {}
+    Object.extend(options, AbstractChosen.default_options)
+    Object.extend(options, Chosen.default_options)
+    Object.extend(options, @options)
+    @options = options
 
   set_up_html: ->
     container_classes = ["chosen-container"]
