@@ -1,4 +1,3 @@
-root = this
 $ = jQuery
 
 $.fn.extend({
@@ -159,7 +158,7 @@ class Chosen extends AbstractChosen
     @parsing = true
     @selected_option_count = null
 
-    @results_data = root.SelectParser.select_to_array @form_field
+    @results_data = SelectParser.select_to_array @form_field
 
     if @is_multiple
       @search_choices.find("li.search-choice").remove()
@@ -482,5 +481,3 @@ class Chosen extends AbstractChosen
         w = f_width - 10
 
       @search_field.css({'width': w + 'px'})
-
-root.Chosen = Chosen
