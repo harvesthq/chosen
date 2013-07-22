@@ -202,6 +202,8 @@ class AbstractChosen
   @browser_is_supported: ->
     if window.navigator.appName == "Microsoft Internet Explorer"
       return null isnt document.documentMode >= 8
+    if /iP(ad|od|hone)/.test(window.navigator.userAgent)
+      return false
     return true
 
   @default_multiple_text: "Select Some Options"
