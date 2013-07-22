@@ -231,10 +231,10 @@ class Chosen extends AbstractChosen
 
 
   set_tab_index: (el) ->
-    if @form_field_jq.attr "tabindex"
-      ti = @form_field_jq.attr "tabindex"
-      @form_field_jq.attr "tabindex", -1
-      @search_field.attr "tabindex", ti
+    if @form_field_jq[0].tabIndex
+      ti = @form_field_jq[0].tabIndex
+      @form_field_jq[0].tabIndex = -1
+      @search_field[0].tabIndex = ti
 
   set_label_behavior: ->
     @form_field_label = @form_field_jq.parents("label") # first check for a parent label
@@ -272,7 +272,7 @@ class Chosen extends AbstractChosen
     if item.disabled
       choice.addClass 'search-choice-disabled'
     else
-      close_link = $('<a />', { href: '#', class: 'search-choice-close',  rel: item.array_index })
+      close_link = $('<a />', { href: '#', class: 'search-choice-close', 'data-option-array-index': item.array_index })
       close_link.click (evt) => this.choice_destroy_link_click(evt)
       choice.append close_link
     
@@ -284,7 +284,7 @@ class Chosen extends AbstractChosen
     this.choice_destroy $(evt.target) unless @is_disabled
 
   choice_destroy: (link) ->
-    if this.result_deselect (link.attr "rel")
+    if this.result_deselect( link[0].getAttribute("data-option-array-index") )
       this.show_search_field_default()
 
       this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.val().length < 1
