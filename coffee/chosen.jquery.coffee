@@ -104,7 +104,7 @@ class Chosen extends AbstractChosen
       @form_field_jq.attr "tabindex", @search_field.attr("tabindex")
 
     @container.remove()
-    @form_field_jq.data('chosen', null)
+    @form_field_jq.removeData('chosen')
     @form_field_jq.show()
 
   search_field_disabled: ->
