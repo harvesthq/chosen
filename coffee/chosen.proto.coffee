@@ -5,12 +5,18 @@ class @Chosen extends AbstractChosen
     @is_rtl = @form_field.hasClassName "chosen-rtl"
 
   set_default_values: ->
+    this.set_options()
+
     super()
 
     # HTML Templates
     @single_temp = new Template('<a class="chosen-single chosen-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>')
     @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
+
+  set_options: () ->
+    for option of AbstractChosen.default_options
+      @options[option] = @options[option] || Chosen.default_options[option] || AbstractChosen.default_options[option]
 
   set_up_html: ->
     container_classes = ["chosen-container"]

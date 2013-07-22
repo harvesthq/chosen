@@ -266,6 +266,17 @@ class AbstractChosen
       return false if /Mobile/i.test(window.navigator.userAgent)
     return true
 
+  @default_options =
+    allow_single_deselect: false
+    disable_search_threshold: 0
+    disable_search: false
+    enable_split_word_search: false
+    group_search: true
+    search_contains: false
+    single_backstroke_delete: true
+    max_selected_options: Infinity
+    inherit_select_classes: false
+
   @default_multiple_text: "Select Some Options"
   @default_single_text: "Select an Option"
   @default_no_result_text: "No results match"
