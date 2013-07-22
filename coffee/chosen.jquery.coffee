@@ -8,10 +8,12 @@ $.fn.extend({
     this.each (input_field) ->
       $this = $ this
       chosen = $this.data('chosen')
-      if options == 'destroy'
-        return chosen.destroy() if chosen
-      else
-        return $this.data('chosen', new Chosen(this, options)) unless chosen
+      if options is 'destroy' && chosen
+        chosen.destroy()
+      else unless chosen
+        $this.data('chosen', new Chosen(this, options))
+
+      $this
 
 })
 
@@ -92,16 +94,8 @@ class Chosen extends AbstractChosen
       @container.bind 'click.chosen', (evt) => evt.preventDefault(); return # gobble click of anchor
 
   destroy: ->
-    $(document).unbind '.chosen'
-    @container.unbind '.chosen'
-    @search_results.unbind '.chosen'
-    @form_field_jq.unbind '.chosen'
-    @search_field.unbind '.chosen'
-    if @is_multiple
-      @search_choices.unbind '.chosen'
-
-    if @search_field.attr "tabindex"
-      @form_field_jq.attr "tabindex", @search_field.attr("tabindex")
+    if @search_field[0].tabIndex
+      @form_field_jq[0].tabIndex = @search_field[0].tabIndex
 
     @container.remove()
     @form_field_jq.removeData('chosen')

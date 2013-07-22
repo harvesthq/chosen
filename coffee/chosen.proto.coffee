@@ -78,6 +78,7 @@ class @Chosen extends AbstractChosen
       @container.observe "click", (evt) => evt.preventDefault() # gobble click of anchor
 
   destroy: ->
+    document.stopObserving "click", @click_test_action
     @container.stopObserving()
     @search_results.stopObserving()
     @search_field.stopObserving()
