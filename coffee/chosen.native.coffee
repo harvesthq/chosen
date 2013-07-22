@@ -15,13 +15,38 @@ else
 
 # W3C event model
 if document.addEventListener?
-  add_event = (el, type, fn) -> el.addEventListener(type, fn, false)
+  add_event = (el, type, fn) -> 
+    # TODO: Support these emulated events in remove_event (need to store wrapper function to access it later)
+    emulated_event = emulated_events[type]
+    if emulated_event
+      fn = emulated_event.handler(el, fn)
+      type = emulated_event.mapped_to
+      
+    el.addEventListener(type, fn, false)
   remove_event = (el, type, fn) -> el.removeEventListener(type, fn, false)
 # Legacy IE event model
 else if document.attachEvent?
-  # TODO: Normalize required event properties
+  # TODO: Test in Internet Explorer
+  # TODO: Normalize required event properties (evt.target vs evt.srcElement, etc.)
+  # TODO: mouseenter/mouseleave emulation
   add_event = (el, type, fn) -> el.attachEvent(type, fn)
   remove_event = (el, type, fn) -> el.detachEvent(type, fn)
+  
+# mouseenter/mouseleave emulation for unsupported browsers
+# Based off technique at http://blog.stchur.com/2007/03/15/mouseenter-and-mouseleave-events-for-firefox-and-other-non-ie-browsers/
+emulated_events =
+  mouseenter: 
+    mapped_to: 'mouseover'
+    handler: (original_el, fn) ->
+      (evt) ->
+        # Don't fire if it's a child element (so it's not fired over and over again)
+        return if original_el is evt.relatedTarget or find_parent? evt.relatedTarget, (el) -> el is original_el
+          
+        fn.call(this, evt)
+
+emulated_events.mouseleave = 
+  mapped_to: 'mouseout',
+  handler: emulated_events.mouseenter.handler
 
 fire_event = do ->
 	# TODO: The createEvent method is deprecated. Use event constructors instead. - https://developer.mozilla.org/en-US/docs/Web/API/document.createEvent
@@ -47,7 +72,7 @@ find_parent = (el, check) ->
   until current_node is null or check current_node
     current_node = current_node.parentNode
     # If we get beyond the <html> element, consider it not found
-    current_node = null if current_node = document
+    current_node = null if current_node is document
   return current_node
   
 find_next_sibling = (el, check) ->
@@ -163,7 +188,7 @@ class Chosen extends AbstractChosen
           @search_field.value = "" if @is_multiple
           add_event document, "click", @click_test_action
           this.results_show()
-        else if not @is_multiple and evt and (evt.target == @selected_item) || find_parent(evt.target, (el) -> has_class el, ".chzn-single")?
+        else if not @is_multiple and evt and ((evt.target == @selected_item) || find_parent(evt.target, (el) -> has_class el, ".chzn-single")?)
           evt.preventDefault()
           this.results_toggle()
 
@@ -345,15 +370,16 @@ class Chosen extends AbstractChosen
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
     evt.stopPropagation()
-    this.choice_destroy $(evt.target) unless @is_disabled
+    this.choice_destroy evt.target unless @is_disabled
 
   choice_destroy: (link) ->
-    if this.result_deselect (link.attr "rel")
+    if this.result_deselect (link.getAttribute "rel")
       this.show_search_field_default()
 
-      this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.val().length < 1
+      this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.value.length < 1
 
-      link.parents('li').first().remove()
+      li = find_parent link, (el) -> el.nodeName.toUpperCase() is 'LI'
+      li.parentNode.removeChild(li) if li?
 
       this.search_field_scale()
 
@@ -381,7 +407,7 @@ class Chosen extends AbstractChosen
         return false
 
       if @is_multiple
-        high.removeClass("active-result")
+        remove_class high, "active-result"
       else
         remove_class el, "result-selected" for el in @search_results.querySelectorAll(".result-selected")
         @result_single_selected = high
@@ -428,7 +454,7 @@ class Chosen extends AbstractChosen
       this.result_clear_highlight()
       this.winnow_results() if @results_showing
 
-      @form_field_jq.trigger "change", {deselected: @form_field.options[result_data.options_index].value}
+      fire_event @form_field, "change", {deselected: @form_field.options[result_data.options_index].value}
       this.search_field_scale()
 
       return true
