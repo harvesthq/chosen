@@ -79,11 +79,17 @@ class @Chosen extends AbstractChosen
 
   destroy: ->
     document.stopObserving "click", @click_test_action
+
+    @form_field.stopObserving()
     @container.stopObserving()
     @search_results.stopObserving()
     @search_field.stopObserving()
+    @form_field_label.stopObserving() if @form_field_label?
+
     if @is_multiple
       @search_choices.stopObserving()
+    else
+      @selected_item.stopObserving() 
 
     if @search_field.tabIndex
       @form_field.tabIndex = @search_field.tabIndex
