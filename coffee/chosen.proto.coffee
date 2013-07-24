@@ -88,6 +88,8 @@ class @Chosen extends AbstractChosen
 
     if @is_multiple
       @search_choices.stopObserving()
+      @container.select(".search-choice-close").each (choice) ->
+        choice.stopObserving()
     else
       @selected_item.stopObserving() 
 
