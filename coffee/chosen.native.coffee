@@ -1,5 +1,3 @@
-root = this
-
 # DOM utility methods
 temp_el = document.createElement 'div'
 
@@ -87,7 +85,7 @@ find_prev_sibling = (el, check) ->
     current_sibling = current_sibling.previousSibling
   return current_sibling
 
-class Chosen extends AbstractChosen
+class @Chosen extends AbstractChosen
 
   setup: ->
     @current_selectedIndex = @form_field.selectedIndex
@@ -240,7 +238,7 @@ class Chosen extends AbstractChosen
     @parsing = true
     @selected_option_count = null
 
-    @results_data = root.SelectParser.select_to_array @form_field
+    @results_data = SelectParser.select_to_array @form_field
 
     if @is_multiple
       for el in @search_choices.querySelectorAll("li.search-choice")
@@ -588,5 +586,3 @@ class Chosen extends AbstractChosen
         w = f_width - 10
 
       @search_field.style.width = w + 'px'
-
-root.Chosen = Chosen
