@@ -1210,8 +1210,7 @@
       <h2>Hide Search on Single Select</h2>
       <div class="side-by-side clearfix">
         <p>The disable_search_threshold option can be specified to hide the search input on single selects if there are fewer than (n) options.</p>
-        <!-- FIXME -->
-        <pre><code class="language-javascript">$(".chzn-select").chosen({disable_search_threshold: 10});</code></pre>
+        <pre><code class="language-javascript">new Chosen(document.getElementById("chzn_select_field"), {disable_search_threshold: 10});</code></pre>
         <p></p>
         <div>
           <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select-no-single" tabindex="9">
@@ -1239,8 +1238,7 @@
       <h2>No Results Text Support</h2>
       <div class="side-by-side clearfix">
         <p>Setting the "No results" search text is as easy as passing an option when you create Chosen:</p>
-        <!-- FIXME -->
-        <pre><code class="language-javascript"> $(".chzn-select").chosen({no_results_text: "Oops, nothing found!"}); </code></pre>
+        <pre><code class="language-javascript"> new Chosen(document.getElementById("chzn_select_field"), {no_results_text: "Oops, nothing found!"}); </code></pre>
         <p></p>
         <div>
           <em>Single Select</em>
@@ -1276,9 +1274,9 @@
       <div class="side-by-side clearfix">
         <!-- FIXME -->
         <p>You can easily limit how many options the user can select:</p>
-        <pre><code class="language-javascript">$(".chzn-select").chosen({max_selected_options: 5});</code></pre>
+        <pre><code class="language-javascript">new Chosen(document.getElementById("chzn_select_field"),{max_selected_options: 5});</code></pre>
         <p>If you try to select another option with limit reached <code class="language-javascript">liszt:maxselected</code> event is triggered:</p>
-        <pre><code class="language-javascript"> $(".chzn-select").bind("liszt:maxselected", function () { ... }); </code></pre>
+        <pre><code class="language-javascript"> document.getElementById("chzn_select_field").addEventListener("liszt:maxselected", function () { ... }, false); </code></pre>
       </div>
 
       <h2>Allow Deselect on Single Selects</h2>
@@ -1335,22 +1333,21 @@
           <li>
             <h3>Form Field Change</h3>
             <p>When working with form fields, you often want to perform some behavior after a value has been selected or deselected. Whenever a user selects a field in Chosen, it triggers a "change" event* on the original form field. That let's you do something like this:</p>
-            <pre><code class="language-javascript">$("#form_field").chosen().change( &hellip; );</code></pre>
+            <pre><code class="language-javascript">document.getElementById("form_field").addEventListener("change", &hellip; );</code></pre>
           </li>
-          <li>
+          <!-- FIXME -->
+          <!--li>
             <h3>Updating Chosen Dynamically</h3>
             <p>If you need to update the options in your select field and want Chosen to pick up the changes, you'll need to trigger the "liszt:updated" event on the field. Chosen will re-build itself based on the updated content.</p>
-              <!-- FIXME -->
               <pre><code class="language-javascript">$("#form_field").trigger("liszt:updated");</code></pre>
-          </li>
+          </li-->
         </ul>
       </div>
 
       <h2>Custom Width Support</h2>
       <div class="side-by-side clearfix">
         <p>Using a custom width with Chosen is as easy as passing an option when you create Chosen:</p>
-        <!-- FIXME -->
-        <pre><code class="language-javascript"> $(".chzn-select").chosen({width: "95%"}); </code></pre>
+        <pre><code class="language-javascript"> new Chosen(document.getElementById("form_field"), {width: "95%"}); </code></pre>
         <div>
           <em>Single Select</em>
           <select data-placeholder="Your Favorite Types of Bear" class="chzn-select-width" tabindex="15">
@@ -1419,8 +1416,11 @@
       <p>Using Chosen is easy as can be.</p>
       <ol>
         <li><a href="https://github.com/harvesthq/chosen/releases">Download</a> the plugin and copy the chosen files to your app.</li>
-        <!-- FIXME -->
-        <li>Activate the plugin on the select boxes of your choice: <code class="language-javascript">$(".chzn-select").chosen()</code></li>
+        <li>Activate the plugin on the select boxes of your choice: 
+<pre><code class="language-javascript">var elements = document.querySelectorAll(".chzn-select");
+for (var i = 0, count = elements.length; i < count; i++) {
+  new Chosen(elements[i]); 			
+}</code></pre></li>
         <li><a href="http://www.youtube.com/watch?feature=player_detailpage&v=UkSPUDpe0U8#t=11s">Disco</a>.</li>
       </ol>
 
