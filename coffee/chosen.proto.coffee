@@ -306,7 +306,11 @@ class @Chosen extends AbstractChosen
       if @is_multiple
         high.removeClassName("active-result")
       else
-        @search_results.descendants(".result-selected").invoke "removeClassName", "result-selected"
+        if @result_single_selected
+          @result_single_selected.removeClassName("result-selected")
+          selected_index = @result_single_selected.getAttribute('data-option-array-index')
+          @results_data[selected_index].selected = false
+
         @result_single_selected = high
       
       high.addClassName("result-selected")
