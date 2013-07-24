@@ -1,6 +1,12 @@
 # DOM utility methods
 temp_el = document.createElement 'div'
 
+# Check for native String.trim
+if String::trim?
+  trim = (string) -> string.trim()
+else
+  trim = (string) -> string.replace /^\s+|\s+$/g, ''
+
 # Check for support of ClassList
 if 'classList' of temp_el
 	has_class = (el, class_name) -> el.classList.contains class_name
@@ -9,7 +15,7 @@ if 'classList' of temp_el
 else
 	has_class = (el, class_name) -> " #{el.className.toUpperCase()} ".indexOf(" #{class_name.toUpperCase()} ") > -1
 	add_class = (el, class_name) -> el.className += " #{class_name}" unless has_class el, class_name
-	remove_class = (el, class_name) -> el.className = " #{el.className.toUpperCase()} ".replace(" #{class_name} ", "")
+	remove_class = (el, class_name) -> el.className = trim " #{el.className} ".replace(" #{class_name} ", "")
 
 # W3C event model
 if document.addEventListener?
