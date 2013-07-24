@@ -33,6 +33,8 @@ module.exports = (grunt) ->
         dest: "public/chosen.native.js"
 
     coffee:
+      options:
+        join: true
       compile:
         files:
           'public/chosen.jquery.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.jquery.coffee']
