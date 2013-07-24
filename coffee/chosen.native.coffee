@@ -15,7 +15,7 @@ if 'classList' of temp_el
 else
 	has_class = (el, class_name) -> " #{el.className.toUpperCase()} ".indexOf(" #{class_name.toUpperCase()} ") > -1
 	add_class = (el, class_name) -> el.className += " #{class_name}" unless has_class el, class_name
-	remove_class = (el, class_name) -> el.className = trim " #{el.className} ".replace(" #{class_name} ", "")
+	remove_class = (el, class_name) -> el.className = trim " #{el.className} ".replace(" #{class_name}", "")
 
 # W3C event model
 if document.addEventListener?
