@@ -29,6 +29,9 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   &.chzn-with-drop .chzn-drop {
     left: 0;
   }
+  a{
+    cursor: pointer;
+  }
 }
 /* @end */
 
