@@ -400,7 +400,8 @@ class @Chosen extends AbstractChosen
 
   results_reset_cleanup: ->
     @current_selectedIndex = @form_field.selectedIndex
-    @selected_item.getElementsByTagName("abbr")[0].remove()
+    abbr = @selected_item.getElementsByTagName("abbr")[0]
+    abbr.parentNode.removeChild abbr
 
   result_select: (evt) ->
     if @result_highlight
@@ -528,19 +529,21 @@ class @Chosen extends AbstractChosen
 
   keydown_backstroke: ->
     if @pending_backstroke
-      this.choice_destroy @pending_backstroke.find("a").first()
+      this.choice_destroy @pending_backstroke.getElementsByTagName("a")[0]
       this.clear_backstroke()
     else
-      next_available_destroy = @search_container.siblings("li.search-choice").last()
-      if next_available_destroy.length and not next_available_destroy.hasClass("search-choice-disabled")
-        @pending_backstroke = next_available_destroy
-        if @single_backstroke_delete
-          @keydown_backstroke()
-        else
-          @pending_backstroke.addClass "search-choice-focus"
+      next_available_destroys = @search_container.parentNode.querySelectorAll("li.search-choice")
+      if next_available_destroys.length
+        next_available_destroy = next_available_destroys[next_available_destroys.length - 1]
+        if not has_class next_available_destroy, "search-choice-disabled"
+          @pending_backstroke = next_available_destroy
+          if @single_backstroke_delete
+            @keydown_backstroke()
+          else
+            add_class @pending_backstroke, "search-choice-focus"
 
   clear_backstroke: ->
-    @pending_backstroke.removeClass "search-choice-focus" if @pending_backstroke
+    remove_class @pending_backstroke, "search-choice-focus" if @pending_backstroke
     @pending_backstroke = null
 
   keydown_checker: (evt) ->
