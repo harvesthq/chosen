@@ -44,7 +44,9 @@ emulated_events =
     handler: (original_el, fn) ->
       (evt) ->
         # Don't fire if it's a child element (so it's not fired over and over again)
-        return if original_el is evt.relatedTarget or find_parent? evt.relatedTarget, (el) -> el is original_el
+        # In this case, relatedTarget is the element the mouse has moved from. It is null in the case where the mouse
+        # is moved from outside the browser window onto an element.
+        return if original_el is evt.relatedTarget or (evt.relatedTarget? and find_parent evt.relatedTarget, (el) -> el is original_el)
           
         fn.call(this, evt)
 
