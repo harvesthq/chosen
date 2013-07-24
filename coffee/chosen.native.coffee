@@ -610,7 +610,6 @@ class @Chosen extends AbstractChosen
       h = 0
       w = 0
 
-      style_block = "position:absolute; left: -1000px; top: -1000px; display:none;"
       styles = ['font-size','font-style', 'font-weight', 'font-family','line-height', 'text-transform', 'letter-spacing']
       
       div = document.createElement 'div'
@@ -621,8 +620,6 @@ class @Chosen extends AbstractChosen
       for style in styles
         div.style[camel_case style] = @search_field.style[style]
 
-      div = document.createElement 'div'
-      div.style = style_block
       div.appendChild document.createTextNode @search_field.value
       document.body.appendChild div
 
