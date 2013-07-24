@@ -6,6 +6,8 @@ if String::trim?
   trim = (string) -> string.trim()
 else
   trim = (string) -> string.replace /^\s+|\s+$/g, ''
+    
+camel_case = (string) -> string.replace /-([a-z])/g, (match) -> match[1].toUpperCase()
 
 # Check for support of ClassList
 if 'classList' of temp_el
@@ -16,6 +18,13 @@ else
 	has_class = (el, class_name) -> " #{el.className.toUpperCase()} ".indexOf(" #{class_name.toUpperCase()} ") > -1
 	add_class = (el, class_name) -> el.className += " #{class_name}" unless has_class el, class_name
 	remove_class = (el, class_name) -> el.className = trim " #{el.className} ".replace(" #{class_name}", "")
+  
+if 'getComputedStyle' of window
+  get_style = (el, prop) -> window.getComputedStyle(el, null).getPropertyValue(prop)
+else if 'currentStyle' of temp_el
+  get_style = (el, prop) -> el.currentStyle[camel_case prop]
+else
+  get_style = (el, prop) -> ""
 
 # W3C event model
 if document.addEventListener?
@@ -275,7 +284,7 @@ class @Chosen extends AbstractChosen
       @result_highlight = el
       add_class @result_highlight, "highlighted"
 
-      maxHeight = parseInt window.getComputedStyle(@search_results, null).getPropertyValue('max-height'), 10
+      maxHeight = parseInt get_style(@search_results, 'max-height'), 10
       visible_top = @search_results.scrollTop
       visible_bottom = maxHeight + visible_top
 
