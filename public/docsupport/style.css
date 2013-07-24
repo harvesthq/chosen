@@ -186,3 +186,30 @@ strong { font-weight: bold; }
   font-size: 12px;
   padding: 2px 4px;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  position: relative;
+}
+
+a.anchor {
+  font-size: 14px;
+  font-weight: normal;
+  margin-left: -35px;
+  padding: 5px 20px 5px 5px;
+  position: absolute;
+  top: -5px;
+}
+
+a.anchor span {
+  visibility: hidden;
+}
+
+h1:hover a.anchor span,
+h2:hover a.anchor span,
+h3:hover a.anchor span,
+h4:hover a.anchor span,
+h5:hover a.anchor span,
+h6:hover a.anchor span,
+a.anchor:hover span {
+  visibility: visible;
+}
