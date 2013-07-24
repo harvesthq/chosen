@@ -37,13 +37,33 @@ if document.addEventListener?
       
     el.addEventListener(type, fn, false)
   remove_event = (el, type, fn) -> el.removeEventListener(type, fn, false)
+
 # Legacy IE event model
+# Based off https://github.com/Daniel15/JSFramework/blob/master/events.js and http://ejohn.org/projects/flexible-javascript-events/
 else if document.attachEvent?
-  # TODO: Test in Internet Explorer
-  # TODO: Normalize required event properties (evt.target vs evt.srcElement, etc.)
-  # TODO: mouseenter/mouseleave emulation
-  add_event = (el, type, fn) -> el.attachEvent(type, fn)
-  remove_event = (el, type, fn) -> el.detachEvent(type, fn)
+  add_event = (el, type, fn) -> 
+    # Create a wrapper that normalises some properties in IE
+    # Save it in case we want to remove the handler later
+    handler = el['eventhandler' + type + fn] = ->
+      evt = window.event
+      # Normalize the event
+      # target - What actually triggered the event
+      evt.target = evt.srcElement
+      # currentTarget - Where the event has bubbled up to (always the object the handler is attached to)
+      # Reference: https://developer.mozilla.org/en/DOM/event.currentTarget
+      evt.currentTarget = el
+      # Shim for preventDefault
+      evt.preventDefault = -> evt.returnValue = false
+      
+      fn.call(el, evt)
+  
+    el.attachEvent('on' + type, handler)
+    
+  remove_event = (el, type, fn) -> 
+    # Find the wrapper function that was created when the event was added
+    handler = el['eventhandler' + type + fn]
+    el.detachEvent('on' + type, handler)
+    el['eventhandler' + type + fn] = null
   
 # mouseenter/mouseleave emulation for unsupported browsers
 # Based off technique at http://blog.stchur.com/2007/03/15/mouseenter-and-mouseleave-events-for-firefox-and-other-non-ie-browsers/
@@ -73,9 +93,13 @@ fire_event = do ->
       event.eventName = type
       event.memo = memo
       el.dispatchEvent event
+      
   # Legacy IE event model
   else if document.createEventObject?
     (el, type, memo = {}) ->
+      # FIXME legacy IE doesn't support firing custom events - Just ignore them for now.
+      return if type.indexOf(':') > -1
+      
       event = document.createEventObject()
       event.eventType = type
       event.eventName = type
@@ -335,7 +359,7 @@ class @Chosen extends AbstractChosen
       @search_field.tabindex = ti
 
   set_label_behavior: ->
-    @form_field_label = find_parent @form_field, (el) -> el.nodeName.toUpperCase = 'LABEL' # first check for a parent label
+    @form_field_label = find_parent @form_field, (el) -> el.nodeName.toUpperCase() is 'LABEL' # first check for a parent label
     
     if not @form_field_label? and @form_field.id.length
       @form_field_label = document.querySelector("label[for='#{@form_field.id}']") #next check for a for=#{id}
@@ -493,7 +517,7 @@ class @Chosen extends AbstractChosen
       ""
     else
       temp_el = document.createElement "div"
-      temp_el.textContent = @search_field.value.trim()
+      temp_el.textContent = trim @search_field.value
       return temp_el.innerHTML
 
   winnow_results_set_highlight: ->
@@ -588,13 +612,18 @@ class @Chosen extends AbstractChosen
 
       style_block = "position:absolute; left: -1000px; top: -1000px; display:none;"
       styles = ['font-size','font-style', 'font-weight', 'font-family','line-height', 'text-transform', 'letter-spacing']
-
+      
+      div = document.createElement 'div'
+      div.style.position = 'absolute';
+      div.style.left = '-1000px';
+      div.style.top = '-1000px';
+       
       for style in styles
-        style_block += style + ":" + @search_field.style[style] + ";"
+        div.style[camel_case style] = @search_field.style[style]
 
       div = document.createElement 'div'
       div.style = style_block
-      div.textContent = @search_field.value
+      div.appendChild document.createTextNode @search_field.value
       document.body.appendChild div
 
       w = div.offsetWidth + 25
