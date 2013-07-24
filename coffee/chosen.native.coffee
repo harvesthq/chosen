@@ -285,7 +285,7 @@ class @Chosen extends AbstractChosen
 
   results_show: ->
     if @is_multiple and @max_selected_options <= this.choices_count()
-      @form_field_jq.trigger("liszt:maxselected", {chosen: this})
+      fire_event @form_field, "liszt:maxselected", {chosen: this}
       return false
 
     add_class @container, "chzn-with-drop"
@@ -387,7 +387,7 @@ class @Chosen extends AbstractChosen
     this.single_set_selected_text()
     this.show_search_field_default()
     this.results_reset_cleanup()
-    @form_field_jq.trigger "change"
+    fire_event @form_field, "change"
     this.results_hide() if @active_field
 
   results_reset_cleanup: ->
@@ -401,7 +401,7 @@ class @Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       if @is_multiple and @max_selected_options <= this.choices_count()
-        @form_field_jq.trigger("liszt:maxselected", {chosen: this})
+        fire_event @form_field, "liszt:maxselected", {chosen: this}
         return false
 
       if @is_multiple
@@ -462,7 +462,7 @@ class @Chosen extends AbstractChosen
   single_deselect_control_build: ->
     return unless @allow_single_deselect
 		
-    if @selected_item.getElementsByTagName("abbr").length
+    if @selected_item.getElementsByTagName("abbr").length is 0
       span = @selected_item.getElementsByTagName('span')[0]
       abbr = document.createElement('abbr')
       abbr.className = "search-choice-close"
