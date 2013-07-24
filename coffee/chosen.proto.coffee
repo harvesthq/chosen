@@ -11,7 +11,7 @@ class @Chosen extends AbstractChosen
     super()
 
     # HTML Templates
-    @single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
+    @single_temp = new Template('<a class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
@@ -306,7 +306,11 @@ class @Chosen extends AbstractChosen
       if @is_multiple
         high.removeClassName("active-result")
       else
-        @search_results.descendants(".result-selected").invoke "removeClassName", "result-selected"
+        if @result_single_selected
+          @result_single_selected.removeClassName("result-selected")
+          selected_index = @result_single_selected.getAttribute('data-option-array-index')
+          @results_data[selected_index].selected = false
+
         @result_single_selected = high
       
       high.addClassName("result-selected")
