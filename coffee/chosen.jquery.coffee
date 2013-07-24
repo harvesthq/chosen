@@ -13,7 +13,7 @@ $.fn.extend({
       else unless chosen
         $this.data('chosen', new Chosen(this, options))
 
-      $this
+      return
 
 })
 
@@ -91,9 +91,10 @@ class Chosen extends AbstractChosen
     if @is_multiple
       @search_choices.bind 'click.chosen', (evt) => this.choices_click(evt); return
     else
-      @container.bind 'click.chosen', (evt) => evt.preventDefault(); return # gobble click of anchor
+      @container.bind 'click.chosen', (evt) -> evt.preventDefault(); return # gobble click of anchor
 
   destroy: ->
+    $(document).unbind "click.chosen", @click_test_action
     if @search_field[0].tabIndex
       @form_field_jq[0].tabIndex = @search_field[0].tabIndex
 
