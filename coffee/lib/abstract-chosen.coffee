@@ -141,9 +141,10 @@ class AbstractChosen
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
 
+    this.result_clear_highlight()
+
     if results < 1 and searchText.length
       this.update_results_content ""
-      this.result_clear_highlight()
       this.no_results searchText
     else
       this.update_results_content this.results_option_build()
