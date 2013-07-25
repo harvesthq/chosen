@@ -62,9 +62,9 @@ class AbstractChosen
   results_option_build: (options) ->
     content = ''
     for data in @results_data
-      if data.group && (data.search_match || data.group_match)
+      if data.group
         content += this.result_add_group data
-      else if !data.empty && data.search_match
+      else
         content += this.result_add_option data
 
       # this select logic pins on an awkward flag
@@ -78,6 +78,7 @@ class AbstractChosen
     content
 
   result_add_option: (option) ->
+    return '' unless option.search_match
     return '' unless this.include_option_in_results(option)
 
     classes = []
@@ -92,6 +93,7 @@ class AbstractChosen
     """<li class="#{classes.join(' ')}"#{style} data-option-array-index="#{option.array_index}">#{option.search_text}</li>"""
 
   result_add_group: (group) ->
+    return '' unless group.search_match || group.group_match
     return '' unless group.active_options > 0
 
     """<li class="group-result">#{group.search_text}</li>"""
