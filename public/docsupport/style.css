@@ -5,7 +5,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 blockquote, q { quotes: none; }
 blockquote:before, blockquote:after, q:before, q:after { content: ""; content: none; }
-ins { background-color: #ff9; color: #000; text-decoration: none; } 
+ins { background-color: #ff9; color: #000; text-decoration: none; }
 mark { background-color: #ff9; color: #000; font-style: italic; font-weight: bold; }
 del { text-decoration: line-through; }
 abbr[title], dfn[title] { border-bottom: 1px dotted; cursor: help; }
@@ -133,7 +133,7 @@ strong { font-weight: bold; }
   border: 0;
   margin-top: -10px;
   display: block;
-  height: 58px;  
+  height: 58px;
   background: #F36C00 url(oss-credit.png) no-repeat 20px 22px;
   padding: 22px 20px 12px 20px;
   text-indent: 120%; /* stupid padding */
@@ -185,4 +185,17 @@ strong { font-weight: bold; }
 #content code[class*=language-] {
   font-size: 12px;
   padding: 2px 4px;
+}
+
+.anchor {
+  color: inherit;
+  position: relative;
+}
+
+.anchor:hover {
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSI3Ij48ZyBmaWxsPSIjNDE0MDQyIj48cGF0aCBkPSJNOS44IDdoLS45bC0uOS0uMWMtLjctLjMtMS40LS43LTEuOC0xLjMtLjItLjEtLjMtLjMtLjMtLjVsLS4zLS40Yy0uMS0uNC0uMi0uOC0uMi0xLjIgMC0uNC4xLS44LjItMS4yaDEuN2MtLjMuNC0uNC44LS40IDEuMiAwIC40LjEuOC4zIDEuMS4xLjIuMi4zLjQuNC4xLjEuMi4yLjQuMy4zLjIuNy4zIDEgLjNoMy40YzEuMiAwIDIuMi0uOSAyLjItMi4xcy0xLTIuMS0yLjItMi4xaC0xLjRjLS4zLS42LS43LTEtMS4yLTEuNGgyLjZjMiAwIDMuNiAxLjYgMy42IDMuNXMtMS42IDMuNS0zLjYgMy41aC0yLjZ6TTguNCAyYy0uMS0uMS0uMi0uMy0uNC0uMy0uMy0uMi0uNy0uMy0xLS4zaC0zLjRjLTEuMiAwLTIuMi45LTIuMiAyLjEgMCAxLjIgMSAyLjEgMi4yIDIuMWgxLjRjLjMuNS43IDEgMS4yIDEuNGgtMi42Yy0yIDAtMy42LTEuNi0zLjYtMy41czEuNi0zLjUgMy42LTMuNWgzLjUwMDAwMDAwMDAwMDAwMDRsLjkuMWMuNy4yIDEuNC43IDEuOCAxLjMuMS4xLjIuMy4zLjUuMS4xLjIuMy4yLjUuMS40LjIuOC4yIDEuMiAwIC40LS4xLjgtLjIgMS4yaC0xLjZjLjMtLjUuNC0uOS40LTEuM3MtLjEtLjgtLjMtMS4xYy0uMS0uMi0uMi0uMy0uNC0uNHoiLz48L2c+PC9zdmc+) 0 50% no-repeat;
+  background-size: 21px 9px;
+  margin-left: -27px;
+  padding-left: 27px;
+  text-decoration: none;
 }

@@ -19,7 +19,7 @@
       </header>
       <p>Chosen has a number of options and attributes that allow you to have full control of your select boxes.</p>
 
-      <h2>Options</h2>
+      <h2><a name="options" class="anchor" href="#options">Options</a></h2>
       <p>The following options are available to pass into Chosen on instantiation.</p>
 
       <h3>Example:</h3>
@@ -89,8 +89,9 @@
         </tr>
         <tr>
           <td>single_backstroke_delete</td>
-          <td>false</td>
-          <td>By default, on multiple selects, pressing delete once will highlight the last selection, and pressing again will remove it. Setting this option to <code class="language-javascript">true</code> will remove it on the first press.</td>
+          <td>true</td>
+          <td>By default, pressing delete/backspace on multiple selects will remove a selected choice. When <code class="language-javascript">false</code>, pressing delete/backspace will highlight the last choice, and a second press deselects it.</td>
+        </tr>
         <tr>
           <td>width</td>
           <td>Original select width.</td>
@@ -111,7 +112,7 @@
         </tr>
       </table>
 
-      <h2>Attributes</h2>
+      <h2><a name="attributes" class="anchor" href="#attributes">Attributes</a></h2>
       <p>Certain attributes placed on the select tag or its options can be used to configure Chosen.</p>
 
       <h3>Example:</h3>
@@ -145,7 +146,7 @@
         </tr>
       </table>
 
-      <h2>Classes</h2>
+      <h2><a name="classes" class="anchor" href="#classes">Classes</a></h2>
       <p>Classes placed on the select tag can be used to configure Chosen.</p>
 
       <h3>Example:</h3>
@@ -171,7 +172,7 @@
         <tr>
       </table>
 
-      <h2>Events</h2>
+      <h2><a name="events" class="anchor" href="#events">Events</a></h2>
       <p>Chosen triggers a number of standard and custom events on the original select field.</p>
 
       <h3>Example:</h3>
@@ -210,6 +211,10 @@
           <td>triggered when Chosen's dropdown is closed (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
         </tr>
       </table>
+
+      <footer>
+        &copy; 2011&ndash;2013 <a href="http://www.getharvest.com/">Harvest</a>. Chosen is licensed under the <a href="https://github.com/harvesthq/chosen/blob/master/LICENSE.md">MIT license</a>.
+      </footer>
 
     </div>
   </div>

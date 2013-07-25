@@ -1,4 +1,3 @@
-root = this
 $ = jQuery
 
 $.fn.extend({
@@ -40,7 +39,7 @@ class Chosen extends AbstractChosen
     if @is_multiple
       @container.html '<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>'
     else
-      @container.html '<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
+      @container.html '<a class="chzn-single chzn-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>'
 
     @form_field_jq.hide().after @container
     @dropdown = @container.find('div.chzn-drop').first()
@@ -159,7 +158,7 @@ class Chosen extends AbstractChosen
     @parsing = true
     @selected_option_count = null
 
-    @results_data = root.SelectParser.select_to_array @form_field
+    @results_data = SelectParser.select_to_array @form_field
 
     if @is_multiple
       @search_choices.find("li.search-choice").remove()
@@ -232,10 +231,10 @@ class Chosen extends AbstractChosen
 
 
   set_tab_index: (el) ->
-    if @form_field_jq.attr "tabindex"
-      ti = @form_field_jq.attr "tabindex"
-      @form_field_jq.attr "tabindex", -1
-      @search_field.attr "tabindex", ti
+    if @form_field.tabIndex
+      ti = @form_field.tabIndex
+      @form_field.tabIndex = -1
+      @search_field[0].tabIndex = ti
 
   set_label_behavior: ->
     @form_field_label = @form_field_jq.parents("label") # first check for a parent label
@@ -273,7 +272,7 @@ class Chosen extends AbstractChosen
     if item.disabled
       choice.addClass 'search-choice-disabled'
     else
-      close_link = $('<a />', { href: '#', class: 'search-choice-close',  rel: item.array_index })
+      close_link = $('<a />', { class: 'search-choice-close', 'data-option-array-index': item.array_index })
       close_link.click (evt) => this.choice_destroy_link_click(evt)
       choice.append close_link
     
@@ -285,7 +284,7 @@ class Chosen extends AbstractChosen
     this.choice_destroy $(evt.target) unless @is_disabled
 
   choice_destroy: (link) ->
-    if this.result_deselect (link.attr "rel")
+    if this.result_deselect( link[0].getAttribute("data-option-array-index") )
       this.show_search_field_default()
 
       this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.val().length < 1
@@ -320,7 +319,11 @@ class Chosen extends AbstractChosen
       if @is_multiple
         high.removeClass("active-result")
       else
-        @search_results.find(".result-selected").removeClass "result-selected"
+        if @result_single_selected
+          @result_single_selected.removeClass("result-selected")
+          selected_index = @result_single_selected[0].getAttribute('data-option-array-index')
+          @results_data[selected_index].selected = false
+
         @result_single_selected = high
 
       high.addClass "result-selected"
@@ -482,5 +485,3 @@ class Chosen extends AbstractChosen
         w = f_width - 10
 
       @search_field.css({'width': w + 'px'})
-
-root.Chosen = Chosen
