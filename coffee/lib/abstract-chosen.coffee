@@ -1,5 +1,3 @@
-root = this
-
 class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
@@ -33,7 +31,7 @@ class AbstractChosen
     @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
     @group_search = if @options.group_search? then @options.group_search else true
     @search_contains = @options.search_contains || false
-    @single_backstroke_delete = @options.single_backstroke_delete || false
+    @single_backstroke_delete = if @options.single_backstroke_delete? then @options.single_backstroke_delete else true
     @max_selected_options = @options.max_selected_options || Infinity
     @inherit_select_classes = @options.inherit_select_classes || false
 
@@ -209,11 +207,13 @@ class AbstractChosen
 
   @browser_is_supported: ->
     if window.navigator.appName == "Microsoft Internet Explorer"
-      return null isnt document.documentMode >= 8
+      return document.documentMode >= 8
+    if /iP(od|hone)/i.test(window.navigator.userAgent)
+      return false
+    if /Android/i.test(window.navigator.userAgent)
+      return false if /Mobile/i.test(window.navigator.userAgent)
     return true
 
   @default_multiple_text: "Select Some Options"
   @default_single_text: "Select an Option"
   @default_no_result_text: "No results match"
-
-root.AbstractChosen = AbstractChosen
