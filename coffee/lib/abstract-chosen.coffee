@@ -14,6 +14,9 @@ class AbstractChosen
     this.finish_setup()
 
   set_default_values: ->
+    @is_multiple = @form_field.multiple
+    @default_text_default = if @is_multiple then "Select Some Options" else "Select an Option"
+    
     @click_test_action = (evt) => this.test_active_click(evt)
     @activate_action = (evt) => this.activate_field(evt)
     @active_field = false
@@ -23,6 +26,7 @@ class AbstractChosen
     @result_single_selected = null
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
     @disable_search_threshold = @options.disable_search_threshold || 0
+    @enable_select_all = if @options.enable_select_all? and @is_multiple then @options.enable_select_all else false
     @disable_search = @options.disable_search || false
     @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
     @group_search = if @options.group_search? then @options.group_search else true
@@ -193,6 +197,8 @@ class AbstractChosen
       when 9, 38, 40, 16, 91, 17
         # don't do anything on these keys
       else this.results_search()
+    
+    this.select_all_toggle() if @enable_select_all
 
   container_width: ->
     return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
