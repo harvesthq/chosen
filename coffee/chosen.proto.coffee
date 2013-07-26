@@ -77,6 +77,28 @@ class @Chosen extends AbstractChosen
     else
       @container.observe "click", (evt) => evt.preventDefault() # gobble click of anchor
 
+  destroy: ->
+    document.stopObserving "click", @click_test_action
+
+    @form_field.stopObserving()
+    @container.stopObserving()
+    @search_results.stopObserving()
+    @search_field.stopObserving()
+    @form_field_label.stopObserving() if @form_field_label?
+
+    if @is_multiple
+      @search_choices.stopObserving()
+      @container.select(".search-choice-close").each (choice) ->
+        choice.stopObserving()
+    else
+      @selected_item.stopObserving() 
+
+    if @search_field.tabIndex
+      @form_field.tabIndex = @search_field.tabIndex
+
+    @container.remove()
+    @form_field.show()
+
   search_field_disabled: ->
     @is_disabled = @form_field.disabled
     if(@is_disabled)
