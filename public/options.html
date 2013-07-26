@@ -64,7 +64,7 @@
         <tr>
           <td>max_selected_options</td>
           <td>Infinity</td>
-          <td>Limits how many options the user can select. When the limit is reached, the <code class="language-javascript">liszt:maxselected</code> event is triggered.</td>
+          <td>Limits how many options the user can select. When the limit is reached, the <code class="language-javascript">chosen:maxselected</code> event is triggered.</td>
         </tr>
         <tr>
           <td>no_results_text</td>
@@ -195,19 +195,19 @@
           </td>
         </tr>
         <tr>
-          <td>liszt:ready</td>
+          <td>chosen:ready</td>
           <td>after Chosen has been fully instantiated (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
         </tr>
         <tr>
-          <td>liszt:maxselected</td>
+          <td>chosen:maxselected</td>
           <td>triggered if <code class="language-javascript">max_selected_options</code> is set and that total is broken. (it also sends the <code class="language-javascript">chosen</code> object as a parameter)</td>
         </tr>
         <tr>
-          <td>liszt:showing_dropdown</td>
+          <td>chosen:showing_dropdown</td>
           <td>triggered when Chosen's dropdown is opened (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
         </tr>
         <tr>
-          <td>liszt:hiding_dropdown</td>
+          <td>chosen:hiding_dropdown</td>
           <td>triggered when Chosen's dropdown is closed (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
         </tr>
       </table>
