@@ -1274,8 +1274,8 @@
       <div class="side-by-side clearfix">
         <p>You can easily limit how many options the user can select:</p>
         <pre><code class="language-javascript">$(".chzn-select").chosen({max_selected_options: 5});</code></pre>
-        <p>If you try to select another option with limit reached <code class="language-javascript">chosen:maxselected</code> event is triggered:</p>
-        <pre><code class="language-javascript"> $(".chzn-select").bind("chosen:maxselected", function () { ... }); </code></pre>
+        <p>If you try to select another option with limit reached <code class="language-javascript">liszt:maxselected</code> event is triggered:</p>
+        <pre><code class="language-javascript"> $(".chzn-select").bind("liszt:maxselected", function () { ... }); </code></pre>
       </div>
 
       <h2><a name="allow-deselect-on-single-selects" class="anchor" href="#allow-deselect-on-single-selects">Allow Deselect on Single Selects</a></h2>
@@ -1336,8 +1336,8 @@
           </li>
           <li>
             <h3>Updating Chosen Dynamically</h3>
-            <p>If you need to update the options in your select field and want Chosen to pick up the changes, you'll need to trigger the "chosen:updated" event on the field. Chosen will re-build itself based on the updated content.</p>
-              <pre><code class="language-javascript">$("#form_field").trigger("chosen:updated");</code></pre>
+            <p>If you need to update the options in your select field and want Chosen to pick up the changes, you'll need to trigger the "liszt:updated" event on the field. Chosen will re-build itself based on the updated content.</p>
+              <pre><code class="language-javascript">$("#form_field").trigger("liszt:updated");</code></pre>
           </li>
         </ul>
       </div>

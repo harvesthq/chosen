@@ -49,7 +49,7 @@ class @Chosen extends AbstractChosen
     this.results_build()
     this.set_tab_index()
     this.set_label_behavior()
-    @form_field.fire("chosen:ready", {chosen: this})
+    @form_field.fire("liszt:ready", {chosen: this})
 
   register_observers: ->
     @container.observe "mousedown", (evt) => this.container_mousedown(evt)
@@ -63,9 +63,9 @@ class @Chosen extends AbstractChosen
     @search_results.observe "mousewheel", (evt) => this.search_results_mousewheel(evt)
     @search_results.observe "DOMMouseScroll", (evt) => this.search_results_mousewheel(evt)
 
-    @form_field.observe "chosen:updated", (evt) => this.results_update_field(evt)
-    @form_field.observe "chosen:activate", (evt) => this.activate_field(evt)
-    @form_field.observe "chosen:open", (evt) => this.container_mousedown(evt)
+    @form_field.observe "liszt:updated", (evt) => this.results_update_field(evt)
+    @form_field.observe "liszt:activate", (evt) => this.activate_field(evt)
+    @form_field.observe "liszt:open", (evt) => this.container_mousedown(evt)
 
     @search_field.observe "blur", (evt) => this.input_blur(evt)
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
@@ -213,11 +213,11 @@ class @Chosen extends AbstractChosen
 
   results_show: ->
     if @is_multiple and @max_selected_options <= this.choices_count()
-      @form_field.fire("chosen:maxselected", {chosen: this})
+      @form_field.fire("liszt:maxselected", {chosen: this})
       return false
 
     @container.addClassName "chzn-with-drop"
-    @form_field.fire("chosen:showing_dropdown", {chosen: this})
+    @form_field.fire("liszt:showing_dropdown", {chosen: this})
 
     @results_showing = true
 
@@ -234,7 +234,7 @@ class @Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       @container.removeClassName "chzn-with-drop"
-      @form_field.fire("chosen:hiding_dropdown", {chosen: this})
+      @form_field.fire("liszt:hiding_dropdown", {chosen: this})
 
     @results_showing = false
 
@@ -322,7 +322,7 @@ class @Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       if @is_multiple and @max_selected_options <= this.choices_count()
-        @form_field.fire("chosen:maxselected", {chosen: this})
+        @form_field.fire("liszt:maxselected", {chosen: this})
         return false
 
       if @is_multiple
