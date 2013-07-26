@@ -2,24 +2,24 @@ class @Chosen extends AbstractChosen
 
   setup: ->
     @current_selectedIndex = @form_field.selectedIndex
-    @is_rtl = @form_field.hasClassName "chzn-rtl"
+    @is_rtl = @form_field.hasClassName "chosen-rtl"
 
   finish_setup: ->
-    @form_field.addClassName "chzn-done"
+    @form_field.addClassName "chosen-done"
 
   set_default_values: ->
     super()
 
     # HTML Templates
-    @single_temp = new Template('<a class="chzn-single chzn-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>')
-    @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>')
+    @single_temp = new Template('<a class="chosen-single chosen-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>')
+    @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
-    container_classes = ["chzn-container"]
-    container_classes.push "chzn-container-" + (if @is_multiple then "multi" else "single")
+    container_classes = ["chosen-container"]
+    container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
-    container_classes.push "chzn-rtl" if @is_rtl
+    container_classes.push "chosen-rtl" if @is_rtl
 
     container_props =
       'class': container_classes.join ' '
@@ -31,20 +31,20 @@ class @Chosen extends AbstractChosen
     @container = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
     @form_field.hide().insert({ after: @container })
-    @dropdown = @container.down('div.chzn-drop')
+    @dropdown = @container.down('div.chosen-drop')
 
     @search_field = @container.down('input')
-    @search_results = @container.down('ul.chzn-results')
+    @search_results = @container.down('ul.chosen-results')
     this.search_field_scale()
 
     @search_no_results = @container.down('li.no-results')
 
     if @is_multiple
-      @search_choices = @container.down('ul.chzn-choices')
+      @search_choices = @container.down('ul.chosen-choices')
       @search_container = @container.down('li.search-field')
     else
-      @search_container = @container.down('div.chzn-search')
-      @selected_item = @container.down('.chzn-single')
+      @search_container = @container.down('div.chosen-search')
+      @selected_item = @container.down('.chosen-single')
 
     this.results_build()
     this.set_tab_index()
@@ -102,12 +102,12 @@ class @Chosen extends AbstractChosen
   search_field_disabled: ->
     @is_disabled = @form_field.disabled
     if(@is_disabled)
-      @container.addClassName 'chzn-disabled'
+      @container.addClassName 'chosen-disabled'
       @search_field.disabled = true
       @selected_item.stopObserving "focus", @activate_action if !@is_multiple
       this.close_field()
     else
-      @container.removeClassName 'chzn-disabled'
+      @container.removeClassName 'chosen-disabled'
       @search_field.disabled = false
       @selected_item.observe "focus", @activate_action if !@is_multiple
 
@@ -121,7 +121,7 @@ class @Chosen extends AbstractChosen
           @search_field.clear() if @is_multiple
           document.observe "click", @click_test_action
           this.results_show()
-        else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chzn-single"))
+        else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chosen-single"))
           this.results_toggle()
 
         this.activate_field()
@@ -137,7 +137,7 @@ class @Chosen extends AbstractChosen
       @search_results.scrollTop = delta + @search_results.scrollTop
 
   blur_test: (evt) ->
-    this.close_field() if not @active_field and @container.hasClassName("chzn-container-active")
+    this.close_field() if not @active_field and @container.hasClassName("chosen-container-active")
 
   close_field: ->
     document.stopObserving "click", @click_test_action
@@ -145,21 +145,21 @@ class @Chosen extends AbstractChosen
     @active_field = false
     this.results_hide()
 
-    @container.removeClassName "chzn-container-active"
+    @container.removeClassName "chosen-container-active"
     this.clear_backstroke()
 
     this.show_search_field_default()
     this.search_field_scale()
 
   activate_field: ->
-    @container.addClassName "chzn-container-active"
+    @container.addClassName "chosen-container-active"
     @active_field = true
 
     @search_field.value = @search_field.value
     @search_field.focus()
 
   test_active_click: (evt) ->
-    if evt.target.up('.chzn-container') is @container
+    if evt.target.up('.chosen-container') is @container
       @active_field = true
     else
       this.close_field()
@@ -176,10 +176,10 @@ class @Chosen extends AbstractChosen
       this.single_set_selected_text()
       if @disable_search or @form_field.options.length <= @disable_search_threshold
         @search_field.readOnly = true
-        @container.addClassName "chzn-container-single-nosearch"
+        @container.addClassName "chosen-container-single-nosearch"
       else
         @search_field.readOnly = false
-        @container.removeClassName "chzn-container-single-nosearch"
+        @container.removeClassName "chosen-container-single-nosearch"
 
     this.update_results_content this.results_option_build({first:true})
 
@@ -216,7 +216,7 @@ class @Chosen extends AbstractChosen
       @form_field.fire("chosen:maxselected", {chosen: this})
       return false
 
-    @container.addClassName "chzn-with-drop"
+    @container.addClassName "chosen-with-drop"
     @form_field.fire("chosen:showing_dropdown", {chosen: this})
 
     @results_showing = true
@@ -233,7 +233,7 @@ class @Chosen extends AbstractChosen
     if @results_showing
       this.result_clear_highlight()
 
-      @container.removeClassName "chzn-with-drop"
+      @container.removeClassName "chosen-with-drop"
       @form_field.fire("chosen:hiding_dropdown", {chosen: this})
 
     @results_showing = false
@@ -359,10 +359,10 @@ class @Chosen extends AbstractChosen
 
   single_set_selected_text: (text=@default_text) ->
     if text is @default_text
-      @selected_item.addClassName("chzn-default")
+      @selected_item.addClassName("chosen-default")
     else
       this.single_deselect_control_build()
-      @selected_item.removeClassName("chzn-default")
+      @selected_item.removeClassName("chosen-default")
 
     @selected_item.down("span").update(text)
 
@@ -387,7 +387,7 @@ class @Chosen extends AbstractChosen
   single_deselect_control_build: ->
     return unless @allow_single_deselect
     @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } unless @selected_item.down("abbr")
-    @selected_item.addClassName("chzn-single-with-deselect")
+    @selected_item.addClassName("chosen-single-with-deselect")
 
   get_search_text: ->
     if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
