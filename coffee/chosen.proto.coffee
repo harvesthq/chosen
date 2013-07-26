@@ -26,7 +26,7 @@ class @Chosen extends AbstractChosen
       'style': "width: #{this.container_width()};"
       'title': @form_field.title
 
-    container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chzn" if @form_field.id.length
+    container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
 
     @container = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
