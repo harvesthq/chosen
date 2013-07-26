@@ -122,9 +122,10 @@ class AbstractChosen
     results = 0
 
     searchText = this.get_search_text()
+    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regexAnchor = if @search_contains then "" else "^"
-    regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
-    zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    regex = new RegExp(regexAnchor + escapedSearchText, 'i')
+    zregex = new RegExp(escapedSearchText, 'i')
 
     for option in @results_data
 
