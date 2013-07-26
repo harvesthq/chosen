@@ -30,6 +30,8 @@ class AbstractChosen
     @single_backstroke_delete = if @options.single_backstroke_delete? then @options.single_backstroke_delete else true
     @max_selected_options = @options.max_selected_options || Infinity
     @inherit_select_classes = @options.inherit_select_classes || false
+    @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
+    @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -58,9 +60,9 @@ class AbstractChosen
   results_option_build: (options) ->
     content = ''
     for data in @results_data
-      if data.group && (data.search_match || data.group_match)
+      if data.group
         content += this.result_add_group data
-      else if !data.empty && data.search_match
+      else
         content += this.result_add_option data
 
       # this select logic pins on an awkward flag
@@ -74,6 +76,9 @@ class AbstractChosen
     content
 
   result_add_option: (option) ->
+    return '' unless option.search_match
+    return '' unless this.include_option_in_results(option)
+
     classes = []
     classes.push "active-result" if !option.disabled and !(option.selected and @is_multiple)
     classes.push "disabled-result" if option.disabled and !(option.selected and @is_multiple)
@@ -86,6 +91,9 @@ class AbstractChosen
     """<li class="#{classes.join(' ')}"#{style} data-option-array-index="#{option.array_index}">#{option.search_text}</li>"""
 
   result_add_group: (group) ->
+    return '' unless group.search_match || group.group_match
+    return '' unless group.active_options > 0
+
     """<li class="group-result">#{group.search_text}</li>"""
 
   results_update_field: ->
@@ -119,16 +127,26 @@ class AbstractChosen
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
-      if not option.empty
 
-        option.group_match = false if option.group
+      option.search_match = false
+      results_group = null
 
+      if this.include_option_in_results(option)
+
+        if option.group
+          option.group_match = false
+          option.active_options = 0
+
+        if option.group_array_index? and @results_data[option.group_array_index]
+          results_group = @results_data[option.group_array_index]
+          results += 1 if results_group.active_options is 0 and results_group.search_match
+          results_group.active_options += 1
+                
         unless option.group and not @group_search
-          option.search_match = false
 
           option.search_text = if option.group then option.label else option.html
           option.search_match = this.search_string_match(option.search_text, regex)
-          results += 1 if option.search_match
+          results += 1 if option.search_match and not option.group
 
           if option.search_match
             if searchText.length
@@ -136,7 +154,7 @@ class AbstractChosen
               text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
-            @results_data[option.group_array_index].group_match = true if option.group_array_index?
+            results_group.group_match = true if results_group?
           
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
@@ -196,6 +214,13 @@ class AbstractChosen
 
   container_width: ->
     return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
+
+  include_option_in_results: (option) ->
+    return false if @is_multiple and (not @display_selected_options and option.selected)
+    return false if not @display_disabled_options and option.disabled
+    return false if option.empty
+
+    return true
 
   # class methods and variables ============================================================ 
 
