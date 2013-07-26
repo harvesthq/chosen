@@ -66,7 +66,7 @@ class Chosen extends AbstractChosen
     this.results_build()
     this.set_tab_index()
     this.set_label_behavior()
-    @form_field_jq.trigger("liszt:ready", {chosen: this})
+    @form_field_jq.trigger("chosen:ready", {chosen: this})
 
   register_observers: ->
     @container.bind 'mousedown.chosen', (evt) => this.container_mousedown(evt); return
@@ -79,9 +79,9 @@ class Chosen extends AbstractChosen
     @search_results.bind 'mouseout.chosen', (evt) => this.search_results_mouseout(evt); return
     @search_results.bind 'mousewheel.chosen DOMMouseScroll.chosen', (evt) => this.search_results_mousewheel(evt); return
 
-    @form_field_jq.bind "liszt:updated.chosen", (evt) => this.results_update_field(evt); return
-    @form_field_jq.bind "liszt:activate.chosen", (evt) => this.activate_field(evt); return
-    @form_field_jq.bind "liszt:open.chosen", (evt) => this.container_mousedown(evt); return
+    @form_field_jq.bind "chosen:updated.chosen", (evt) => this.results_update_field(evt); return
+    @form_field_jq.bind "chosen:activate.chosen", (evt) => this.activate_field(evt); return
+    @form_field_jq.bind "chosen:open.chosen", (evt) => this.container_mousedown(evt); return
 
     @search_field.bind 'blur.chosen', (evt) => this.input_blur(evt); return
     @search_field.bind 'keyup.chosen', (evt) => this.keyup_checker(evt); return
@@ -219,11 +219,11 @@ class Chosen extends AbstractChosen
 
   results_show: ->
     if @is_multiple and @max_selected_options <= this.choices_count()
-      @form_field_jq.trigger("liszt:maxselected", {chosen: this})
+      @form_field_jq.trigger("chosen:maxselected", {chosen: this})
       return false
 
     @container.addClass "chosen-with-drop"
-    @form_field_jq.trigger("liszt:showing_dropdown", {chosen: this})
+    @form_field_jq.trigger("chosen:showing_dropdown", {chosen: this})
 
     @results_showing = true
 
@@ -240,7 +240,7 @@ class Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       @container.removeClass "chosen-with-drop"
-      @form_field_jq.trigger("liszt:hiding_dropdown", {chosen: this})
+      @form_field_jq.trigger("chosen:hiding_dropdown", {chosen: this})
 
     @results_showing = false
 
@@ -328,7 +328,7 @@ class Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       if @is_multiple and @max_selected_options <= this.choices_count()
-        @form_field_jq.trigger("liszt:maxselected", {chosen: this})
+        @form_field_jq.trigger("chosen:maxselected", {chosen: this})
         return false
 
       if @is_multiple
