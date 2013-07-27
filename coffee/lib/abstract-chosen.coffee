@@ -86,9 +86,16 @@ class AbstractChosen
     classes.push "group-option" if option.group_array_index?
     classes.push option.classes if option.classes != ""
 
-    style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
+    element = document.createElement("li")
+    element.className = classes.join(" ")
+    element.style.cssText = option.style
+    element.setAttribute("data-option-array-index", option.array_index)
+    element.innerHTML = option.search_text
 
-    """<li class="#{classes.join(' ')}"#{style} data-option-array-index="#{option.array_index}">#{option.search_text}</li>"""
+    return element.outerHTML if element.outerHTML
+    tmp = document.createElement("div")
+    tmp.appendChild(element)
+    tmp.innerHTML
 
   result_add_group: (group) ->
     return '' unless group.search_match || group.group_match
