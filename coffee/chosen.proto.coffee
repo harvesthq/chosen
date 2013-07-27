@@ -67,6 +67,9 @@ class @Chosen extends AbstractChosen
     @form_field.observe "chosen:updated", (evt) => this.results_update_field(evt)
     @form_field.observe "chosen:activate", (evt) => this.activate_field(evt)
     @form_field.observe "chosen:open", (evt) => this.container_mousedown(evt)
+    @form_field.observe "chosen:enable", (evt) => this.enable(evt)
+    @form_field.observe "chosen:disable", (evt) => this.disable(evt)
+    @form_field.observe "chosen:reset", (evt) => this.results_reset(evt)
 
     @search_field.observe "blur", (evt) => this.input_blur(evt)
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
@@ -100,17 +103,27 @@ class @Chosen extends AbstractChosen
     @container.remove()
     @form_field.show()
 
+  enable: ->
+    @is_disabled = false
+    @form_field.disabled = false
+    @container.removeClassName 'chzn-disabled'
+    @search_field.disabled = false
+    @selected_item.observe "focus", @activate_action unless @is_multiple
+
+  disable: ->
+    @is_disabled = true
+    @form_field.disabled = true
+    @container.addClassName 'chzn-disabled'
+    @search_field.disabled = true
+    @selected_item.stopObserving "focus", @activate_action unless @is_multiple
+    this.close_field()
+
   search_field_disabled: ->
     @is_disabled = @form_field.disabled
-    if(@is_disabled)
-      @container.addClassName 'chosen-disabled'
-      @search_field.disabled = true
-      @selected_item.stopObserving "focus", @activate_action if !@is_multiple
-      this.close_field()
+    if(@form_field.disabled)
+      this.disable()
     else
-      @container.removeClassName 'chosen-disabled'
-      @search_field.disabled = false
-      @selected_item.observe "focus", @activate_action if !@is_multiple
+      this.enable()
 
   container_mousedown: (evt) ->
     if !@is_disabled

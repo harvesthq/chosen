@@ -83,6 +83,9 @@ class Chosen extends AbstractChosen
     @form_field_jq.bind "chosen:updated.chosen", (evt) => this.results_update_field(evt); return
     @form_field_jq.bind "chosen:activate.chosen", (evt) => this.activate_field(evt); return
     @form_field_jq.bind "chosen:open.chosen", (evt) => this.container_mousedown(evt); return
+    @form_field_jq.bind "chosen:enable.chosen", (evt) => this.enable(evt); return
+    @form_field_jq.bind "chosen:disable.chosen", (evt) => this.disable(evt); return
+    @form_field_jq.bind "chosen:reset.chosen", (evt) => this.results_reset(evt); return
 
     @search_field.bind 'blur.chosen', (evt) => this.input_blur(evt); return
     @search_field.bind 'keyup.chosen', (evt) => this.keyup_checker(evt); return
@@ -103,17 +106,27 @@ class Chosen extends AbstractChosen
     @form_field_jq.removeData('chosen')
     @form_field_jq.show()
 
+  enable: ->
+    @is_disabled = false
+    @form_field.disabled = false
+    @container.removeClass 'chzn-disabled'
+    @search_field[0].disabled = false
+    @selected_item.bind "focus.chosen", @activate_action unless @is_multiple
+
+  disable: ->
+    @is_disabled = true
+    @form_field.disabled = true
+    @container.addClass 'chzn-disabled'
+    @search_field[0].disabled = true
+    @selected_item.unbind "focus.chosen", @activate_action unless @is_multiple
+    this.close_field()
+
   search_field_disabled: ->
-    @is_disabled = @form_field_jq[0].disabled
+    @is_disabled = @form_field.disabled
     if(@is_disabled)
-      @container.addClass 'chosen-disabled'
-      @search_field[0].disabled = true
-      @selected_item.unbind "focus.chosen", @activate_action if !@is_multiple
-      this.close_field()
+      this.disable()
     else
-      @container.removeClass 'chosen-disabled'
-      @search_field[0].disabled = false
-      @selected_item.bind "focus.chosen", @activate_action if !@is_multiple
+      this.enable()
 
   container_mousedown: (evt) ->
     if !@is_disabled
