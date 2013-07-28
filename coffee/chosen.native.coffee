@@ -1,139 +1,11 @@
-# DOM utility methods
-temp_el = document.createElement 'div'
-
-# Check for native String.trim
-if String::trim?
-  trim = (string) -> string.trim()
-else
-  trim = (string) -> string.replace /^\s+|\s+$/g, ''
-    
-camel_case = (string) -> string.replace /-([a-z])/g, (match) -> match[1].toUpperCase()
-
-# Check for support of ClassList
-if 'classList' of temp_el
-	has_class = (el, class_name) -> el.classList.contains class_name
-	add_class = (el, class_name) -> el.classList.add class_name
-	remove_class = (el, class_name) -> el.classList.remove class_name
-else
-	has_class = (el, class_name) -> " #{el.className.toUpperCase()} ".indexOf(" #{class_name.toUpperCase()} ") > -1
-	add_class = (el, class_name) -> el.className += " #{class_name}" unless has_class el, class_name
-	remove_class = (el, class_name) -> el.className = trim " #{el.className} ".replace(" #{class_name}", "")
-  
-if 'getComputedStyle' of window
-  get_style = (el, prop) -> window.getComputedStyle(el, null).getPropertyValue(prop)
-else if 'currentStyle' of temp_el
-  get_style = (el, prop) -> el.currentStyle[camel_case prop]
-else
-  get_style = (el, prop) -> ""
-
-# W3C event model
-if document.addEventListener?
-  add_event = (el, type, fn) -> 
-    # TODO: Support these emulated events in remove_event (need to store wrapper function to access it later)
-    emulated_event = emulated_events[type]
-    if emulated_event
-      fn = emulated_event.handler(el, fn)
-      type = emulated_event.mapped_to
-      
-    el.addEventListener(type, fn, false)
-  remove_event = (el, type, fn) -> el.removeEventListener(type, fn, false)
-
-# Legacy IE event model
-# Based off https://github.com/Daniel15/JSFramework/blob/master/events.js and http://ejohn.org/projects/flexible-javascript-events/
-else if document.attachEvent?
-  add_event = (el, type, fn) -> 
-    # Create a wrapper that normalises some properties in IE
-    # Save it in case we want to remove the handler later
-    handler = el['eventhandler' + type + fn] = ->
-      evt = window.event
-      # Normalize the event
-      # target - What actually triggered the event
-      evt.target = evt.srcElement
-      # currentTarget - Where the event has bubbled up to (always the object the handler is attached to)
-      # Reference: https://developer.mozilla.org/en/DOM/event.currentTarget
-      evt.currentTarget = el
-      # Shim for preventDefault
-      evt.preventDefault = -> evt.returnValue = false
-      
-      fn.call(el, evt)
-  
-    el.attachEvent('on' + type, handler)
-    
-  remove_event = (el, type, fn) -> 
-    # Find the wrapper function that was created when the event was added
-    handler = el['eventhandler' + type + fn]
-    el.detachEvent('on' + type, handler)
-    el['eventhandler' + type + fn] = null
-  
-# mouseenter/mouseleave emulation for unsupported browsers
-# Based off technique at http://blog.stchur.com/2007/03/15/mouseenter-and-mouseleave-events-for-firefox-and-other-non-ie-browsers/
-emulated_events =
-  mouseenter: 
-    mapped_to: 'mouseover'
-    handler: (original_el, fn) ->
-      (evt) ->
-        # Don't fire if it's a child element (so it's not fired over and over again)
-        # In this case, relatedTarget is the element the mouse has moved from. It is null in the case where the mouse
-        # is moved from outside the browser window onto an element.
-        return if original_el is evt.relatedTarget or (evt.relatedTarget? and find_parent evt.relatedTarget, (el) -> el is original_el)
-          
-        fn.call(this, evt)
-
-emulated_events.mouseleave = 
-  mapped_to: 'mouseout',
-  handler: emulated_events.mouseenter.handler
-
-fire_event = do ->
-	# TODO: The createEvent method is deprecated. Use event constructors instead. - https://developer.mozilla.org/en-US/docs/Web/API/document.createEvent
-  # W3C event model
-	if document.createEvent?
-    (el, type, memo = {}) ->
-      event = document.createEvent "HTMLEvents"
-      event.initEvent type, true, true
-      event.eventName = type
-      event.memo = memo
-      el.dispatchEvent event
-      
-  # Legacy IE event model
-  else if document.createEventObject?
-    (el, type, memo = {}) ->
-      # FIXME legacy IE doesn't support firing custom events - Just ignore them for now.
-      return if type.indexOf(':') > -1
-      
-      event = document.createEventObject()
-      event.eventType = type
-      event.eventName = type
-      event.memo = memo
-      el.fireEvent "on#{type}", event
-      
-find_parent = (el, check) ->
-  current_node = el.parentNode
-  until current_node is null or check current_node
-    current_node = current_node.parentNode
-    # If we get beyond the <html> element, consider it not found
-    current_node = null if current_node is document
-  return current_node
-  
-find_next_sibling = (el, check) ->
-  current_sibling = el.nextSibling
-  until current_sibling is null or check current_sibling
-    current_sibling = current_sibling.nextSibling
-  return current_sibling
-
-find_prev_sibling = (el, check) ->
-  current_sibling = el.previousSibling
-  until current_sibling is null or check current_sibling
-    current_sibling = current_sibling.previousSibling
-  return current_sibling
-
 class @Chosen extends AbstractChosen
 
   setup: ->
     @current_selectedIndex = @form_field.selectedIndex
-    @is_rtl = has_class @form_field, "chzn-rtl"
+    @is_rtl = DOM.has_class @form_field, "chzn-rtl"
 
   finish_setup: ->
-    add_class @form_field, "chzn-done"
+    DOM.add_class @form_field, "chzn-done"
 
   set_up_html: ->
     container_classes = ["chzn-container"]
@@ -178,56 +50,56 @@ class @Chosen extends AbstractChosen
     this.results_build()
     this.set_tab_index()
     this.set_label_behavior()
-    fire_event @form_field, "liszt:ready", {chosen: this}
+    Events.fire @form_field, "liszt:ready", {chosen: this}
 
   register_observers: ->
-    add_event @container, 'mousedown', (evt) => this.container_mousedown(evt); return
-    add_event @container, 'mouseup', (evt) => this.container_mouseup(evt); return
-    add_event @container, 'mouseenter', (evt) => this.mouse_enter(evt); return
-    add_event @container, 'mouseleave', (evt) => this.mouse_leave(evt); return
+    Events.add @container, 'mousedown', (evt) => this.container_mousedown(evt); return
+    Events.add @container, 'mouseup', (evt) => this.container_mouseup(evt); return
+    Events.add @container, 'mouseenter', (evt) => this.mouse_enter(evt); return
+    Events.add @container, 'mouseleave', (evt) => this.mouse_leave(evt); return
 
-    add_event @search_results, "mouseup", (evt) => this.search_results_mouseup(evt); return
-    add_event @search_results, "mouseover", (evt) => this.search_results_mouseover(evt); return
-    add_event @search_results, "mouseout", (evt) => this.search_results_mouseout(evt); return
-    add_event @search_results, 'mousewheel DOMMouseScroll', (evt) => this.search_results_mousewheel(evt); return
+    Events.add @search_results, "mouseup", (evt) => this.search_results_mouseup(evt); return
+    Events.add @search_results, "mouseover", (evt) => this.search_results_mouseover(evt); return
+    Events.add @search_results, "mouseout", (evt) => this.search_results_mouseout(evt); return
+    Events.add @search_results, 'mousewheel DOMMouseScroll', (evt) => this.search_results_mousewheel(evt); return
 
-    add_event @form_field, "liszt:updated", (evt) => this.results_update_field(evt); return
-    add_event @form_field, "liszt:activate", (evt) => this.activate_field(evt); return
-    add_event @form_field, "liszt:open", (evt) => this.container_mousedown(evt); return
+    Events.add @form_field, "liszt:updated", (evt) => this.results_update_field(evt); return
+    Events.add @form_field, "liszt:activate", (evt) => this.activate_field(evt); return
+    Events.add @form_field, "liszt:open", (evt) => this.container_mousedown(evt); return
 
-    add_event @search_field, "blur",  (evt) => this.input_blur(evt); return
-    add_event @search_field, "keyup",  (evt) => this.keyup_checker(evt); return
-    add_event @search_field, "keydown", (evt) => this.keydown_checker(evt); return
-    add_event @search_field, "focus", (evt) => this.input_focus(evt); return
+    Events.add @search_field, "blur",  (evt) => this.input_blur(evt); return
+    Events.add @search_field, "keyup",  (evt) => this.keyup_checker(evt); return
+    Events.add @search_field, "keydown", (evt) => this.keydown_checker(evt); return
+    Events.add @search_field, "focus", (evt) => this.input_focus(evt); return
 
     if @is_multiple
-      add_event @search_choices, "click",  (evt) => this.choices_click(evt); return
+      Events.add @search_choices, "click",  (evt) => this.choices_click(evt); return
     else
-      add_event @container, "click", (evt) => evt.preventDefault(); return # gobble click of anchor
+      Events.add @container, "click", (evt) => evt.preventDefault(); return # gobble click of anchor
 
   search_field_disabled: ->
     @is_disabled = @form_field.disabled
     if(@is_disabled)
-      add_class @container, 'chzn-disabled'
+      DOM.add_class @container, 'chzn-disabled'
       @search_field.disabled = true
-      remove_event @selected_item, "focus", @activate_action if !@is_multiple
+      Events.remove @selected_item, "focus", @activate_action if !@is_multiple
       this.close_field()
     else
-      remove_class @container, 'chzn-disabled'
+      DOM.remove_class @container, 'chzn-disabled'
       @search_field.disabled = false
-      add_event @selected_item, "focus", @activate_action if !@is_multiple
+      Events.add @selected_item, "focus", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
     if !@is_disabled
       if evt and evt.type is "mousedown" and not @results_showing
         evt.preventDefault()
 
-      if not (evt? and has_class evt.target, "search-choice-close")
+      if not (evt? and DOM.has_class evt.target, "search-choice-close")
         if not @active_field
           @search_field.value = "" if @is_multiple
-          add_event document, "click", @click_test_action
+          Events.add document, "click", @click_test_action
           this.results_show()
-        else if not @is_multiple and evt and ((evt.target == @selected_item) || find_parent(evt.target, (el) -> has_class el, ".chzn-single")?)
+        else if not @is_multiple and evt and ((evt.target == @selected_item) || DOM.find_parent(evt.target, (el) -> DOM.has_class el, ".chzn-single")?)
           evt.preventDefault()
           this.results_toggle()
 
@@ -244,22 +116,22 @@ class @Chosen extends AbstractChosen
       @search_results.scrollTop(delta + @search_results.scrollTop())
 
   blur_test: (evt) ->
-    this.close_field() if not @active_field and has_class @container, "chzn-container-active"
+    this.close_field() if not @active_field and DOM.has_class @container, "chzn-container-active"
 
   close_field: ->
-    remove_event document, "click", @click_test_action
+    Events.remove document, "click", @click_test_action
 
     @active_field = false
     this.results_hide()
 
-    remove_class @container, "chzn-container-active"
+    DOM.remove_class @container, "chzn-container-active"
     this.clear_backstroke()
 
     this.show_search_field_default()
     this.search_field_scale()
 
   activate_field: ->
-    add_class @container, "chzn-container-active"
+    DOM.add_class @container, "chzn-container-active"
     @active_field = true
 
     # What is this even doing? It was present in the jQuery version so has been retained here.
@@ -268,7 +140,7 @@ class @Chosen extends AbstractChosen
 
 
   test_active_click: (evt) ->
-    selected_container = find_parent evt.target.parentNode, (el) -> has_class el, 'chzn-container'
+    selected_container = DOM.find_parent evt.target.parentNode, (el) -> DOM.has_class el, 'chzn-container'
     
     if @container is selected_container
       @active_field = true
@@ -288,10 +160,10 @@ class @Chosen extends AbstractChosen
       this.single_set_selected_text()
       if @disable_search or @form_field.options.length <= @disable_search_threshold
         @search_field.readOnly = true
-        add_class @container, "chzn-container-single-nosearch"
+        DOM.add_class @container, "chzn-container-single-nosearch"
       else
         @search_field.readOnly = false
-        remove_class @container, "chzn-container-single-nosearch"
+        DOM.remove_class @container, "chzn-container-single-nosearch"
 
     this.update_results_content this.results_option_build({first:true})
 
@@ -306,9 +178,9 @@ class @Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       @result_highlight = el
-      add_class @result_highlight, "highlighted"
+      DOM.add_class @result_highlight, "highlighted"
 
-      maxHeight = parseInt get_style(@search_results, 'max-height'), 10
+      maxHeight = parseInt DOM.get_style(@search_results, 'max-height'), 10
       visible_top = @search_results.scrollTop
       visible_bottom = maxHeight + visible_top
 
@@ -321,16 +193,16 @@ class @Chosen extends AbstractChosen
         @search_results.scrollTop = high_top
 
   result_clear_highlight: ->
-    remove_class @result_highlight, "highlighted" if @result_highlight
+    DOM.remove_class @result_highlight, "highlighted" if @result_highlight
     @result_highlight = null
 
   results_show: ->
     if @is_multiple and @max_selected_options <= this.choices_count()
-      fire_event @form_field, "liszt:maxselected", {chosen: this}
+      Events.fire @form_field, "liszt:maxselected", {chosen: this}
       return false
 
-    add_class @container, "chzn-with-drop"
-    fire_event @form_field, "liszt:showing_dropdown", {chosen: this}
+    DOM.add_class @container, "chzn-with-drop"
+    Events.fire @form_field, "liszt:showing_dropdown", {chosen: this}
 
     @results_showing = true
 
@@ -346,8 +218,8 @@ class @Chosen extends AbstractChosen
     if @results_showing
       this.result_clear_highlight()
 
-      remove_class @container, "chzn-with-drop"
-      fire_event @form_field, "liszt:hiding_dropdown", {chosen: this}
+      DOM.remove_class @container, "chzn-with-drop"
+      Events.fire @form_field, "liszt:hiding_dropdown", {chosen: this}
 
     @results_showing = false
 
@@ -359,7 +231,7 @@ class @Chosen extends AbstractChosen
       @search_field.tabindex = ti
 
   set_label_behavior: ->
-    @form_field_label = find_parent @form_field, (el) -> el.nodeName.toUpperCase() is 'LABEL' # first check for a parent label
+    @form_field_label = DOM.find_parent @form_field, (el) -> el.nodeName.toUpperCase() is 'LABEL' # first check for a parent label
     
     if not @form_field_label? and @form_field.id.length
       @form_field_label = document.querySelector("label[for='#{@form_field.id}']") #next check for a for=#{id}
@@ -370,24 +242,24 @@ class @Chosen extends AbstractChosen
   show_search_field_default: ->
     if @is_multiple and this.choices_count() < 1 and not @active_field
       @search_field.value = @default_text
-      add_class @search_field, "default"
+      DOM.add_class @search_field, "default"
     else
       @search_field.value = ""
-      remove_class @search_field, "default"
+      DOM.remove_class @search_field, "default"
 
   search_results_mouseup: (evt) ->
-    target = if has_class evt.target, "active-result" then evt.target else find_parent evt.target, (el) -> has_class el, "active-result"
+    target = if DOM.has_class evt.target, "active-result" then evt.target else DOM.find_parent evt.target, (el) -> DOM.has_class el, "active-result"
     if target?
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
   search_results_mouseover: (evt) ->
-    target = if has_class evt.target, "active-result" then evt.target else find_parent evt.target, (el) -> has_class el, "active-result"
+    target = if DOM.has_class evt.target, "active-result" then evt.target else DOM.find_parent evt.target, (el) -> DOM.has_class el, "active-result"
     this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
-    this.result_clear_highlight() if has_class evt.target, "active-result" or find_parent evt.target, (el) -> has_class el, "active-result"
+    this.result_clear_highlight() if DOM.has_class evt.target, "active-result" or DOM.find_parent evt.target, (el) -> DOM.has_class el, "active-result"
 
   choice_build: (item) ->
     choice = document.createElement 'li'
@@ -395,13 +267,13 @@ class @Chosen extends AbstractChosen
     choice.innerHTML = "<span>#{item.html}</span>"
 
     if item.disabled
-      add_class choice, 'search-choice-disabled'
+      DOM.add_class choice, 'search-choice-disabled'
     else
       close_link = document.createElement 'a' 
       close_link.href = '#'
       close_link.className = 'search-choice-close'
       close_link.rel = item.array_index
-      add_event close_link, 'click', (evt) => this.choice_destroy_link_click(evt)
+      Events.add close_link, 'click', (evt) => this.choice_destroy_link_click(evt)
       choice.appendChild close_link
     
     @search_container.parentNode.insertBefore choice, @search_container
@@ -417,7 +289,7 @@ class @Chosen extends AbstractChosen
 
       this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.value.length < 1
 
-      li = find_parent link, (el) -> el.nodeName.toUpperCase() is 'LI'
+      li = DOM.find_parent link, (el) -> el.nodeName.toUpperCase() is 'LI'
       li.parentNode.removeChild(li) if li?
 
       this.search_field_scale()
@@ -428,7 +300,7 @@ class @Chosen extends AbstractChosen
     this.single_set_selected_text()
     this.show_search_field_default()
     this.results_reset_cleanup()
-    fire_event @form_field, "change"
+    Events.fire @form_field, "change"
     this.results_hide() if @active_field
 
   results_reset_cleanup: ->
@@ -443,16 +315,16 @@ class @Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       if @is_multiple and @max_selected_options <= this.choices_count()
-        fire_event @form_field, "liszt:maxselected", {chosen: this}
+        Events.fire @form_field, "liszt:maxselected", {chosen: this}
         return false
 
       if @is_multiple
-        remove_class high, "active-result"
+        DOM.remove_class high, "active-result"
       else
-        remove_class el, "result-selected" for el in @search_results.querySelectorAll(".result-selected")
+        DOM.remove_class el, "result-selected" for el in @search_results.querySelectorAll(".result-selected")
         @result_single_selected = high
 
-      add_class high, "result-selected"
+      DOM.add_class high, "result-selected"
 
       item = @results_data[ high.getAttribute("data-option-array-index") ]
       item.selected = true
@@ -469,16 +341,16 @@ class @Chosen extends AbstractChosen
 
       @search_field.value = ""
 
-      fire_event @form_field, "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
+      Events.fire @form_field, "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
       @current_selectedIndex = @form_field.selectedIndex
       this.search_field_scale()
 
   single_set_selected_text: (text=@default_text) ->
     if text is @default_text
-      add_class @selected_item, "chzn-default"
+      DOM.add_class @selected_item, "chzn-default"
     else
       this.single_deselect_control_build()
-      remove_class @selected_item, "chzn-default"
+      DOM.remove_class @selected_item, "chzn-default"
 
     @selected_item.getElementsByTagName("span")[0].textContent = text
 
@@ -494,7 +366,7 @@ class @Chosen extends AbstractChosen
       this.result_clear_highlight()
       this.winnow_results() if @results_showing
 
-      fire_event @form_field, "change", {deselected: @form_field.options[result_data.options_index].value}
+      Events.fire @form_field, "change", {deselected: @form_field.options[result_data.options_index].value}
       this.search_field_scale()
 
       return true
@@ -510,14 +382,14 @@ class @Chosen extends AbstractChosen
       abbr.className = "search-choice-close"
       span.parentNode.insertBefore abbr, span.nextSibling
 
-    add_class @selected_item, "chzn-single-with-deselect"
+    DOM.add_class @selected_item, "chzn-single-with-deselect"
 
   get_search_text: ->
     if @search_field.value is @default_text 
       ""
     else
       temp_el = document.createElement "div"
-      temp_el.textContent = trim @search_field.value
+      temp_el.textContent = Util.trim @search_field.value
       return temp_el.innerHTML
 
   winnow_results_set_highlight: ->
@@ -543,7 +415,7 @@ class @Chosen extends AbstractChosen
 
   keydown_arrow: ->
     if @results_showing and @result_highlight
-      next_sib = find_next_sibling @result_highlight, (el) => el.nodeName.toUpperCase() == "LI" and has_class el, "active-result"
+      next_sib = DOM.find_next_sibling @result_highlight, (el) => el.nodeName.toUpperCase() == "LI" and DOM.has_class el, "active-result"
       this.result_do_highlight next_sib if next_sib
     else
       this.results_show()
@@ -552,7 +424,7 @@ class @Chosen extends AbstractChosen
     if not @results_showing and not @is_multiple
       this.results_show()
     else if @result_highlight
-      prev_sib = find_prev_sibling @result_highlight, (el) => el.nodeName.toUpperCase() == "LI" and has_class el, "active-result"
+      prev_sib = DOM.find_prev_sibling @result_highlight, (el) => el.nodeName.toUpperCase() == "LI" and DOM.has_class el, "active-result"
 
       if prev_sib?
         this.result_do_highlight prev_sib
@@ -568,15 +440,15 @@ class @Chosen extends AbstractChosen
       next_available_destroys = @search_container.parentNode.querySelectorAll("li.search-choice")
       if next_available_destroys.length
         next_available_destroy = next_available_destroys[next_available_destroys.length - 1]
-        if not has_class next_available_destroy, "search-choice-disabled"
+        if not DOM.has_class next_available_destroy, "search-choice-disabled"
           @pending_backstroke = next_available_destroy
           if @single_backstroke_delete
             @keydown_backstroke()
           else
-            add_class @pending_backstroke, "search-choice-focus"
+            DOM.add_class @pending_backstroke, "search-choice-focus"
 
   clear_backstroke: ->
-    remove_class @pending_backstroke, "search-choice-focus" if @pending_backstroke
+    DOM.remove_class @pending_backstroke, "search-choice-focus" if @pending_backstroke
     @pending_backstroke = null
 
   keydown_checker: (evt) ->
@@ -618,7 +490,7 @@ class @Chosen extends AbstractChosen
       div.style.top = '-1000px';
        
       for style in styles
-        div.style[camel_case style] = @search_field.style[style]
+        div.style[Util.camel_case style] = @search_field.style[style]
 
       div.appendChild document.createTextNode @search_field.value
       document.body.appendChild div

@@ -7,7 +7,7 @@ module.exports = (grunt) ->
   grunt.initConfig
     pkg: grunt.file.readJSON("package.json")
     comments: """
-// Chosen, a Select Box Enhancer for jQuery and Prototype
+// Chosen, a Select Box Enhancer for JavaScript
 // by Patrick Filler for Harvest, http://getharvest.com
 //
 // Version <%= pkg.version %>
@@ -39,7 +39,14 @@ module.exports = (grunt) ->
         files:
           'public/chosen.jquery.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.jquery.coffee']
           'public/chosen.proto.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.proto.coffee']
-          'public/chosen.native.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.native.coffee']
+          'public/chosen.native.js': [
+            'coffee/lib/util.coffee',
+            'coffee/lib/dom.coffee',
+            'coffee/lib/events.coffee',
+            'coffee/lib/select-parser.coffee', 
+            'coffee/lib/abstract-chosen.coffee', 
+            'coffee/chosen.native.coffee'
+          ]
 
     uglify:
       options:
