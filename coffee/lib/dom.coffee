@@ -2,24 +2,21 @@ temp_el = document.createElement 'div'
 
 DOM =
   find_parent: (el, check) ->
-    current_node = el.parentNode
-    until current_node is null or check current_node
-      current_node = current_node.parentNode
-      # If we get beyond the <html> element, consider it not found
-      current_node = null if current_node is document
-    return current_node
-  
+    result = DOM.find_traversal el, 'parentNode', (el) -> el is document or check(el)
+    # If we get beyond the <html> element, consider it not found
+    (if result is document then null else result)
+
   find_next_sibling: (el, check) ->
-    current_sibling = el.nextSibling
-    until current_sibling is null or check current_sibling
-      current_sibling = current_sibling.nextSibling
-    return current_sibling
-  
+    DOM.find_traversal el, 'nextSibling', check
+
   find_prev_sibling: (el, check) ->
-    current_sibling = el.previousSibling
-    until current_sibling is null or check current_sibling
-      current_sibling = current_sibling.previousSibling
-    return current_sibling
+    DOM.find_traversal el, 'previousSibling', check
+    
+  find_traversal: (el, property, check) ->
+    current = el[property]
+    until current is null or check current
+      current = current[property]
+    return current
   
 # Check for support of ClassList
 if 'classList' of temp_el
