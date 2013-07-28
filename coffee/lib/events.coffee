@@ -3,15 +3,20 @@ Events = {}
 # W3C event model
 if document.addEventListener?
   Events.add = (el, type, fn) ->
-    # TODO: Support these emulated events in remove_event (need to store wrapper function to access it later)
-    emulated_event = emulated_events[type]
-    if emulated_event
-      fn = emulated_event.handler(el, fn)
-      type = emulated_event.mapped_to
+    # If this event is an emulated one, we need to get the wrapper for it
+    if is_emulated_event type
+      fn = wrap_emulated_event el, type, fn
+      type = emulated_event_mapped_to type
 
     el.addEventListener(type, fn, false)
     
-  Events.remove = (el, type, fn) -> el.removeEventListener(type, fn, false)
+  Events.remove = (el, type, fn) ->
+    # If this event is an emulated one, we need to remove the wrapper function, not the raw function passed in
+    if is_emulated_event type
+      fn = unwrap_emulated_event el, type, fn
+      type = emulated_event_mapped_to type
+      
+    el.removeEventListener(type, fn, false)
 
 # Legacy IE event model
 # Based off https://github.com/Daniel15/JSFramework/blob/master/events.js and http://ejohn.org/projects/flexible-javascript-events/
@@ -61,14 +66,45 @@ else if document.createEventObject?
     event.eventName = type
     event.memo = memo
     el.fireEvent "on#{type}", event
+    
+###############################################################################
+# Event emulation
 
-# mouseenter/mouseleave emulation for unsupported browsers
-# Based off technique at http://blog.stchur.com/2007/03/15/mouseenter-and-mouseleave-events-for-firefox-and-other-non-ie-browsers/
+# Check if an event should be emulated
+is_emulated_event = (type) -> emulated_events[type]?
+  
+# Check which native event the specified emulated event should map to
+emulated_event_mapped_to = (type) -> emulated_events[type].mapped_to
+
+# Wrap an emulated event in a native event  
+wrap_emulated_event = (el, type, fn) ->
+  wrapped_fn_key = "#{DOM.unique_id el}_#{type}_#{fn}"
+
+  # If this function hasn't been wrapped yet, wrap it now
+  if not wrap_emulated_event.cache[wrapped_fn_key]?
+    wrap_emulated_event.cache[wrapped_fn_key] = emulated_events[type].handler(el, fn)
+
+  return wrap_emulated_event.cache[wrapped_fn_key] 
+
+# Cache of wrapped events
+wrap_emulated_event.cache = {}
+
+# Return the wrapped emulated event (as per `wrap_emulated_event`), then delete the wrapper from the cache
+unwrap_emulated_event = (el, type, fn) ->
+  wrapped_fn_key = "#{DOM.unique_id el}_#{type}_#{fn}"
+  wrapped_fn = wrap_emulated_event el, type, fn
+  
+  wrap_emulated_event.cache[wrapped_fn_key] = null
+  return wrapped_fn
+  
+# A hash of events that should be emulated
 emulated_events =
   mouseenter:
     mapped_to: 'mouseover'
     handler: (original_el, fn) ->
       (evt) ->
+        # mouseenter/mouseleave emulation for unsupported browsers
+        # Based off technique at http://blog.stchur.com/2007/03/15/mouseenter-and-mouseleave-events-for-firefox-and-other-non-ie-browsers/
         # Don't fire if it's a child element (so it's not fired over and over again)
         # In this case, relatedTarget is the element the mouse has moved from. It is null in the case where the mouse
         # is moved from outside the browser window onto an element.
@@ -76,6 +112,7 @@ emulated_events =
 
         fn.call(this, evt)
 
+# mouseleave can use the same logic as mouseenter
 emulated_events.mouseleave =
   mapped_to: 'mouseout',
   handler: emulated_events.mouseenter.handler
