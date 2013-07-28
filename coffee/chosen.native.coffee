@@ -99,7 +99,7 @@ class @Chosen extends AbstractChosen
           @search_field.value = "" if @is_multiple
           Events.add document, "click", @click_test_action
           this.results_show()
-        else if not @is_multiple and evt and ((evt.target == @selected_item) || DOM.find_parent(evt.target, (el) -> DOM.has_class el, ".chzn-single")?)
+        else if not @is_multiple and evt and ((evt.target == @selected_item) || DOM.find_parent(evt.target, (el) -> DOM.has_class el, "chzn-single")?)
           evt.preventDefault()
           this.results_toggle()
 
