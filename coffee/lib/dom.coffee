@@ -35,4 +35,21 @@ else if 'currentStyle' of temp_el
 else
   DOM.get_style = (el, prop) -> ""
     
+# Function to get a unique ID for the specified element
+if 'uniqueID' of temp_el
+  # IE has a unique ID built-in; let's just use that
+  DOM.unique_id = (el) -> el.uniqueID
+else
+  DOM.unique_id = (el) ->
+    # Check if an ID was already generated
+    if (id = el.getAttribute('chzn-js-id'))?
+      return parseInt id, 10
+      # No ID, so need to generate one
+    else
+      id = DOM.unique_id.max++
+      el.setAttribute('chzn-js-id', id)
+      return id
+
+  DOM.unique_id.max = 0
+    
 temp_el = null
