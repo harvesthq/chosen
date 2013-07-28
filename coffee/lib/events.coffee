@@ -79,23 +79,21 @@ emulated_event_mapped_to = (type) -> emulated_events[type].mapped_to
 
 # Wrap an emulated event in a native event  
 wrap_emulated_event = (el, type, fn) ->
-  wrapped_fn_key = "#{DOM.unique_id el}_#{type}_#{fn}"
+  wrapped_fn_key = "#{type}_#{fn}"
 
+  el._chosen_wrapped = {} if not el._chosen_wrapped?
   # If this function hasn't been wrapped yet, wrap it now
-  if not wrap_emulated_event.cache[wrapped_fn_key]?
-    wrap_emulated_event.cache[wrapped_fn_key] = emulated_events[type].handler(el, fn)
+  if not el._chosen_wrapped[wrapped_fn_key]?
+    el._chosen_wrapped[wrapped_fn_key] = emulated_events[type].handler(el, fn)
 
-  return wrap_emulated_event.cache[wrapped_fn_key] 
-
-# Cache of wrapped events
-wrap_emulated_event.cache = {}
+  return el._chosen_wrapped[wrapped_fn_key]
 
 # Return the wrapped emulated event (as per `wrap_emulated_event`), then delete the wrapper from the cache
 unwrap_emulated_event = (el, type, fn) ->
-  wrapped_fn_key = "#{DOM.unique_id el}_#{type}_#{fn}"
+  wrapped_fn_key = "#{type}_#{fn}"
   wrapped_fn = wrap_emulated_event el, type, fn
-  
-  wrap_emulated_event.cache[wrapped_fn_key] = null
+
+  el._chosen_wrapped[wrapped_fn_key] = null
   return wrapped_fn
   
 # A hash of events that should be emulated
