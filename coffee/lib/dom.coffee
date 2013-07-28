@@ -25,7 +25,7 @@ if 'classList' of temp_el
   DOM.remove_class = (el, class_name) -> el.classList.remove class_name
 else
   DOM.has_class = (el, class_name) -> " #{el.className.toUpperCase()} ".indexOf(" #{class_name.toUpperCase()} ") > -1
-  DOM.add_class = (el, class_name) -> el.className += " #{class_name}" unless has_class el, class_name
+  DOM.add_class = (el, class_name) -> el.className += " #{class_name}" unless DOM.has_class el, class_name
   DOM.remove_class = (el, class_name) -> el.className = trim " #{el.className} ".replace(" #{class_name}", "")
 
 if 'getComputedStyle' of window
@@ -34,3 +34,5 @@ else if 'currentStyle' of temp_el
   DOM.get_style = (el, prop) -> el.currentStyle[camel_case prop]
 else
   DOM.get_style = (el, prop) -> ""
+    
+temp_el = null
