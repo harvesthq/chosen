@@ -34,6 +34,7 @@ else if document.attachEvent?
       evt.currentTarget = el
       # Shim for preventDefault
       evt.preventDefault = -> evt.returnValue = false
+      evt.stopPropagation = -> evt.cancelBubble = true
 
       fn.call(el, evt)
 
@@ -43,7 +44,7 @@ else if document.attachEvent?
     # Find the wrapper function that was created when the event was added
     handler = el['eventhandler' + type + fn]
     el.detachEvent('on' + type, handler)
-    el['eventhandler' + type + fn] = nul
+    el['eventhandler' + type + fn] = null
 
 # TODO: The createEvent method is deprecated. Use event constructors instead. - https://developer.mozilla.org/en-US/docs/Web/API/document.createEvent
 # W3C event model
