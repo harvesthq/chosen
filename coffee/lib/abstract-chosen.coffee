@@ -11,8 +11,6 @@ class AbstractChosen
     this.set_up_html()
     this.register_observers()
 
-    this.finish_setup()
-
   set_default_values: ->
     @click_test_action = (evt) => this.test_active_click(evt)
     @activate_action = (evt) => this.activate_field(evt)
