@@ -146,6 +146,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     padding: 5px 6px;
     list-style: none;
     line-height: 15px;
+    -webkit-touch-callout: none;
     &.active-result {
       display: list-item;
       cursor: pointer;
