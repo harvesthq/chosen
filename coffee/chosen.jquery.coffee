@@ -79,8 +79,9 @@ class Chosen extends AbstractChosen
     @search_results.bind 'mouseout.chosen', (evt) => this.search_results_mouseout(evt); return
     @search_results.bind 'mousewheel.chosen DOMMouseScroll.chosen', (evt) => this.search_results_mousewheel(evt); return
 
-    @search_results.bind 'touchstart.chosen', (evt) => this.search_results_mouseover(evt); return
-    @search_results.bind 'touchmove.chosen', (evt) => this.search_results_mouseout(evt); return
+    @search_results.bind 'touchstart.chosen', (evt) => this.search_results_touchstart(evt); return
+    @search_results.bind 'touchmove.chosen', (evt) => this.search_results_touchmove(evt); return
+    @search_results.bind 'touchend.chosen', (evt) => this.search_results_touchend(evt); return
 
     @form_field_jq.bind "liszt:updated.chosen", (evt) => this.results_update_field(evt); return
     @form_field_jq.bind "liszt:activate.chosen", (evt) => this.activate_field(evt); return
