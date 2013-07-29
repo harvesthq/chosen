@@ -104,7 +104,11 @@ class AbstractChosen
     return '' unless group.search_match || group.group_match
     return '' unless group.active_options > 0
 
-    """<li class="group-result">#{group.search_text}</li>"""
+    group_el = document.createElement("li")
+    group_el.className = "group-result"
+    group_el.innerHTML = group.search_text
+
+    outerHTML(group_el)
 
   results_update_field: ->
     this.set_default_text()
