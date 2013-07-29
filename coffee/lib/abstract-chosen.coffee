@@ -1,3 +1,9 @@
+outerHTML = (element) ->
+    return element.outerHTML if element.outerHTML
+    tmp = document.createElement("div")
+    tmp.appendChild(element)
+    tmp.innerHTML
+
 class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
@@ -86,16 +92,13 @@ class AbstractChosen
     classes.push "group-option" if option.group_array_index?
     classes.push option.classes if option.classes != ""
 
-    element = document.createElement("li")
-    element.className = classes.join(" ")
-    element.style.cssText = option.style
-    element.setAttribute("data-option-array-index", option.array_index)
-    element.innerHTML = option.search_text
+    option_el = document.createElement("li")
+    option_el.className = classes.join(" ")
+    option_el.style.cssText = option.style
+    option_el.setAttribute("data-option-array-index", option.array_index)
+    option_el.innerHTML = option.search_text
 
-    return element.outerHTML if element.outerHTML
-    tmp = document.createElement("div")
-    tmp.appendChild(element)
-    tmp.innerHTML
+    outerHTML(option_el)
 
   result_add_group: (group) ->
     return '' unless group.search_match || group.group_match
