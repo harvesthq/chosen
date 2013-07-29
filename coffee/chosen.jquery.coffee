@@ -24,9 +24,6 @@ class Chosen extends AbstractChosen
     @current_selectedIndex = @form_field.selectedIndex
     @is_rtl = @form_field_jq.hasClass "chosen-rtl"
 
-  finish_setup: ->
-    @form_field_jq.addClass "chosen-done"
-
   set_up_html: ->
     container_classes = ["chosen-container"]
     container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")

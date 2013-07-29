@@ -4,9 +4,6 @@ class @Chosen extends AbstractChosen
     @current_selectedIndex = @form_field.selectedIndex
     @is_rtl = @form_field.hasClassName "chosen-rtl"
 
-  finish_setup: ->
-    @form_field.addClassName "chosen-done"
-
   set_default_values: ->
     super()
 
