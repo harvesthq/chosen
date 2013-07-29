@@ -63,6 +63,9 @@ class @Chosen extends AbstractChosen
     @search_results.observe "mousewheel", (evt) => this.search_results_mousewheel(evt)
     @search_results.observe "DOMMouseScroll", (evt) => this.search_results_mousewheel(evt)
 
+    @search_results.observe "touchstart", (evt) => this.search_results_mouseover(evt)
+    @search_results.observe "touchmove", (evt) => this.search_results_mouseout(evt)
+
     @form_field.observe "liszt:updated", (evt) => this.results_update_field(evt)
     @form_field.observe "liszt:activate", (evt) => this.activate_field(evt)
     @form_field.observe "liszt:open", (evt) => this.container_mousedown(evt)
