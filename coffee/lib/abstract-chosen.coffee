@@ -124,6 +124,13 @@ class AbstractChosen
     else
       this.results_show()
 
+  search_field_disabled: ->
+    @is_disabled = @form_field.disabled
+    if @is_disabled
+      this.disable()
+    else
+      this.enable()
+
   winnow_results: ->
     this.no_results_clear()
 

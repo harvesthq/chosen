@@ -118,13 +118,6 @@ class @Chosen extends AbstractChosen
     @selected_item.stopObserving "focus", @activate_action unless @is_multiple
     this.close_field()
 
-  search_field_disabled: ->
-    @is_disabled = @form_field.disabled
-    if(@form_field.disabled)
-      this.disable()
-    else
-      this.enable()
-
   container_mousedown: (evt) ->
     if !@is_disabled
       if evt and evt.type is "mousedown" and not @results_showing
