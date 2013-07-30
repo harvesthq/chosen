@@ -322,7 +322,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
 
 /* @group Right to Left */
 .chzn-rtl {
-  text-align: right;
   .chzn-single {
     overflow: visible;
     padding: 0 8px 0 0;
@@ -330,7 +329,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   .chzn-single span {
     margin-right: 0;
     margin-left: 26px;
-    direction: rtl;
   }
   .chzn-single-with-deselect span {
     margin-right: 0;
@@ -346,9 +344,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   }
   .chzn-choices li {
     float: right;
-    &.search-field input[type="text"] {
-      direction: rtl;
-    }
     &.search-choice {
       margin: 3px 5px 3px 0;
       padding: 3px 5px 3px 19px;
@@ -377,7 +372,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     padding: 4px 5px 4px 20px;
     background: #fff $chosen-sprite no-repeat -30px -20px;
     @include background($chosen-sprite no-repeat -30px -20px, linear-gradient(#eee 1%, #fff 15%));
-    direction: rtl;
   }
   &.chzn-container-single{
     .chzn-single div b {
