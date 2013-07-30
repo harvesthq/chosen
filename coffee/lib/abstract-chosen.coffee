@@ -125,8 +125,7 @@ class AbstractChosen
       this.results_show()
 
   search_field_disabled: ->
-    @is_disabled = @form_field.disabled
-    if @is_disabled
+    if @form_field.disabled
       this.disable()
     else
       this.enable()
@@ -206,7 +205,7 @@ class AbstractChosen
 
   choices_click: (evt) ->
     evt.preventDefault()
-    this.results_show() unless @results_showing or @is_disabled
+    this.results_show() unless @results_showing or @form_field.disabled
 
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode

@@ -107,14 +107,12 @@ class Chosen extends AbstractChosen
     @form_field_jq.show()
 
   enable: ->
-    @is_disabled = false
     @form_field.disabled = false
     @container.removeClass 'chzn-disabled'
     @search_field[0].disabled = false
     @selected_item.bind "focus.chosen", @activate_action unless @is_multiple
 
   disable: ->
-    @is_disabled = true
     @form_field.disabled = true
     @container.addClass 'chzn-disabled'
     @search_field[0].disabled = true
@@ -122,7 +120,7 @@ class Chosen extends AbstractChosen
     this.close_field()
 
   container_mousedown: (evt) ->
-    if !@is_disabled
+    unless @form_field.disabled
       if evt and evt.type is "mousedown" and not @results_showing
         evt.preventDefault()
 
@@ -138,7 +136,7 @@ class Chosen extends AbstractChosen
         this.activate_field()
 
   container_mouseup: (evt) ->
-    this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
+    this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @form_field.disabled
 
   search_results_mousewheel: (evt) ->
     delta = -evt.originalEvent?.wheelDelta or evt.originialEvent?.detail
@@ -303,7 +301,7 @@ class Chosen extends AbstractChosen
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
     evt.stopPropagation()
-    this.choice_destroy $(evt.target) unless @is_disabled
+    this.choice_destroy $(evt.target) unless @form_field.disabled
 
   choice_destroy: (link) ->
     if this.result_deselect( link[0].getAttribute("data-option-array-index") )
