@@ -1,9 +1,3 @@
-outerHTML = (element) ->
-    return element.outerHTML if element.outerHTML
-    tmp = document.createElement("div")
-    tmp.appendChild(element)
-    tmp.innerHTML
-
 class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
@@ -96,7 +90,7 @@ class AbstractChosen
     option_el.setAttribute("data-option-array-index", option.array_index)
     option_el.innerHTML = option.search_text
 
-    outerHTML(option_el)
+    this.outerHTML(option_el)
 
   result_add_group: (group) ->
     return '' unless group.search_match || group.group_match
@@ -106,7 +100,7 @@ class AbstractChosen
     group_el.className = "group-result"
     group_el.innerHTML = group.search_text
 
-    outerHTML(group_el)
+    this.outerHTML(group_el)
 
   results_update_field: ->
     this.set_default_text()
@@ -236,6 +230,12 @@ class AbstractChosen
 
     return true
 
+  outerHTML: (element) ->
+    return element.outerHTML if element.outerHTML
+    tmp = document.createElement("div")
+    tmp.appendChild(element)
+    tmp.innerHTML
+
   # class methods and variables ============================================================ 
 
   @browser_is_supported: ->
@@ -250,3 +250,4 @@ class AbstractChosen
   @default_multiple_text: "Select Some Options"
   @default_single_text: "Select an Option"
   @default_no_result_text: "No results match"
+
