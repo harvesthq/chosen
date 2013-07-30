@@ -1,7 +1,7 @@
 // Chosen, a Select Box Enhancer for jQuery and Prototype
 // by Patrick Filler for Harvest, http://getharvest.com
 //
-// Version 0.14.0
+// Version 1.0.0
 // Full source at https://github.com/harvesthq/chosen
 // Copyright (c) 2011 Harvest http://getharvest.com
 
@@ -126,7 +126,6 @@
       this.setup();
       this.set_up_html();
       this.register_observers();
-      this.finish_setup();
     }
 
     AbstractChosen.prototype.set_default_values = function() {
@@ -508,23 +507,19 @@
     Chosen.prototype.setup = function() {
       this.form_field_jq = $(this.form_field);
       this.current_selectedIndex = this.form_field.selectedIndex;
-      return this.is_rtl = this.form_field_jq.hasClass("chzn-rtl");
-    };
-
-    Chosen.prototype.finish_setup = function() {
-      return this.form_field_jq.addClass("chzn-done");
+      return this.is_rtl = this.form_field_jq.hasClass("chosen-rtl");
     };
 
     Chosen.prototype.set_up_html = function() {
       var container_classes, container_props;
 
-      container_classes = ["chzn-container"];
-      container_classes.push("chzn-container-" + (this.is_multiple ? "multi" : "single"));
+      container_classes = ["chosen-container"];
+      container_classes.push("chosen-container-" + (this.is_multiple ? "multi" : "single"));
       if (this.inherit_select_classes && this.form_field.className) {
         container_classes.push(this.form_field.className);
       }
       if (this.is_rtl) {
-        container_classes.push("chzn-rtl");
+        container_classes.push("chosen-rtl");
       }
       container_props = {
         'class': container_classes.join(' '),
@@ -532,31 +527,31 @@
         'title': this.form_field.title
       };
       if (this.form_field.id.length) {
-        container_props.id = this.form_field.id.replace(/[^\w]/g, '_') + "_chzn";
+        container_props.id = this.form_field.id.replace(/[^\w]/g, '_') + "_chosen";
       }
       this.container = $("<div />", container_props);
       if (this.is_multiple) {
-        this.container.html('<ul class="chzn-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop"><ul class="chzn-results"></ul></div>');
+        this.container.html('<ul class="chosen-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>');
       } else {
-        this.container.html('<a class="chzn-single chzn-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
+        this.container.html('<a class="chosen-single chosen-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>');
       }
       this.form_field_jq.hide().after(this.container);
-      this.dropdown = this.container.find('div.chzn-drop').first();
+      this.dropdown = this.container.find('div.chosen-drop').first();
       this.search_field = this.container.find('input').first();
-      this.search_results = this.container.find('ul.chzn-results').first();
+      this.search_results = this.container.find('ul.chosen-results').first();
       this.search_field_scale();
       this.search_no_results = this.container.find('li.no-results').first();
       if (this.is_multiple) {
-        this.search_choices = this.container.find('ul.chzn-choices').first();
+        this.search_choices = this.container.find('ul.chosen-choices').first();
         this.search_container = this.container.find('li.search-field').first();
       } else {
-        this.search_container = this.container.find('div.chzn-search').first();
-        this.selected_item = this.container.find('.chzn-single').first();
+        this.search_container = this.container.find('div.chosen-search').first();
+        this.selected_item = this.container.find('.chosen-single').first();
       }
       this.results_build();
       this.set_tab_index();
       this.set_label_behavior();
-      return this.form_field_jq.trigger("liszt:ready", {
+      return this.form_field_jq.trigger("chosen:ready", {
         chosen: this
       });
     };
@@ -588,13 +583,13 @@
       this.search_results.bind('mousewheel.chosen DOMMouseScroll.chosen', function(evt) {
         _this.search_results_mousewheel(evt);
       });
-      this.form_field_jq.bind("liszt:updated.chosen", function(evt) {
+      this.form_field_jq.bind("chosen:updated.chosen", function(evt) {
         _this.results_update_field(evt);
       });
-      this.form_field_jq.bind("liszt:activate.chosen", function(evt) {
+      this.form_field_jq.bind("chosen:activate.chosen", function(evt) {
         _this.activate_field(evt);
       });
-      this.form_field_jq.bind("liszt:open.chosen", function(evt) {
+      this.form_field_jq.bind("chosen:open.chosen", function(evt) {
         _this.container_mousedown(evt);
       });
       this.search_field.bind('blur.chosen', function(evt) {
@@ -633,14 +628,14 @@
     Chosen.prototype.search_field_disabled = function() {
       this.is_disabled = this.form_field_jq[0].disabled;
       if (this.is_disabled) {
-        this.container.addClass('chzn-disabled');
+        this.container.addClass('chosen-disabled');
         this.search_field[0].disabled = true;
         if (!this.is_multiple) {
           this.selected_item.unbind("focus.chosen", this.activate_action);
         }
         return this.close_field();
       } else {
-        this.container.removeClass('chzn-disabled');
+        this.container.removeClass('chosen-disabled');
         this.search_field[0].disabled = false;
         if (!this.is_multiple) {
           return this.selected_item.bind("focus.chosen", this.activate_action);
@@ -660,7 +655,7 @@
             }
             $(document).bind('click.chosen', this.click_test_action);
             this.results_show();
-          } else if (!this.is_multiple && evt && (($(evt.target)[0] === this.selected_item[0]) || $(evt.target).parents("a.chzn-single").length)) {
+          } else if (!this.is_multiple && evt && (($(evt.target)[0] === this.selected_item[0]) || $(evt.target).parents("a.chosen-single").length)) {
             evt.preventDefault();
             this.results_toggle();
           }
@@ -689,7 +684,7 @@
     };
 
     Chosen.prototype.blur_test = function(evt) {
-      if (!this.active_field && this.container.hasClass("chzn-container-active")) {
+      if (!this.active_field && this.container.hasClass("chosen-container-active")) {
         return this.close_field();
       }
     };
@@ -698,21 +693,21 @@
       $(document).unbind("click.chosen", this.click_test_action);
       this.active_field = false;
       this.results_hide();
-      this.container.removeClass("chzn-container-active");
+      this.container.removeClass("chosen-container-active");
       this.clear_backstroke();
       this.show_search_field_default();
       return this.search_field_scale();
     };
 
     Chosen.prototype.activate_field = function() {
-      this.container.addClass("chzn-container-active");
+      this.container.addClass("chosen-container-active");
       this.active_field = true;
       this.search_field.val(this.search_field.val());
       return this.search_field.focus();
     };
 
     Chosen.prototype.test_active_click = function(evt) {
-      if (this.container.is($(evt.target).closest('.chzn-container'))) {
+      if (this.container.is($(evt.target).closest('.chosen-container'))) {
         return this.active_field = true;
       } else {
         return this.close_field();
@@ -729,10 +724,10 @@
         this.single_set_selected_text();
         if (this.disable_search || this.form_field.options.length <= this.disable_search_threshold) {
           this.search_field[0].readOnly = true;
-          this.container.addClass("chzn-container-single-nosearch");
+          this.container.addClass("chosen-container-single-nosearch");
         } else {
           this.search_field[0].readOnly = false;
-          this.container.removeClass("chzn-container-single-nosearch");
+          this.container.removeClass("chosen-container-single-nosearch");
         }
       }
       this.update_results_content(this.results_option_build({
@@ -773,13 +768,13 @@
 
     Chosen.prototype.results_show = function() {
       if (this.is_multiple && this.max_selected_options <= this.choices_count()) {
-        this.form_field_jq.trigger("liszt:maxselected", {
+        this.form_field_jq.trigger("chosen:maxselected", {
           chosen: this
         });
         return false;
       }
-      this.container.addClass("chzn-with-drop");
-      this.form_field_jq.trigger("liszt:showing_dropdown", {
+      this.container.addClass("chosen-with-drop");
+      this.form_field_jq.trigger("chosen:showing_dropdown", {
         chosen: this
       });
       this.results_showing = true;
@@ -795,8 +790,8 @@
     Chosen.prototype.results_hide = function() {
       if (this.results_showing) {
         this.result_clear_highlight();
-        this.container.removeClass("chzn-with-drop");
-        this.form_field_jq.trigger("liszt:hiding_dropdown", {
+        this.container.removeClass("chosen-with-drop");
+        this.form_field_jq.trigger("chosen:hiding_dropdown", {
           chosen: this
         });
       }
@@ -932,7 +927,7 @@
         high = this.result_highlight;
         this.result_clear_highlight();
         if (this.is_multiple && this.max_selected_options <= this.choices_count()) {
-          this.form_field_jq.trigger("liszt:maxselected", {
+          this.form_field_jq.trigger("chosen:maxselected", {
             chosen: this
           });
           return false;
@@ -976,10 +971,10 @@
         text = this.default_text;
       }
       if (text === this.default_text) {
-        this.selected_item.addClass("chzn-default");
+        this.selected_item.addClass("chosen-default");
       } else {
         this.single_deselect_control_build();
-        this.selected_item.removeClass("chzn-default");
+        this.selected_item.removeClass("chosen-default");
       }
       return this.selected_item.find("span").text(text);
     };
@@ -1013,7 +1008,7 @@
       if (!this.selected_item.find("abbr").length) {
         this.selected_item.find("span").first().after("<abbr class=\"search-choice-close\"></abbr>");
       }
-      return this.selected_item.addClass("chzn-single-with-deselect");
+      return this.selected_item.addClass("chosen-single-with-deselect");
     };
 
     Chosen.prototype.get_search_text = function() {
