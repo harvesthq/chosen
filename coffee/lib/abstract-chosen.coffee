@@ -230,6 +230,17 @@ class AbstractChosen
 
     return true
 
+  search_results_touchstart: (evt) ->
+    @touch_started = true
+    this.search_results_mouseover(evt)
+
+  search_results_touchmove: (evt) ->
+    @touch_started = false
+    this.search_results_mouseout(evt)
+
+  search_results_touchend: (evt) ->
+    this.search_results_mouseup(evt) if @touch_started
+
   outerHTML: (element) ->
     return element.outerHTML if element.outerHTML
     tmp = document.createElement("div")
