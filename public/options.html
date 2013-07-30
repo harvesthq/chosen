@@ -172,13 +172,13 @@
         <tr>
       </table>
 
-      <h2><a name="events" class="anchor" href="#events">Events</a></h2>
+      <h2><a name="triggered-events" class="anchor" href="#triggered-events">Triggered Events</a></h2>
       <p>Chosen triggers a number of standard and custom events on the original select field.</p>
 
       <h3>Example:</h3>
 
 <pre>
-  <code class="language-javascript">$('select').on('change', function(evt, params) {
+  <code class="language-javascript">$('.my_select_box').on('change', function(evt, params) {
     do_something(evt, params);
   });</code>
 </pre>
@@ -209,6 +209,36 @@
         <tr>
           <td>chosen:hiding_dropdown</td>
           <td>triggered when Chosen's dropdown is closed (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
+        </tr>
+      </table>
+
+      <h2><a name="triggerable-events" class="anchor" href="#triggerable-events">Triggerable Events</a></h2>
+      <p>You can trigger several events on the original select field to invoke a behavior in Chosen.</p>
+
+      <h3>Example:</h3>
+
+<pre>
+  <code class="language-javascript">
+    // tell Chosen that a select has changed
+    $('.my_select_box').trigger('chosen:updated');
+  </code>
+</pre>
+
+      <table class="docs-table">
+        <tr>
+          <th>Event</th><th>Description</th>
+        </tr>
+        <tr>
+          <td>chosen:updated</td>
+          <td>This event should be triggered whenever Chosen's underlying select element changes (such as a change in selected options).</td>
+        </tr>
+        <tr>
+          <td>chosen:activate</td>
+          <td>This is the equivalant of focusing a standard HTML select field. When activated, Chosen will capure keypress events as if you had clicked the field directly.</td>
+        </tr>
+        <tr>
+          <td>chosen:open</td>
+          <td>This event activates Chosen and also displays the search results.</td>
         </tr>
       </table>
 
