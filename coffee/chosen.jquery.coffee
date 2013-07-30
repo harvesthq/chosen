@@ -108,13 +108,13 @@ class Chosen extends AbstractChosen
 
   enable: ->
     @form_field.disabled = false
-    @container.removeClass 'chzn-disabled'
+    @container.removeClass 'chosen-disabled'
     @search_field[0].disabled = false
     @selected_item.bind "focus.chosen", @activate_action unless @is_multiple
 
   disable: ->
     @form_field.disabled = true
-    @container.addClass 'chzn-disabled'
+    @container.addClass 'chosen-disabled'
     @search_field[0].disabled = true
     @selected_item.unbind "focus.chosen", @activate_action unless @is_multiple
     this.close_field()
