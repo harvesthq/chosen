@@ -239,7 +239,7 @@ class AbstractChosen
     this.search_results_mouseout(evt)
 
   search_results_touchend: (evt) ->
-    this.search_results_click(evt) if @touch_started
+    this.search_results_mouseup(evt) if @touch_started
 
   outerHTML: (element) ->
     return element.outerHTML if element.outerHTML

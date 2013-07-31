@@ -71,7 +71,8 @@ class Chosen extends AbstractChosen
     @container.bind 'mouseenter.chosen', (evt) => this.mouse_enter(evt); return
     @container.bind 'mouseleave.chosen', (evt) => this.mouse_leave(evt); return
 
-    @search_results.bind 'click.chosen', (evt) => this.search_results_click(evt); return
+    @search_results.bind 'mousedown.chosen', (evt) => this.search_results_mousedown(evt); return
+    @search_results.bind 'mouseup.chosen', (evt) => this.search_results_mouseup(evt); return
     @search_results.bind 'mouseover.chosen', (evt) => this.search_results_mouseover(evt); return
     @search_results.bind 'mouseout.chosen', (evt) => this.search_results_mouseout(evt); return
     @search_results.bind 'mousewheel.chosen DOMMouseScroll.chosen', (evt) => this.search_results_mousewheel(evt); return
@@ -268,7 +269,12 @@ class Chosen extends AbstractChosen
       @search_field.val("")
       @search_field.removeClass "default"
 
-  search_results_click: (evt) ->
+  search_results_mousedown: (evt) ->
+    @click_started = true
+
+  search_results_mouseup: (evt) ->
+    return unless @click_started
+    @click_started = false
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
     if target.length
       @result_highlight = target
