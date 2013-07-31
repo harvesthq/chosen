@@ -54,7 +54,7 @@ class @Chosen extends AbstractChosen
     @container.observe "mouseenter", (evt) => this.mouse_enter(evt)
     @container.observe "mouseleave", (evt) => this.mouse_leave(evt)
 
-    @search_results.observe "mouseup", (evt) => this.search_results_mouseup(evt)
+    @search_results.observe "click", (evt) => this.search_results_click(evt)
     @search_results.observe "mouseover", (evt) => this.search_results_mouseover(evt)
     @search_results.observe "mouseout", (evt) => this.search_results_mouseout(evt)
     @search_results.observe "mousewheel", (evt) => this.search_results_mousewheel(evt)
@@ -262,7 +262,7 @@ class @Chosen extends AbstractChosen
       @search_field.value = ""
       @search_field.removeClassName "default"
 
-  search_results_mouseup: (evt) ->
+  search_results_click: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
     if target
       @result_highlight = target
