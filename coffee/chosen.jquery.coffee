@@ -495,7 +495,7 @@ class Chosen extends AbstractChosen
       w = div.width() + 25
       div.remove()
 
-      f_width = @container.outerWidth()
+      f_width = @container[0].offsetWidth
 
       if( f_width && w > f_width - 10 )
         w = f_width - 10

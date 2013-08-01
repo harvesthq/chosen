@@ -492,7 +492,7 @@ class @Chosen extends AbstractChosen
       w = Element.measure(div, 'width') + 25
       div.remove()
 
-      f_width = @container.getWidth()
+      f_width = @container.offsetWidth
 
       if( f_width && w > f_width-10 )
         w = f_width - 10
