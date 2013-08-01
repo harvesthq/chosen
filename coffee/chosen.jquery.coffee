@@ -497,7 +497,7 @@ class Chosen extends AbstractChosen
 
       f_width = @container.outerWidth()
 
-      if( w > f_width - 10 )
+      if( f_width && w > f_width - 10 )
         w = f_width - 10
 
       @search_field.css({'width': w + 'px'})
