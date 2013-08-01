@@ -182,6 +182,11 @@ npm install
 
 This will install all the necessary Grunt plugins
 
+Note: You need compass installed if it's not all ready installed.
+
+    gem install compass
+    
+  
 Once you're configured, building the JavaScript from the command line is easy:
 
     grunt build                # build Chosen from source
