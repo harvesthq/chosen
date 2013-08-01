@@ -224,9 +224,9 @@ class AbstractChosen
     return @options.width if @options.width?
 
     if jQuery? and $ is jQuery
-      return $(@form_field).css('width') if $(@form_field).css('width')
+      return width if width = $(@form_field).css('width')
     else
-      return @form_field.getStyle('width') if @form_field.getStyle('width')
+      return width if width = @form_field.getStyle('width')
 
     @form_field.offsetWidth
 
