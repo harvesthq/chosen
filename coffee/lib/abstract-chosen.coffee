@@ -221,7 +221,14 @@ class AbstractChosen
       else this.results_search()
 
   container_width: ->
-    return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
+    return @options.width if @options.width?
+
+    if jQuery? and $ is jQuery
+      return $(@form_field).css('width') if $(@form_field).css('width')
+    else
+      return @form_field.getStyle('width') if @form_field.getStyle('width')
+
+    @form_field.offsetWidth
 
   include_option_in_results: (option) ->
     return false if @is_multiple and (not @display_selected_options and option.selected)
