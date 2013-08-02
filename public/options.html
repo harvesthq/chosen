@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="chosen.css">
   <style type="text/css" media="all">
     /* fix rtl for demo */
-    .chzn-rtl .chzn-drop { left: -9000px; }
+    .chosen-rtl .chosen-drop { left: -9000px; }
   </style>
 </head>
 <body>
@@ -64,7 +64,7 @@
         <tr>
           <td>max_selected_options</td>
           <td>Infinity</td>
-          <td>Limits how many options the user can select. When the limit is reached, the <code class="language-javascript">liszt:maxselected</code> event is triggered.</td>
+          <td>Limits how many options the user can select. When the limit is reached, the <code class="language-javascript">chosen:maxselected</code> event is triggered.</td>
         </tr>
         <tr>
           <td>no_results_text</td>
@@ -152,7 +152,7 @@
       <h3>Example:</h3>
 
 <pre>
-  <code class="language-markup">&lt;select class="my_select_box chzn-rtl"&gt;
+  <code class="language-markup">&lt;select class="my_select_box chosen-rtl"&gt;
     &lt;option value="1"&gt;Option 1&lt;/option&gt;
     &lt;option value="2"&gt;Option 2&lt;/option&gt;
     &lt;option value="3"&gt;Option 3&lt;/option&gt;
@@ -164,21 +164,21 @@
           <th>Classname</th>
           <th>Description</th>
         <tr>
-          <td>chzn-rtl</td>
+          <td>chosen-rtl</td>
           <td>
-            <p>Chosen supports right-to-left text in select boxes. Add the class <code class="language-html">chzn-rtl</code> to your select tag to support right-to-left text options.</p>
-            <p><strong>Note:</strong> The <code class="language-html">chzn-rtl</code> class will pass through to the Chosen select even when the <code class="language-javascript">inherit_select_classes</code> option is set to <code class="language-javascript">false</code>.</p>
+            <p>Chosen supports right-to-left text in select boxes. Add the class <code class="language-html">chosen-rtl</code> to your select tag to support right-to-left text options.</p>
+            <p><strong>Note:</strong> The <code class="language-html">chosen-rtl</code> class will pass through to the Chosen select even when the <code class="language-javascript">inherit_select_classes</code> option is set to <code class="language-javascript">false</code>.</p>
           </td>
         <tr>
       </table>
 
-      <h2><a name="events" class="anchor" href="#events">Events</a></h2>
+      <h2><a name="triggered-events" class="anchor" href="#triggered-events">Triggered Events</a></h2>
       <p>Chosen triggers a number of standard and custom events on the original select field.</p>
 
       <h3>Example:</h3>
 
 <pre>
-  <code class="language-javascript">$('select').on('change', function(evt, params) {
+  <code class="language-javascript">$('.my_select_box').on('change', function(evt, params) {
     do_something(evt, params);
   });</code>
 </pre>
@@ -195,20 +195,48 @@
           </td>
         </tr>
         <tr>
-          <td>liszt:ready</td>
+          <td>chosen:ready</td>
           <td>after Chosen has been fully instantiated (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
         </tr>
         <tr>
-          <td>liszt:maxselected</td>
+          <td>chosen:maxselected</td>
           <td>triggered if <code class="language-javascript">max_selected_options</code> is set and that total is broken. (it also sends the <code class="language-javascript">chosen</code> object as a parameter)</td>
         </tr>
         <tr>
-          <td>liszt:showing_dropdown</td>
+          <td>chosen:showing_dropdown</td>
           <td>triggered when Chosen's dropdown is opened (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
         </tr>
         <tr>
-          <td>liszt:hiding_dropdown</td>
+          <td>chosen:hiding_dropdown</td>
           <td>triggered when Chosen's dropdown is closed (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
+        </tr>
+      </table>
+
+      <h2><a name="triggerable-events" class="anchor" href="#triggerable-events">Triggerable Events</a></h2>
+      <p>You can trigger several events on the original select field to invoke a behavior in Chosen.</p>
+
+      <h3>Example:</h3>
+
+<pre>
+  <code class="language-javascript">// tell Chosen that a select has changed
+    $('.my_select_box').trigger('chosen:updated');</code>
+</pre>
+
+      <table class="docs-table">
+        <tr>
+          <th>Event</th><th>Description</th>
+        </tr>
+        <tr>
+          <td>chosen:updated</td>
+          <td>This event should be triggered whenever Chosen's underlying select element changes (such as a change in selected options).</td>
+        </tr>
+        <tr>
+          <td>chosen:activate</td>
+          <td>This is the equivalant of focusing a standard HTML select field. When activated, Chosen will capure keypress events as if you had clicked the field directly.</td>
+        </tr>
+        <tr>
+          <td>chosen:open</td>
+          <td>This event activates Chosen and also displays the search results.</td>
         </tr>
       </table>
 

@@ -11,8 +11,6 @@ class AbstractChosen
     this.set_up_html()
     this.register_observers()
 
-    this.finish_setup()
-
   set_default_values: ->
     @click_test_action = (evt) => this.test_active_click(evt)
     @activate_action = (evt) => this.activate_field(evt)
@@ -86,15 +84,23 @@ class AbstractChosen
     classes.push "group-option" if option.group_array_index?
     classes.push option.classes if option.classes != ""
 
-    style = if option.style.cssText != "" then " style=\"#{option.style}\"" else ""
+    option_el = document.createElement("li")
+    option_el.className = classes.join(" ")
+    option_el.style.cssText = option.style
+    option_el.setAttribute("data-option-array-index", option.array_index)
+    option_el.innerHTML = option.search_text
 
-    """<li class="#{classes.join(' ')}"#{style} data-option-array-index="#{option.array_index}">#{option.search_text}</li>"""
+    this.outerHTML(option_el)
 
   result_add_group: (group) ->
     return '' unless group.search_match || group.group_match
     return '' unless group.active_options > 0
 
-    """<li class="group-result">#{group.search_text}</li>"""
+    group_el = document.createElement("li")
+    group_el.className = "group-result"
+    group_el.innerHTML = group.search_text
+
+    this.outerHTML(group_el)
 
   results_update_field: ->
     this.set_default_text()
@@ -224,6 +230,23 @@ class AbstractChosen
 
     return true
 
+  search_results_touchstart: (evt) ->
+    @touch_started = true
+    this.search_results_mouseover(evt)
+
+  search_results_touchmove: (evt) ->
+    @touch_started = false
+    this.search_results_mouseout(evt)
+
+  search_results_touchend: (evt) ->
+    this.search_results_mouseup(evt) if @touch_started
+
+  outerHTML: (element) ->
+    return element.outerHTML if element.outerHTML
+    tmp = document.createElement("div")
+    tmp.appendChild(element)
+    tmp.innerHTML
+
   # class methods and variables ============================================================ 
 
   @browser_is_supported: ->
@@ -238,3 +261,4 @@ class AbstractChosen
   @default_multiple_text: "Select Some Options"
   @default_single_text: "Select an Option"
   @default_no_result_text: "No results match"
+

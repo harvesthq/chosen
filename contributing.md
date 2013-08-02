@@ -174,13 +174,10 @@ license your work under the [MIT License](http://en.wikipedia.org/wiki/MIT_Licen
 <a name="grunt"></a>
 #### Using CoffeeScript and Grunt
 
-First, make sure you have the proper CoffeeScript / Grunt setup in place. We have added a package.json that makes this easy:
 
-```
-npm install
-```
+To install all development dependencies, in the project's root directory, run
 
-This will install all the necessary Grunt plugins
+    npm install && gem install bundler && bundle install
 
 Once you're configured, building the JavaScript from the command line is easy:
 
