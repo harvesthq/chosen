@@ -2,7 +2,6 @@ class @Chosen extends AbstractChosen
 
   setup: ->
     @current_selectedIndex = @form_field.selectedIndex
-    @is_rtl = @form_field.hasClassName "chosen-rtl"
 
   set_default_values: ->
     super()
@@ -16,7 +15,6 @@ class @Chosen extends AbstractChosen
     container_classes = ["chosen-container"]
     container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
-    container_classes.push "chosen-rtl" if @is_rtl
 
     container_props =
       'class': container_classes.join ' '
