@@ -170,6 +170,8 @@ class @Chosen extends AbstractChosen
     @selected_option_count = null
 
     @results_data = SelectParser.select_to_array @form_field
+    @results_count = @results_data.length
+    @results_all_chosen = false
 
     if @is_multiple
       @search_choices.select("li.search-choice").invoke("remove")
@@ -215,6 +217,10 @@ class @Chosen extends AbstractChosen
   results_show: ->
     if @is_multiple and @max_selected_options <= this.choices_count()
       @form_field.fire("chosen:maxselected", {chosen: this})
+      return false
+
+    if @is_multiple and @results_all_chosen
+      @form_field.fire("chosen:allselected", {chosen: this})
       return false
 
     @container.addClassName "chosen-with-drop"
@@ -342,7 +348,12 @@ class @Chosen extends AbstractChosen
       item.selected = true
 
       @form_field.options[item.options_index].selected = true
-      @selected_option_count = null
+      @selected_option_count = @selected_option_count + 1
+
+      if @selected_option_count == @results_count 
+        @results_all_chosen = true
+      else 
+        @results_all_chosen = false
 
       if @is_multiple
         this.choice_build item
@@ -374,7 +385,8 @@ class @Chosen extends AbstractChosen
       result_data.selected = false
 
       @form_field.options[result_data.options_index].selected = false
-      @selected_option_count = null
+      @selected_option_count = @selected_option_count - 1
+      @results_all_chosen = false
 
       this.result_clear_highlight()
       this.winnow_results() if @results_showing
