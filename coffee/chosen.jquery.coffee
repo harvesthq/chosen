@@ -176,7 +176,10 @@ class Chosen extends AbstractChosen
 
     @results_data = SelectParser.select_to_array @form_field
     @results_count = @results_data.length
-    @results_all_chosen = false
+    if @results_count > 0 
+      @results_all_chosen = false
+    else 
+      @results_all_chosen = true
 
     if @is_multiple
       @search_choices.find("li.search-choice").remove()
