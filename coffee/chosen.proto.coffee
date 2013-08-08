@@ -304,6 +304,7 @@ class @Chosen extends AbstractChosen
       this.search_field_scale()
 
   results_reset: ->
+    this.reset_single_select_options()
     @form_field.options[0].selected = true
     @selected_option_count = null
     this.single_set_selected_text()
