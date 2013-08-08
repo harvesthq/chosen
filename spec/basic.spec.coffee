@@ -20,3 +20,14 @@ describe "Basic setup", ->
       el = div.find(".chosen-#{clazz}")
       expect(el.size()).toBe(1)
 
+    # test a few interactions
+    expect(select.val()).toBe ""
+
+    container = div.find(".chosen-container")
+    container.trigger("mousedown") # open the drop
+    expect(container.hasClass("chosen-container-active")).toBe true
+    #select an item
+    container.find(".active-result").last().trigger("mouseup")
+
+    expect(select.val()).toBe "Afghanistan"
+
