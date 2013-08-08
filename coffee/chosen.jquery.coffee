@@ -335,8 +335,7 @@ class Chosen extends AbstractChosen
       if @is_multiple
         high.removeClass("active-result")
       else
-        for result in @results_data
-          result.selected = false if result.selected
+        this.reset_single_select_options()
 
       item = @results_data[ high[0].getAttribute("data-option-array-index") ]
       item.selected = true

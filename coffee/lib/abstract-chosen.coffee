@@ -108,6 +108,10 @@ class AbstractChosen
     this.results_build()
     this.winnow_results() if @results_showing
 
+  reset_single_select_options: () ->
+    for result in @results_data
+      result.selected = false if result.selected
+
   results_toggle: ->
     if @results_showing
       this.results_hide()

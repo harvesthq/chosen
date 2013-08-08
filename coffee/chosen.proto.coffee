@@ -329,8 +329,7 @@ class @Chosen extends AbstractChosen
       if @is_multiple
         high.removeClassName("active-result")
       else
-        for result in @results_data
-          result.selected = false if result.selected
+        this.reset_single_select_options()
       
       high.addClassName("result-selected")
 
