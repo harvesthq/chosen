@@ -306,7 +306,6 @@ class @Chosen extends AbstractChosen
   results_reset: ->
     this.reset_single_select_options()
     @form_field.options[0].selected = true
-    @selected_option_count = null
     this.single_set_selected_text()
     this.show_search_field_default()
     this.results_reset_cleanup()
