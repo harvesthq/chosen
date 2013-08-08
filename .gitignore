@@ -8,3 +8,4 @@ chosen.zip
 .sass-cache
 .grunt
 _SpecRunner.html
+spec/public

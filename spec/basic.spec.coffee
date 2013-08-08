@@ -1,3 +1,4 @@
-describe "A suite", ->
-  it "contains spec with an expectation", ->
-    expect(true).toBe(true)
+describe "Basic setup", ->
+  it "should add chosen to jQuery object", ->
+    expect(jQuery.fn.chosen).toBeDefined()
+

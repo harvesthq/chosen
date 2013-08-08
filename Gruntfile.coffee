@@ -115,7 +115,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'compass', 'concat', 'uglify', 'cssmin']
-  grunt.registerTask 'test', ['build', 'jasmine']
+  grunt.registerTask 'test',  ['coffee', 'jasmine']
   grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
   grunt.registerTask 'prep_release', ['build','zip:chosen','package_jquery']
 
