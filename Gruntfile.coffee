@@ -36,6 +36,7 @@ module.exports = (grunt) ->
         files:
           'public/chosen.jquery.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.jquery.coffee']
           'public/chosen.proto.js': ['coffee/lib/select-parser.coffee', 'coffee/lib/abstract-chosen.coffee', 'coffee/chosen.proto.coffee']
+          'spec/public/specs.js': 'spec/*.spec.coffee'
 
     uglify:
       options:
@@ -92,6 +93,13 @@ module.exports = (grunt) ->
         src: ['public/**/*']
         dest: "chosen_#{version_tag()}.zip"
 
+    jasmine:
+      jquery:
+        src: [ 'public/chosen.jquery.js' ]
+        options:
+          vendor: [ 'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js' ]
+          specs: 'spec/public/*.js'
+
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-concat'
@@ -103,9 +111,11 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-build-gh-pages'
   grunt.loadNpmTasks 'grunt-zip'
   grunt.loadNpmTasks 'grunt-dom-munger'
+  grunt.loadNpmTasks 'grunt-contrib-jasmine'
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'compass', 'concat', 'uglify', 'cssmin']
+  grunt.registerTask 'test', ['build', 'jasmine']
   grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
   grunt.registerTask 'prep_release', ['build','zip:chosen','package_jquery']
 

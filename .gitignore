@@ -6,3 +6,5 @@ public/*.js
 public/*.css
 chosen.zip
 .sass-cache
+.grunt
+_SpecRunner.html
