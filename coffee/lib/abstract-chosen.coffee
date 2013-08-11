@@ -131,9 +131,9 @@ class AbstractChosen
 
     searchText = this.get_search_text()
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-    regexAnchor = if @search_contains then "" else "^"
-    regex = new RegExp(regexAnchor + escapedSearchText, 'i')
-    zregex = new RegExp(escapedSearchText, 'i')
+
+    regexString = if @search_contains then escapedSearchText else "\\b#{escapedSearchText}\\w*\\b"
+    regex = new RegExp(regexString, 'i')
 
     for option in @results_data
 
@@ -154,12 +154,13 @@ class AbstractChosen
         unless option.group and not @group_search
 
           option.search_text = if option.group then option.label else option.html
-          option.search_match = this.search_string_match(option.search_text, regex)
+          option.search_match = regex.test(option.search_text)
           results += 1 if option.search_match and not option.group
 
           if option.search_match
             if searchText.length
-              startpos = option.search_text.search zregex
+              match = regex.exec(option.search_text)
+              startpos = match.index
               text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
@@ -176,17 +177,6 @@ class AbstractChosen
     else
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
-
-  search_string_match: (search_string, regex) ->
-    if regex.test search_string
-      return true
-    else if @enable_split_word_search and (search_string.indexOf(" ") >= 0 or search_string.indexOf("[") == 0)
-      #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-      parts = search_string.replace(/\[|\]/g, "").split(" ")
-      if parts.length
-        for part in parts
-          if regex.test part
-            return true
 
   choices_count: ->
     return @selected_option_count if @selected_option_count?
