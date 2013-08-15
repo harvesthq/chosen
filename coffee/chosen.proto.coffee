@@ -218,14 +218,13 @@ class @Chosen extends AbstractChosen
       return false
 
     @container.addClassName "chosen-with-drop"
-    @form_field.fire("chosen:showing_dropdown", {chosen: this})
-
     @results_showing = true
 
     @search_field.focus()
     @search_field.value = @search_field.value
 
     this.winnow_results()
+    @form_field.fire("chosen:showing_dropdown", {chosen: this})
 
   update_results_content: (content) ->
     @search_results.update content

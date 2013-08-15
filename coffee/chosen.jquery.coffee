@@ -224,7 +224,6 @@ class Chosen extends AbstractChosen
       return false
 
     @container.addClass "chosen-with-drop"
-
     @results_showing = true
 
     @search_field.focus()
