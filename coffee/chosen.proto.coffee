@@ -304,8 +304,8 @@ class @Chosen extends AbstractChosen
       this.search_field_scale()
 
   results_reset: ->
+    this.reset_single_select_options()
     @form_field.options[0].selected = true
-    @selected_option_count = null
     this.single_set_selected_text()
     this.show_search_field_default()
     this.results_reset_cleanup()
@@ -329,12 +329,7 @@ class @Chosen extends AbstractChosen
       if @is_multiple
         high.removeClassName("active-result")
       else
-        if @result_single_selected
-          @result_single_selected.removeClassName("result-selected")
-          selected_index = @result_single_selected.getAttribute('data-option-array-index')
-          @results_data[selected_index].selected = false
-
-        @result_single_selected = high
+        this.reset_single_select_options()
       
       high.addClassName("result-selected")
 
