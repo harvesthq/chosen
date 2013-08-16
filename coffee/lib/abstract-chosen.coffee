@@ -130,10 +130,13 @@ class AbstractChosen
     results = 0
 
     searchText = this.get_search_text()
-    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-
-    regexString = if @search_contains then escapedSearchText else "\\b#{escapedSearchText}\\w*\\b"
-    regexString = "^#{regexString}" unless @enable_split_word_search or @search_contains
+    
+    regexString = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    
+    unless @search_contains
+      regexString = "\\b#{regexString}\\w*\\b" 
+      regexString = "^#{regexString}" unless @enable_split_word_search
+    
     regex = new RegExp(regexString, 'i')
 
     for option in @results_data
