@@ -73,7 +73,7 @@ class @Chosen extends AbstractChosen
     @form_field.observe "chosen:close", (evt) => this.input_blur(evt)
     @form_field.observe "chosen:enable", (evt) => this.enable(evt)
     @form_field.observe "chosen:disable", (evt) => this.disable(evt)
-    @form_field.observe "chosen:reset", (evt) => this.results_reset(evt)
+    @form_field.observe "chosen:deselect", (evt) => this.single_deselect(evt)
 
     @search_field.observe "blur", (evt) => this.input_blur(evt)
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)

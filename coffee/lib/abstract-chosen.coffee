@@ -130,6 +130,10 @@ class AbstractChosen
     else
       this.enable()
 
+  single_deselect: (evt) ->
+    unless @is_multiple
+      this.results_reset()
+
   winnow_results: ->
     this.no_results_clear()
 
