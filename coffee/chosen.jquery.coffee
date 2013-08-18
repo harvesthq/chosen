@@ -113,10 +113,11 @@ class Chosen extends AbstractChosen
     @form_field_jq.show()
 
   enable: ->
-    @form_field.disabled = false
-    @container.removeClass 'chosen-disabled'
-    @search_field[0].disabled = false
-    @selected_item.bind "focus.chosen", @activate_action unless @is_multiple
+    if @form_field.disabled
+      @form_field.disabled = false
+      @container.removeClass 'chosen-disabled'
+      @search_field[0].disabled = false
+      @selected_item.bind "focus.chosen", @activate_action unless @is_multiple
 
   disable: ->
     @form_field.disabled = true

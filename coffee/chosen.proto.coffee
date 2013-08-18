@@ -110,10 +110,11 @@ class @Chosen extends AbstractChosen
     @form_field.show()
 
   enable: ->
-    @form_field.disabled = false
-    @container.removeClassName 'chosen-disabled'
-    @search_field.disabled = false
-    @selected_item.observe "focus", @activate_action unless @is_multiple
+    if @form_field.disabled
+      @form_field.disabled = false
+      @container.removeClassName 'chosen-disabled'
+      @search_field.disabled = false
+      @selected_item.observe "focus", @activate_action unless @is_multiple
 
   disable: ->
     @form_field.disabled = true
