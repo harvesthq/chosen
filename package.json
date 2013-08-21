@@ -20,7 +20,7 @@
     "grunt-contrib-watch": "~0.3.1",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-clean": "~0.4.1",
-    "grunt-contrib-compass": "~0.3.0",
+    "grunt-contrib-compass": "~0.5.0",
     "grunt-contrib-cssmin": "~0.6.1",
     "grunt-build-gh-pages": "0.0.4",
     "grunt-zip": "~0.9.2",
