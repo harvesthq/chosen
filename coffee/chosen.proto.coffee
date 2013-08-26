@@ -2,7 +2,6 @@ class @Chosen extends AbstractChosen
 
   setup: ->
     @current_selectedIndex = @form_field.selectedIndex
-    @is_rtl = @form_field.hasClassName "chosen-rtl"
 
   set_default_values: ->
     super()

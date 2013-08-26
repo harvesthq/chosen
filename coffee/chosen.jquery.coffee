@@ -22,7 +22,6 @@ class Chosen extends AbstractChosen
   setup: ->
     @form_field_jq = $ @form_field
     @current_selectedIndex = @form_field.selectedIndex
-    @is_rtl = @form_field_jq.hasClass "chosen-rtl"
 
   set_up_html: ->
     container_classes = ["chosen-container"]

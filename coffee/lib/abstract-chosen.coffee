@@ -18,6 +18,7 @@ class AbstractChosen
     @mouse_on_container = false
     @results_showing = false
     @result_highlighted = null
+    @is_rtl = @options.rtl || /\bchosen-rtl\b/.test(@form_field.className) || false
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
     @disable_search_threshold = @options.disable_search_threshold || 0
     @disable_search = @options.disable_search || false
