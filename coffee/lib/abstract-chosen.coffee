@@ -130,7 +130,7 @@ class AbstractChosen
     results = 0
 
     searchText = this.get_search_text()
-    words = searchText.toLowerCase().split(' ')
+    words = this.split_search_text(searchText)
 
     for option in @results_data
 
@@ -178,15 +178,22 @@ class AbstractChosen
         return false
     return true
 
+  split_search_text: (text) ->
+    words = []
+    for word in text.toLowerCase().split(' ')
+      if word.trim() != ""
+        words.push(word)
+    return words
+
   highlight_search_text: (text, words) ->
     # sort the query words to highlight the longest first
     words.sort (a, b) -> b.length - a.length
-    highlight_offset = 10  # 1 + '<em></em>'.length
+    highlight_offset = 14  # 1 + '<mark></mark>'.length
     for word in words
       startpos = text.toLowerCase().indexOf word
       while startpos >= 0
-        text = text.substr(0, startpos) + '<em>' + text.substr(startpos, word.length) + '</em>' + text.substr(startpos + word.length)
-        startpos = text.toLowerCase().indexOf(word, startpos + highlight_offset)
+        text = text.substr(0, startpos) + '<mark>' + text.substr(startpos, word.length) + '</mark>' + text.substr(startpos + word.length)
+        startpos = text.toLowerCase().indexOf(word, startpos + highlight_offset + word.length)
     return text
 
   choices_count: ->
