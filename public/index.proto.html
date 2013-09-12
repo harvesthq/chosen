@@ -5,7 +5,7 @@
   <title>Chosen: A Prototype Plugin by Harvest to Tame Unwieldy Select Boxes</title>
   <link rel="stylesheet" href="docsupport/style.css">
   <link rel="stylesheet" href="docsupport/prism.css">
-  <link rel="stylesheet" href="chosen.css" />
+  <link rel="stylesheet" href="chosen.css">
   <style type="text/css" media="all">
     /* fix rtl for demo */
     .chosen-rtl .chosen-drop { left: -9000px; }
@@ -15,7 +15,7 @@
   <div id="container">
     <div id="content">
       <header>
-        <h1>Chosen - Prototype Version</h1>
+        <h1>Chosen - Prototype Version <small>(<span id="latest-version">v1.0.0</span>)</small></h1>
       </header>
       <p>Chosen is a Prototype plugin that makes long, unwieldy select boxes much more user-friendly.</p>
 
@@ -1339,9 +1339,7 @@
           <li>
             <h3>Updating Chosen Dynamically</h3>
             <p>If you need to update the options in your select field and want Chosen to pick up the changes, you'll need to trigger the "chosen:updated" event on the field. Chosen will re-build itself based on the updated content.</p>
-            <ul>
-              <pre><code class="language-javascript">Event.fire($("form_field"), "chosen:updated");</code></pre>
-            </ul>
+            <pre><code class="language-javascript">Event.fire($("form_field"), "chosen:updated");</code></pre>
           </li>
         </ul>
       </div>
@@ -1436,7 +1434,7 @@
           <h3>What browsers are supported?</h3>
           <p>All modern browsers are supported (Firefox, Chrome, Safari and IE9). Legacy support for IE8 is also enabled.</p>
         </li>
-      <ul>
+      </ul>
 
       <h2><a name="credits" class="anchor" href="#credits">Credits</a></h2>
 
