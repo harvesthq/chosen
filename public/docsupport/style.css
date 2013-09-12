@@ -21,6 +21,7 @@ pre, code, kbd, samp { font-family: monospace, sans-serif; }
 body { background: #EEE; color: #444; line-height: 1.4em; }
 
 header h1 { color: black; font-size: 2em; line-height: 1.1em; display: inline-block; height: 27px; margin: 20px 0 25px; }
+header h1 small { font-size: 0.6em; }
 
 div#content { background: white; border: 1px solid #ccc; border-width: 0 1px 1px; margin: 0 auto; padding: 40px 50px 40px; width: 738px; }
 
