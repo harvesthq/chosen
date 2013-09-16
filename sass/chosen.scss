@@ -6,7 +6,7 @@ $chosen-sprite: image-url('chosen-sprite.png');
 $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
 
 /* @group Base */
-.chzn-container {
+.chosen-container {
   position: relative;
   display: inline-block;
   vertical-align: middle;
@@ -14,7 +14,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   zoom: 1;
   *display: inline;
   @include user-select(none);
-  .chzn-drop {
+  .chosen-drop {
     position: absolute;
     top: 100%;
     left: -9999px;
@@ -26,7 +26,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     background: #fff;
     box-shadow: 0 4px 5px rgba(#000,.15);
   }
-  &.chzn-with-drop .chzn-drop {
+  &.chosen-with-drop .chosen-drop {
     left: 0;
   }
   a{
@@ -36,8 +36,8 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
 /* @end */
 
 /* @group Single Chosen */
-.chzn-container-single{
-  .chzn-single {
+.chosen-container-single{
+  .chosen-single {
     position: relative;
     display: block;
     overflow: hidden;
@@ -54,20 +54,20 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     white-space: nowrap;
     line-height: 24px;
   }
-  .chzn-default {
+  .chosen-default {
     color: #999;
   }
-  .chzn-single span {
+  .chosen-single span {
     display: block;
     overflow: hidden;
     margin-right: 26px;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .chzn-single-with-deselect span {
+  .chosen-single-with-deselect span {
     margin-right: 38px;
   }
-  .chzn-single abbr {
+  .chosen-single abbr {
     position: absolute;
     top: 6px;
     right: 26px;
@@ -80,10 +80,10 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       background-position: -42px -10px;
     }
   }
-  &.chzn-disabled .chzn-single abbr:hover {
+  &.chosen-disabled .chosen-single abbr:hover {
     background-position: -42px -10px;
   }
-  .chzn-single div {
+  .chosen-single div {
     position: absolute;
     top: 0;
     right: 0;
@@ -97,7 +97,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       background: $chosen-sprite no-repeat 0px 2px;
     }
   }
-  .chzn-search {
+  .chosen-search {
     position: relative;
     z-index: 1010;
     margin: 0;
@@ -119,12 +119,12 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       border-radius: 0;
     }
   }
-  .chzn-drop {
+  .chosen-drop {
     margin-top: -1px;
     border-radius: 0 0 4px 4px;
     background-clip: padding-box;
   }
-  &.chzn-container-single-nosearch .chzn-search {
+  &.chosen-container-single-nosearch .chosen-search {
     position: absolute;
     left: -9999px;
   }
@@ -132,7 +132,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
 /* @end */
 
 /* @group Results */
-.chzn-container .chzn-results {
+.chosen-container .chosen-results {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
@@ -146,6 +146,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     padding: 5px 6px;
     list-style: none;
     line-height: 15px;
+    -webkit-touch-callout: none;
     &.active-result {
       display: list-item;
       cursor: pointer;
@@ -181,8 +182,8 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
 /* @end */
 
 /* @group Multi Chosen */
-.chzn-container-multi{
-  .chzn-choices {
+.chosen-container-multi{
+  .chosen-choices {
     position: relative;
     overflow: hidden;
     @include box-sizing(border-box);
@@ -196,7 +197,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     @include background-image(linear-gradient(#eee 1%, #fff 15%));
     cursor: text;
   }
-  .chzn-choices li {
+  .chosen-choices li {
     float: left;
     list-style: none;
     &.search-field {
@@ -262,11 +263,11 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       }
     }
   }
-  .chzn-results {
+  .chosen-results {
     margin: 0;
     padding: 0;
   }
-  .chzn-drop .result-selected {
+  .chosen-drop .result-selected {
     display: list-item;
     color: #ccc;
     cursor: default;
@@ -275,13 +276,13 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
 /* @end */
 
 /* @group Active  */
-.chzn-container-active{
-  .chzn-single {
+.chosen-container-active{
+  .chosen-single {
     border: 1px solid #5897fb;
     box-shadow: 0 0 5px rgba(#000,.3);
   }
-  &.chzn-with-drop{
-    .chzn-single {
+  &.chosen-with-drop{
+    .chosen-single {
       border: 1px solid #aaa;
       -moz-border-radius-bottomright: 0;
       border-bottom-right-radius: 0;
@@ -290,7 +291,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       @include background-image(linear-gradient(#eee 20%, #fff 80%));
       box-shadow: 0 1px 0 #fff inset;
     }
-    .chzn-single div {
+    .chosen-single div {
       border-left: none;
       background: transparent;
       b {
@@ -298,7 +299,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       }
     }
   }
-  .chzn-choices {
+  .chosen-choices {
     border: 1px solid #5897fb;
     box-shadow: 0 0 5px rgba(#000,.3);
     li.search-field input[type="text"] {
@@ -309,42 +310,42 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
 /* @end */
 
 /* @group Disabled Support */
-.chzn-disabled {
+.chosen-disabled {
   opacity: 0.5 !important;
   cursor: default;
-  .chzn-single {
+  .chosen-single {
     cursor: default;
   }
-  .chzn-choices .search-choice .search-choice-close {
+  .chosen-choices .search-choice .search-choice-close {
     cursor: default;
   }
 }
 /* @end */
 
 /* @group Right to Left */
-.chzn-rtl {
+.chosen-rtl {
   text-align: right;
-  .chzn-single {
+  .chosen-single {
     overflow: visible;
     padding: 0 8px 0 0;
   }
-  .chzn-single span {
+  .chosen-single span {
     margin-right: 0;
     margin-left: 26px;
     direction: rtl;
   }
-  .chzn-single-with-deselect span {
+  .chosen-single-with-deselect span {
     margin-left: 38px;
   }
-  .chzn-single div {
+  .chosen-single div {
     right: auto;
     left: 3px;
   }
-  .chzn-single abbr {
+  .chosen-single abbr {
     right: auto;
     left: 26px;
   }
-  .chzn-choices li {
+  .chosen-choices li {
     float: right;
     &.search-field input[type="text"] {
       direction: rtl;
@@ -358,33 +359,33 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       }
     }
   }
-  &.chzn-container-single-nosearch .chzn-search,
-  .chzn-drop {
+  &.chosen-container-single-nosearch .chosen-search,
+  .chosen-drop {
     left: 9999px;
   }
-  &.chzn-container-single .chzn-results {
+  &.chosen-container-single .chosen-results {
     margin: 0 0 4px 4px;
     padding: 0 4px 0 0;
   }
-  .chzn-results li.group-option {
+  .chosen-results li.group-option {
     padding-right: 15px;
     padding-left: 0;
   }
-  &.chzn-container-active.chzn-with-drop .chzn-single div {
+  &.chosen-container-active.chosen-with-drop .chosen-single div {
     border-right: none;
   }
-  .chzn-search input[type="text"] {
+  .chosen-search input[type="text"] {
     padding: 4px 5px 4px 20px;
     background: #fff $chosen-sprite no-repeat -30px -20px;
     @include background($chosen-sprite no-repeat -30px -20px, linear-gradient(#eee 1%, #fff 15%));
     direction: rtl;
   }
-  &.chzn-container-single{
-    .chzn-single div b {
+  &.chosen-container-single{
+    .chosen-single div b {
       background-position: 6px 2px;
     }
-    &.chzn-with-drop{
-      .chzn-single div b {
+    &.chosen-with-drop{
+      .chosen-single div b {
         background-position: -12px 2px;
       }
     }
@@ -395,13 +396,13 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
 
 /* @group Retina compatibility */
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-resolution: 144dpi)  {
-  .chzn-rtl .chzn-search input[type="text"],
-  .chzn-container-single .chzn-single abbr,
-  .chzn-container-single .chzn-single div b,
-  .chzn-container-single .chzn-search input[type="text"],
-  .chzn-container-multi .chzn-choices .search-choice .search-choice-close,
-  .chzn-container .chzn-results-scroll-down span,
-  .chzn-container .chzn-results-scroll-up span {
+  .chosen-rtl .chosen-search input[type="text"],
+  .chosen-container-single .chosen-single abbr,
+  .chosen-container-single .chosen-single div b,
+  .chosen-container-single .chosen-search input[type="text"],
+  .chosen-container-multi .chosen-choices .search-choice .search-choice-close,
+  .chosen-container .chosen-results-scroll-down span,
+  .chosen-container .chosen-results-scroll-up span {
     background-image: $chosen-sprite-retina !important;
     background-size: 52px 37px !important;
     background-repeat: no-repeat !important;

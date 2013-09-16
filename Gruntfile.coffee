@@ -80,12 +80,11 @@ module.exports = (grunt) ->
       gh_pages: {}
 
     dom_munger:
-      download_links:
-        src: 'public/index.html'
+      latest_version:
+        src: ['public/index.html', 'public/index.proto.html', 'public/options.html']
         options:
           callback: ($) ->
-            $("#latest_version").attr("href", version_url()).text("Stable Version (#{version_tag()})")
-
+            $("#latest-version").text(version_tag())
     zip:
       chosen:
         cwd: 'public/'
@@ -107,7 +106,7 @@ module.exports = (grunt) ->
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'compass', 'concat', 'uglify', 'cssmin']
   grunt.registerTask 'gh_pages', ['copy:dist', 'build_gh_pages:gh_pages']
-  grunt.registerTask 'prep_release', ['build','zip:chosen','package_jquery']
+  grunt.registerTask 'prep_release', ['build', 'dom_munger:latest_version', 'zip:chosen','package_jquery']
 
   grunt.registerTask 'package_jquery', 'Generate a jquery.json manifest file from package.json', () ->
     src = "package.json"
