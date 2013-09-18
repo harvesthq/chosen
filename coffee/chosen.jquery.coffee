@@ -59,7 +59,7 @@ class Chosen extends AbstractChosen
     else
       @search_container = @container.find('div.chosen-search').first()
       @selected_item = @container.find('.chosen-single').first()
-    
+
     this.results_build()
     this.set_tab_index()
     this.set_label_behavior()
@@ -269,11 +269,39 @@ class Chosen extends AbstractChosen
       @search_field.removeClass "default"
 
   search_results_mouseup: (evt) ->
+    _this = this
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    if target.length
+    if target.length and not @holding_shift
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
+    else if @holding_shift
+      if @selected_elements.length < 1
+        target.addClass "first-selected selected-result"
+        @selected_elements.push(target);
+        true
+      else
+        selected = null
+        direction = if target.prevAll('.first-selected').length > 0 then 'back' else 'forward'
+
+        return false if target.get(0) == @selected_elements[0].get(0)
+
+        if direction == "forward"
+          selected = target.nextUntil(@selected_elements[0], ':not(.result-selected)').andSelf().add(@selected_elements[0])
+        else
+          selected = target.prevUntil(@selected_elements[0], ':not(.result-selected)').andSelf().add(@selected_elements[0])
+
+        selected.each ->
+          _this.result_highlight = $(this)
+          _this.result_select(evt)
+
+        @selected_elements[0].removeClass "first-selected selected-result"
+        @selected_elements = []
+        @holding_shift = false
+        selected = false
+
+        return @search_field.focus()
+
 
   search_results_mouseover: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
@@ -291,7 +319,7 @@ class Chosen extends AbstractChosen
       close_link = $('<a />', { class: 'search-choice-close', 'data-option-array-index': item.array_index })
       close_link.bind 'click.chosen', (evt) => this.choice_destroy_link_click(evt)
       choice.append close_link
-    
+
     @search_container.before  choice
 
   choice_destroy_link_click: (evt) ->
@@ -348,7 +376,7 @@ class Chosen extends AbstractChosen
       else
         this.single_set_selected_text(item.text)
 
-      this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
+      this.results_hide() unless (evt.metaKey or evt.ctrlKey or evt.shiftKey) and @is_multiple
 
       @search_field.val ""
 
@@ -460,6 +488,9 @@ class Chosen extends AbstractChosen
         break
       when 13
         evt.preventDefault()
+        break
+      when 16
+        @holding_shift = true if this.results_showing and @is_multiple
         break
       when 38
         evt.preventDefault()

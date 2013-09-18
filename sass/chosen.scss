@@ -156,7 +156,8 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       color: #ccc;
       cursor: default;
     }
-    &.highlighted {
+    &.highlighted,
+    &.selected-result {
       background-color: #3875d7;
       @include background-image(linear-gradient(#3875d7 20%, #2a62bc 90%));
       color: #fff;
@@ -230,7 +231,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       border-radius: 3px;
       background-color: #e4e4e4;
       @include background-image(linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%));
-      background-clip: padding-box; 
+      background-clip: padding-box;
       box-shadow: 0 0 2px #fff inset, 0 1px 0 rgba(#000,.05);
       color: #333;
       line-height: 13px;

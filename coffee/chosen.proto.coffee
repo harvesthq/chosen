@@ -92,7 +92,7 @@ class @Chosen extends AbstractChosen
       @container.select(".search-choice-close").each (choice) ->
         choice.stopObserving()
     else
-      @selected_item.stopObserving() 
+      @selected_item.stopObserving()
 
     if @search_field.tabIndex
       @form_field.tabIndex = @search_field.tabIndex
@@ -263,11 +263,52 @@ class @Chosen extends AbstractChosen
       @search_field.removeClassName "default"
 
   search_results_mouseup: (evt) ->
+    _this = this
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
-    if target
+    if target and not @holding_shift
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
+    else if @holding_shift
+      if @selected_elements.length < 1
+        target.addClassName "first-selected selected-result"
+        @selected_elements.push(target);
+        true
+      else
+        selected = null
+        direction = if target.previous('.first-selected') then 'back' else 'forward'
+
+        return false if target == @selected_elements[0]
+
+        if direction == "back"
+          selected = target.previousSiblings().collect( (t) ->
+            if t.previous(".first-selected") and not t.hasClassName("result-selected") or t.hasClassName("first-selected")
+              return t
+            else
+              return false
+          )
+          selected.reverse().push(target)
+        else
+          selected = target.nextSiblings().collect( (t) ->
+            if t.next(".first-selected") and not t.hasClassName("result-selected") or t.hasClassName("first-selected")
+              return t
+            else
+              return false
+          )
+          selected.reverse().push(target)
+          selected.reverse()
+
+
+        selected.each (elm)->
+          _this.result_highlight = elm
+          _this.result_select(evt)
+
+        @selected_elements[0].removeClassName "first-selected selected-result"
+        @selected_elements = []
+        @holding_shift = false
+        selected = false
+
+        return @search_field.focus()
 
   search_results_mouseover: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
@@ -330,7 +371,7 @@ class @Chosen extends AbstractChosen
         high.removeClassName("active-result")
       else
         this.reset_single_select_options()
-      
+
       high.addClassName("result-selected")
 
       item = @results_data[ high.getAttribute("data-option-array-index") ]
@@ -460,6 +501,9 @@ class @Chosen extends AbstractChosen
         break
       when 13
         evt.preventDefault()
+        break
+      when 16
+        @holding_shift = true if this.results_showing and @is_multiple
         break
       when 38
         evt.preventDefault()
