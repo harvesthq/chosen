@@ -270,7 +270,6 @@ class @Chosen extends AbstractChosen
       @search_field.removeClassName "default"
 
   search_results_mouseup: (evt) ->
-    _this = this
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
     if target and not @holding_shift
       @result_highlight = target
@@ -306,9 +305,9 @@ class @Chosen extends AbstractChosen
           selected.reverse()
 
 
-        selected.each (elm)->
-          _this.result_highlight = elm
-          _this.result_select(evt)
+        selected.each (elem) =>
+          @result_highlight = elem
+          @result_select(evt)
 
         @selected_elements[0].removeClassName "first-selected selected-result"
         @selected_elements = []

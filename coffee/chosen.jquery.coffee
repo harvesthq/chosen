@@ -277,7 +277,6 @@ class Chosen extends AbstractChosen
       @search_field.removeClass "default"
 
   search_results_mouseup: (evt) ->
-    _this = this
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
     if target.length and not @holding_shift
       @result_highlight = target
@@ -299,9 +298,9 @@ class Chosen extends AbstractChosen
         else
           selected = target.prevUntil(@selected_elements[0], ':not(.result-selected)').andSelf().add(@selected_elements[0])
 
-        selected.each ->
-          _this.result_highlight = $(this)
-          _this.result_select(evt)
+        selected.each (i, elem) =>
+          @result_highlight = $(elem)
+          @result_select(evt)
 
         @selected_elements[0].removeClass "first-selected selected-result"
         @selected_elements = []
