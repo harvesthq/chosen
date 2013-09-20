@@ -271,11 +271,7 @@ class @Chosen extends AbstractChosen
 
   search_results_mouseup: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
-    if target and not @holding_shift
-      @result_highlight = target
-      this.result_select(evt)
-      @search_field.focus()
-    else if @holding_shift
+    if @holding_shift
       if @selected_elements.length < 1
         target.addClassName "first-selected selected-result"
         @selected_elements.push(target);
@@ -315,6 +311,10 @@ class @Chosen extends AbstractChosen
         selected = false
 
         return @search_field.focus()
+    else if target
+      @result_highlight = target
+      this.result_select(evt)
+      @search_field.focus()
 
   search_results_mouseover: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
