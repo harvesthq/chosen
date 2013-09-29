@@ -116,7 +116,7 @@ class Chosen extends AbstractChosen
       @selected_item.bind "focus.chosen", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
-    if !@is_disabled
+    if !@is_disabled && (evt && evt.which != 3)
       if evt and evt.type is "mousedown" and not @results_showing
         evt.preventDefault()
 
@@ -269,11 +269,12 @@ class Chosen extends AbstractChosen
       @search_field.removeClass "default"
 
   search_results_mouseup: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    if target.length
-      @result_highlight = target
-      this.result_select(evt)
-      @search_field.focus()
+    if evt and evt.which != 3
+      target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+      if target.length
+        @result_highlight = target
+        this.result_select(evt)
+        @search_field.focus()
 
   search_results_mouseover: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
