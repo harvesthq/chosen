@@ -135,7 +135,7 @@ class Chosen extends AbstractChosen
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
 
   search_results_mousewheel: (evt) ->
-    delta = -evt.originalEvent?.wheelDelta or evt.originialEvent?.detail
+    delta = -evt.originalEvent.wheelDelta or evt.originalEvent.detail if evt.originalEvent
     if delta?
       evt.preventDefault()
       delta = delta * 40 if evt.type is 'DOMMouseScroll'
@@ -319,8 +319,8 @@ class Chosen extends AbstractChosen
       this.search_field_scale()
 
   results_reset: ->
+    this.reset_single_select_options()
     @form_field.options[0].selected = true
-    @selected_option_count = null
     this.single_set_selected_text()
     this.show_search_field_default()
     this.results_reset_cleanup()
@@ -344,14 +344,7 @@ class Chosen extends AbstractChosen
       if @is_multiple
         high.removeClass("active-result")
       else
-        if @result_single_selected
-          @result_single_selected.removeClass("result-selected")
-          selected_index = @result_single_selected[0].getAttribute('data-option-array-index')
-          @results_data[selected_index].selected = false
-
-        @result_single_selected = high
-
-      high.addClass "result-selected"
+        this.reset_single_select_options()
 
       item = @results_data[ high[0].getAttribute("data-option-array-index") ]
       item.selected = true

@@ -18,7 +18,6 @@ class AbstractChosen
     @mouse_on_container = false
     @results_showing = false
     @result_highlighted = null
-    @result_single_selected = null
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
     @disable_search_threshold = @options.disable_search_threshold || 0
     @disable_search = @options.disable_search || false
@@ -106,9 +105,12 @@ class AbstractChosen
     this.set_default_text()
     this.results_reset_cleanup() if not @is_multiple
     this.result_clear_highlight()
-    @result_single_selected = null
     this.results_build()
     this.winnow_results() if @results_showing
+
+  reset_single_select_options: () ->
+    for result in @results_data
+      result.selected = false if result.selected
 
   results_toggle: ->
     if @results_showing
