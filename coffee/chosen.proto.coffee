@@ -344,7 +344,7 @@ class @Chosen extends AbstractChosen
 
       @form_field.options[item.options_index].selected = true
       @selected_option_count = @selected_option_count + 1
-      @results_all_chosen = @selected_option_count == @results_count
+      @remaining_results = @selected_option_count == @results_count
 
       if @is_multiple
         this.choice_build item
