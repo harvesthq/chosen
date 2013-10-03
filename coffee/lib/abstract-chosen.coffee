@@ -223,7 +223,13 @@ class AbstractChosen
       else this.results_search()
 
   container_width: ->
-    return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
+    if @options.width 
+      return @options.width 
+    else
+      if $(@sublform_field).is(":visible")
+        return "#{@form_field.offsetWidth}px"
+      else
+        return "auto";
 
   include_option_in_results: (option) ->
     return false if @is_multiple and (not @display_selected_options and option.selected)
