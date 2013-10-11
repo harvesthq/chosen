@@ -222,6 +222,9 @@ class AbstractChosen
         # don't do anything on these keys
       else this.results_search()
 
+  clipboard_event_checker: (evt) ->
+    setTimeout (=> this.results_search()), 50
+
   container_width: ->
     return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
 
