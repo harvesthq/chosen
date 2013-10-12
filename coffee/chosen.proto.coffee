@@ -477,27 +477,6 @@ class @Chosen extends AbstractChosen
         this.keydown_arrow()
         break
 
-  mousedown_checker: (evt) ->
-    evt = evt || window.event
-    mousedown_type = null
-    if (!evt.which and evt.button != undefined)
-      evt.which = ( evt.button & 1 ? 1 : ( evt.button & 2 ? 3 : ( evt.button & 4 ? 2 : 0 ) ) )
-
-    switch evt.which
-      when 1
-        mousedown_type = 'left'
-        break
-      when 2
-        mousedown_type = 'right'
-        break
-      when 3
-        mousedown_type = 'middle'
-        break
-      else
-        mousedown_type = 'other'
-
-    return mousedown_type
-
   search_field_scale: ->
     if @is_multiple
       h = 0
