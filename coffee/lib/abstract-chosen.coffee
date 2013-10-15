@@ -43,6 +43,12 @@ class AbstractChosen
 
     @results_none_found = @form_field.getAttribute("data-no_results_text") || @options.no_results_text || AbstractChosen.default_no_result_text
 
+  choice_label: (item) ->
+    if @include_group_label_in_selected and item.group_label?
+      "<b class='group-name'>#{item.group_label}</b>#{item.html}"
+    else
+      item.html
+
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
 

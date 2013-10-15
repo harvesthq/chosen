@@ -302,12 +302,6 @@ class Chosen extends AbstractChosen
 
     @search_container.before  choice
 
-  choice_label: (item) ->
-    if @include_group_label_in_selected and item.group_label?
-      "<b class='group-name'>#{item.group_label}</b>#{item.html}"
-    else
-      item.html
-
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
     evt.stopPropagation()
