@@ -34,6 +34,22 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
   a{
     cursor: pointer;
   }
+  
+  .search-choice, .chosen-single{
+    .group-name{
+      margin-right: 4px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-weight: normal;
+      color: #999999;
+      &:after {
+        content: ":";
+        padding-left: 2px;
+        vertical-align: top;
+      }
+    }
+  }
 }
 /* @end */
 
