@@ -286,6 +286,9 @@ class @Chosen extends AbstractChosen
       close_link.observe "click", (evt) => this.choice_destroy_link_click(evt)
       choice.insert close_link
 
+    if item.classes
+      choice.addClassName item.classes
+
     @search_container.insert { before: choice }
 
   choice_destroy_link_click: (evt) ->
