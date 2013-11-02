@@ -2,7 +2,5 @@
 node_modules
 .project
 dist/
-public/*.js
-public/*.css
 chosen.zip
 .sass-cache
