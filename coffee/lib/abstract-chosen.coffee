@@ -130,8 +130,7 @@ class AbstractChosen
     results = 0
 
     searchText = this.get_search_text()
-    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-    regex = this.get_search_regex(escapedSearchText)
+    regex = this.get_search_regex(searchText)
 
     for option in @results_data
 
@@ -152,7 +151,7 @@ class AbstractChosen
         unless option.group and not @group_search
 
           option.search_text = if option.group then option.label else option.text
-          option.search_match = regex.test(option.search_text)
+          option.search_match = this.search_string_match(option.search_text, regex)
 
           results += 1 if option.search_match and not option.group
 
@@ -177,10 +176,14 @@ class AbstractChosen
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
 
-  get_search_regex: (escaped_search_string) ->
+  get_search_regex: (search_string) ->
+    escaped_search_string = search_string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regex_string = if @search_contains then escaped_search_string else "\\b#{escaped_search_string}\\w*\\b"
     regex_string = "^#{regex_string}" unless @enable_split_word_search or @search_contains
     new RegExp(regex_string, 'i')
+
+  search_string_match: (search_string, regex) ->
+    regex.test(search_string)
 
   choices_count: ->
     return @selected_option_count if @selected_option_count?
