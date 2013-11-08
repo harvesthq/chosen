@@ -11,7 +11,7 @@ $.fn.extend({
       if options is 'destroy' && chosen
         chosen.destroy()
       else unless chosen
-        $this.data('chosen', new Chosen(this, options))
+        $this.data('chosen', new $.fn.chosen.Constructor(this, options))
 
       return
 
