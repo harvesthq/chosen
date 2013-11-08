@@ -497,3 +497,5 @@ class Chosen extends AbstractChosen
         w = f_width - 10
 
       @search_field.css({'width': w + 'px'})
+
+$.fn.chosen.Constructor = Chosen
