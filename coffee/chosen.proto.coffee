@@ -93,7 +93,7 @@ class @Chosen extends AbstractChosen
       @container.select(".search-choice-close").each (choice) ->
         choice.stopObserving()
     else
-      @selected_item.stopObserving() 
+      @selected_item.stopObserving()
 
     if @search_field.tabIndex
       @form_field.tabIndex = @search_field.tabIndex
@@ -331,7 +331,7 @@ class @Chosen extends AbstractChosen
         high.removeClassName("active-result")
       else
         this.reset_single_select_options()
-      
+
       high.addClassName("result-selected")
 
       item = @results_data[ high.getAttribute("data-option-array-index") ]
