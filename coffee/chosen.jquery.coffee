@@ -401,10 +401,10 @@ class Chosen extends AbstractChosen
     this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
-    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
-    no_results_html.find("span").first().html(terms)
+    no_results_html = @results_none_found?(terms) ? @results_none_found + ' "<span>' + terms + '</span>"';
+    no_results_el = $('<li class="no-results">' + no_results_html + '</li>')
 
-    @search_results.append no_results_html
+    @search_results.append no_results_el
 
   no_results_clear: ->
     @search_results.find(".no-results").remove()
