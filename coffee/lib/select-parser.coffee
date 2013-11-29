@@ -20,7 +20,6 @@ class SelectParser
       disabled: group.disabled
     this.add_option( option, group_position, group.disabled ) for option in group.childNodes
 
-
   add_option: (option, group_position, group_disabled) ->
     if option.nodeName.toUpperCase() is "OPTION"
       if option.text != ""
