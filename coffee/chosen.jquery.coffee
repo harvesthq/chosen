@@ -340,7 +340,11 @@ class Chosen extends AbstractChosen
 
       item = @results_data[ high[0].getAttribute("data-option-array-index") ]
       item.selected = true
-
+      unless @is_multiple
+        iter = 0
+        while iter < @results_data.length
+          @results_data[iter].selected = false
+          iter++
       @form_field.options[item.options_index].selected = true
       @selected_option_count = null
 
