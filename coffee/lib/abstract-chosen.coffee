@@ -10,6 +10,18 @@ class AbstractChosen
 
     this.set_up_html()
     this.register_observers()
+    
+  getHiddenOffsetWidth = (el) ->
+    
+    # save a reference to a cloned element that can be measured
+    $hiddenElement = $(el).clone().appendTo("body")
+    
+    # calculate the width of the clone
+    width = $hiddenElement.outerWidth()
+    
+    # remove the clone from the DOM
+    $hiddenElement.remove()
+    width
 
   set_default_values: ->
     @click_test_action = (evt) => this.test_active_click(evt)
@@ -223,7 +235,10 @@ class AbstractChosen
       else this.results_search()
 
   container_width: ->
-    return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
+    if @options.width?
+      return @options.width
+    else 
+      return "" + ((if ($(@form_field).is(":visible")) then @form_field.offsetWidth else getHiddenOffsetWidth(@form_field))) + "px"
 
   include_option_in_results: (option) ->
     return false if @is_multiple and (not @display_selected_options and option.selected)
