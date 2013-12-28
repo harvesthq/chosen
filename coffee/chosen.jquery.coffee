@@ -166,7 +166,8 @@ class Chosen extends AbstractChosen
 
 
   test_active_click: (evt) ->
-    if @container.is($(evt.target).closest('.chosen-container'))
+    active_container = $(evt.target).closest('.chosen-container')
+    if active_container.length and @container[0] == active_container[0]
       @active_field = true
     else
       this.close_field()
