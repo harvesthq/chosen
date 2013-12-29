@@ -16,8 +16,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   @include user-select(none);
   .chosen-drop {
     position: absolute;
-    top: 100%;
-    left: -9999px;
+    top: -9999px;
     z-index: 1010;
     @include box-sizing(border-box);
     width: 100%;
@@ -27,7 +26,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     box-shadow: 0 4px 5px rgba(#000,.15);
   }
   &.chosen-with-drop .chosen-drop {
-    left: 0;
+    top: 100%;
   }
   a{
     cursor: pointer;
@@ -126,7 +125,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   }
   &.chosen-container-single-nosearch .chosen-search {
     position: absolute;
-    left: -9999px;
+    top: -9999px;
   }
 }
 /* @end */
@@ -324,7 +323,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
 
 /* @group Right to Left */
 .chosen-rtl {
-  text-align: right;
   .chosen-single {
     overflow: visible;
     padding: 0 8px 0 0;
@@ -332,9 +330,9 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   .chosen-single span {
     margin-right: 0;
     margin-left: 26px;
-    direction: rtl;
   }
   .chosen-single-with-deselect span {
+    margin-right: 0;
     margin-left: 38px;
   }
   .chosen-single div {
@@ -347,9 +345,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   }
   .chosen-choices li {
     float: right;
-    &.search-field input[type="text"] {
-      direction: rtl;
-    }
     &.search-choice {
       margin: 3px 5px 3px 0;
       padding: 3px 5px 3px 19px;
@@ -361,7 +356,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   }
   &.chosen-container-single-nosearch .chosen-search,
   .chosen-drop {
-    left: 9999px;
+    top: -9999px;
   }
   &.chosen-container-single .chosen-results {
     margin: 0 0 4px 4px;
@@ -378,7 +373,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     padding: 4px 5px 4px 20px;
     background: #fff $chosen-sprite no-repeat -30px -20px;
     @include background($chosen-sprite no-repeat -30px -20px, linear-gradient(#eee 1%, #fff 15%));
-    direction: rtl;
   }
   &.chosen-container-single{
     .chosen-single div b {
