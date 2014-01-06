@@ -399,6 +399,7 @@ class @Chosen extends AbstractChosen
     this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
+    @form_field.fire("chosen:no_result")
     @search_results.insert @no_results_temp.evaluate( terms: terms )
 
   no_results_clear: ->
