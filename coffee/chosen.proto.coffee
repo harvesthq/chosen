@@ -400,6 +400,7 @@ class @Chosen extends AbstractChosen
 
   no_results: (terms) ->
     @search_results.insert @no_results_temp.evaluate( terms: terms )
+    @form_field.fire("chosen:no_results", {chosen: this})
 
   no_results_clear: ->
     nr = null

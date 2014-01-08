@@ -406,6 +406,7 @@ class Chosen extends AbstractChosen
     no_results_html.find("span").first().html(terms)
 
     @search_results.append no_results_html
+    @form_field_jq.trigger("chosen:no_results", {chosen:this})
 
   no_results_clear: ->
     @search_results.find(".no-results").remove()
