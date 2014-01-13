@@ -6,7 +6,3 @@ public/*.js
 public/*.css
 chosen.zip
 .sass-cache
-.idea
-coffee/*.js
-coffee/lib/*.js
-Gruntfile.js
