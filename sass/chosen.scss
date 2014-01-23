@@ -112,7 +112,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
       outline: 0;
       border: 1px solid #aaa;
       background: #fff $chosen-sprite no-repeat 100% -20px;
-      @include background($chosen-sprite no-repeat 100% -20px, linear-gradient(#eee 1%, #fff 15%));
+      @include background($chosen-sprite no-repeat 100% -20px);
       font-size: 1em;
       font-family: sans-serif;
       line-height: normal;
@@ -230,7 +230,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
       border-radius: 3px;
       background-color: #e4e4e4;
       @include background-image(linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%));
-      background-clip: padding-box; 
+      background-clip: padding-box;
       box-shadow: 0 0 2px #fff inset, 0 1px 0 rgba(#000,.05);
       color: #333;
       line-height: 13px;
@@ -377,7 +377,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
   .chosen-search input[type="text"] {
     padding: 4px 5px 4px 20px;
     background: #fff $chosen-sprite no-repeat -30px -20px;
-    @include background($chosen-sprite no-repeat -30px -20px, linear-gradient(#eee 1%, #fff 15%));
+    @include background($chosen-sprite no-repeat -30px -20px);
     direction: rtl;
   }
   &.chosen-container-single{
