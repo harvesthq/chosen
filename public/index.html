@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="chosen.css">
   <style type="text/css" media="all">
     /* fix rtl for demo */
-    .chzn-rtl .chzn-drop { left: -9000px; }
+    .chosen-rtl .chosen-drop { left: -9000px; }
   </style>
 </head>
 <body>
@@ -287,7 +287,7 @@
         </div>
         <div>
           <em>Into This</em>
-          <select data-placeholder="Choose a Country..." class="chzn-select" style="width:350px;" tabindex="2">
+          <select data-placeholder="Choose a Country..." class="chosen-select" style="width:350px;" tabindex="2">
             <option value=""></option>
             <option value="United States">United States</option>
             <option value="United Kingdom">United Kingdom</option>
@@ -805,7 +805,7 @@
         </div>
         <div>
           <em>Into This</em>
-          <select data-placeholder="Choose a Country..." class="chzn-select" multiple style="width:350px;" tabindex="4">
+          <select data-placeholder="Choose a Country..." class="chosen-select" multiple style="width:350px;" tabindex="4">
             <option value=""></option>
             <option value="United States">United States</option>
             <option value="United Kingdom">United Kingdom</option>
@@ -1066,7 +1066,7 @@
       <div class="side-by-side clearfix">
         <div>
           <em>Single Select with Groups</em>
-          <select data-placeholder="Your Favorite Football Team" style="width:350px;" class="chzn-select" tabindex="5">
+          <select data-placeholder="Your Favorite Football Team" style="width:350px;" class="chosen-select" tabindex="5">
             <option value=""></option>
             <optgroup label="NFC EAST">
               <option>Dallas Cowboys</option>
@@ -1120,7 +1120,7 @@
         </div>
         <div>
           <em>Multiple Select with Groups</em>
-          <select data-placeholder="Your Favorite Football Team" style="width:350px;" class="chzn-select" multiple tabindex="6">
+          <select data-placeholder="Your Favorite Football Team" style="width:350px;" class="chosen-select" multiple tabindex="6">
             <option value=""></option>
             <optgroup label="NFC EAST">
               <option>Dallas Cowboys</option>
@@ -1179,7 +1179,7 @@
         <p>Chosen automatically highlights selected options and removes disabled options.</p>
         <div>
           <em>Single Select</em>
-          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select" tabindex="7">
+          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chosen-select" tabindex="7">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1193,7 +1193,7 @@
         </div>
         <div>
           <em>Multiple Select</em>
-          <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select" tabindex="8">
+          <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chosen-select" tabindex="8">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1210,10 +1210,10 @@
       <h2>Hide Search on Single Select</h2>
       <div class="side-by-side clearfix">
         <p>The disable_search_threshold option can be specified to hide the search input on single selects if there are fewer than (n) options.</p>
-        <pre><code class="language-javascript">new Chosen(document.getElementById("chzn_select_field"), {disable_search_threshold: 10});</code></pre>
+        <pre><code class="language-javascript">new Chosen(document.getElementById("chosen_select_field"), {disable_search_threshold: 10});</code></pre>
         <p></p>
         <div>
-          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select-no-single" tabindex="9">
+          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chosen-select-no-single" tabindex="9">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1231,18 +1231,18 @@
       <h2>Default Text Support</h2>
       <div class="side-by-side clearfix">
         <p>Chosen automatically sets the default field text ("Choose a country...") by reading the select element's data-placeholder value. If no data-placeholder value is present, it will default to "Select an Option" or "Select Some Options" depending on whether the select is single or multiple. You can change these elements in the plugin js file as you see fit.</p>
-        <pre><code class="language-markup">&lt;select <strong>data-placeholder="Choose a country..."</strong> style="width:350px;" multiple class="chzn-select"&gt;</code></pre>
+        <pre><code class="language-markup">&lt;select <strong>data-placeholder="Choose a country..."</strong> style="width:350px;" multiple class="chosen-select"&gt;</code></pre>
         <p><strong>Note:</strong> on single selects, the first element is assumed to be selected by the browser. To take advantage of the default text support, you will need to include a blank option as the first element of your select list.</p>
       </div>
 
       <h2>No Results Text Support</h2>
       <div class="side-by-side clearfix">
         <p>Setting the "No results" search text is as easy as passing an option when you create Chosen:</p>
-        <pre><code class="language-javascript"> new Chosen(document.getElementById("chzn_select_field"), {no_results_text: "Oops, nothing found!"}); </code></pre>
+        <pre><code class="language-javascript"> new Chosen(document.getElementById("chosen_select_field"), {no_results_text: "Oops, nothing found!"}); </code></pre>
         <p></p>
         <div>
           <em>Single Select</em>
-          <select data-placeholder="Type 'C' to view" style="width:350px;" class="chzn-select-no-results" tabindex="10">
+          <select data-placeholder="Type 'C' to view" style="width:350px;" class="chosen-select-no-results" tabindex="10">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1256,7 +1256,7 @@
         </div>
         <div>
           <em>Multiple Select</em>
-          <select data-placeholder="Type 'C' to view" style="width:350px;" multiple class="chzn-select-no-results" tabindex="11">
+          <select data-placeholder="Type 'C' to view" style="width:350px;" multiple class="chosen-select-no-results" tabindex="11">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1274,16 +1274,16 @@
       <div class="side-by-side clearfix">
         <!-- FIXME -->
         <p>You can easily limit how many options the user can select:</p>
-        <pre><code class="language-javascript">new Chosen(document.getElementById("chzn_select_field"),{max_selected_options: 5});</code></pre>
-        <p>If you try to select another option with limit reached <code class="language-javascript">liszt:maxselected</code> event is triggered:</p>
-        <pre><code class="language-javascript"> document.getElementById("chzn_select_field").addEventListener("liszt:maxselected", function () { ... }, false); </code></pre>
+        <pre><code class="language-javascript">new Chosen(document.getElementById("chosen_select_field"),{max_selected_options: 5});</code></pre>
+        <p>If you try to select another option with limit reached <code class="language-javascript">chosen:maxselected</code> event is triggered:</p>
+        <pre><code class="language-javascript"> document.getElementById("chosen_select_field").addEventListener("chosen:maxselected", function () { ... }, false); </code></pre>
       </div>
 
       <h2>Allow Deselect on Single Selects</h2>
       <div class="side-by-side clearfix">
         <p>When a single select box isn't a required field, you can set <code class="language-javascript">allow_single_deselect: true</code> and Chosen will add a UI element for option deselection. This will only work if the first option has blank text.</p>
         <div class="side-by-side clearfix">
-          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select-deselect" tabindex="12">
+          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chosen-select-deselect" tabindex="12">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1299,11 +1299,11 @@
 
       <h2>Right to Left Support</h2>
       <div class="side-by-side clearfix">
-        <p>Chosen supports right to left select boxes too. just add <code class="language-javascript">"chzn-rtl"</code> in addition to <code class="language-javascript">"chzn-select"</code> to your select tags and you are good to go.</p>
-        <pre><code class="language-markup">&lt;select class="chzn-select <strong>chzn-rtl</strong>"&gt;</code></pre>
+        <p>Chosen supports right to left select boxes too. just add <code class="language-javascript">"chosen-rtl"</code> in addition to <code class="language-javascript">"chosen-select"</code> to your select tags and you are good to go.</p>
+        <pre><code class="language-markup">&lt;select class="chosen-select <strong>chosen-rtl</strong>"&gt;</code></pre>
         <div>
           <em>Single right to left select</em>
-          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chzn-select chzn-rtl" tabindex="13">
+          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chosen-select chosen-rtl" tabindex="13">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1315,7 +1315,7 @@
         </div>
         <div>
           <em>Multiple right to left select</em>
-          <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select  chzn-rtl" tabindex="14">
+          <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chosen-select  chosen-rtl" tabindex="14">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1338,8 +1338,8 @@
           <!-- FIXME -->
           <!--li>
             <h3>Updating Chosen Dynamically</h3>
-            <p>If you need to update the options in your select field and want Chosen to pick up the changes, you'll need to trigger the "liszt:updated" event on the field. Chosen will re-build itself based on the updated content.</p>
-              <pre><code class="language-javascript">$("#form_field").trigger("liszt:updated");</code></pre>
+            <p>If you need to update the options in your select field and want Chosen to pick up the changes, you'll need to trigger the "chosen:updated" event on the field. Chosen will re-build itself based on the updated content.</p>
+              <pre><code class="language-javascript">$("#form_field").trigger("chosen:updated");</code></pre>
           </li-->
         </ul>
       </div>
@@ -1350,7 +1350,7 @@
         <pre><code class="language-javascript"> new Chosen(document.getElementById("form_field"), {width: "95%"}); </code></pre>
         <div>
           <em>Single Select</em>
-          <select data-placeholder="Your Favorite Types of Bear" class="chzn-select-width" tabindex="15">
+          <select data-placeholder="Your Favorite Types of Bear" class="chosen-select-width" tabindex="15">
             <option value=""></option>
             <option selected>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1364,7 +1364,7 @@
         </div>
         <div>
           <em>Multiple Select</em>
-          <select data-placeholder="Your Favorite Types of Bear" multiple class="chzn-select-width" tabindex="16">
+          <select data-placeholder="Your Favorite Types of Bear" multiple class="chosen-select-width" tabindex="16">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1384,7 +1384,7 @@
         <p></p>
         <div>
           <em><label for="single-label-example">Click to Highlight Single Select</label></em>
-          <select data-placeholder="Your Favorite Types of Bear" class="chzn-select" style="width:350px;" tabindex="17" id="single-label-example">
+          <select data-placeholder="Your Favorite Types of Bear" class="chosen-select" style="width:350px;" tabindex="17" id="single-label-example">
             <option value=""></option>
             <option selected>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1398,7 +1398,7 @@
         </div>
         <div>
           <em><label for="multiple-label-example">Click to Highlight Multiple Select</label></em>
-          <select data-placeholder="Your Favorite Types of Bear" multiple class="chzn-select" style="width:350px;" tabindex="18" id="multiple-label-example">
+          <select data-placeholder="Your Favorite Types of Bear" multiple class="chosen-select" style="width:350px;" tabindex="18" id="multiple-label-example">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1416,10 +1416,10 @@
       <p>Using Chosen is easy as can be.</p>
       <ol>
         <li><a href="https://github.com/harvesthq/chosen/releases">Download</a> the plugin and copy the chosen files to your app.</li>
-        <li>Activate the plugin on the select boxes of your choice: 
-<pre><code class="language-javascript">var elements = document.querySelectorAll(".chzn-select");
+        <li>Activate the plugin on the select boxes of your choice:
+<pre><code class="language-javascript">var elements = document.querySelectorAll(".chosen-select");
 for (var i = 0, count = elements.length; i < count; i++) {
-  new Chosen(elements[i]); 			
+  new Chosen(elements[i]);
 }</code></pre></li>
         <li><a href="http://www.youtube.com/watch?feature=player_detailpage&v=UkSPUDpe0U8#t=11s">Disco</a>.</li>
       </ol>
@@ -1459,13 +1459,13 @@ for (var i = 0, count = elements.length; i < count; i++) {
   <script src="docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript">
     var config = {
-      '.chzn-select'           : {},
-      '.chzn-select-deselect'  : {allow_single_deselect:true},
-      '.chzn-select-no-single' : {disable_search_threshold:10},
-      '.chzn-select-no-results': {no_results_text:'Oops, nothing found!'},
-      '.chzn-select-width'     : {width:"95%"}
+      '.chosen-select'           : {},
+      '.chosen-select-deselect'  : {allow_single_deselect:true},
+      '.chosen-select-no-single' : {disable_search_threshold:10},
+      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+      '.chosen-select-width'     : {width:"95%"}
     }
-    
+
     var results = [];
     for (var selector in config) {
       var elements = document.querySelectorAll(selector);
