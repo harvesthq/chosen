@@ -150,7 +150,7 @@ class @Chosen extends AbstractChosen
 
 
   test_active_click: (evt) ->
-    active_container = DOM.find_parent evt.target.parentNode, (el) -> DOM.has_class el, 'chosen-container'
+    active_container = DOM.find_parent evt.target, (el) -> DOM.has_class el, 'chosen-container'
     if @container is active_container
       @active_field = true
     else
