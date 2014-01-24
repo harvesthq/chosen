@@ -96,7 +96,7 @@ class Chosen extends AbstractChosen
       @container.bind 'click.chosen', (evt) -> evt.preventDefault(); return # gobble click of anchor
 
   destroy: ->
-    $(document).unbind "click.chosen", @click_test_action
+    $(@container[0].ownerDocument).unbind "click.chosen", @click_test_action
     if @search_field[0].tabIndex
       @form_field_jq[0].tabIndex = @search_field[0].tabIndex
 
@@ -124,7 +124,7 @@ class Chosen extends AbstractChosen
       if not (evt? and ($ evt.target).hasClass "search-choice-close")
         if not @active_field
           @search_field.val "" if @is_multiple
-          $(document).bind 'click.chosen', @click_test_action
+          $(@container[0].ownerDocument).bind 'click.chosen', @click_test_action
           this.results_show()
         else if not @is_multiple and evt and (($(evt.target)[0] == @selected_item[0]) || $(evt.target).parents("a.chosen-single").length)
           evt.preventDefault()
@@ -146,7 +146,7 @@ class Chosen extends AbstractChosen
     this.close_field() if not @active_field and @container.hasClass "chosen-container-active"
 
   close_field: ->
-    $(document).unbind "click.chosen", @click_test_action
+    $(@container[0].ownerDocument).unbind "click.chosen", @click_test_action
 
     @active_field = false
     this.results_hide()
