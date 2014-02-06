@@ -233,7 +233,18 @@ class Chosen extends AbstractChosen
     @search_field.focus()
     @search_field.val @search_field.val()
 
-    this.winnow_results()
+    retval = this.winnow_results()
+    @dropdown.removeClass "dropup"
+    @search_results.css("max-height", "none")
+    sb = @container.offset().top + @container.outerHeight() + @dropdown.outerHeight()
+    wb = $(window).scrollTop() + $(window).height()
+    if sb > wb
+      delta = sb - wb
+      if delta > 100
+        @dropdown.addClass "dropup"
+      else
+        @search_results.css("max-height", "100px")
+    retval
 
   update_results_content: (content) ->
     @search_results.html content

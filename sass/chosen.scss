@@ -25,6 +25,13 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
     border-top: 0;
     background: #fff;
     box-shadow: 0 4px 5px rgba(#000,.15);
+    &.dropup {
+      top: auto !important;
+      bottom: 29px;
+      border-top: 1px solid #aaa;
+      border-bottom: 0;
+      box-shadow: 0 -4px 5px rgba(#000,.15);
+    }
   }
   &.chosen-with-drop .chosen-drop {
     left: 0;
