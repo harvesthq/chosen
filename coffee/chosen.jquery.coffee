@@ -237,6 +237,7 @@ class Chosen extends AbstractChosen
 
   update_results_content: (content) ->
     @search_results.html content
+    @form_field_jq.trigger("chosen:search_results_updated", {chosen: this})
 
   results_hide: ->
     if @results_showing
