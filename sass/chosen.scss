@@ -133,6 +133,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
 
 /* @group Results */
 .chosen-container .chosen-results {
+  color: #444;
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
@@ -162,6 +163,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
       color: #fff;
     }
     &.no-results {
+      color: #777;
       display: list-item;
       background: #f4f4f4;
     }
@@ -212,14 +214,11 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
         border: 0 !important;
         background: transparent !important;
         box-shadow: none;
-        color: #666;
+        color: #999;
         font-size: 100%;
         font-family: sans-serif;
         line-height: normal;
         border-radius: 0;
-      }
-      .default {
-        color: #999;
       }
     }
     &.search-choice {
@@ -303,7 +302,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
     border: 1px solid #5897fb;
     box-shadow: 0 0 5px rgba(#000,.3);
     li.search-field input[type="text"] {
-      color: #111 !important;
+      color: #222 !important;
     }
   }
 }
