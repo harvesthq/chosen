@@ -6,3 +6,5 @@ public/*.js
 public/*.css
 chosen.zip
 .sass-cache
+.ruby-version
+.rbenv-gemsets
