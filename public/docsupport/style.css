@@ -64,6 +64,7 @@ a:hover { text-decoration: underline; }
 ul.credits li { margin-bottom: .25em; }
 
 strong { font-weight: bold; }
+i { font-style: italic; }
 
 .button {
   background: #fafafa;
