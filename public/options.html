@@ -196,21 +196,29 @@
         </tr>
         <tr>
           <td>chosen:ready</td>
-          <td>after Chosen has been fully instantiated (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
+          <td>after Chosen has been fully instantiated.</td>
         </tr>
         <tr>
           <td>chosen:maxselected</td>
-          <td>triggered if <code class="language-javascript">max_selected_options</code> is set and that total is broken. (it also sends the <code class="language-javascript">chosen</code> object as a parameter)</td>
+          <td>triggered if <code class="language-javascript">max_selected_options</code> is set and that total is broken.</td>
         </tr>
         <tr>
           <td>chosen:showing_dropdown</td>
-          <td>triggered when Chosen's dropdown is opened (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
+          <td>triggered when Chosen's dropdown is opened.</td>
         </tr>
         <tr>
           <td>chosen:hiding_dropdown</td>
-          <td>triggered when Chosen's dropdown is closed (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
+          <td>triggered when Chosen's dropdown is closed.</td>
+        </tr>
+        <tr>
+          <td>chosen:no_results</td>
+          <td>triggered when a search returns no matching results.</td>
         </tr>
       </table>
+
+      <p style="margin-top: 1em;">
+        <strong>Note:</strong> all custom Chosen events (those that being with <code class="language-javascript">chosen:</code>) also include the <code class="language-javascript">chosen</code> object as a parameter.
+      </p>
 
       <h2><a name="triggerable-events" class="anchor" href="#triggerable-events">Triggerable Events</a></h2>
       <p>You can trigger several events on the original select field to invoke a behavior in Chosen.</p>
