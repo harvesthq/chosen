@@ -228,14 +228,13 @@ class Chosen extends AbstractChosen
       return false
 
     @container.addClass "chosen-with-drop"
-    @form_field_jq.trigger("chosen:showing_dropdown", {chosen: this})
-
     @results_showing = true
 
     @search_field.focus()
     @search_field.val @search_field.val()
 
     this.winnow_results()
+    @form_field_jq.trigger("chosen:showing_dropdown", {chosen: this})
 
   update_results_content: (content) ->
     @search_results.html content
