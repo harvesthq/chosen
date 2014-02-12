@@ -400,10 +400,14 @@ class @Chosen extends AbstractChosen
     this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
+    this.container.addClass 'chosen-no-results'
+
     @search_results.insert @no_results_temp.evaluate( terms: terms )
     @form_field.fire("chosen:no_results", {chosen: this})
 
   no_results_clear: ->
+    this.container.removeClass 'chosen-no-results'
+
     nr = null
     nr.remove() while nr = @search_results.down(".no-results")
 
