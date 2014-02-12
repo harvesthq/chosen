@@ -126,6 +126,7 @@ class AbstractChosen
 
   winnow_results: ->
     this.no_results_clear()
+    this.container.removeClass 'no-results'
 
     results = 0
 
@@ -150,7 +151,7 @@ class AbstractChosen
           results_group = @results_data[option.group_array_index]
           results += 1 if results_group.active_options is 0 and results_group.search_match
           results_group.active_options += 1
-                
+
         unless option.group and not @group_search
 
           option.search_text = if option.group then option.label else option.html
@@ -164,7 +165,7 @@ class AbstractChosen
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
             results_group.group_match = true if results_group?
-          
+
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
 
@@ -172,6 +173,7 @@ class AbstractChosen
 
     if results < 1 and searchText.length
       this.update_results_content ""
+      this.container.addClass "no-results"
       this.no_results searchText
     else
       this.update_results_content this.results_option_build()
@@ -194,7 +196,7 @@ class AbstractChosen
     @selected_option_count = 0
     for option in @form_field.options
       @selected_option_count += 1 if option.selected
-    
+
     return @selected_option_count
 
   choices_click: (evt) ->
@@ -252,7 +254,7 @@ class AbstractChosen
     tmp.appendChild(element)
     tmp.innerHTML
 
-  # class methods and variables ============================================================ 
+  # class methods and variables ============================================================
 
   @browser_is_supported: ->
     if window.navigator.appName == "Microsoft Internet Explorer"
