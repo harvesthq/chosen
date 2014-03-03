@@ -1,4 +1,4 @@
-class AbstractChosen
+window.AbstractChosen = class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
     return unless AbstractChosen.browser_is_supported()
@@ -29,6 +29,9 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+    if @options.ignore_regexp?
+      @ignore_regexp = @options.ignore_regexp
+      @ignore_regexp.global = true
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -130,6 +133,8 @@ class AbstractChosen
     results = 0
 
     searchText = this.get_search_text()
+    searchText = searchText.replace(@ignore_regexp, '') if @ignore_regexp
+
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regexAnchor = if @search_contains then "" else "^"
     regex = new RegExp(regexAnchor + escapedSearchText, 'i')
@@ -164,7 +169,7 @@ class AbstractChosen
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
             results_group.group_match = true if results_group?
-          
+
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
 
@@ -178,6 +183,8 @@ class AbstractChosen
       this.winnow_results_set_highlight()
 
   search_string_match: (search_string, regex) ->
+    search_string = search_string.replace(@ignore_regexp, '') if @ignore_regexp
+
     if regex.test search_string
       return true
     else if @enable_split_word_search and (search_string.indexOf(" ") >= 0 or search_string.indexOf("[") == 0)
@@ -194,7 +201,7 @@ class AbstractChosen
     @selected_option_count = 0
     for option in @form_field.options
       @selected_option_count += 1 if option.selected
-    
+
     return @selected_option_count
 
   choices_click: (evt) ->

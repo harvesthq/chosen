@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Jasmine Spec Runner v2.0.0</title>
+
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-1.1.0/jasmine_favicon.png">
+  <link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0/jasmine.css">
+
+  <script type="text/javascript" src="http://coffeescript.org/extras/coffee-script.js"></script>
+
+  <script type="text/javascript" src="lib/jasmine-1.1.0/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-1.1.0/jasmine-html.js"></script>
+  <script type="text/javascript" src="lib/jasmine-1.1.0/boot.js"></script>
+
+  <!-- include source files here... -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+  <script type="text/coffeescript" src="../coffee/lib/abstract-chosen.coffee"></script>
+  <script type="text/coffeescript" src="../coffee/lib/select-parser.coffee"></script>
+  <script type="text/coffeescript" src="../coffee/chosen.jquery.coffee"></script>
+
+  <!-- include spec files here... -->
+  <script type="text/javascript" src="spec/ChosenSpec.js"></script>
+
+  <script type="text/coffeescript">
+    $ ->
+      jasmineEnv = jasmine.getEnv()
+      jasmineEnv.updateInterval = 1000
+      htmlReporter = new jasmine.HtmlReporter()
+      jasmineEnv.addReporter htmlReporter
+      jasmineEnv.specFilter = (spec) ->
+        htmlReporter.specFilter spec
+
+      jasmineEnv.execute()
+  </script>
+</head>
+
+<body>
+</body>
+</html>
