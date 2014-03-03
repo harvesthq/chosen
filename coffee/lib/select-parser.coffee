@@ -1,4 +1,4 @@
-class SelectParser
+Window.SelectParser = class SelectParser
 
   constructor: ->
     @options_index = 0
