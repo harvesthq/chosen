@@ -24,6 +24,7 @@ class AbstractChosen
     @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
     @group_search = if @options.group_search? then @options.group_search else true
     @search_contains = @options.search_contains || false
+    @search_contains_prefix = @options.search_contains_prefix || false
     @single_backstroke_delete = if @options.single_backstroke_delete? then @options.single_backstroke_delete else true
     @max_selected_options = @options.max_selected_options || Infinity
     @inherit_select_classes = @options.inherit_select_classes || false
@@ -132,6 +133,9 @@ class AbstractChosen
     searchText = this.get_search_text()
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regexAnchor = if @search_contains then "" else "^"
+    if @search_contains_prefix?
+      @search_contains_prefix_regex = new RegExp('^' + @search_contains_prefix, 'i') if not @search_contains_prefix_regex?
+      regexAnchor = '^' + escapedSearchText + '|' + (if @search_contains_prefix_regex.test(searchText) then '' else @search_contains_prefix)
     regex = new RegExp(regexAnchor + escapedSearchText, 'i')
     zregex = new RegExp(escapedSearchText, 'i')
 
