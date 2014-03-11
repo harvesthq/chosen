@@ -3,24 +3,24 @@
 Please take a moment to review this document in order to make the contribution
 process easy and effective for everyone involved.
 
-Following these guidelines will help us get back to you more quickly, and will 
-show that you care about making Chosen better just like we do. In return, we'll 
-do our best to respond to your issue or pull request as soon as possible with 
+Following these guidelines will help us get back to you more quickly, and will
+show that you care about making Chosen better just like we do. In return, we'll
+do our best to respond to your issue or pull request as soon as possible with
 the same respect.
 
-_**Please Note:** These guidelines are adapted from [@necolas](https://github.com/necolas)'s 
+_**Please Note:** These guidelines are adapted from [@necolas](https://github.com/necolas)'s
 [issue-guidelines](https://github.com/necolas/issue-guidelines) and serve as
 an excellent starting point for contributing to any open source project._
 
 
 ## Using the issue tracker
 
-The [issue tracker](https://github.com/harvesthq/chosen/issues) is the 
-preferred channel for [bug reports](#bugs), [features requests](#features) 
-and [submitting pull requests](#pull-requests), but please respect the 
+The [issue tracker](https://github.com/harvesthq/chosen/issues) is the
+preferred channel for [bug reports](#bugs), [features requests](#features)
+and [submitting pull requests](#pull-requests), but please respect the
 following restrictions:
 
-* Support issues or usage question that are not bugs should be posted on 
+* Support issues or usage question that are not bugs should be posted on
 [Stack Overflow, using the `chosen.js`](http://stackoverflow.com/questions/tagged/chosen.js) tag
 (related tags: [`jquery-chosen`](http://stackoverflow.com/questions/tagged/jquery-chosen),
 [`prototype-chosen`](http://stackoverflow.com/questions/tagged/prototype-chosen)).
@@ -44,14 +44,14 @@ Guidelines for bug reports:
    repository's latest `master` changes.
 
 3. **Isolate the problem** &mdash; ideally create a [reduced test
-   case](http://css-tricks.com/6263-reduced-test-cases/) and a live example 
+   case](http://css-tricks.com/6263-reduced-test-cases/) and a live example
    (perhaps a [fiddle](http://jsfiddle.net)).
 
 A good bug report shouldn't leave others needing to contact you for more
 information. Please try to be as detailed as possible in your report. What is
 your environment? What steps will reproduce the issue? What browser(s) and OS
-experience the problem? What outcome did you expect, and how did it differ from 
-what you actually saw? All these details will help people to fix any potential 
+experience the problem? What outcome did you expect, and how did it differ from
+what you actually saw? All these details will help people to fix any potential
 bugs.
 
 Example:
@@ -85,22 +85,22 @@ case to convince the project's developers of the merits of this feature. Please
 provide as much detail and context as possible.
 
 Building something great means choosing features carefully especially because it
-is much, much easier to add features than it is to take them away. Additions 
-to Chosen will be evaluated on a combination of scope (how well it fits into the 
+is much, much easier to add features than it is to take them away. Additions
+to Chosen will be evaluated on a combination of scope (how well it fits into the
 project), maintenance burden and general usefulness.
 
-Creating something great often means saying no to seemingly good ideas. Don't 
-dispair if your feature request isn't accepted, take action! Fork the 
+Creating something great often means saying no to seemingly good ideas. Don't
+dispair if your feature request isn't accepted, take action! Fork the
 repository, build your idea and share it with others. We released Chosen under
-the MIT License for this purpose precisely. Open source works best when smart 
-and dedicated people riff off of each others' ideas to make even greater things. 
+the MIT License for this purpose precisely. Open source works best when smart
+and dedicated people riff off of each others' ideas to make even greater things.
 
 
 
 <a name="pull-requests"></a>
 ## Pull requests
 
-Good pull requests &mdash; patches, improvements, new features &mdash; are a fantastic help. 
+Good pull requests &mdash; patches, improvements, new features &mdash; are a fantastic help.
 They should remain focused in scope and avoid containing unrelated commits.
 
 **Please ask first** before embarking on any significant pull request (e.g.
@@ -109,8 +109,8 @@ otherwise you risk spending a lot of time working on something that the
 project's developers might not want to merge into the project. You can solicit
 feedback and opinions in an open feature request thread or create a new one.
 
-Please use the [git flow for pull requests](#git-flow) and follow Chosen's 
-[code conventions](#code-conventions) before submitting your work. Adhering to 
+Please use the [git flow for pull requests](#git-flow) and follow Chosen's
+[code conventions](#code-conventions) before submitting your work. Adhering to
 these guidelines is the best way to get your work included in Chosen.
 
 <a name="git-flow"></a>
@@ -186,5 +186,5 @@ Once you're configured, building the JavaScript from the command line is easy:
 
     grunt build                # build Chosen from source
     grunt watch                # watch coffee/ for changes and build Chosen
-    
+
 If you're interested, you can find the task in [Gruntfile.coffee](https://github.com/harvesthq/chosen/blob/master/Gruntfile.coffee).

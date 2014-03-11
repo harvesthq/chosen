@@ -15,7 +15,7 @@
   <div id="container">
     <div id="content">
       <header>
-        <h1>Chosen <small>(<span id="latest-version">v1.0.0</span>)</small></h1>
+        <h1>Chosen <small>(<span id="latest-version">v1.1.0</span>)</small></h1>
       </header>
       <p>Chosen has a number of options and attributes that allow you to have full control of your select boxes.</p>
 
@@ -38,7 +38,7 @@
         <tr>
           <td>allow_single_deselect</td>
           <td>false</td>
-          <td>When set to <code class="language-javascript">true</code> on a single select, Chosen adds a UI element which selects the first elment (if it is blank).</td>
+          <td>When set to <code class="language-javascript">true</code> on a single select, Chosen adds a UI element which selects the first element (if it is blank).</td>
         </tr>
         <tr>
           <td>disable_search</td>
@@ -58,7 +58,7 @@
         <tr>
           <td>inherit_select_classes</td>
           <td>false</td>
-          <td>When set to <code class="language-javascript">true</code>, Chosen will grab any classes on the original select field and add them to Chosen's container div.</td>
+          <td>When set to <code class="language-javascript">true</code>, Chosen will grab any classes on the original select field and add them to Chosen’s container div.</td>
         </tr>
         <tr>
           <td>max_selected_options</td>
@@ -68,8 +68,8 @@
         <tr>
           <td>no_results_text</td>
           <td>"No results match"</td>
-          <td>The text to be displayed when no matching results are found. The current search is shown at the end of the text (e.g.
-           No reults match "Bad Search").</td>
+          <td>The text to be displayed when no matching results are found. The current search is shown at the end of the text (<i>e.g.</i>,
+           No results match "Bad Search").</td>
         </tr>
         <tr>
           <td>placeholder_text_multiple</td>
@@ -84,7 +84,7 @@
         <tr>
           <td>search_contains</td>
           <td>false</td>
-          <td>By default, Chosen's search matches starting at the beginning of a word. Setting this option to <code class="language-javascript">true</code> allows matches starting from anywhere within a word. This is especially useful for options that include a lot of special characters or phrases in ()'s and []'s.</td>
+          <td>By default, Chosen’s search matches starting at the beginning of a word. Setting this option to <code class="language-javascript">true</code> allows matches starting from anywhere within a word. This is especially useful for options that include a lot of special characters or phrases in ()s and []s.</td>
         </tr>
         <tr>
           <td>single_backstroke_delete</td>
@@ -196,21 +196,29 @@
         </tr>
         <tr>
           <td>chosen:ready</td>
-          <td>after Chosen has been fully instantiated (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
+          <td>Triggered after Chosen has been fully instantiated.</td>
         </tr>
         <tr>
           <td>chosen:maxselected</td>
-          <td>triggered if <code class="language-javascript">max_selected_options</code> is set and that total is broken. (it also sends the <code class="language-javascript">chosen</code> object as a parameter)</td>
+          <td>Triggered if <code class="language-javascript">max_selected_options</code> is set and that total is broken.</td>
         </tr>
         <tr>
           <td>chosen:showing_dropdown</td>
-          <td>triggered when Chosen's dropdown is opened (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
+          <td>Triggered when Chosen’s dropdown is opened.</td>
         </tr>
         <tr>
           <td>chosen:hiding_dropdown</td>
-          <td>triggered when Chosen's dropdown is closed (it also sends the <code class="language-javascript">chosen</code> object as a parameter).</td>
+          <td>Triggered when Chosen’s dropdown is closed.</td>
+        </tr>
+        <tr>
+          <td>chosen:no_results</td>
+          <td>Triggered when a search returns no matching results.</td>
         </tr>
       </table>
+
+      <p style="margin-top: 1em;">
+        <strong>Note:</strong> all custom Chosen events (those that being with <code class="language-javascript">chosen:</code>) also include the <code class="language-javascript">chosen</code> object as a parameter.
+      </p>
 
       <h2><a name="triggerable-events" class="anchor" href="#triggerable-events">Triggerable Events</a></h2>
       <p>You can trigger several events on the original select field to invoke a behavior in Chosen.</p>
@@ -228,7 +236,7 @@
         </tr>
         <tr>
           <td>chosen:updated</td>
-          <td>This event should be triggered whenever Chosen's underlying select element changes (such as a change in selected options).</td>
+          <td>This event should be triggered whenever Chosen’s underlying select element changes (such as a change in selected options).</td>
         </tr>
         <tr>
           <td>chosen:activate</td>
