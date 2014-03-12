@@ -131,9 +131,8 @@ class AbstractChosen
 
     searchText = this.get_search_text()
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-    regexAnchor = if @search_contains then "" else "^"
-    regex = new RegExp(regexAnchor + escapedSearchText, 'i')
     zregex = new RegExp(escapedSearchText, 'i')
+    regex = this.get_search_regex(escapedSearchText)
 
     for option in @results_data
 
@@ -176,6 +175,10 @@ class AbstractChosen
     else
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
+
+  get_search_regex: (escaped_search_string) ->
+    regex_anchor = if @search_contains then "" else "^"
+    new RegExp(regex_anchor + escaped_search_string, 'i')
 
   search_string_match: (search_string, regex) ->
     if regex.test search_string
