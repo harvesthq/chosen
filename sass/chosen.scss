@@ -2,8 +2,8 @@
 @import "compass/css3/images";
 @import "compass/css3/user-interface";
 
-$chosen-sprite: image-url('chosen-sprite.png');
-$chosen-sprite-retina: image-url('chosen-sprite@2x.png');
+$chosen-sprite: image-url('chosen-sprite.png') !default;
+$chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
 
 /* @group Base */
 .chosen-container {
@@ -112,7 +112,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       outline: 0;
       border: 1px solid #aaa;
       background: #fff $chosen-sprite no-repeat 100% -20px;
-      @include background($chosen-sprite no-repeat 100% -20px, linear-gradient(#eee 1%, #fff 15%));
+      @include background($chosen-sprite no-repeat 100% -20px);
       font-size: 1em;
       font-family: sans-serif;
       line-height: normal;
@@ -133,6 +133,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
 
 /* @group Results */
 .chosen-container .chosen-results {
+  color: #444;
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
@@ -146,6 +147,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     padding: 5px 6px;
     list-style: none;
     line-height: 15px;
+    word-wrap: break-word;
     -webkit-touch-callout: none;
     &.active-result {
       display: list-item;
@@ -163,6 +165,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       color: #fff;
     }
     &.no-results {
+      color: #777;
       display: list-item;
       background: #f4f4f4;
     }
@@ -189,7 +192,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     overflow: hidden;
     @include box-sizing(border-box);
     margin: 0;
-    padding: 0;
+    padding: 0 5px;
     width: 100%;
     height: auto !important;
     height: 1%;
@@ -207,35 +210,37 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
       white-space: nowrap;
       input[type="text"] {
         margin: 1px 0;
-        padding: 5px;
+        padding: 5px 0;
         height: 15px;
         outline: 0;
         border: 0 !important;
         background: transparent !important;
         box-shadow: none;
-        color: #666;
+        color: #999;
         font-size: 100%;
         font-family: sans-serif;
         line-height: normal;
         border-radius: 0;
       }
-      .default {
-        color: #999;
-      }
     }
     &.search-choice {
       position: relative;
-      margin: 3px 0 3px 5px;
+      margin: 3px 5px 3px 0;
       padding: 3px 20px 3px 5px;
       border: 1px solid #aaa;
+      max-width: 100%;
+      @include box-sizing(border-box);
       border-radius: 3px;
-      background-color: #e4e4e4;
+      background-color: #eeeeee;
       @include background-image(linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%));
       background-clip: padding-box;
       box-shadow: 0 0 2px #fff inset, 0 1px 0 rgba(#000,.05);
       color: #333;
       line-height: 13px;
       cursor: default;
+      span {
+        word-wrap: break-word;
+      }
       .search-choice-close {
         position: absolute;
         top: 4px;
@@ -304,7 +309,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
     border: 1px solid #5897fb;
     box-shadow: 0 0 5px rgba(#000,.3);
     li.search-field input[type="text"] {
-      color: #111 !important;
+      color: #222 !important;
     }
   }
 }
@@ -378,7 +383,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png');
   .chosen-search input[type="text"] {
     padding: 4px 5px 4px 20px;
     background: #fff $chosen-sprite no-repeat -30px -20px;
-    @include background($chosen-sprite no-repeat -30px -20px, linear-gradient(#eee 1%, #fff 15%));
+    @include background($chosen-sprite no-repeat -30px -20px);
     direction: rtl;
   }
   &.chosen-container-single{

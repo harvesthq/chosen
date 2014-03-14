@@ -133,9 +133,8 @@ class AbstractChosen
 
     searchText = this.get_search_text()
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-    regexAnchor = if @search_contains then "" else "^"
-    regex = new RegExp(regexAnchor + escapedSearchText, 'i')
     zregex = new RegExp(escapedSearchText, 'i')
+    regex = this.get_search_regex(escapedSearchText)
 
     for option in @results_data
 
@@ -178,6 +177,10 @@ class AbstractChosen
     else
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
+
+  get_search_regex: (escaped_search_string) ->
+    regex_anchor = if @search_contains then "" else "^"
+    new RegExp(regex_anchor + escaped_search_string, 'i')
 
   search_string_match: (search_string, regex) ->
     if regex.test search_string
@@ -226,6 +229,9 @@ class AbstractChosen
       when 9, 38, 40, 91, 17
         # don't do anything on these keys
       else this.results_search()
+
+  clipboard_event_checker: (evt) ->
+    setTimeout (=> this.results_search()), 50
 
   container_width: ->
     return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
