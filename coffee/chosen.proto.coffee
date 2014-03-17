@@ -48,6 +48,23 @@ class @Chosen extends AbstractChosen
     this.set_label_behavior()
     @form_field.fire("chosen:ready", {chosen: this})
 
+  field_invalid: (evt) ->
+    @form_field.setStyle({
+      position: 'absolute',
+      display: ''
+    })
+    @form_field.setStyle({
+      height: @container.getHeight() + 'px',
+      width: @container.getWidth() + 'px',
+      marginTop: (@container.cumulativeOffset().top - @form_field.cumulativeOffset().top ) + 'px'
+    })
+    @form_field.observe "change", this.field_valid_bound
+
+  field_valid: (evt) ->
+    if @form_field.validity && @form_field.validity.valid
+      @form_field.hide()
+      @form_field.stopObserving "change", this.field_valid_bound
+
   register_observers: ->
     @container.observe "mousedown", (evt) => this.container_mousedown(evt)
     @container.observe "mouseup", (evt) => this.container_mouseup(evt)
@@ -68,6 +85,9 @@ class @Chosen extends AbstractChosen
     @form_field.observe "chosen:activate", (evt) => this.activate_field(evt)
     @form_field.observe "chosen:open", (evt) => this.container_mousedown(evt)
     @form_field.observe "chosen:close", (evt) => this.input_blur(evt)
+
+    @form_field.observe "invalid", (evt) => this.field_invalid(evt)
+    @field_valid_bound = @field_valid.bind this
 
     @search_field.observe "blur", (evt) => this.input_blur(evt)
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)

@@ -65,7 +65,24 @@ class Chosen extends AbstractChosen
     this.set_label_behavior()
     @form_field_jq.trigger("chosen:ready", {chosen: this})
 
+  field_invalid: (evt) ->
+    @form_field_jq.css({
+      position: 'absolute',
+      display: ''
+    })
+    @form_field_jq.css({
+      height: @container.height() + 'px',
+      width: @container.width() + 'px',
+      marginTop: (@container.position().top - @form_field_jq.position().top ) + 'px'
+    })
+    .bind "change.chzn-valid", (evt) => this.field_valid(evt)
+
+  field_valid: (evt) ->
+    if @form_field.validity && @form_field.validity.valid
+      @form_field_jq.hide().unbind "change.chzn-valid"
+
   register_observers: ->
+
     @container.bind 'mousedown.chosen', (evt) => this.container_mousedown(evt); return
     @container.bind 'mouseup.chosen', (evt) => this.container_mouseup(evt); return
     @container.bind 'mouseenter.chosen', (evt) => this.mouse_enter(evt); return
@@ -84,6 +101,8 @@ class Chosen extends AbstractChosen
     @form_field_jq.bind "chosen:activate.chosen", (evt) => this.activate_field(evt); return
     @form_field_jq.bind "chosen:open.chosen", (evt) => this.container_mousedown(evt); return
     @form_field_jq.bind "chosen:close.chosen", (evt) => this.input_blur(evt); return
+
+    @form_field_jq.bind "invalid.chosen", (evt) => this.field_invalid(evt)
 
     @search_field.bind 'blur.chosen', (evt) => this.input_blur(evt); return
     @search_field.bind 'keyup.chosen', (evt) => this.keyup_checker(evt); return
