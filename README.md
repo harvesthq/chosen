@@ -36,7 +36,7 @@ or add Chosen to your own project's `bower.json` file, like:
 }
 ```
 
-See #1509, #1472, and #1333 for more info.
+See [#1509](https://github.com/harvesthq/chosen/issues/1509), [#1472](https://github.com/harvesthq/chosen/issues/1472), and [#1333](https://github.com/harvesthq/chosen/issues/1333) for more info.
 
 ### Contributing to this project
 
