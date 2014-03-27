@@ -13,7 +13,7 @@ https://github.com/harvesthq/chosen/releases/
 
 ### Bower Installation
 
-Chosen does not currently support command-line `bower install chosen` installation. This is because the repo does not contain the compiled sources, and bower does not currently support adding a post-install/build step.
+Chosen does _**not**_ currently support command-line `bower install chosen` installation. This is because the repo does not contain the compiled sources, and bower does not currently support adding a post-install/build step.
 
 However, you can specify that you'd like to use [the release ZIP](https://github.com/harvesthq/chosen/releases/latest), which includes the compiled and minified sources.
 
