@@ -407,7 +407,7 @@ class Chosen extends AbstractChosen
 
   no_results: (terms) ->
     no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
-    no_results_html.find("span").first().html(terms)
+    no_results_html.find("span").first().text(terms)
 
     @search_results.append no_results_html
     @form_field_jq.trigger("chosen:no_results", {chosen:this})
