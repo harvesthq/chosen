@@ -29,6 +29,8 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+    # in case of no_results, the <option> with no_results_fallback_option_index will be selected (e.g. "other", "default" etc.)
+    @no_results_fallback_option_index = if@options.no_results_fallback_option_index? then @options.no_results_fallback_option_index else -1
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -169,10 +171,12 @@ class AbstractChosen
 
     this.result_clear_highlight()
 
-    if results < 1 and searchText.length
+    if results < 1 and searchText.length and this.no_results_fallback_option_index == -1
       this.update_results_content ""
       this.no_results searchText
     else
+      if this.no_results_fallback_option_index != -1
+        this.results_data[this.no_results_fallback_option_index].search_match = true
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
 
