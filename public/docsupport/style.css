@@ -30,6 +30,7 @@ footer { color: #999; padding-top: 40px; font-size: 0.8em; text-align: center; }
 body { font-family: sans-serif; font-size: 1em; }
 
 p { margin: 0 0 .7em; max-width: 700px; }
+table+p { margin-top: 1em; }
 
 h2 { border-bottom: 1px solid #ccc; font-size: 1.2em; margin: 3em 0 1em 0; font-weight: bold;}
 h3 { font-weight: bold; }

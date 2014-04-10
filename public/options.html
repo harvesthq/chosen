@@ -145,6 +145,15 @@
         </tr>
       </table>
 
+      <p><strong>Note:</strong> When modifying attributes after instantiation, you must <a href='#triggerable-events'>trigger</a> an <code class="language-html">chosen:updated</code> event to update the select field.</p>
+
+      <h3>Example:</h3>
+
+<pre>
+  <code class="language-javascript">$("#form_field_with_chosen").prop("disabled", true).trigger("chosen:updated")</code>
+</pre>
+
+
       <h2><a name="classes" class="anchor" href="#classes">Classes</a></h2>
       <p>Classes placed on the select tag can be used to configure Chosen.</p>
 
@@ -216,7 +225,7 @@
         </tr>
       </table>
 
-      <p style="margin-top: 1em;">
+      <p>
         <strong>Note:</strong> all custom Chosen events (those that being with <code class="language-javascript">chosen:</code>) also include the <code class="language-javascript">chosen</code> object as a parameter.
       </p>
 
@@ -227,7 +236,7 @@
 
 <pre>
   <code class="language-javascript">// tell Chosen that a select has changed
-    $('.my_select_box').trigger('chosen:updated');</code>
+  $('.my_select_box').trigger('chosen:updated');</code>
 </pre>
 
       <table class="docs-table">
