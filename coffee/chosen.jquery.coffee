@@ -11,7 +11,7 @@ $.fn.extend({
       if options is 'destroy' && chosen
         chosen.destroy()
       else unless chosen
-        $this.data('chosen', new Chosen(this, options))
+        $this.data('chosen', new $.fn.chosen.Constructor(this, options))
 
       return
 
@@ -187,12 +187,7 @@ class Chosen extends AbstractChosen
       @search_choices.find("li.search-choice").remove()
     else if not @is_multiple
       this.single_set_selected_text()
-      if @disable_search or @form_field.options.length <= @disable_search_threshold
-        @search_field[0].readOnly = true
-        @container.addClass "chosen-container-single-nosearch"
-      else
-        @search_field[0].readOnly = false
-        @container.removeClass "chosen-container-single-nosearch"
+      this.single_set_nosearch()
 
     this.update_results_content this.results_option_build({first:true})
 
@@ -201,6 +196,14 @@ class Chosen extends AbstractChosen
     this.search_field_scale()
 
     @parsing = false
+
+  single_set_nosearch: ->
+    if @disable_search or @form_field.options.length <= @disable_search_threshold
+      @search_field[0].readOnly = true
+      @container.addClass "chosen-container-single-nosearch"
+    else
+      @search_field[0].readOnly = false
+      @container.removeClass "chosen-container-single-nosearch"
 
   result_do_highlight: (el) ->
     if el.length
@@ -500,3 +503,5 @@ class Chosen extends AbstractChosen
         w = f_width - 10
 
       @search_field.css({'width': w + 'px'})
+
+$.fn.chosen.Constructor = Chosen

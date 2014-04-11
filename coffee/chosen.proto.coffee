@@ -181,12 +181,7 @@ class @Chosen extends AbstractChosen
       @search_choices.select("li.search-choice").invoke("remove")
     else if not @is_multiple
       this.single_set_selected_text()
-      if @disable_search or @form_field.options.length <= @disable_search_threshold
-        @search_field.readOnly = true
-        @container.addClassName "chosen-container-single-nosearch"
-      else
-        @search_field.readOnly = false
-        @container.removeClassName "chosen-container-single-nosearch"
+      this.single_set_nosearch()
 
     this.update_results_content this.results_option_build({first:true})
 
@@ -195,6 +190,14 @@ class @Chosen extends AbstractChosen
     this.search_field_scale()
 
     @parsing = false
+
+  single_set_nosearch: ->
+    if @disable_search or @form_field.options.length <= @disable_search_threshold
+      @search_field.readOnly = true
+      @container.addClassName "chosen-container-single-nosearch"
+    else
+      @search_field.readOnly = false
+      @container.removeClassName "chosen-container-single-nosearch"
 
   result_do_highlight: (el) ->
       this.result_clear_highlight()
