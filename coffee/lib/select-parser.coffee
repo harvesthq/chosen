@@ -36,6 +36,7 @@ class SelectParser
           group_array_index: group_position
           classes: option.className
           style: option.style.cssText
+          is_fallback: option.getAttribute('data-fallback') != null
       else
         @parsed.push
           array_index: @parsed.length
