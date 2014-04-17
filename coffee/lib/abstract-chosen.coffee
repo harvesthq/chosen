@@ -29,8 +29,8 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
-    # in case of no_results, the <option> with no_results_fallback_option_index will be selected (e.g. "other", "default" etc.)
-    @no_results_fallback_option_index = if@options.no_results_fallback_option_index? then @options.no_results_fallback_option_index else -1
+    # in case of no_results, the <option> at this index will be selected (e.g. "other", "default" etc.)
+    @no_results_fallback_option_index = @options.no_results_fallback_option_index || -1
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
