@@ -29,6 +29,9 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+    # Which value is selected when a search starts:
+    #   if true, the currently selected value is still selected when the user starts new search
+    #   if false, the first match is selected every time the user starts new search
     @prioritize_current_selection = if @options.prioritize_current_selection? then @options.prioritize_current_selection else true;
 
   set_default_text: ->
