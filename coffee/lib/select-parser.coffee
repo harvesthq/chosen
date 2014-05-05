@@ -31,6 +31,7 @@ class SelectParser
           value: option.value
           text: option.text
           html: option.innerHTML
+          dataset: if option.dataset then option.dataset else this.getDataset(option)
           selected: option.selected
           disabled: if group_disabled is true then group_disabled else option.disabled
           group_array_index: group_position
@@ -42,6 +43,18 @@ class SelectParser
           options_index: @options_index
           empty: true
       @options_index += 1
+      
+  getDataset: (option) ->
+    dataset = {}
+    attrs = option.attributes
+    regexpMatch = new RegExp(/^data-/)
+    regexpReplace = new RegExp('^data-')
+    i = 0
+    for i in attrs
+      attr = attrs.item(i);
+      if(attr.nodeName.match(regexpMatch))
+          dataset[attr.nodeName.replace(regexpReplace, '')] = attr.nodeValue;
+    dataset
 
   escapeExpression: (text) ->
     if not text? or text is false

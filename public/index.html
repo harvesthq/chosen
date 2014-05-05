@@ -1410,6 +1410,27 @@
         </div>
       </div>
 
+        <h2><a name="data-select" class="anchor" href="#data-select">Data-* Select</a></h2>
+      <div class="side-by-side clearfix">
+        <div>
+          <em>You can also filter by one data attribute, try USA/UK</em>
+          <select data-placeholder="Choose a Country..." class="chosen-select-data" style="width:350px;" tabindex="19">
+            <option value=""></option>
+            <option value="United States" data-abbreviate="USA">United States</option>
+            <option value="United Kingdom" data-abbreviate="UK">United Kingdom</option>
+          </select>
+        </div>
+        <div>
+          <em>Or by by multiples, try USA/UK or America/Europe</em>
+          <select data-placeholder="Choose a Country..." class="chosen-select-data-more" style="width:350px;" tabindex="20">
+            <option value=""></option>
+            <option value="United States" data-abbreviate="USA" data-continent="America">United States</option>
+            <option value="United Kingdom" data-abbreviate="UK" data-continent="Europe">United Kingdom</option>
+            <option value="Brazil" data-abbreviate="BR" data-continent="America">Brazil</option>
+          </select>
+        </div>
+      </div>
+
       <h2><a name="setup" class="anchor" href="#setup">Setup</a></h2>
       <p>Using Chosen is easy as can be.</p>
       <ol>
@@ -1462,6 +1483,8 @@
       '.chosen-select-deselect'  : {allow_single_deselect:true},
       '.chosen-select-no-single' : {disable_search_threshold:10},
       '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+      '.chosen-select-data'      : {search_data_attributes:'abbreviate'},
+      '.chosen-select-data-more' : {search_data_attributes:['abbreviate','continent']},
       '.chosen-select-width'     : {width:"95%"}
     }
     for (var selector in config) {
