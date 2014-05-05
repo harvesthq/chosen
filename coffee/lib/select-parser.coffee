@@ -49,11 +49,9 @@ class SelectParser
     attrs = option.attributes
     regexpMatch = new RegExp(/^data-/)
     regexpReplace = new RegExp('^data-')
-    i = 0
-    for i in attrs
-      attr = attrs.item(i);
-      if(attr.nodeName.match(regexpMatch))
-          dataset[attr.nodeName.replace(regexpReplace, '')] = attr.nodeValue;
+    for attr in attrs
+        if attr.nodeName.match(regexpMatch)
+            dataset[attr.nodeName.replace(regexpReplace, '')] = attr.nodeValue
     dataset
 
   escapeExpression: (text) ->

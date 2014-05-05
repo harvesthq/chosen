@@ -186,7 +186,8 @@ class AbstractChosen
 
   search_via_data: (option, attribute, regex) ->
     value = option.dataset[attribute]
-    return this.search_string_match(value, regex)
+    if value
+        return this.search_string_match(value, regex)
 
   get_search_regex: (escaped_search_string) ->
     regex_anchor = if @search_contains then "" else "^"
