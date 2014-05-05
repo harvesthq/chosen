@@ -1415,15 +1415,16 @@
         <h2><a name="data-select" class="anchor" href="#data-select">Data-* Select</a></h2>
       <div class="side-by-side clearfix">
         <div>
-          <em>You can also filter by one data attribute, try USA/UK</em>
+          <em>You can also filter by one single data attribute try USA/UK</em>
           <select data-placeholder="Choose a Country..." class="chosen-select-data" style="width:350px;" tabindex="19">
             <option value=""></option>
-            <option value="United States" data-abbreviate="USA">United States</option>
-            <option value="United Kingdom" data-abbreviate="UK">United Kingdom</option>
+            <option value="United States" data-abbreviate="USA" data-continent="America">United States</option>
+            <option value="United Kingdom" data-abbreviate="UK" data-continent="Europe">United Kingdom</option>
+            <option value="Brazil" data-abbreviate="BR" data-continent="America">Brazil</option>
           </select>
         </div>
         <div>
-          <em>Or by by multiples, try USA/UK or America/Europe</em>
+          <em>Or by multiples attributes try USA/UK or America/Europe</em>
           <select data-placeholder="Choose a Country..." class="chosen-select-data-more" style="width:350px;" tabindex="20">
             <option value=""></option>
             <option value="United States" data-abbreviate="USA" data-continent="America">United States</option>
