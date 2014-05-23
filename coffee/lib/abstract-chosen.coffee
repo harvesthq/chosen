@@ -29,6 +29,8 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+    # For Japanese
+    @prefix_terms = @options.prefix_terms || false
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -53,6 +55,12 @@ class AbstractChosen
     if not @mouse_on_container
       @active_field = false
       setTimeout (=> this.blur_test()), 100
+
+  # For Japanese
+  search_converted: ->
+    if @converting
+      this.results_search()
+      @converting = false
 
   results_option_build: (options) ->
     content = ''
@@ -217,13 +225,27 @@ class AbstractChosen
           this.results_search()
       when 13
         evt.preventDefault()
-        this.result_select(evt) if this.results_showing
+        if @converting
+          this.search_converted()
+        else
+          unless $.browser.mozilla
+            this.result_select(evt) if this.results_showing
+          else if @keydown_enter
+              this.result_select(evt) if this.results_showing
+              @keydown_enter = false
+          else
+            this.results_search()
       when 27
         this.results_hide() if @results_showing
         return true
-      when 9, 38, 40, 16, 91, 17
+      when 9
+        if @converting
+          this.search_converted()
+        else if $.browser.mozilla
+          this.results_search()
+      when 38, 40, 16, 91, 17
         # don't do anything on these keys
-      else this.results_search()
+      else this.results_search() unless @converting
 
   clipboard_event_checker: (evt) ->
     setTimeout (=> this.results_search()), 50

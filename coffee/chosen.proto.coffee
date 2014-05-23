@@ -10,7 +10,13 @@ class @Chosen extends AbstractChosen
     # HTML Templates
     @single_temp = new Template('<a class="chosen-single chosen-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>')
     @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>')
-    @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
+    html_temp = '<li class="no-results">'
+    if @prefix_terms
+      html_temp += ' "<span>#{terms}</span>" ' + @results_none_found
+    else
+      html_temp += @results_none_found + ' "<span>#{terms}</span>"'
+    html_temp += '</li>'
+    @no_results_temp = new Template(html_temp)
 
   set_up_html: ->
     container_classes = ["chosen-container"]
@@ -120,6 +126,7 @@ class @Chosen extends AbstractChosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
+      this.search_converted()
       if evt and evt.type is "mousedown" and not @results_showing
         evt.stop()
 
@@ -465,6 +472,7 @@ class @Chosen extends AbstractChosen
         @mouse_on_container = false
         break
       when 13
+        @keydown_enter = true if $.browser.mozilla
         evt.preventDefault() if this.results_showing
         break
       when 38
@@ -474,6 +482,9 @@ class @Chosen extends AbstractChosen
       when 40
         evt.preventDefault()
         this.keydown_arrow()
+        break
+      when 229
+        @converting = true
         break
 
   search_field_scale: ->
