@@ -29,7 +29,7 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
-    @search_data_attributes  = if @options.search_data_attributes? then @options.search_data_attributes else false
+    @search_data_attributes = @options.search_data_attributes || []
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -168,24 +168,12 @@ class AbstractChosen
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
             
-          else if this.search_data_attributes
-            switch true
-            
-              when typeof this.search_data_attributes == 'string'
-                data_attribute = this.search_data_attributes
+          else if this.search_data_attributes.length
+            for data_attribute in this.search_data_attributes
                 if this.search_via_data(option, data_attribute, regex)
-                  option.search_match = true;
-                  results += 1;
-                  if (results_group != null)
-                    results_group.group_match = true if results_group?
-                    
-              when typeof this.search_data_attributes == 'object'
-                for data_attribute in this.search_data_attributes
-                  if this.search_via_data(option, data_attribute, regex)
                     option.search_match = true;
                     results += 1;
-                    if (results_group != null)
-                      results_group.group_match = true if results_group?
+                    results_group.group_match = true if results_group?
 
     this.result_clear_highlight()
 
@@ -198,7 +186,8 @@ class AbstractChosen
 
   search_via_data: (option, attribute, regex) ->
     value = option.dataset[attribute]
-    return this.search_string_match(value, regex)
+    if value
+        return this.search_string_match(value, regex)
 
   get_search_regex: (escaped_search_string) ->
     regex_anchor = if @search_contains then "" else "^"
