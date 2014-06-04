@@ -24,6 +24,7 @@ class AbstractChosen
     @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
     @group_search = if @options.group_search? then @options.group_search else true
     @search_contains = @options.search_contains || false
+    @fulltext_search = @options.fulltext_search || false
     @single_backstroke_delete = if @options.single_backstroke_delete? then @options.single_backstroke_delete else true
     @max_selected_options = @options.max_selected_options || Infinity
     @inherit_select_classes = @options.inherit_select_classes || false
@@ -131,6 +132,8 @@ class AbstractChosen
 
     searchText = this.get_search_text()
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    if @fulltext_search
+        escapedSearchText = escapedSearchText.replace('\\ ', '.*')
     zregex = new RegExp(escapedSearchText, 'i')
     regex = this.get_search_regex(escapedSearchText)
 
@@ -158,8 +161,9 @@ class AbstractChosen
 
           if option.search_match
             if searchText.length
-              startpos = option.search_text.search zregex
-              text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
+              match = option.search_text.match zregex
+              startpos = option.search_text.search match[0]
+              text = option.search_text.substr(0, startpos + match[0].length) + '</em>' + option.search_text.substr(startpos + match[0].length)
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
             results_group.group_match = true if results_group?
