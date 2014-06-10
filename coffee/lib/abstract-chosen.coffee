@@ -161,9 +161,11 @@ class AbstractChosen
 
           if option.search_match
             if searchText.length
-              match = option.search_text.match zregex
+              escapedMatchText = option.search_text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+              match = escapedMatchText.match zregex
+              matchLength = match[0].replace(/\\/g, '').length
               startpos = option.search_text.search match[0]
-              text = option.search_text.substr(0, startpos + match[0].length) + '</em>' + option.search_text.substr(startpos + match[0].length)
+              text = option.search_text.substr(0, startpos + matchLength) + '</em>' + option.search_text.substr(startpos + matchLength)
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
             results_group.group_match = true if results_group?
