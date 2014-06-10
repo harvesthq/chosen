@@ -133,7 +133,7 @@ class AbstractChosen
     searchText = this.get_search_text()
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     if @fulltext_search
-        escapedSearchText = escapedSearchText.replace('\\ ', '.*')
+        escapedSearchText = escapedSearchText.replace('\\ ', '.*', 'g')
     zregex = new RegExp(escapedSearchText, 'i')
     regex = this.get_search_regex(escapedSearchText)
 
