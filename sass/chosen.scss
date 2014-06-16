@@ -32,6 +32,16 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
   a{
     cursor: pointer;
   }
+  select {
+    display: none;
+  }
+  &.use-native-interface select {
+    display: initial;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    z-index: 100;
+  }
 }
 /* @end */
 

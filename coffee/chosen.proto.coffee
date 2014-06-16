@@ -17,6 +17,7 @@ class @Chosen extends AbstractChosen
     container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chosen-rtl" if @is_rtl
+    container_classes.push "use-native-interface" if this.use_native_interface()
 
     container_props =
       'class': container_classes.join ' '
@@ -25,9 +26,14 @@ class @Chosen extends AbstractChosen
 
     container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
 
-    @container = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
+    @container = new Element('div', container_props)
+    @container = @form_field.wrap(@container)
 
-    @form_field.hide().insert({ after: @container })
+    if @is_multiple
+      @container.insert({ bottom: @multi_temp.evaluate({ "default": @default_text }) })
+    else
+      @container.insert({ bottom: @single_temp.evaluate({ "default": @default_text }) })
+
     @dropdown = @container.down('div.chosen-drop')
 
     @search_field = @container.down('input')
@@ -67,6 +73,7 @@ class @Chosen extends AbstractChosen
     @search_results.observe "touchmove", (evt) => this.search_results_touchmove(evt)
     @search_results.observe "touchend", (evt) => this.search_results_touchend(evt)
 
+    @form_field.observe "change", (evt) => this.results_update_field(evt)
     @form_field.observe "chosen:updated", (evt) => this.results_update_field(evt)
     @form_field.observe "chosen:activate", (evt) => this.activate_field(evt)
     @form_field.observe "chosen:open", (evt) => this.container_mousedown(evt)
@@ -119,7 +126,7 @@ class @Chosen extends AbstractChosen
       @selected_item.observe "focus", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
-    if !@is_disabled
+    unless @is_disabled or @use_native_interface
       if evt and evt.type is "mousedown" and not @results_showing
         evt.stop()
 
