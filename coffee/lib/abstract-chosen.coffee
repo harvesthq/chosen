@@ -166,6 +166,9 @@ class AbstractChosen
           
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
+        if option.group and not @group_search
+          option.search_text = option.label
+
 
     this.result_clear_highlight()
 
