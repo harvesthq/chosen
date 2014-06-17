@@ -149,7 +149,8 @@ class AbstractChosen
           results_group = @results_data[option.group_array_index]
           results += 1 if results_group.active_options is 0 and results_group.search_match
           results_group.active_options += 1
-                
+
+        option.search_text = option.label
         unless option.group and not @group_search
 
           option.search_text = if option.group then option.label else option.text
@@ -166,9 +167,6 @@ class AbstractChosen
           
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
-        if option.group and not @group_search
-          option.search_text = option.label
-
 
     this.result_clear_highlight()
 
