@@ -35,7 +35,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
   select {
     display: none;
   }
-  &.use-native-interface select {
+  &.chosen-use-native select {
     display: initial;
     height: 100%;
     opacity: 0;

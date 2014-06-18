@@ -17,7 +17,7 @@ class @Chosen extends AbstractChosen
     container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chosen-rtl" if @is_rtl
-    container_classes.push "use-native-interface" if this.use_native_interface()
+    container_classes.push "chosen-use-native" if this.use_native_interface()
 
     container_props =
       'class': container_classes.join ' '
