@@ -36,6 +36,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
     display: none;
   }
   &.chosen-use-native select {
+    -webkit-appearance: menulist-button;
     display: initial;
     height: 100%;
     opacity: 0;
