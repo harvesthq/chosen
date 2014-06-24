@@ -329,6 +329,12 @@ class Chosen extends AbstractChosen
     @selected_item.find("abbr").remove()
 
   result_select: (evt) ->
+    if @allow_arbitrary_text
+      newval = @search_field.val()
+      if newval? && newval != ''
+        @form_field.options[@form_field.options.length] = new Option(newval, newval, selected=true)
+        @results_update_field()
+
     if @result_highlight
       high = @result_highlight
 

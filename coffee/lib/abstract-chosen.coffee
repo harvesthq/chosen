@@ -28,6 +28,7 @@ class AbstractChosen
     @max_selected_options = @options.max_selected_options || Infinity
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
+    @allow_arbitrary_text = @options.allow_arbitrary_text || false
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
 
   set_default_text: ->
