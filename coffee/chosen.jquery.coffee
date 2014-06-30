@@ -329,6 +329,8 @@ class Chosen extends AbstractChosen
     @selected_item.find("abbr").remove()
 
   result_select: (evt) ->
+    evt.stopPropagation()
+    evt.preventDefault()
     if @result_highlight
       high = @result_highlight
 
