@@ -69,35 +69,36 @@ class Chosen extends AbstractChosen
     @form_field_jq.trigger("chosen:ready", {chosen: this})
 
   register_observers: ->
-    @container.bind 'touchstart.chosen', (evt) => this.container_mousedown(evt); return
-    @container.bind 'touchend.chosen', (evt) => this.container_mouseup(evt); return
+    unless this.use_native_interface()
+      @container.bind 'touchstart.chosen', (evt) => this.container_mousedown(evt); return
+      @container.bind 'touchend.chosen', (evt) => this.container_mouseup(evt); return
 
-    @container.bind 'mousedown.chosen', (evt) => this.container_mousedown(evt); return
-    @container.bind 'mouseup.chosen', (evt) => this.container_mouseup(evt); return
-    @container.bind 'mouseenter.chosen', (evt) => this.mouse_enter(evt); return
-    @container.bind 'mouseleave.chosen', (evt) => this.mouse_leave(evt); return
+      @container.bind 'mousedown.chosen', (evt) => this.container_mousedown(evt); return
+      @container.bind 'mouseup.chosen', (evt) => this.container_mouseup(evt); return
+      @container.bind 'mouseenter.chosen', (evt) => this.mouse_enter(evt); return
+      @container.bind 'mouseleave.chosen', (evt) => this.mouse_leave(evt); return
 
-    @search_results.bind 'mouseup.chosen', (evt) => this.search_results_mouseup(evt); return
-    @search_results.bind 'mouseover.chosen', (evt) => this.search_results_mouseover(evt); return
-    @search_results.bind 'mouseout.chosen', (evt) => this.search_results_mouseout(evt); return
-    @search_results.bind 'mousewheel.chosen DOMMouseScroll.chosen', (evt) => this.search_results_mousewheel(evt); return
+      @search_results.bind 'mouseup.chosen', (evt) => this.search_results_mouseup(evt); return
+      @search_results.bind 'mouseover.chosen', (evt) => this.search_results_mouseover(evt); return
+      @search_results.bind 'mouseout.chosen', (evt) => this.search_results_mouseout(evt); return
+      @search_results.bind 'mousewheel.chosen DOMMouseScroll.chosen', (evt) => this.search_results_mousewheel(evt); return
 
-    @search_results.bind 'touchstart.chosen', (evt) => this.search_results_touchstart(evt); return
-    @search_results.bind 'touchmove.chosen', (evt) => this.search_results_touchmove(evt); return
-    @search_results.bind 'touchend.chosen', (evt) => this.search_results_touchend(evt); return
+      @search_results.bind 'touchstart.chosen', (evt) => this.search_results_touchstart(evt); return
+      @search_results.bind 'touchmove.chosen', (evt) => this.search_results_touchmove(evt); return
+      @search_results.bind 'touchend.chosen', (evt) => this.search_results_touchend(evt); return
+
+      @search_field.bind 'blur.chosen', (evt) => this.input_blur(evt); return
+      @search_field.bind 'keyup.chosen', (evt) => this.keyup_checker(evt); return
+      @search_field.bind 'keydown.chosen', (evt) => this.keydown_checker(evt); return
+      @search_field.bind 'focus.chosen', (evt) => this.input_focus(evt); return
+      @search_field.bind 'cut.chosen', (evt) => this.clipboard_event_checker(evt); return
+      @search_field.bind 'paste.chosen', (evt) => this.clipboard_event_checker(evt); return
 
     @form_field_jq.bind "change.chosen", (evt) => this.results_update_field(evt); return
     @form_field_jq.bind "chosen:updated.chosen", (evt) => this.results_update_field(evt); return
     @form_field_jq.bind "chosen:activate.chosen", (evt) => this.activate_field(evt); return
     @form_field_jq.bind "chosen:open.chosen", (evt) => this.container_mousedown(evt); return
     @form_field_jq.bind "chosen:close.chosen", (evt) => this.input_blur(evt); return
-
-    @search_field.bind 'blur.chosen', (evt) => this.input_blur(evt); return
-    @search_field.bind 'keyup.chosen', (evt) => this.keyup_checker(evt); return
-    @search_field.bind 'keydown.chosen', (evt) => this.keydown_checker(evt); return
-    @search_field.bind 'focus.chosen', (evt) => this.input_focus(evt); return
-    @search_field.bind 'cut.chosen', (evt) => this.clipboard_event_checker(evt); return
-    @search_field.bind 'paste.chosen', (evt) => this.clipboard_event_checker(evt); return
 
     if @is_multiple
       @search_choices.bind 'click.chosen', (evt) => this.choices_click(evt); return
