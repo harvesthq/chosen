@@ -1,5 +1,64 @@
 class AbstractChosen
 
+  convert_accented_characters: (str) ->
+    new Object();
+    conversions['ae'] = 'ä|æ|ǽ'
+    conversions['oe'] = 'ö|œ'
+    conversions['ue'] = 'ü'
+    conversions['Ae'] = 'Ä'
+    conversions['Ue'] = 'Ü'
+    conversions['Oe'] = 'Ö'
+    conversions['A'] = 'À|Á|Â|Ã|Ä|Å|Ǻ|Ā|Ă|Ą|Ǎ'
+    conversions['a'] = 'à|á|â|ã|å|ǻ|ā|ă|ą|ǎ|ª'
+    conversions['C'] = 'Ç|Ć|Ĉ|Ċ|Č'
+    conversions['c'] = 'ç|ć|ĉ|ċ|č'
+    conversions['D'] = 'Ð|Ď|Đ'
+    conversions['d'] = 'ð|ď|đ'
+    conversions['E'] = 'È|É|Ê|Ë|Ē|Ĕ|Ė|Ę|Ě'
+    conversions['e'] = 'è|é|ê|ë|ē|ĕ|ė|ę|ě'
+    conversions['G'] = 'Ĝ|Ğ|Ġ|Ģ'
+    conversions['g'] = 'ĝ|ğ|ġ|ģ'
+    conversions['H'] = 'Ĥ|Ħ'
+    conversions['h'] = 'ĥ|ħ'
+    conversions['I'] = 'Ì|Í|Î|Ï|Ĩ|Ī|Ĭ|Ǐ|Į|İ'
+    conversions['i'] = 'ì|í|î|ï|ĩ|ī|ĭ|ǐ|į|ı'
+    conversions['J'] = 'Ĵ'
+    conversions['j'] = 'ĵ'
+    conversions['K'] = 'Ķ'
+    conversions['k'] = 'ķ'
+    conversions['L'] = 'Ĺ|Ļ|Ľ|Ŀ|Ł'
+    conversions['l'] = 'ĺ|ļ|ľ|ŀ|ł'
+    conversions['N'] = 'Ñ|Ń|Ņ|Ň'
+    conversions['n'] = 'ñ|ń|ņ|ň|ŉ'
+    conversions['O'] = 'Ò|Ó|Ô|Õ|Ō|Ŏ|Ǒ|Ő|Ơ|Ø|Ǿ'
+    conversions['o'] = 'ò|ó|ô|õ|ō|ŏ|ǒ|ő|ơ|ø|ǿ|º'
+    conversions['R'] = 'Ŕ|Ŗ|Ř'
+    conversions['r'] = 'ŕ|ŗ|ř'
+    conversions['S'] = 'Ś|Ŝ|Ş|Š'
+    conversions['s'] = 'ś|ŝ|ş|š|ſ'
+    conversions['T'] = 'Ţ|Ť|Ŧ'
+    conversions['t'] = 'ţ|ť|ŧ'
+    conversions['U'] = 'Ù|Ú|Û|Ũ|Ū|Ŭ|Ů|Ű|Ų|Ư|Ǔ|Ǖ|Ǘ|Ǚ|Ǜ'
+    conversions['u'] = 'ù|ú|û|ũ|ū|ŭ|ů|ű|ų|ư|ǔ|ǖ|ǘ|ǚ|ǜ'
+    conversions['Y'] = 'Ý|Ÿ|Ŷ'
+    conversions['y'] = 'ý|ÿ|ŷ'
+    conversions['W'] = 'Ŵ'
+    conversions['w'] = 'ŵ'
+    conversions['Z'] = 'Ź|Ż|Ž'
+    conversions['z'] = 'ź|ż|ž'
+    conversions['AE'] = 'Æ|Ǽ'
+    conversions['ss'] = 'ß'
+    conversions['IJ'] = 'Ĳ'
+    conversions['ij'] = 'ĳ'
+    conversions['OE'] = 'Œ'
+    conversions['f'] = 'ƒ'
+
+    for  i in conversions
+       re = new RegExp(conversions[i],"g")
+       str = str.replace(re,i)
+    
+    return str
+
   constructor: (@form_field, @options={}) ->
     return unless AbstractChosen.browser_is_supported()
     @is_multiple = @form_field.multiple
@@ -131,6 +190,7 @@ class AbstractChosen
 
     searchText = this.get_search_text()
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    escapedSearchText = this.convert_accented_characters(escapedSearchText);
     zregex = new RegExp(escapedSearchText, 'i')
     regex = this.get_search_regex(escapedSearchText)
 
@@ -158,7 +218,7 @@ class AbstractChosen
 
           if option.search_match
             if searchText.length
-              startpos = option.search_text.search zregex
+              startpos = this.convert_accented_characters(option.search_text).search(zregex);
               text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
@@ -181,6 +241,9 @@ class AbstractChosen
     new RegExp(regex_anchor + escaped_search_string, 'i')
 
   search_string_match: (search_string, regex) ->
+
+    search_string = this.convert_accented_characters(search_string);
+
     if regex.test search_string
       return true
     else if @enable_split_word_search and (search_string.indexOf(" ") >= 0 or search_string.indexOf("[") == 0)
