@@ -189,8 +189,8 @@ class AbstractChosen
     results = 0
 
     searchText = this.get_search_text()
-    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     escapedSearchText = this.convert_accented_characters(escapedSearchText);
+    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     zregex = new RegExp(escapedSearchText, 'i')
     regex = this.get_search_regex(escapedSearchText)
 
