@@ -1,7 +1,7 @@
 class AbstractChosen
 
   convert_accented_characters: (str) ->
-    new Object();
+    conversions = new Object()
     conversions['ae'] = 'ä|æ|ǽ'
     conversions['oe'] = 'ö|œ'
     conversions['ue'] = 'ü'
