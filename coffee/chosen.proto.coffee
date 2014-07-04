@@ -30,9 +30,9 @@ class @Chosen extends AbstractChosen
     @container = @form_field.wrap(@container)
 
     if @is_multiple
-      @container.insert({ bottom: @multi_temp.evaluate({ "default": @default_text }) })
+      @container.insert({ top: @multi_temp.evaluate({ "default": @default_text }) })
     else
-      @container.insert({ bottom: @single_temp.evaluate({ "default": @default_text }) })
+      @container.insert({ top: @single_temp.evaluate({ "default": @default_text }) })
 
     @dropdown = @container.down('div.chosen-drop')
 
