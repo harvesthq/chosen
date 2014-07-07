@@ -215,6 +215,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
         border: 0 !important;
         background: transparent !important;
         box-shadow: none;
+        box-sizing: content-box;
         color: #999;
         font-size: 100%;
         font-family: sans-serif;
