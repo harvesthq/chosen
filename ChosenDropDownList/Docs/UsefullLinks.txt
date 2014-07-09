@@ -1,0 +1,8 @@
+﻿How to Create and Use a User Control as a DLL
+http://www.codeproject.com/Articles/415109/How-to-Create-and-Use-a-User-Control-as-a-DLL
+How to reference an embedded image from CSS?
+http://stackoverflow.com/questions/7607458/how-to-reference-an-embedded-image-from-css
+Custom Control with Embedded CSS and Images
+http://weblogs.asp.net/gurusarkar/custom-control-and-embedded-css-and-images
+Convert any image into a base64 string - to use in css instead of url to image file
+http://webcodertools.com/imagetobase64converter/Create
