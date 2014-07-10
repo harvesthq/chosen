@@ -123,6 +123,7 @@ class Chosen extends AbstractChosen
 
   container_mousedown: (evt) ->
     if !@is_disabled
+      this.search_converted()
       if evt and evt.type is "mousedown" and not @results_showing
         evt.preventDefault()
 
@@ -405,7 +406,13 @@ class Chosen extends AbstractChosen
     this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
-    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
+    html_temp = '<li class="no-results">'
+    if @prefix_terms
+      html_temp += '"<span></span>" ' + @results_none_found
+    else
+      html_temp += @results_none_found + ' "<span></span>"'
+    html_temp += '</li>'
+    no_results_html = $(html_temp)
     no_results_html.find("span").first().html(terms)
 
     @search_results.append no_results_html
@@ -465,6 +472,7 @@ class Chosen extends AbstractChosen
         @mouse_on_container = false
         break
       when 13
+        @keydown_enter = true if $.browser.mozilla
         evt.preventDefault() if this.results_showing
         break
       when 38
@@ -474,6 +482,9 @@ class Chosen extends AbstractChosen
       when 40
         evt.preventDefault()
         this.keydown_arrow()
+        break
+      when 229
+        @converting = true
         break
 
   search_field_scale: ->
