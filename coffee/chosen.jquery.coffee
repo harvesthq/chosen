@@ -45,7 +45,7 @@ class Chosen extends AbstractChosen
     else
       @container.html '<a class="chosen-single chosen-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>'
 
-    @form_field_jq.addClass('sr-only').after @container
+    @form_field_jq.addClass('chosen-sr-only').after @container
     @dropdown = @container.find('div.chosen-drop').first()
 
     @search_field = @container.find('input').first()

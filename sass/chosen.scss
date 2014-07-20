@@ -419,7 +419,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
 /* @end */
 
 /* @group Accessibility helpers */
-.sr-only {
+.chosen-sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
