@@ -26,6 +26,7 @@ class AbstractChosen
     @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
     @group_search = if @options.group_search? then @options.group_search else true
     @search_contains = @options.search_contains || false
+    @search_fuzzy = @options.search_fuzzy || false
     @single_backstroke_delete = if @options.single_backstroke_delete? then @options.single_backstroke_delete else true
     @max_selected_options = @options.max_selected_options || Infinity
     @inherit_select_classes = @options.inherit_select_classes || false
@@ -157,7 +158,7 @@ class AbstractChosen
     searchText = this.get_search_text()
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     zregex = new RegExp(escapedSearchText, 'i')
-    regex = this.get_search_regex(escapedSearchText)
+    regex = this.get_search_regex(searchText)
 
     for option in @results_data
 
@@ -183,9 +184,7 @@ class AbstractChosen
 
           if option.search_match
             if searchText.length
-              startpos = option.search_text.search zregex
-              text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
-              option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+                option.search_text = this.highlight_search_result(regex, zregex, option.search_text, searchText)
 
             results_group.group_match = true if results_group?
 
@@ -201,10 +200,49 @@ class AbstractChosen
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
 
-  get_search_regex: (escaped_search_string) ->
-    regex_anchor = if @search_contains then "" else "^"
-    regex_flag = if @case_sensitive_search then "" else "i"
-    new RegExp(regex_anchor + escaped_search_string, regex_flag)
+  highlight_search_result: (regex, zregex, value, search) ->
+    if @search_fuzzy
+      search_text = []
+
+      tokens = search.split(' ').sort (a, b) ->
+        b.length - a.length
+
+      search_string = value.split ' '
+
+      for string in search_string
+        for token in tokens
+          if string.indexOf('<em>') == -1 && string.indexOf('</em>') == -1
+            string = string.replace(new RegExp('(' + token.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&") + ')', 'gi'), '<em>$1</em>')
+        search_text.push string
+
+      result = search_text.join ' '
+    else
+      startpos = value.search zregex
+      text = value.substr(0, startpos + search.length) + '</em>' + value.substr(startpos + search.length)
+      result = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+
+    result
+
+  get_tokenized_regex_string: (text) ->
+    regex_tokens = []
+    tokens = this.get_tokenized_search_string text
+
+    for text in tokens
+      text = text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+      regex_tokens.push "(?=.*" + text + ")"
+
+    regex_tokens.join ''
+
+  get_tokenized_search_string: (text) ->
+    text.split ' '
+
+  get_search_regex: (text) ->
+    if @search_fuzzy
+      new RegExp(this.get_tokenized_regex_string(text), 'i')
+    else
+      text = text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+      regex_anchor = if @search_contains then "" else "^"
+      new RegExp(text, 'i')
 
   search_string_match: (search_string, regex) ->
     if regex.test search_string
@@ -298,4 +336,3 @@ class AbstractChosen
   @default_multiple_text: "Select Some Options"
   @default_single_text: "Select an Option"
   @default_no_result_text: "No results match"
-
