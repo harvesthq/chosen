@@ -1327,6 +1327,79 @@
         </div>
       </div>
 
+      <h2><a name="fuzzy-search-support" class="anchor" href="#fuzzy-search-support">Fuzzy Search Support</a></h2>
+      <div class="side-by-side clearfix">
+        <p>Chosen supports fuzzy search in select boxes too. Just add <code class="language-javascript">"search_fuzzy:true"</code> to your options and you are good to go.</p>
+        <div>
+          <em>Single Select</em>
+          <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" class="chosen-select-fuzzy" tabindex="15">
+            <option value=""></option>
+            <option>American Black Bear</option>
+            <option>Asiatic Black Bear</option>
+            <option>Brown Bear</option>
+            <option>Giant Panda</option>
+            <option>Sloth Bear</option>
+            <option>Sun Bear</option>
+            <option>Polar Bear</option>
+            <option>Spectacled Bear</option>
+          </select>
+        </div>
+        <div>
+          <em>Single Select with Groups</em>
+          <select data-placeholder="Your Favorite Football Team" style="width:350px;" class="chosen-select-fuzzy" tabindex="5">
+            <option value=""></option>
+            <optgroup label="NFC EAST">
+              <option>Dallas Cowboys</option>
+              <option>New York Giants</option>
+              <option>Philadelphia Eagles</option>
+              <option>Washington Redskins</option>
+            </optgroup>
+            <optgroup label="NFC NORTH">
+              <option>Chicago Bears</option>
+              <option>Detroit Lions</option>
+              <option>Green Bay Packers</option>
+              <option>Minnesota Vikings</option>
+            </optgroup>
+            <optgroup label="NFC SOUTH">
+              <option>Atlanta Falcons</option>
+              <option>Carolina Panthers</option>
+              <option>New Orleans Saints</option>
+              <option>Tampa Bay Buccaneers</option>
+            </optgroup>
+            <optgroup label="NFC WEST">
+              <option>Arizona Cardinals</option>
+              <option>St. Louis Rams</option>
+              <option>San Francisco 49ers</option>
+              <option>Seattle Seahawks</option>
+            </optgroup>
+            <optgroup label="AFC EAST">
+              <option>Buffalo Bills</option>
+              <option>Miami Dolphins</option>
+              <option>New England Patriots</option>
+              <option>New York Jets</option>
+            </optgroup>
+            <optgroup label="AFC NORTH">
+              <option>Baltimore Ravens</option>
+              <option>Cincinnati Bengals</option>
+              <option>Cleveland Browns</option>
+              <option>Pittsburgh Steelers</option>
+            </optgroup>
+            <optgroup label="AFC SOUTH">
+              <option>Houston Texans</option>
+              <option>Indianapolis Colts</option>
+              <option>Jacksonville Jaguars</option>
+              <option>Tennessee Titans</option>
+            </optgroup>
+            <optgroup label="AFC WEST">
+              <option>Denver Broncos</option>
+              <option>Kansas City Chiefs</option>
+              <option>Oakland Raiders</option>
+              <option>San Diego Chargers</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+
       <h2><a name="change-update-events" class="anchor" href="#change-update-events">Change / Update Events</a></h2>
       <div class="side-by-side clearfix">
         <ul>
@@ -1458,6 +1531,7 @@
   document.observe('dom:loaded', function(evt) {
     var config = {
       '.chosen-select'           : {},
+      '.chosen-select-fuzzy'     : {search_fuzzy:true},
       '.chosen-select-deselect'  : {allow_single_deselect:true},
       '.chosen-select-no-single' : {disable_search_threshold:10},
       '.chosen-select-no-results': {no_results_text: "Oops, nothing found!"},
