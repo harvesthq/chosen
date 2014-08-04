@@ -227,7 +227,7 @@ class @Chosen extends AbstractChosen
     @results_showing = true
 
     @search_field.focus()
-    @search_field.value = @search_field.value
+    @search_field.value = this.search_input
 
     this.winnow_results()
     @form_field.fire("chosen:showing_dropdown", {chosen: this})
@@ -242,6 +242,7 @@ class @Chosen extends AbstractChosen
       @container.removeClassName "chosen-with-drop"
       @form_field.fire("chosen:hiding_dropdown", {chosen: this})
 
+    this.search_input = @search_field.value
     @results_showing = false
 
 
@@ -350,8 +351,6 @@ class @Chosen extends AbstractChosen
         this.single_set_selected_text(item.text)
 
       this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
-
-      @search_field.value = ""
 
       @form_field.simulate("change") if typeof Event.simulate is 'function' && (@is_multiple || @form_field.selectedIndex != @current_selectedIndex)
       @current_selectedIndex = @form_field.selectedIndex
