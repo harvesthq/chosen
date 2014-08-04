@@ -15,6 +15,7 @@ class AbstractChosen
     @click_test_action = (evt) => this.test_active_click(evt)
     @activate_action = (evt) => this.activate_field(evt)
     @active_field = false
+    @search_input = ""
     @mouse_on_container = false
     @results_showing = false
     @result_highlighted = null
