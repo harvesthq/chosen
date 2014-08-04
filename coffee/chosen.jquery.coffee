@@ -234,7 +234,7 @@ class Chosen extends AbstractChosen
     @results_showing = true
 
     @search_field.focus()
-    @search_field.val(this.search_input)
+    @search_field.val(@search_input)
     this.winnow_results()
     @form_field_jq.trigger("chosen:showing_dropdown", {chosen: this})
 
@@ -248,7 +248,7 @@ class Chosen extends AbstractChosen
       @container.removeClass "chosen-with-drop"
       @form_field_jq.trigger("chosen:hiding_dropdown", {chosen: this})
 
-    this.search_input = @search_field.val()
+    @search_input = @search_field.val()
     @results_showing = false
 
 
