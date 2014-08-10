@@ -4,6 +4,7 @@ node_modules
 dist/
 public/*.js
 public/*.css
+public/*.map
 chosen.zip
 .sass-cache
 .ruby-version

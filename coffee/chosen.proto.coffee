@@ -153,13 +153,25 @@ class @Chosen extends AbstractChosen
     this.results_hide()
 
     @container.removeClassName "chosen-container-active"
+    @container.removeClassName "chosen-with-dropup"
     this.clear_backstroke()
 
     this.show_search_field_default()
     this.search_field_scale()
 
+  test_dropup: ->
+    windowHeight = document.viewport.getHeight()
+    dropdownTop = @container.cumulativeOffset()[1] + @container.getHeight() - document.viewport.getScrollOffsets().top
+    totalHeight = @dropdown.getHeight() + dropdownTop
+
+    if totalHeight > windowHeight
+      @container.addClassName "chosen-with-dropup"
+
   activate_field: ->
     @container.addClassName "chosen-container-active"
+
+    @test_dropup()
+
     @active_field = true
 
     @search_field.value = @search_field.value
@@ -223,6 +235,8 @@ class @Chosen extends AbstractChosen
       @form_field.fire("chosen:maxselected", {chosen: this})
       return false
 
+    @test_dropup()
+
     @container.addClassName "chosen-with-drop"
     @results_showing = true
 
@@ -240,6 +254,7 @@ class @Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       @container.removeClassName "chosen-with-drop"
+      @container.removeClassName "chosen-with-dropup"
       @form_field.fire("chosen:hiding_dropdown", {chosen: this})
 
     @results_showing = false
