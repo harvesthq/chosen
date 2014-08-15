@@ -1,0 +1,25 @@
+{
+  "name": "chosen",
+  "version": "1.1.0",
+  "homepage": "https://github.com/harvesthq/chosen",
+  "authors": [
+    "harvest"
+  ],
+  "description": "Chosen is a library for making long, unwieldy select boxes more friendly.",
+  "main": ["public/chosen.jquery.js", "public/chosen.css", "public/chosen-sprite.png", "public/chosen-sprite@2x.png"],
+  "keywords": [
+    "select",
+    "multiselect",
+    "dropdown",
+    "form",
+    "input",
+    "ui"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/docsupport"
+  ]
+}
