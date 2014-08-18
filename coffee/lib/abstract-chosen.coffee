@@ -29,6 +29,8 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+    #The unique_id is used to identify this chosen dropdown in the DOM for accessibility ARIA attributes
+    @unique_id = "chosen-id-#{Math.random().toString(36).substring(2,6)}"
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -84,8 +86,11 @@ class AbstractChosen
     classes.push option.classes if option.classes != ""
 
     option_el = document.createElement("li")
+    option_el.id = "#{@unique_id}-#{option.array_index}"
     option_el.className = classes.join(" ")
     option_el.style.cssText = option.style
+    option_el.setAttribute("role", "option")
+    option_el.setAttribute("tabindex", "-1")
     option_el.setAttribute("data-option-array-index", option.array_index)
     option_el.innerHTML = option.search_text
 
