@@ -165,12 +165,15 @@ class @Chosen extends AbstractChosen
     totalHeight = @dropdown.getHeight() + dropdownTop
 
     if totalHeight > windowHeight
-      @container.addClassName "chosen-with-dropup"
+      true
+    else
+      false
 
   activate_field: ->
     @container.addClassName "chosen-container-active"
 
-    @test_dropup()
+    if this.test_dropup()
+      @container.addClassName "chosen-with-dropup"
 
     @active_field = true
 
@@ -235,7 +238,10 @@ class @Chosen extends AbstractChosen
       @form_field.fire("chosen:maxselected", {chosen: this})
       return false
 
-    @test_dropup()
+
+
+    if this.test_dropup()
+      @container.addClassName "chosen-with-dropup"
 
     @container.addClassName "chosen-with-drop"
     @results_showing = true
