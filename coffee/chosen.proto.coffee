@@ -8,9 +8,9 @@ class @Chosen extends AbstractChosen
     super()
 
     # HTML Templates
-    @single_temp = new Template('<a class="chosen-single chosen-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>')
-    @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>')
-    @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
+    @single_temp = new Template('<a class="chosen-single chosen-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><' + @outer_container + ' class="chosen-results"></' + @outer_container + '></div>')
+    @multi_temp = new Template('<' + @outer_container + ' class="chosen-choices"><' + @inner_container + ' class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></' + @inner_container + '></' + @outer_container + '><div class="chosen-drop"><' + @outer_container + ' class="chosen-results"></' + @outer_container + '></div>')
+    @no_results_temp = new Template('<' + @inner_container + ' class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</' + @inner_container + '>')
 
   set_up_html: ->
     container_classes = ["chosen-container"]
@@ -31,14 +31,14 @@ class @Chosen extends AbstractChosen
     @dropdown = @container.down('div.chosen-drop')
 
     @search_field = @container.down('input')
-    @search_results = @container.down('ul.chosen-results')
+    @search_results = @container.down(@outer_container + '.chosen-results')
     this.search_field_scale()
 
-    @search_no_results = @container.down('li.no-results')
+    @search_no_results = @container.down(@inner_container + '.no-results')
 
     if @is_multiple
-      @search_choices = @container.down('ul.chosen-choices')
-      @search_container = @container.down('li.search-field')
+      @search_choices = @container.down(@outer_container + '.chosen-choices')
+      @search_container = @container.down(@inner_container + '.search-field')
     else
       @search_container = @container.down('div.chosen-search')
       @selected_item = @container.down('.chosen-single')
@@ -178,7 +178,7 @@ class @Chosen extends AbstractChosen
     @results_data = SelectParser.select_to_array @form_field
 
     if @is_multiple
-      @search_choices.select("li.search-choice").invoke("remove")
+      @search_choices.select(@inner_container + '.search-choice").invoke("remove")
     else if not @is_multiple
       this.single_set_selected_text()
       if @disable_search or @form_field.options.length <= @disable_search_threshold
@@ -282,7 +282,7 @@ class @Chosen extends AbstractChosen
     this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
 
   choice_build: (item) ->
-    choice = new Element('li', { class: "search-choice" }).update("<span>#{item.html}</span>")
+    choice = new Element(@inner_container, { class: "search-choice" }).update("<span>#{item.html}</span>")
 
     if item.disabled
       choice.addClassName 'search-choice-disabled'
@@ -304,7 +304,7 @@ class @Chosen extends AbstractChosen
 
       this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.value.length < 1
 
-      link.up('li').remove()
+      link.up(@inner_container).remove()
 
       this.search_field_scale()
 
@@ -423,7 +423,7 @@ class @Chosen extends AbstractChosen
       this.results_show()
     else if @result_highlight
       sibs = @result_highlight.previousSiblings()
-      actives = @search_results.select("li.active-result")
+      actives = @search_results.select(@inner_container + ".active-result")
       prevs = sibs.intersect(actives)
 
       if prevs.length
