@@ -14,12 +14,14 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
   zoom: 1;
   *display: inline;
   @include user-select(none);
+  * {
+    @include box-sizing(border-box);
+  }
   .chosen-drop {
     position: absolute;
     top: 100%;
     left: -9999px;
     z-index: 1010;
-    @include box-sizing(border-box);
     width: 100%;
     border: 1px solid #aaa;
     border-top: 0;
@@ -42,7 +44,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
     display: block;
     overflow: hidden;
     padding: 0 0 0 8px;
-    height: 23px;
+    height: 25px;
     border: 1px solid #aaa;
     border-radius: 5px;
     background-color: #fff;
@@ -104,7 +106,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
     padding: 3px 4px;
     white-space: nowrap;
     input[type="text"] {
-      @include box-sizing(border-box);
       margin: 1px 0;
       padding: 4px 20px 4px 5px;
       width: 100%;
@@ -189,7 +190,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
   .chosen-choices {
     position: relative;
     overflow: hidden;
-    @include box-sizing(border-box);
     margin: 0;
     padding: 0 5px;
     width: 100%;
@@ -209,13 +209,12 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
       white-space: nowrap;
       input[type="text"] {
         margin: 1px 0;
-        padding: 5px 0;
-        height: 15px;
+        padding: 0;
+        height: 25px;
         outline: 0;
         border: 0 !important;
         background: transparent !important;
         box-shadow: none;
-        box-sizing: content-box;
         color: #999;
         font-size: 100%;
         font-family: sans-serif;
@@ -229,7 +228,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
       padding: 3px 20px 3px 5px;
       border: 1px solid #aaa;
       max-width: 100%;
-      @include box-sizing(border-box);
       border-radius: 3px;
       background-color: #eeeeee;
       @include background-image(linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%));
