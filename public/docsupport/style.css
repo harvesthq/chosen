@@ -14,7 +14,7 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin:
 input, select { vertical-align: middle; }
 
 body { font:13px/1.231 sans-serif; *font-size:small; } /* Hack retained to preserve specificity */
-select, input, textarea, button { font:99% sans-serif; }
+select, input, textarea, button { font:99% sans-serif; width: 100%; }
 pre, code, kbd, samp { font-family: monospace, sans-serif; }
 
 
@@ -23,7 +23,7 @@ body { background: #EEE; color: #444; line-height: 1.4em; }
 header h1 { color: black; font-size: 2em; line-height: 1.1em; display: inline-block; height: 27px; margin: 20px 0 25px; }
 header h1 small { font-size: 0.6em; }
 
-div#content { background: white; border: 1px solid #ccc; border-width: 0 1px 1px; margin: 0 auto; padding: 40px 50px 40px; width: 738px; }
+div#content { background: white; border: 1px solid #ccc; border-width: 0 1px 1px; margin: 0 auto; padding: 40px 50px 40px; max-width: 738px; }
 
 footer { color: #999; padding-top: 40px; font-size: 0.8em; text-align: center; }
 
@@ -45,7 +45,10 @@ ol ul li, ul ul li { list-style-type: circle; margin: 0 0 .25em 1em; }
 li > p { margin-top: .25em; }
 
 div.side-by-side { width: 100%; margin-bottom: 1em; }
-div.side-by-side > div { float: left; width: 49%; }
+div.side-by-side > div { float: left; width: 48%; }
+div.side-by-side > div:nth-of-type(2n) {
+  margin-left: 2%;
+}
 div.side-by-side > div > em { margin-bottom: 10px; display: block; }
 
 .faqs em { display: block; }
@@ -201,4 +204,17 @@ i { font-style: italic; }
   margin-left: -27px;
   padding-left: 27px;
   text-decoration: none;
+}
+
+/* Let the text fields occupy the entire width
+of the screen in medium and small devices. */
+@media (max-width: 768px) {
+  div.side-by-side > div {
+    float: none;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  div.side-by-side > div:nth-of-type(2n) {
+    margin-left: 0;
+  }
 }

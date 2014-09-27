@@ -31,7 +31,7 @@
       <div class="side-by-side clearfix">
         <div>
           <em>Turns This</em>
-          <select data-placeholder="Choose a Country..." style="width:350px;" tabindex="1">
+          <select data-placeholder="Choose a Country..." tabindex="1">
             <option value=""></option>
             <option value="United States">United States</option>
             <option value="United Kingdom">United Kingdom</option>
@@ -288,7 +288,7 @@
         </div>
         <div>
           <em>Into This</em>
-          <select data-placeholder="Choose a Country..." class="chosen-select" style="width:350px;" tabindex="2">
+          <select data-placeholder="Choose a Country..." class="chosen-select" tabindex="2">
             <option value=""></option>
             <option value="United States">United States</option>
             <option value="United Kingdom">United Kingdom</option>
@@ -549,7 +549,7 @@
       <div class="side-by-side clearfix">
         <div>
           <em>Turns This</em>
-          <select data-placeholder="Choose a Country..." style="width:350px;" multiple tabindex="3">
+          <select data-placeholder="Choose a Country..." multiple tabindex="3">
             <option value=""></option>
             <option value="United States">United States</option>
             <option value="United Kingdom">United Kingdom</option>
@@ -806,7 +806,7 @@
         </div>
         <div>
           <em>Into This</em>
-          <select data-placeholder="Choose a Country..." class="chosen-select" multiple style="width:350px;" tabindex="4">
+          <select data-placeholder="Choose a Country..." class="chosen-select" multiple tabindex="4">
             <option value=""></option>
             <option value="United States">United States</option>
             <option value="United Kingdom">United Kingdom</option>
@@ -1067,7 +1067,7 @@
       <div class="side-by-side clearfix">
         <div>
           <em>Single Select with Groups</em>
-          <select data-placeholder="Your Favorite Football Team" style="width:350px;" class="chosen-select" tabindex="5">
+          <select data-placeholder="Your Favorite Football Team" class="chosen-select" tabindex="5">
             <option value=""></option>
             <optgroup label="NFC EAST">
               <option>Dallas Cowboys</option>
@@ -1121,7 +1121,7 @@
         </div>
         <div>
           <em>Multiple Select with Groups</em>
-          <select data-placeholder="Your Favorite Football Team" style="width:350px;" class="chosen-select" multiple tabindex="6">
+          <select data-placeholder="Your Favorite Football Team" class="chosen-select" multiple tabindex="6">
             <option value=""></option>
             <optgroup label="NFC EAST">
               <option>Dallas Cowboys</option>
@@ -1180,7 +1180,7 @@
         <p>Chosen automatically highlights selected options and removes disabled options.</p>
         <div>
           <em>Single Select</em>
-          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chosen-select" tabindex="7">
+          <select data-placeholder="Your Favorite Type of Bear" class="chosen-select" tabindex="7">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1194,7 +1194,7 @@
         </div>
         <div>
           <em>Multiple Select</em>
-          <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chosen-select" tabindex="8">
+          <select data-placeholder="Your Favorite Types of Bear" multiple class="chosen-select" tabindex="8">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1213,8 +1213,8 @@
         <p>The disable_search_threshold option can be specified to hide the search input on single selects if there are fewer than (n) options.</p>
         <pre><code class="language-javascript"> new Chosen($("chosen_select_field"),{disable_search_threshold: 10}); </code></pre>
         <p></p>
-        <div>
-          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chosen-select-no-single" tabindex="9">
+        <div style="width:100%">
+          <select data-placeholder="Your Favorite Type of Bear" class="chosen-select-no-single" tabindex="9">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1232,7 +1232,7 @@
       <h2><a name="default-text-support" class="anchor" href="#default-text-support">Default Text Support</a></h2>
       <div class="side-by-side clearfix">
         <p>Chosen automatically sets the default field text ("Choose a country...") by reading the select element's data-placeholder value. If no data-placeholder value is present, it will default to "Select an Option" or "Select Some Options" depending on whether the select is single or multiple. You can change these elements in the plugin js file as you see fit.</p>
-        <pre><code class="language-markup">&lt;select <strong>data-placeholder="Choose a country..."</strong> style="width:350px;" multiple class="chosen-select"&gt;</code></pre>
+        <pre><code class="language-markup">&lt;select <strong>data-placeholder="Choose a country..."</strong> multiple class="chosen-select"&gt;</code></pre>
         <p><strong>Note:</strong> on single selects, the first element is assumed to be selected by the browser. To take advantage of the default text support, you will need to include a blank option as the first element of your select list.</p>
       </div>
 
@@ -1243,7 +1243,7 @@
 
         <div>
           <em>Single Select</em>
-          <select data-placeholder="Type &apos;C&apos; to view" style="width:350px;" class="chosen-select-no-results" tabindex="10">
+          <select data-placeholder="Type &apos;C&apos; to view" class="chosen-select-no-results" tabindex="10">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1257,7 +1257,7 @@
         </div>
         <div>
           <em>Multiple Select</em>
-          <select data-placeholder="Type &apos;C&apos; to view" style="width:350px;" multiple class="chosen-select-no-results" tabindex="11">
+          <select data-placeholder="Type &apos;C&apos; to view" multiple class="chosen-select-no-results" tabindex="11">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1282,8 +1282,8 @@
       <h2><a name="allow-deselect-on-single-selects" class="anchor" href="#allow-deselect-on-single-selects">Allow Deselect on Single Selects</a></h2>
       <div class="side-by-side clearfix">
         <p>When a single select box isn't a required field, you can set <code class="language-javascript">allow_single_deselect: true</code> and Chosen will add a UI element for option deselection. This will only work if the first option has blank text.</p>
-        <div class="side-by-side clearfix">
-          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chosen-select-deselect" tabindex="12">
+        <div class="clearfix">
+          <select data-placeholder="Your Favorite Type of Bear" class="chosen-select-deselect" tabindex="12">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1303,7 +1303,7 @@
         <pre><code class="language-markup">&lt;select class="chosen-select <strong>chosen-rtl</strong>"&gt;</code></pre>
         <div>
           <em>Single right to left select</em>
-          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chosen-select chosen-rtl" tabindex="13">
+          <select data-placeholder="Your Favorite Type of Bear" class="chosen-select chosen-rtl" tabindex="13">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1315,7 +1315,7 @@
         </div>
         <div>
           <em>Multiple right to left select</em>
-          <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chosen-select  chosen-rtl" tabindex="14">
+          <select data-placeholder="Your Favorite Types of Bear" multiple class="chosen-select  chosen-rtl" tabindex="14">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1346,8 +1346,8 @@
 
       <h2><a name="custom-width-support" class="anchor" href="#custom-width-support">Custom Width Support</a></h2>
       <div class="side-by-side clearfix">
-        <p>Using a custom width with Chosen is as easy as passing an option when you create Chosen:</p>
-        <pre><code class="language-javascript">new Chosen($("chosen_select_field"),{width: "95%"}); </code></pre>
+        <p>Chosen is fully responsive and its size only depends on its wrapper size.</p>
+        <p>Try yourself! Resize this window to see how the select boxes are also resized</p>
         <div>
           <em>Single Select</em>
           <select data-placeholder="Your Favorite Types of Bear" class="chosen-select-width" tabindex="15">
@@ -1384,7 +1384,7 @@
         <p></p>
         <div>
           <em><label for="single-label-example">Click to Highlight Single Select</label></em>
-          <select data-placeholder="Your Favorite Types of Bear" class="chosen-select" style="width:350px;" tabindex="17" id="single-label-example">
+          <select data-placeholder="Your Favorite Types of Bear" class="chosen-select" tabindex="17" id="single-label-example">
             <option value=""></option>
             <option selected>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1398,7 +1398,7 @@
         </div>
         <div>
           <em><label for="multiple-label-example">Click to Highlight Multiple Select</label></em>
-          <select data-placeholder="Your Favorite Types of Bear" multiple class="chosen-select" style="width:350px;" tabindex="18" id="multiple-label-example">
+          <select data-placeholder="Your Favorite Types of Bear" multiple class="chosen-select" tabindex="18" id="multiple-label-example">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1461,7 +1461,7 @@
       '.chosen-select-deselect'  : {allow_single_deselect:true},
       '.chosen-select-no-single' : {disable_search_threshold:10},
       '.chosen-select-no-results': {no_results_text: "Oops, nothing found!"},
-      '.chosen-select-width'     : {width: "95%"}
+      '.chosen-select-width'     : {}
     }
     var results = [];
     for (var selector in config) {
