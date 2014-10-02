@@ -360,7 +360,9 @@ class Chosen extends AbstractChosen
 
       @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
       @current_selectedIndex = @form_field.selectedIndex
+      this.results_build()
       this.search_field_scale()
+
 
   single_set_selected_text: (text=@default_text) ->
     if text is @default_text
