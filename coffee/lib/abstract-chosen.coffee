@@ -10,7 +10,7 @@ class AbstractChosen
 
     this.set_up_html()
     this.register_observers()
-    # instrantiation done, fire ready
+    # instantiation done, fire ready
     this.on_ready()
 
   set_default_values: ->
