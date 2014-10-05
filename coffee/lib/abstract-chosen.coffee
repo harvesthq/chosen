@@ -31,6 +31,8 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+    @outer_container = if @options.outer_container? then @options.outer_container else "ul"
+    @inner_container = if @options.inner_container? then @options.inner_container else "li"
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -85,7 +87,7 @@ class AbstractChosen
     classes.push "group-option" if option.group_array_index?
     classes.push option.classes if option.classes != ""
 
-    option_el = document.createElement("li")
+    option_el = document.createElement(@inner_container)
     option_el.className = classes.join(" ")
     option_el.style.cssText = option.style
     option_el.setAttribute("data-option-array-index", option.array_index)
@@ -97,7 +99,7 @@ class AbstractChosen
     return '' unless group.search_match || group.group_match
     return '' unless group.active_options > 0
 
-    group_el = document.createElement("li")
+    group_el = document.createElement(@inner_container)
     group_el.className = "group-result"
     group_el.innerHTML = group.search_text
 

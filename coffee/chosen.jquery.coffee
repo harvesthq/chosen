@@ -40,22 +40,22 @@ class Chosen extends AbstractChosen
     @container = ($ "<div />", container_props)
 
     if @is_multiple
-      @container.html '<ul class="chosen-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>'
+      @container.html '<' + @outer_container + ' class="chosen-choices"><' + @inner_container + ' class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></' + @inner_container + '></' + @outer_container + '><div class="chosen-drop"><' + @outer_container + ' class="chosen-results"></' + @outer_container + '></div>'
     else
-      @container.html '<a class="chosen-single chosen-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>'
+      @container.html '<a class="chosen-single chosen-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><' + @outer_container + ' class="chosen-results"></' + @outer_container + '></div>'
 
     @form_field_jq.hide().after @container
     @dropdown = @container.find('div.chosen-drop').first()
 
     @search_field = @container.find('input').first()
-    @search_results = @container.find('ul.chosen-results').first()
+    @search_results = @container.find(@outer_container + '.chosen-results').first()
     this.search_field_scale()
 
-    @search_no_results = @container.find('li.no-results').first()
+    @search_no_results = @container.find(@inner_container +'.no-results').first()
 
     if @is_multiple
-      @search_choices = @container.find('ul.chosen-choices').first()
-      @search_container = @container.find('li.search-field').first()
+      @search_choices = @container.find(@outer_container + '.chosen-choices').first()
+      @search_container = @container.find(@inner_container +'.search-field').first()
     else
       @search_container = @container.find('div.chosen-search').first()
       @selected_item = @container.find('.chosen-single').first()
@@ -186,7 +186,7 @@ class Chosen extends AbstractChosen
     @results_data = SelectParser.select_to_array @form_field
 
     if @is_multiple
-      @search_choices.find("li.search-choice").remove()
+      @search_choices.find(@inner_container + ".search-choice").remove()
     else if not @is_multiple
       this.single_set_selected_text()
       if @disable_search or @form_field.options.length <= @disable_search_threshold
@@ -291,7 +291,7 @@ class Chosen extends AbstractChosen
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
 
   choice_build: (item) ->
-    choice = $('<li />', { class: "search-choice" }).html("<span>#{item.html}</span>")
+    choice = $('<' + @inner_container + ' />', { class: "search-choice" }).html("<span>#{item.html}</span>")
 
     if item.disabled
       choice.addClass 'search-choice-disabled'
@@ -313,7 +313,7 @@ class Chosen extends AbstractChosen
 
       this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.val().length < 1
 
-      link.parents('li').first().remove()
+      link.parents(@inner_container).first().remove()
 
       this.search_field_scale()
 
@@ -407,7 +407,7 @@ class Chosen extends AbstractChosen
     this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
-    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
+    no_results_html = $('<' + @inner_container + ' class="no-results">' + @results_none_found + ' "<span></span>"</li>')
     no_results_html.find("span").first().html(terms)
 
     @search_results.append no_results_html
@@ -418,7 +418,7 @@ class Chosen extends AbstractChosen
 
   keydown_arrow: ->
     if @results_showing and @result_highlight
-      next_sib = @result_highlight.nextAll("li.active-result").first()
+      next_sib = @result_highlight.nextAll(@inner_container + ".active-result").first()
       this.result_do_highlight next_sib if next_sib
     else
       this.results_show()
@@ -427,7 +427,7 @@ class Chosen extends AbstractChosen
     if not @results_showing and not @is_multiple
       this.results_show()
     else if @result_highlight
-      prev_sibs = @result_highlight.prevAll("li.active-result")
+      prev_sibs = @result_highlight.prevAll(@inner_container + ".active-result")
 
       if prev_sibs.length
         this.result_do_highlight prev_sibs.first()
@@ -440,7 +440,7 @@ class Chosen extends AbstractChosen
       this.choice_destroy @pending_backstroke.find("a").first()
       this.clear_backstroke()
     else
-      next_available_destroy = @search_container.siblings("li.search-choice").last()
+      next_available_destroy = @search_container.siblings(@inner_container + ".search-choice").last()
       if next_available_destroy.length and not next_available_destroy.hasClass("search-choice-disabled")
         @pending_backstroke = next_available_destroy
         if @single_backstroke_delete
