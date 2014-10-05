@@ -46,6 +46,8 @@ class @Chosen extends AbstractChosen
     this.results_build()
     this.set_tab_index()
     this.set_label_behavior()
+
+  on_ready: ->
     @form_field.fire("chosen:ready", {chosen: this})
 
   register_observers: ->

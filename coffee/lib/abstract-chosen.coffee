@@ -10,6 +10,8 @@ class AbstractChosen
 
     this.set_up_html()
     this.register_observers()
+    # instrantiation done, fire ready
+    this.on_ready()
 
   set_default_values: ->
     @click_test_action = (evt) => this.test_active_click(evt)
