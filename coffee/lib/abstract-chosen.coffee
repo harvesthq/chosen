@@ -10,6 +10,9 @@ class AbstractChosen
 
     this.set_up_html()
     this.register_observers()
+
+    # instantiation done, fire ready
+    this.on_ready()
     
     if (@always_open) 
       # open the select box now
