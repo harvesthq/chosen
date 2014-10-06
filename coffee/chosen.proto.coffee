@@ -114,7 +114,7 @@ class @Chosen extends AbstractChosen
       @container.addClassName 'chosen-disabled'
       @search_field.disabled = true
       @selected_item.stopObserving "focus", @activate_action if !@is_multiple
-      this.close_field()
+      this.close_field() unless @always_open
     else
       @container.removeClassName 'chosen-disabled'
       @search_field.disabled = false
@@ -131,7 +131,7 @@ class @Chosen extends AbstractChosen
           @container.ownerDocument.observe "click", @click_test_action
           this.results_show()
         else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chosen-single"))
-          this.results_toggle()
+          this.results_toggle() unless @always_open
 
         this.activate_field()
 
@@ -146,7 +146,7 @@ class @Chosen extends AbstractChosen
       @search_results.scrollTop = delta + @search_results.scrollTop
 
   blur_test: (evt) ->
-    this.close_field() if not @active_field and @container.hasClassName("chosen-container-active")
+    this.close_field() if !@always_open and not @active_field and @container.hasClassName("chosen-container-active")
 
   close_field: ->
     @container.ownerDocument.stopObserving "click", @click_test_action
@@ -171,7 +171,7 @@ class @Chosen extends AbstractChosen
     if evt.target.up('.chosen-container') is @container
       @active_field = true
     else
-      this.close_field()
+      this.close_field() unless @always_open
 
   results_build: ->
     @parsing = true
@@ -304,7 +304,7 @@ class @Chosen extends AbstractChosen
     if this.result_deselect link.readAttribute("rel")
       this.show_search_field_default()
 
-      this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.value.length < 1
+      this.results_hide() if !@always_open and @is_multiple and this.choices_count() > 0 and @search_field.value.length < 1
 
       link.up('li').remove()
 
@@ -317,7 +317,7 @@ class @Chosen extends AbstractChosen
     this.show_search_field_default()
     this.results_reset_cleanup()
     @form_field.simulate("change") if typeof Event.simulate is 'function'
-    this.results_hide() if @active_field
+    this.results_hide() if !@always_open and @active_field
 
   results_reset_cleanup: ->
     @current_selectedIndex = @form_field.selectedIndex
@@ -351,7 +351,10 @@ class @Chosen extends AbstractChosen
       else
         this.single_set_selected_text(item.text)
 
-      this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
+      if (@always_open)
+        this.winnow_results()
+      else 
+        this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
 
       @search_field.value = ""
 
@@ -431,7 +434,7 @@ class @Chosen extends AbstractChosen
       if prevs.length
         this.result_do_highlight prevs.first()
       else
-        this.results_hide() if this.choices_count() > 0
+        this.results_hide() if !@always_open and this.choices_count() > 0
         this.result_clear_highlight()
 
   keydown_backstroke: ->

@@ -10,8 +10,13 @@ class AbstractChosen
 
     this.set_up_html()
     this.register_observers()
+
     # instantiation done, fire ready
     this.on_ready()
+    
+    if (@always_open) 
+      # open the select box now
+      this.container_mousedown()
 
   set_default_values: ->
     @click_test_action = (evt) => this.test_active_click(evt)
@@ -20,6 +25,7 @@ class AbstractChosen
     @mouse_on_container = false
     @results_showing = false
     @result_highlighted = null
+    @always_open = @options.always_open || false
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
     @disable_search_threshold = @options.disable_search_threshold || 0
     @disable_search = @options.disable_search || false
@@ -31,6 +37,7 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -221,7 +228,7 @@ class AbstractChosen
         evt.preventDefault()
         this.result_select(evt) if this.results_showing
       when 27
-        this.results_hide() if @results_showing
+        this.results_hide() if @results_showing and !@always_open
         return true
       when 9, 38, 40, 16, 91, 17
         # don't do anything on these keys
@@ -271,4 +278,3 @@ class AbstractChosen
   @default_multiple_text: "Select Some Options"
   @default_single_text: "Select an Option"
   @default_no_result_text: "No results match"
-
