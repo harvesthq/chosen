@@ -98,7 +98,7 @@ class AbstractChosen
     return '' unless group.active_options > 0
 
     group_el = document.createElement("li")
-    group_el.className = "group-result"
+    group_el.className = "group-result" + group.classes;
     group_el.innerHTML = group.search_text
 
     this.outerHTML(group_el)
