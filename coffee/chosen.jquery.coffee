@@ -63,6 +63,8 @@ class Chosen extends AbstractChosen
     this.results_build()
     this.set_tab_index()
     this.set_label_behavior()
+
+  on_ready: ->
     @form_field_jq.trigger("chosen:ready", {chosen: this})
 
   register_observers: ->
@@ -141,7 +143,7 @@ class Chosen extends AbstractChosen
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
 
   search_results_mousewheel: (evt) ->
-    delta = -evt.originalEvent.wheelDelta or evt.originalEvent.detail if evt.originalEvent
+    delta = evt.originalEvent.deltaY or -evt.originalEvent.wheelDelta or evt.originalEvent.detail if evt.originalEvent
     if delta?
       evt.preventDefault()
       delta = delta * 40 if evt.type is 'DOMMouseScroll'
@@ -466,6 +468,9 @@ class Chosen extends AbstractChosen
         break
       when 13
         evt.preventDefault() if this.results_showing
+        break
+      when 32
+        evt.preventDefault() if @disable_search
         break
       when 38
         evt.preventDefault()

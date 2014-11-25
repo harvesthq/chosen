@@ -10,6 +10,8 @@ class AbstractChosen
 
     this.set_up_html()
     this.register_observers()
+    # instantiation done, fire ready
+    this.on_ready()
 
   set_default_values: ->
     @click_test_action = (evt) => this.test_active_click(evt)
@@ -96,8 +98,12 @@ class AbstractChosen
     return '' unless group.search_match || group.group_match
     return '' unless group.active_options > 0
 
+    classes = []
+    classes.push "group-result"
+    classes.push group.classes if group.classes
+
     group_el = document.createElement("li")
-    group_el.className = "group-result"
+    group_el.className = classes.join(" ")
     group_el.innerHTML = group.search_text
 
     this.outerHTML(group_el)
