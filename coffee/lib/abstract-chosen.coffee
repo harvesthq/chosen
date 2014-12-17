@@ -31,6 +31,7 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+    @search_option_values = if @options.search_option_values? then @options.search_option_values else false;
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -172,6 +173,13 @@ class AbstractChosen
           
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
+
+
+          else if this.search_option_values && this.search_string_match(option.value, regex)
+            option.search_match = true;
+            results += 1;
+            if (results_group != null)
+                results_group.group_match = true;
 
     this.result_clear_highlight()
 
