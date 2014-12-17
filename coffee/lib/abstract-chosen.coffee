@@ -31,6 +31,7 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+    @no_results_fallback = @options.no_results_fallback || false
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -175,10 +176,14 @@ class AbstractChosen
 
     this.result_clear_highlight()
 
-    if results < 1 and searchText.length
+    if results < 1 and searchText.length and not this.no_results_fallback
       this.update_results_content ""
       this.no_results searchText
     else
+      if this.no_results_fallback
+        fallbackOptions = this.results_data.filter (el) -> el.is_fallback
+        if fallbackOptions.length > 0
+          fallbackOptions[0].search_match = true;
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
 
