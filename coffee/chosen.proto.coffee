@@ -399,7 +399,7 @@ class @Chosen extends AbstractChosen
     if not @is_multiple
       do_high = @search_results.down(".result-selected.active-result")
 
-    if not do_high?
+    if not (do_high and @prioritize_current_selection)
       do_high = @search_results.down(".active-result")
 
     this.result_do_highlight do_high if do_high?
