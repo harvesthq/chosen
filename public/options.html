@@ -109,6 +109,22 @@
             <p><strong>Note:</strong> this is for multiple selects only. In single selects, the selected result will always be displayed.</p>
           </td>
         </tr>
+        <tr>
+          <td>option_html_pattern</td>
+          <td>same as <code class="language-javascript">option_text_token</code></td>
+          <td>
+            <p>The HTML pattern that will be used for each of the option elements.</p>
+            <p>If you define this pattern, you must include the value of <code class="language-javascript">option_text_token</code> to indicate where the real option text should be placed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>option_text_token</td>
+          <td>%{text}%</td>
+          <td>
+            <p>Internally, or when used with <code class="language-javascript">option_html_pattern</code>, this token will be replaced by the real option text.</p>
+            <p>If one of your options for some reason contains this token, this option should be changed to avoid confusion.</p>
+          </td>
+        </tr>
       </table>
 
       <h2><a name="attributes" class="anchor" href="#attributes">Attributes</a></h2>

@@ -29,6 +29,8 @@ class AbstractChosen
     @single_backstroke_delete = if @options.single_backstroke_delete? then @options.single_backstroke_delete else true
     @max_selected_options = @options.max_selected_options || Infinity
     @inherit_select_classes = @options.inherit_select_classes || false
+    @option_text_token = "%{text}%" || @options.option_text_token
+    @option_html_pattern = @options.option_html_pattern || @option_text_token
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
 
@@ -89,7 +91,7 @@ class AbstractChosen
     option_el.className = classes.join(" ")
     option_el.style.cssText = option.style
     option_el.setAttribute("data-option-array-index", option.array_index)
-    option_el.innerHTML = option.search_text
+    option_el.innerHTML = @option_html_pattern.replace(@option_text_token, option.search_text)
 
     this.outerHTML(option_el)
 
