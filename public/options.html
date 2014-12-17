@@ -109,6 +109,13 @@
             <p><strong>Note:</strong> this is for multiple selects only. In single selects, the selected result will always be displayed.</p>
           </td>
         </tr>
+        <tr>
+          <td>search_data_attributes</td>
+          <td>[]</td>
+          <td>
+            <p>Allow the filtering using data-* attrributes from options's select. Just use an array with the data context, example: <code class="language-javascript">['abrreviate','continent']</code>.</p>
+          </td>
+        </tr>
       </table>
 
       <h2><a name="attributes" class="anchor" href="#attributes">Attributes</a></h2>
@@ -118,9 +125,9 @@
 
 <pre>
   <code class="language-markup">&lt;select class="my_select_box" data-placeholder="Select Your Options"&gt;
-    &lt;option value="1"&gt;Option 1&lt;/option&gt;
-    &lt;option value="2" selected&gt;Option 2&lt;/option&gt;
-    &lt;option value="3" disabled&gt;Option 3&lt;/option&gt;
+    &lt;option value="1" data-myfilter="alpha" &gt;Option 1&lt;/option&gt;
+    &lt;option value="2" data-myfilter="beta" selected&gt;Option 2&lt;/option&gt;
+    &lt;option value="3" data-myfilter="charlie" disabled&gt;Option 3&lt;/option&gt;
   &lt;/select&gt;</code>
 </pre>
 
@@ -142,6 +149,10 @@
         <tr>
           <td>selected, disabled</td>
           <td>Chosen automatically highlights selected options and disables disabled options.</td>
+        </tr>
+        <tr>
+          <td>data-*</td>
+          <td>Can be used associated with the <code class="language-javascript">search_data_attributes</code> option.</td>
         </tr>
       </table>
 
