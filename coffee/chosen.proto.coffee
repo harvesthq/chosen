@@ -8,8 +8,8 @@ class @Chosen extends AbstractChosen
     super()
 
     # HTML Templates
-    @single_temp = new Template('<a class="chosen-single chosen-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>')
-    @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>')
+    @single_temp = new Template('<a class="chosen-single chosen-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results" role="listbox" tabindex="-1"></ul></div>')
+    @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results" role="listbox" tabindex="-1"></ul></div>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
@@ -32,6 +32,15 @@ class @Chosen extends AbstractChosen
 
     @search_field = @container.down('input')
     @search_results = @container.down('ul.chosen-results')
+    @search_results.writeAttribute('id', @unique_id + "-" + "listbox")
+    @search_results.writeAttribute('attr-labelledby', @unique_id)
+    @search_field.writeAttribute(
+      'id': @unique_id
+      'role': 'combobox'
+      'aria-haspopup': 'true'
+      'aria-owns': @search_results.readAttribute('id')
+      'aria-expanded': 'false'
+    )
     this.search_field_scale()
 
     @search_no_results = @container.down('li.no-results')
@@ -203,6 +212,8 @@ class @Chosen extends AbstractChosen
 
       @result_highlight = el
       @result_highlight.addClassName "highlighted"
+      @search_results.writeAttribute('aria-labelledby', el.readAttribute('id'))
+      @search_field.writeAttribute('aria-activedescendant', el.readAttribute('id'))
 
       maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
       visible_top = @search_results.scrollTop
@@ -226,6 +237,7 @@ class @Chosen extends AbstractChosen
       return false
 
     @container.addClassName "chosen-with-drop"
+    @search_field.writeAttribute("aria-expanded", true)
     @results_showing = true
 
     @search_field.focus()
@@ -242,6 +254,7 @@ class @Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       @container.removeClassName "chosen-with-drop"
+      @search_field.writeAttribute("aria-expanded", false)
       @form_field.fire("chosen:hiding_dropdown", {chosen: this})
 
     @results_showing = false
