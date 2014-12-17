@@ -17,6 +17,7 @@ class @Chosen extends AbstractChosen
     container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chosen-rtl" if @is_rtl
+    container_classes.push "chosen-use-native" if this.use_native_interface()
 
     container_props =
       'class': container_classes.join ' '
@@ -25,9 +26,14 @@ class @Chosen extends AbstractChosen
 
     container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
 
-    @container = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
+    @container = new Element('div', container_props)
+    @container = @form_field.wrap(@container)
 
-    @form_field.hide().insert({ after: @container })
+    if @is_multiple
+      @container.insert({ top: @multi_temp.evaluate({ "default": @default_text }) })
+    else
+      @container.insert({ top: @single_temp.evaluate({ "default": @default_text }) })
+
     @dropdown = @container.down('div.chosen-drop')
 
     @search_field = @container.down('input')
@@ -51,35 +57,37 @@ class @Chosen extends AbstractChosen
     @form_field.fire("chosen:ready", {chosen: this})
 
   register_observers: ->
-    @container.observe "touchstart", (evt) => this.container_mousedown(evt)
-    @container.observe "touchend", (evt) => this.container_mouseup(evt)
+    unless this.use_native_interface()
+      @container.observe "touchstart", (evt) => this.container_mousedown(evt)
+      @container.observe "touchend", (evt) => this.container_mouseup(evt)
 
-    @container.observe "mousedown", (evt) => this.container_mousedown(evt)
-    @container.observe "mouseup", (evt) => this.container_mouseup(evt)
-    @container.observe "mouseenter", (evt) => this.mouse_enter(evt)
-    @container.observe "mouseleave", (evt) => this.mouse_leave(evt)
+      @container.observe "mousedown", (evt) => this.container_mousedown(evt)
+      @container.observe "mouseup", (evt) => this.container_mouseup(evt)
+      @container.observe "mouseenter", (evt) => this.mouse_enter(evt)
+      @container.observe "mouseleave", (evt) => this.mouse_leave(evt)
 
-    @search_results.observe "mouseup", (evt) => this.search_results_mouseup(evt)
-    @search_results.observe "mouseover", (evt) => this.search_results_mouseover(evt)
-    @search_results.observe "mouseout", (evt) => this.search_results_mouseout(evt)
-    @search_results.observe "mousewheel", (evt) => this.search_results_mousewheel(evt)
-    @search_results.observe "DOMMouseScroll", (evt) => this.search_results_mousewheel(evt)
+      @search_results.observe "mouseup", (evt) => this.search_results_mouseup(evt)
+      @search_results.observe "mouseover", (evt) => this.search_results_mouseover(evt)
+      @search_results.observe "mouseout", (evt) => this.search_results_mouseout(evt)
+      @search_results.observe "mousewheel", (evt) => this.search_results_mousewheel(evt)
+      @search_results.observe "DOMMouseScroll", (evt) => this.search_results_mousewheel(evt)
 
-    @search_results.observe "touchstart", (evt) => this.search_results_touchstart(evt)
-    @search_results.observe "touchmove", (evt) => this.search_results_touchmove(evt)
-    @search_results.observe "touchend", (evt) => this.search_results_touchend(evt)
+      @search_results.observe "touchstart", (evt) => this.search_results_touchstart(evt)
+      @search_results.observe "touchmove", (evt) => this.search_results_touchmove(evt)
+      @search_results.observe "touchend", (evt) => this.search_results_touchend(evt)
 
+      @search_field.observe "blur", (evt) => this.input_blur(evt)
+      @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
+      @search_field.observe "keydown", (evt) => this.keydown_checker(evt)
+      @search_field.observe "focus", (evt) => this.input_focus(evt)
+      @search_field.observe "cut", (evt) => this.clipboard_event_checker(evt)
+      @search_field.observe "paste", (evt) => this.clipboard_event_checker(evt)
+
+    @form_field.observe "change", (evt) => this.results_update_field(evt)
     @form_field.observe "chosen:updated", (evt) => this.results_update_field(evt)
     @form_field.observe "chosen:activate", (evt) => this.activate_field(evt)
     @form_field.observe "chosen:open", (evt) => this.container_mousedown(evt)
     @form_field.observe "chosen:close", (evt) => this.input_blur(evt)
-
-    @search_field.observe "blur", (evt) => this.input_blur(evt)
-    @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
-    @search_field.observe "keydown", (evt) => this.keydown_checker(evt)
-    @search_field.observe "focus", (evt) => this.input_focus(evt)
-    @search_field.observe "cut", (evt) => this.clipboard_event_checker(evt)
-    @search_field.observe "paste", (evt) => this.clipboard_event_checker(evt)
 
     if @is_multiple
       @search_choices.observe "click", (evt) => this.choices_click(evt)
@@ -121,7 +129,7 @@ class @Chosen extends AbstractChosen
       @selected_item.observe "focus", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
-    if !@is_disabled
+    unless @is_disabled or @use_native_interface
       if evt and evt.type is "mousedown" and not @results_showing
         evt.stop()
 
