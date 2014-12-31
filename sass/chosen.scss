@@ -216,6 +216,24 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
     @include background-image(linear-gradient(#eee 1%, #fff 15%));
     cursor: text;
   }
+  .search-field {
+    textarea{
+      outline: 0;
+      border: 0 !important;
+      font-size: 1em;
+      font-family: sans-serif;
+      line-height: normal;
+      border-radius: 0;
+      height: 25px;
+      line-height: 25px;
+      box-shadow: none;
+      resize: none;
+      width: 25px;
+      border: medium none transparent;
+      overflow: hidden;
+      outline: medium none;
+    }
+  }
   .chosen-choices li {
     float: left;
     list-style: none;

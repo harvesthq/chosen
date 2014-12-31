@@ -40,14 +40,17 @@ class Chosen extends AbstractChosen
     @container = ($ "<div />", container_props)
 
     if @is_multiple
-      @container.html '<ul class="chosen-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>'
+      if @enable_multiline_paste
+        @container.html '<ul class="chosen-choices"><li class="search-field"><textarea class="default" autocomplete="off" style="width:25px;">' + @default_text + ' </textarea></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>'
+      else
+        @container.html '<ul class="chosen-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>'
     else
       @container.html '<a class="chosen-single chosen-default" tabindex="-1"><span>' + @default_text + '</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>'
 
     @form_field_jq.hide().after @container
     @dropdown = @container.find('div.chosen-drop').first()
 
-    @search_field = @container.find('input').first()
+    @search_field = if @enable_multiline_paste? then @container.find('textarea').first() else @container.find('input').first()
     @search_results = @container.find('ul.chosen-results').first()
     this.search_field_scale()
 
@@ -363,6 +366,18 @@ class Chosen extends AbstractChosen
       @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
       @current_selectedIndex = @form_field.selectedIndex
       this.search_field_scale()
+
+  is_multiline_paste: ->
+    return /\r|\n/.exec(@search_field.val())
+  
+  multiple_set_selected_text: () ->
+    multine_search = @search_field.val().split("\n")
+    for one_line in multine_search
+      $(@form_field).find("option").each ->
+        $this = $ this
+        if $this.val() == one_line
+          $this.prop("selected",true)
+    this.results_update_field()
 
   single_set_selected_text: (text=@default_text) ->
     if text is @default_text

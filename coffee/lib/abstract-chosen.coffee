@@ -32,6 +32,7 @@ class AbstractChosen
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
     @include_group_label_in_selected = @options.include_group_label_in_selected || false
+    @enable_multiline_paste = @options.enable_multiline_paste || false
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -132,10 +133,13 @@ class AbstractChosen
       this.results_show()
 
   results_search: (evt) ->
-    if @results_showing
-      this.winnow_results()
+    if this.is_multiline_paste()
+        this.multiple_set_selected_text()
     else
-      this.results_show()
+      if @results_showing
+        this.winnow_results()
+      else
+        this.results_show()
 
   winnow_results: ->
     this.no_results_clear()
