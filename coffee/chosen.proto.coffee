@@ -262,10 +262,6 @@ class @Chosen extends AbstractChosen
       @form_field_label.observe "click", (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
 
   show_search_field_default: ->
-    if @is_multiple and this.choices_count() < 1 and not @active_field
-      @search_field.value = @default_text
-      @search_field.addClassName "default"
-    else
       @search_field.value = ""
       @search_field.removeClassName "default"
 
