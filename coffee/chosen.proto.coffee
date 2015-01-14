@@ -393,7 +393,7 @@ class @Chosen extends AbstractChosen
     @selected_item.addClassName("chosen-single-with-deselect")
 
   get_search_text: ->
-    if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
+    @search_field.value.strip().escapeHTML()
 
   winnow_results_set_highlight: ->
     if not @is_multiple
