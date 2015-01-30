@@ -410,6 +410,8 @@ class Chosen extends AbstractChosen
     this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
+    this.container.addClass 'chosen-no-results'
+
     no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
     no_results_html.find("span").first().html(terms)
 
@@ -417,6 +419,8 @@ class Chosen extends AbstractChosen
     @form_field_jq.trigger("chosen:no_results", {chosen:this})
 
   no_results_clear: ->
+    this.container.removeClass 'chosen-no-results'
+
     @search_results.find(".no-results").remove()
 
   keydown_arrow: ->
