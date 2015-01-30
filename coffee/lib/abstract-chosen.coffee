@@ -164,10 +164,10 @@ class AbstractChosen
           results_group = @results_data[option.group_array_index]
           results += 1 if results_group.active_options is 0 and results_group.search_match
           results_group.active_options += 1
-                
-        unless option.group and not @group_search
 
-          option.search_text = if option.group then option.label else option.text
+        option.search_text = if option.group then option.label else option.text
+
+        unless option.group and not @group_search
           option.search_match = this.search_string_match(option.search_text, regex)
           results += 1 if option.search_match and not option.group
 
