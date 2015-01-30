@@ -16,6 +16,7 @@ class SelectParser
       array_index: group_position
       group: true
       label: this.escapeExpression(group.label)
+      title: group.title if group.title
       children: 0
       disabled: group.disabled,
       classes: group.className
@@ -32,6 +33,7 @@ class SelectParser
           value: option.value
           text: option.text
           html: option.innerHTML
+          title: option.title if option.title
           selected: option.selected
           disabled: if group_disabled is true then group_disabled else option.disabled
           group_array_index: group_position
