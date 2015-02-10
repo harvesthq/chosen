@@ -281,16 +281,15 @@ class AbstractChosen
     if /Android/i.test(window.navigator.userAgent)
       return false if /Mobile/i.test(window.navigator.userAgent)
     return true
-    
-  @tagname_is_valid: (@form_field) ->
-  if @form_field.tagName.toUpperCase() != 'SELECT'
-    console?.error 'Chosen error: invalid tagName ' + @form_field.selector + ' is not a select'
-    return false
 
-  if @form_field.options.length == 0
-    console?.error 'Chosen error: ' + @form_field.selector + ' has no options\'s childs '
-    return false
-  return true
+  @tagname_is_valid: (@form_field) ->
+    if @form_field.tagName.toUpperCase() != 'SELECT'
+      console?.error 'Chosen error: invalid tagName ' + @form_field.selector + ' is not a select' 
+      return false
+    if @form_field.options.length == 0
+      console?.error 'Chosen error: ' + @form_field.selector + ' has no options\'s childs '
+      return false
+    return true
 
   @default_multiple_text: "Select Some Options"
   @default_single_text: "Select an Option"
