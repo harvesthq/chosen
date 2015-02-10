@@ -282,7 +282,7 @@ class AbstractChosen
       return false if /Mobile/i.test(window.navigator.userAgent)
     return true
     
-  @tagname_is_valid: : (@form_field) ->
+  @tagname_is_valid: (@form_field) ->
   if @form_field.tagName.toUpperCase() != 'SELECT'
     console?.error 'Chosen error: invalid tagName ' + @form_field.selector + ' is not a select'
     return false
