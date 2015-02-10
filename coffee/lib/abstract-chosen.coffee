@@ -287,7 +287,7 @@ class AbstractChosen
       console?.error 'Chosen error: invalid tagName ' + @form_field.selector + ' is not a select' 
       return false
     if @form_field.options.length == 0
-      console?.error 'Chosen error: ' + @form_field.selector + ' has no options\'s childs '
+      console?.error 'Chosen error: ' + @form_field.selector + ' has no options children '
       return false
     return true
 
