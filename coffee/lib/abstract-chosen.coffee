@@ -77,7 +77,7 @@ class AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          this.single_set_selected_text(data.text)
+          this.single_set_selected_text(data.html)
 
     content
 
@@ -167,7 +167,7 @@ class AbstractChosen
                 
         unless option.group and not @group_search
 
-          option.search_text = if option.group then option.label else option.text
+          option.search_text = if option.group then option.label else option.html
           option.search_match = this.search_string_match(option.search_text, regex)
           results += 1 if option.search_match and not option.group
 
