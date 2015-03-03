@@ -10,6 +10,7 @@ class @Chosen extends AbstractChosen
     # HTML Templates
     @single_temp = new Template('<a class="chosen-single chosen-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>')
     @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>')
+    @multi_textarea_temp = new Template('<ul class="chosen-choices"><li class="search-field"><textarea class="default" autocomplete="off" style="width:25px;">#{default}</textarea></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
@@ -25,12 +26,15 @@ class @Chosen extends AbstractChosen
 
     container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
 
-    @container = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
+    if @is_multiple
+        @container = if @enable_multiline_paste then new Element('div', container_props).update( @multi_textarea_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) )
+    else
+      @container = new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
     @form_field.hide().insert({ after: @container })
     @dropdown = @container.down('div.chosen-drop')
 
-    @search_field = @container.down('input')
+    @search_field = if @enable_multiline_paste then @container.down('textarea') else @container.down('input')
     @search_results = @container.down('ul.chosen-results')
     this.search_field_scale()
 
@@ -361,6 +365,17 @@ class @Chosen extends AbstractChosen
       evt.preventDefault()
 
       this.search_field_scale()
+
+  is_multiline_paste: () ->
+    return /\r|\n/.exec(@search_field.value)
+  
+  multiple_set_selected_text: () ->
+    multine_search = @search_field.value.split("\n")
+    for one_line in multine_search
+      @form_field.select("option").each (opt) ->
+        if opt.value == one_line
+            opt.selected = true
+    this.results_update_field()
 
   single_set_selected_text: (text=@default_text) ->
     if text is @default_text
