@@ -243,9 +243,6 @@ class AbstractChosen
   clipboard_event_checker: (evt) ->
     setTimeout (=> this.results_search()), 50
 
-  container_width: ->
-    return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
-
   include_option_in_results: (option) ->
     return false if @is_multiple and (not @display_selected_options and option.selected)
     return false if not @display_disabled_options and option.disabled
