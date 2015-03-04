@@ -51,8 +51,8 @@ class @Chosen extends AbstractChosen
     @form_field.fire("chosen:ready", {chosen: this})
 
   register_observers: ->
-    @container.observe "touchstart", (evt) => this.container_mousedown(evt)
-    @container.observe "touchend", (evt) => this.container_mouseup(evt)
+    @container.observe "touchstart", (evt) => this.container_mousedown(evt); evt.preventDefault()
+    @container.observe "touchend", (evt) => this.container_mouseup(evt); evt.preventDefault()
 
     @container.observe "mousedown", (evt) => this.container_mousedown(evt)
     @container.observe "mouseup", (evt) => this.container_mouseup(evt)
