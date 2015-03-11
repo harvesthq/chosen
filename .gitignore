@@ -7,3 +7,4 @@ chosen.zip
 .sass-cache
 .ruby-version
 .rbenv-gemsets
+.grunt/grunt-gh-pages/gh-pages/src/
