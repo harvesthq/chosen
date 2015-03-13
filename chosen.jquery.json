@@ -1,7 +1,7 @@
 {
   "name": "chosen",
   "description": "Chosen is a JavaScript plugin that makes long, unwieldy select boxes much more user-friendly. It is currently available in both jQuery and Prototype flavors.",
-  "version": "1.3.0",
+  "version": "1.4.1",
   "licenses": [
     {
       "type": "MIT",

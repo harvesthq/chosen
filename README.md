@@ -20,7 +20,7 @@ However, you can specify that you'd like to use [the release ZIP](https://github
 Either install from the command line with
 
 ```
-$ bower install https://github.com/harvesthq/chosen/releases/download/v1.3.0/chosen_v1.3.0.zip
+$ bower install https://github.com/harvesthq/chosen/releases/download/v1.4.1/chosen_v1.4.1.zip
 ````
 
 or add Chosen to your own project's `bower.json` file, like:
@@ -31,7 +31,7 @@ or add Chosen to your own project's `bower.json` file, like:
   "version": "1.0.0",
   "dependencies": {
     "jquery": "1.11.0",
-    "chosen": "https://github.com/harvesthq/chosen/releases/download/v1.3.0/chosen_v1.3.0.zip"
+    "chosen": "https://github.com/harvesthq/chosen/releases/download/v1.4.1/chosen_v1.4.1.zip"
   }
 }
 ```
