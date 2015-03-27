@@ -31,6 +31,14 @@
       "url": "https://github.com/harvesthq/chosen/blob/master/LICENSE.md"
     }
   ],
+  "bowerJSON":{
+    "main": [
+      "chosen.jquery.min.js",
+      "chosen.css",
+      "chosen-sprite@2x.png",
+      "chosen-sprite.png"
+    ]
+  },
   "jqueryJSON": {
     "title": "Chosen",
     "keywords": [
