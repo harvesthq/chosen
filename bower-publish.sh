@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+CURRENT_BRANCH=`git name-rev --name-only HEAD`
 
 if [ $CURRENT_BRANCH != 'master' ] ; then
   echo "Build not on master. Skipped bower-chosen release"
