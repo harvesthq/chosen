@@ -4,6 +4,12 @@ node_js:
   - "0.10"
 
 before_install:
- - npm install -g grunt-cli
- - gem install compass
+  - npm install -g grunt-cli
+  - gem install compass
 before_script: grunt build
+
+after_success: ./bower-publish.sh
+
+env:
+  global:
+    secure: WbrrS9cR3vpRXtPp/YdtsKZHwWkTDBaqPdXh6+rasQf1pvKfjPaL1bVFDomxsppIa6RjVJyTxJDU4sYnsemop/0vlSs+YuF1e+iPXfzc/javpvk9CIelrXrktehCXxVEZqkTKIAd6OGo668pfov24F5RmaSCr5hQLd6buNIVApo=
