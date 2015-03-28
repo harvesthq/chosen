@@ -236,8 +236,7 @@ class Chosen extends AbstractChosen
     @results_showing = true
 
     @search_field.focus()
-    @search_field.val @search_field.val()
-
+    @search_field.val(@search_input)
     this.winnow_results()
     @form_field_jq.trigger("chosen:showing_dropdown", {chosen: this})
 
@@ -251,6 +250,7 @@ class Chosen extends AbstractChosen
       @container.removeClass "chosen-with-drop"
       @form_field_jq.trigger("chosen:hiding_dropdown", {chosen: this})
 
+    @search_input = @search_field.val()
     @results_showing = false
 
 
@@ -359,8 +359,6 @@ class Chosen extends AbstractChosen
         this.single_set_selected_text(this.choice_label(item))
 
       this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
-
-      @search_field.val ""
 
       @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
       @current_selectedIndex = @form_field.selectedIndex
