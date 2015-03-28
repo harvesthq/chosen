@@ -5,7 +5,8 @@ node_js:
 
 before_install:
   - npm install -g grunt-cli
-  - gem install compass
+  - gem install bundler
+  - bundle install
 before_script: grunt build
 
 after_success: ./bower-publish.sh
