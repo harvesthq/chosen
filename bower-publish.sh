@@ -7,11 +7,13 @@ if [ $CURRENT_BRANCH != 'master' ] ; then
   exit 0
 fi
 
+git config --global user.email "notmyemail@bower-chosen.lol"
+git config --global user.name "bower-chosen"
+
 git clone https://pfiller:${GH_TOKEN}@github.com/harvesthq/bower-chosen.git
 rm -rf bower-chosen/*
 cp public/bower.json public/*.png public/chosen.jquery.min.js public/chosen.min.css bower-chosen/
 cd bower-chosen
-
 
 LATEST_VERSION=$(git diff bower.json | grep version | cut -d':' -f2 | cut -d'"' -f2 | tail -1)
 
@@ -22,8 +24,6 @@ else
   git tag -a "v${LATEST_VERSION}" -m "Version ${LATEST_VERSION}"
 fi
 
-git config --global user.email "notmyemail@bower-chosen.lol"
-git config --global user.name "bower-chosen"
 git remote set-url origin https://pfiller:${GH_TOKEN}@github.com/harvesthq/bower-chosen.git
 
 git add -A
