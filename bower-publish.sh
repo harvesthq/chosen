@@ -3,6 +3,7 @@
 CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 
 if [ $CURRENT_BRANCH != 'master' ] ; then
+  echo "Build not on master. Skipped bower-chosen release"
   exit 0
 fi
 
@@ -14,8 +15,10 @@ cd bower-chosen
 
 LATEST_VERSION=$(git diff bower.json | grep version | cut -d':' -f2 | cut -d'"' -f2 | tail -1)
 
-if [ ! -z $LATEST_VERSION ] ; then
-  echo "Tagging version ${LATEST_VERSION}\n"
+if [ -z $LATEST_VERSION ] ; then
+  echo "No Chosen version change. Skipped tagging"
+else
+  echo "Chosen version changed. Tagging version ${LATEST_VERSION}\n"
   git tag -a "v${LATEST_VERSION}" -m "Version ${LATEST_VERSION}"
 fi
 
@@ -25,4 +28,4 @@ git commit -m "Chosen build to bower-chosen"
 git push origin master
 git push origin --tags
 
-echo "Done with science"
+echo "Chosen published to harvesthq/bower-chosen"
