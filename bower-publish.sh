@@ -22,7 +22,10 @@ else
   git tag -a "v${LATEST_VERSION}" -m "Version ${LATEST_VERSION}"
 fi
 
+git config --global user.email "notmyemail@bower-chosen.lol"
+git config --global user.name "bower-chosen"
 git remote set-url origin https://pfiller:${GH_TOKEN}@github.com/harvesthq/bower-chosen.git
+
 git add -A
 git commit -m "Chosen build to bower-chosen"
 git push origin master

@@ -12,4 +12,4 @@ after_success: ./bower-publish.sh
 
 env:
   global:
-    secure: WbrrS9cR3vpRXtPp/YdtsKZHwWkTDBaqPdXh6+rasQf1pvKfjPaL1bVFDomxsppIa6RjVJyTxJDU4sYnsemop/0vlSs+YuF1e+iPXfzc/javpvk9CIelrXrktehCXxVEZqkTKIAd6OGo668pfov24F5RmaSCr5hQLd6buNIVApo=
+    secure: FHc3fAbJDydJywQ3HcFrTxqyAmmKbiAwP5Bi3qIzvXXCKNYbZb45iSjrMPFq7sHQR/evxDKl3zzBd8k6lvx0Sr77GDkmbN7HjI22fb3wu1Pi3WhmIM90/70ATs6hSZunsNEHCtQa4fDFM3NYeOeiwHFX8HQ9tVlqtjeAZngONL8=
