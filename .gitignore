@@ -9,3 +9,5 @@ chosen.zip
 .ruby-version
 .rbenv-gemsets
 .grunt
+_SpecRunner.html
+spec/public
