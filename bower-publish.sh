@@ -12,7 +12,7 @@ git config --global user.name "bower-chosen"
 
 git clone https://pfiller:${GH_TOKEN}@github.com/harvesthq/bower-chosen.git
 rm -rf bower-chosen/*
-cp public/bower.json public/*.png public/chosen.jquery.min.js public/chosen.min.css bower-chosen/
+cp public/bower.json public/*.png public/chosen.jquery.js public/chosen.css bower-chosen/
 cd bower-chosen
 
 LATEST_VERSION=$(git diff bower.json | grep version | cut -d':' -f2 | cut -d'"' -f2 | tail -1)
