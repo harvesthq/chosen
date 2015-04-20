@@ -159,6 +159,7 @@ class Chosen extends AbstractChosen
     this.results_hide()
 
     @container.removeClass "chosen-container-active"
+    @container.removeClass "chosen-with-dropup"
     this.clear_backstroke()
 
     this.show_search_field_default()
@@ -167,6 +168,14 @@ class Chosen extends AbstractChosen
   activate_field: ->
     @container.addClass "chosen-container-active"
     @active_field = true
+
+    var windowHeight = $(window).height() + $('html').scrollTop(),
+        totalHeight  = @dropdown.height() + Math.ceil(@dropdown.offset().top);
+
+    if (totalHeight > windowHeight) {
+      @container.addClass "chosen-with-dropup"
+      @dropdown.addClass "chosen-dropup"
+    }
 
     @search_field.val(@search_field.val())
     @search_field.focus()
@@ -235,6 +244,14 @@ class Chosen extends AbstractChosen
     @container.addClass "chosen-with-drop"
     @results_showing = true
 
+    var windowHeight = $(window).height() + $('html').scrollTop(),
+        totalHeight  = @dropdown.height() + Math.ceil(@dropdown.offset().top);
+
+    if (totalHeight > windowHeight) {
+      @container.addClass "chosen-with-dropup"
+      @dropdown.addClass "chosen-dropup"
+    }
+
     @search_field.focus()
     @search_field.val @search_field.val()
 
@@ -249,6 +266,7 @@ class Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       @container.removeClass "chosen-with-drop"
+      @container.removeClass "chosen-with-dropup"
       @form_field_jq.trigger("chosen:hiding_dropdown", {chosen: this})
 
     @results_showing = false

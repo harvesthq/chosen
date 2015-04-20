@@ -416,6 +416,26 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
 
 /* @end */
 
+/* @group Drop-up support */
+
+.chosen-container-active.chosen-with-dropup .chosen-single{
+  -moz-border-radius-topright: 0 !important;
+  border-top-right-radius: 0 !important;
+  -moz-border-radius-topleft: 0 !important;
+  border-top-left-radius: 0 !important;
+}
+
+.chosen-dropup {
+  top: auto !important;
+  bottom: 23px;
+  border: solid #aaa;
+  border-width: 1px 1px 0 1px;
+  margin-top: -1px;
+  border-radius: 4px 4px 0px 0px !important;
+}
+
+/* @end */
+
 /* @group Retina compatibility */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi), only screen and (min-resolution: 1.5dppx) {
   .chosen-rtl .chosen-search input[type="text"],
