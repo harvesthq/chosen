@@ -13,16 +13,11 @@ class @Chosen extends AbstractChosen
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
-    container_classes = ["chosen-container"]
-    container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
-    container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
-    container_classes.push "chosen-rtl" if @is_rtl
-
     container_props =
       'style': "width: #{this.container_width()};"
 
     container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
-
+    
     @container = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
     this.update_inherited_classes();
     this.update_title_from_form_field();
