@@ -25,15 +25,19 @@ class Chosen extends AbstractChosen
     @is_rtl = @form_field_jq.hasClass "chosen-rtl"
 
   set_up_html: ->
+    container_classes = ["chosen-container"]
+    container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
+    container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
+    container_classes.push "chosen-rtl" if @is_rtl
 
     container_props =
+      'class': container_classes.join ' '
       'style': "width: #{this.container_width()};"
+      'title': @form_field.title
 
     container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
 
     @container = ($ "<div />", container_props)
-    this.update_inherited_classes();
-    this.update_title_from_form_field();
 
     if @is_multiple
       @container.html '<ul class="chosen-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>'
@@ -59,17 +63,6 @@ class Chosen extends AbstractChosen
     this.results_build()
     this.set_tab_index()
     this.set_label_behavior()
-
-  update_inherited_classes: ->
-    container_classes = ["chosen-container"]
-    container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
-    container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
-    container_classes.push "chosen-rtl" if @is_rtl
-
-    @container.attr('class', container_classes.join ' ')
-
-  update_title_from_form_field: ->
-    @container.attr('title', @form_field.title)
 
   on_ready: ->
     @form_field_jq.trigger("chosen:ready", {chosen: this})
@@ -192,8 +185,6 @@ class Chosen extends AbstractChosen
 
     @results_data = SelectParser.select_to_array @form_field
 
-    this.update_inherited_classes();
-
     if @is_multiple
       @search_choices.find("li.search-choice").remove()
     else if not @is_multiple
@@ -207,7 +198,6 @@ class Chosen extends AbstractChosen
 
     this.update_results_content this.results_option_build({first:true})
 
-    this.update_title_from_form_field();
     this.search_field_disabled()
     this.show_search_field_default()
     this.search_field_scale()
