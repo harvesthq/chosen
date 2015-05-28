@@ -1270,6 +1270,41 @@
         </div>
       </div>
 
+      <h2><a name="select-all-results-text-support" class="anchor" href="#select-all-results-text-support">Select all Results Support</a></h2>
+      <div class="side-by-side clearfix">
+        <p>Adding an option to select all results is as simple as passing an option, the text can also be customised:</p>
+        <pre><code class="language-javascript"> $(".chzn-select").chosen({enable_select_all: true, select_all_results_text: "Select all results!"}); </code></pre>
+        <p></p>
+        <div>
+          <em>Multiple Select</em>
+          <select style="width:350px;" multiple class="chzn-select-all-results" tabindex="12">
+            <option value=""></option>
+            <option>American Black Bear</option>
+            <option>Asiatic Black Bear</option>
+            <option>Brown Bear</option>
+            <option>Giant Panda</option>
+            <option>Sloth Bear</option>
+            <option>Sun Bear</option>
+            <option>Polar Bear</option>
+            <option>Spectacled Bear</option>
+          </select>
+        </div>
+        <div>
+          <em>Multiple Select Custom Message</em>
+          <select style="width:350px;" multiple class="chzn-select-all-results-custom" tabindex="13">
+            <option value=""></option>
+            <option>American Black Bear</option>
+            <option>Asiatic Black Bear</option>
+            <option>Brown Bear</option>
+            <option>Giant Panda</option>
+            <option>Sloth Bear</option>
+            <option>Sun Bear</option>
+            <option>Polar Bear</option>
+            <option>Spectacled Bear</option>
+          </select>
+        </div>
+      </div>
+
       <h2><a name="limit-selected-options-in-multiselect" class="anchor" href="#limit-selected-options-in-multiselect">Limit Selected Options in Multiselect</a></h2>
       <div class="side-by-side clearfix">
         <p>You can easily limit how many options the user can select:</p>
@@ -1462,6 +1497,8 @@
       '.chzn-select-deselect'  : {allow_single_deselect:true},
       '.chzn-select-no-single' : {disable_search_threshold:10},
       '.chzn-select-no-results': {no_results_text:'Oops, nothing found!'},
+      '.chzn-select-all-results': {enable_select_all:true},
+      '.chzn-select-all-results-custom': {enable_select_all:true, select_all_results_text: "Select all results!"},
       '.chzn-select-width'     : {width:"95%"}
     }
     for (var selector in config) {

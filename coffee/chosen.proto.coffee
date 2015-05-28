@@ -243,7 +243,7 @@ class @Chosen extends AbstractChosen
     @results_showing = false
 
   select_all_setup: ->
-    @dropdown.insert(@select_all_temp.evaluate({ "copy": "Select all options" }))
+    @dropdown.insert(@select_all_temp.evaluate({ "copy": @select_all_results }))
     @select_all_link = @dropdown.down(".chzn-select-all")
     @select_all_link.observe("click", (evt) => this.select_all_options(evt))
 
