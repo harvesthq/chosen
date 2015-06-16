@@ -435,6 +435,22 @@ class @Chosen extends AbstractChosen
         this.results_hide() if this.choices_count() > 0
         this.result_clear_highlight()
 
+  keyhome: ->
+    if not @results_showing and not @is_multiple
+      this.results_show()
+    if @result_highlight      
+      actives = @search_results.select("li.active-result")
+      if actives.length
+        this.result_do_highlight actives.first()
+
+  keyend: ->
+    if not @results_showing and not @is_multiple
+      this.results_show()
+    if @result_highlight
+      actives = @search_results.select("li.active-result")
+      if actives.length      
+        this.result_do_highlight actives.last()
+
   keydown_backstroke: ->
     if @pending_backstroke
       this.choice_destroy @pending_backstroke.down("a")
@@ -472,6 +488,14 @@ class @Chosen extends AbstractChosen
         break
       when 32
         evt.preventDefault() if @disable_search
+        break
+      when 35
+        evt.preventDefault()
+        this.keyend()
+        break
+      when 36
+        evt.preventDefault()
+        this.keyhome()
         break
       when 38
         evt.preventDefault()
