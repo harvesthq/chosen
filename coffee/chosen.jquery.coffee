@@ -169,8 +169,8 @@ class Chosen extends AbstractChosen
     @container.addClass "chosen-container-active"
     @active_field = true
 
-    windowHeight = $(window).height() + $('html').scrollTop(),
-    totalHeight  = @dropdown.height() + Math.ceil(@dropdown.offset().top);
+    windowHeight = $(window).height() + $('html').scrollTop()
+    totalHeight  = @dropdown.height() + Math.ceil(@dropdown.offset().top)
 
     if (totalHeight > windowHeight) {
       @container.addClass "chosen-with-dropup"
@@ -244,8 +244,8 @@ class Chosen extends AbstractChosen
     @container.addClass "chosen-with-drop"
     @results_showing = true
 
-    windowHeight = $(window).height() + $('html').scrollTop(),
-    totalHeight  = @dropdown.height() + Math.ceil(@dropdown.offset().top);
+    windowHeight = $(window).height() + $('html').scrollTop()
+    totalHeight  = @dropdown.height() + Math.ceil(@dropdown.offset().top)
 
     if (totalHeight > windowHeight) {
       @container.addClass "chosen-with-dropup"
