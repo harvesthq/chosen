@@ -165,13 +165,12 @@ class @Chosen extends AbstractChosen
     @container.addClassName "chosen-container-active"
     @active_field = true
 
-    windowHeight = $(window).height() + $('html').scrollTop()
-    totalHeight  = @dropdown.height() + Math.ceil(@dropdown.offset().top)
+    windowHeight = $ window.getHeight() + $ 'html'.scrollTop
+    totalHeight  = @dropdown.getHeight() + Math.ceil @dropdown.positionedOffset().top
 
-    if (totalHeight > windowHeight) {
+    if totalHeight > windowHeight
       @container.addClassName "chosen-with-dropup"
       @dropdown.addClassName "chosen-dropup"
-    }
 
     @search_field.value = @search_field.value
     @search_field.focus()
@@ -237,13 +236,12 @@ class @Chosen extends AbstractChosen
     @container.addClassName "chosen-with-drop"
     @results_showing = true
 
-    windowHeight = $(window).height() + $('html').scrollTop()
-    totalHeight  = @dropdown.height() + Math.ceil(@dropdown.offset().top)
+    windowHeight = $ window.getHeight() + $ 'html'.scrollTop
+    totalHeight  = @dropdown.getHeight() + Math.ceil @dropdown.positionedOffset().top
 
-    if (totalHeight > windowHeight) {
+    if totalHeight > windowHeight
       @container.addClassName "chosen-with-dropup"
       @dropdown.addClassName "chosen-dropup"
-    }
 
     @search_field.focus()
     @search_field.value = @search_field.value
