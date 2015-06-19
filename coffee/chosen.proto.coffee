@@ -165,7 +165,7 @@ class @Chosen extends AbstractChosen
     @container.addClassName "chosen-container-active"
     @active_field = true
 
-    windowHeight = $(window).getHeight() + $('html').scrollTop
+    windowHeight = document.viewport.getDimensions().height + document.body.scrollTop
     totalHeight  = @dropdown.getHeight() + Math.ceil @dropdown.positionedOffset().top
 
     if totalHeight > windowHeight
@@ -236,7 +236,7 @@ class @Chosen extends AbstractChosen
     @container.addClassName "chosen-with-drop"
     @results_showing = true
 
-    windowHeight = $(window).getHeight() + $('html').scrollTop
+    windowHeight = document.viewport.getDimensions().height + document.body.scrollTop
     totalHeight  = @dropdown.getHeight() + Math.ceil @dropdown.positionedOffset().top
 
     if totalHeight > windowHeight
