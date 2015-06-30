@@ -138,6 +138,7 @@ class AbstractChosen
       this.winnow_results()
     else
       this.results_show()
+    @form_field_jq.trigger("chosen:search", {chosen: this})
 
   winnow_results: ->
     this.no_results_clear()
