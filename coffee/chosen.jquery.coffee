@@ -298,6 +298,7 @@ class Chosen extends AbstractChosen
     else
       close_link = $('<a />', { class: 'search-choice-close', 'data-option-array-index': item.array_index })
       close_link.bind 'click.chosen', (evt) => this.choice_destroy_link_click(evt)
+      close_link.bind 'touchend.chosen', (evt) => this.choice_destroy_link_click(evt)
       choice.append close_link
 
     @search_container.before  choice
