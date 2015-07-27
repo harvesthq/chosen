@@ -47,7 +47,7 @@ class AbstractChosen
     if @include_group_label_in_selected and item.group_label?
       "<b class='group-name'>#{item.group_label}</b>#{item.html}"
     else
-      item.html
+      item.label
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
