@@ -29,6 +29,7 @@ class Chosen extends AbstractChosen
     container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
     container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
     container_classes.push "chosen-rtl" if @is_rtl
+    container_classes.push "chosen-image-container" if @option_images
 
     container_props =
       'class': container_classes.join ' '
@@ -291,7 +292,11 @@ class Chosen extends AbstractChosen
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
 
   choice_build: (item) ->
-    choice = $('<li />', { class: "search-choice" }).html("<span>#{this.choice_label(item)}</span>")
+    if @option_images
+      attributes = if item.img_src then ' class="image" style="background-image: url(' + item.img_src + ');"' else ' style="background-image: none;"'
+    else
+      attributes = ''
+    choice = $('<li />', { class: "search-choice" }).html("<span#{attributes}>#{this.choice_label(item)}</span>")
 
     if item.disabled
       choice.addClass 'search-choice-disabled'
@@ -356,6 +361,7 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.choice_build item
       else
+        this.single_set_selected_image(item.img_src) if @option_images
         this.single_set_selected_text(this.choice_label(item))
 
       this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
@@ -367,6 +373,12 @@ class Chosen extends AbstractChosen
       evt.preventDefault()
 
       this.search_field_scale()
+
+  single_set_selected_image: (img_src) ->
+    if img_src
+      @selected_item.find("span").addClass('image').css("background-image", "url(#{img_src})")
+    else
+      @selected_item.find("span").removeClass('image').css("background-image", "none")
 
   single_set_selected_text: (text=@default_text) ->
     if text is @default_text
