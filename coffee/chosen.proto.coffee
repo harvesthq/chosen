@@ -391,7 +391,7 @@ class @Chosen extends AbstractChosen
       else
         this.single_set_selected_text(this.choice_label(item))
 
-      this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
+      this.results_hide() unless (evt.metaKey or evt.ctrlKey or evt.shiftKey) and @is_multiple
       this.show_search_field_default()
 
       @form_field.simulate("change") if typeof Event.simulate is 'function' && (@is_multiple || @form_field.selectedIndex != @current_selectedIndex)

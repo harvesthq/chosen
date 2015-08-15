@@ -384,14 +384,8 @@ class Chosen extends AbstractChosen
       else
         this.single_set_selected_text(this.choice_label(item))
 
-<<<<<<< HEAD
       this.results_hide() unless (evt.metaKey or evt.ctrlKey or evt.shiftKey) and @is_multiple
-
-      @search_field.val ""
-=======
-      this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
       this.show_search_field_default()
->>>>>>> master
 
       @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
       @current_selectedIndex = @form_field.selectedIndex
