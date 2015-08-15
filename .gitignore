@@ -3,8 +3,11 @@ node_modules
 .project
 public/*.js
 public/*.css
+public/bower.json
 chosen.zip
 .sass-cache
 .ruby-version
 .rbenv-gemsets
-.grunt/grunt-gh-pages/gh-pages/src/
+.grunt
+_SpecRunner.html
+spec/public
