@@ -469,10 +469,11 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
     }
   }
 
-
-
   .chosen-results li {
     background-repeat: no-repeat;
+    &.highlighted {
+      background-size: 19px;
+    }
   }
 }
 
