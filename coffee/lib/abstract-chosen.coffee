@@ -189,7 +189,7 @@ class AbstractChosen
           option.search_match = this.search_string_match(option.search_text, regex)
           results += 1 if option.search_match and not option.group
 
-          exact_result = eregex.test option.html
+          exact_result = exact_result || eregex.test option.html
 
           if option.search_match
             if searchText.length
