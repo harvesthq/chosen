@@ -1,0 +1,16 @@
+language: node_js
+
+node_js:
+  - "0.10"
+
+before_install:
+  - npm install -g grunt-cli
+  - gem install bundler
+  - bundle install
+before_script: grunt build
+
+after_success: ./bower-publish.sh
+
+env:
+  global:
+    secure: FHc3fAbJDydJywQ3HcFrTxqyAmmKbiAwP5Bi3qIzvXXCKNYbZb45iSjrMPFq7sHQR/evxDKl3zzBd8k6lvx0Sr77GDkmbN7HjI22fb3wu1Pi3WhmIM90/70ATs6hSZunsNEHCtQa4fDFM3NYeOeiwHFX8HQ9tVlqtjeAZngONL8=

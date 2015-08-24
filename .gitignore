@@ -1,8 +1,13 @@
 .DS_Store
 node_modules
 .project
-dist/
 public/*.js
 public/*.css
+public/bower.json
 chosen.zip
 .sass-cache
+.ruby-version
+.rbenv-gemsets
+.grunt
+_SpecRunner.html
+spec/public

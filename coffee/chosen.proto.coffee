@@ -8,7 +8,7 @@ class @Chosen extends AbstractChosen
     super()
 
     # HTML Templates
-    @single_temp = new Template('<a class="chosen-single chosen-default" tabindex="-1"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>')
+    @single_temp = new Template('<a class="chosen-single chosen-default"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>')
     @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
@@ -46,9 +46,14 @@ class @Chosen extends AbstractChosen
     this.results_build()
     this.set_tab_index()
     this.set_label_behavior()
+
+  on_ready: ->
     @form_field.fire("chosen:ready", {chosen: this})
 
   register_observers: ->
+    @container.observe "touchstart", (evt) => this.container_mousedown(evt); evt.preventDefault()
+    @container.observe "touchend", (evt) => this.container_mouseup(evt); evt.preventDefault()
+
     @container.observe "mousedown", (evt) => this.container_mousedown(evt)
     @container.observe "mouseup", (evt) => this.container_mouseup(evt)
     @container.observe "mouseenter", (evt) => this.mouse_enter(evt)
@@ -73,6 +78,8 @@ class @Chosen extends AbstractChosen
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
     @search_field.observe "keydown", (evt) => this.keydown_checker(evt)
     @search_field.observe "focus", (evt) => this.input_focus(evt)
+    @search_field.observe "cut", (evt) => this.clipboard_event_checker(evt)
+    @search_field.observe "paste", (evt) => this.clipboard_event_checker(evt)
 
     if @is_multiple
       @search_choices.observe "click", (evt) => this.choices_click(evt)
@@ -80,7 +87,7 @@ class @Chosen extends AbstractChosen
       @container.observe "click", (evt) => evt.preventDefault() # gobble click of anchor
 
   destroy: ->
-    document.stopObserving "click", @click_test_action
+    @container.ownerDocument.stopObserving "click", @click_test_action
 
     @form_field.stopObserving()
     @container.stopObserving()
@@ -121,7 +128,7 @@ class @Chosen extends AbstractChosen
       if not (evt? and evt.target.hasClassName "search-choice-close")
         if not @active_field
           @search_field.clear() if @is_multiple
-          document.observe "click", @click_test_action
+          @container.ownerDocument.observe "click", @click_test_action
           this.results_show()
         else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chosen-single"))
           this.results_toggle()
@@ -132,7 +139,7 @@ class @Chosen extends AbstractChosen
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
 
   search_results_mousewheel: (evt) ->
-    delta = -evt.wheelDelta or evt.detail
+    delta = evt.deltaY or -evt.wheelDelta or evt.detail
     if delta?
       evt.preventDefault()
       delta = delta * 40 if evt.type is 'DOMMouseScroll'
@@ -142,7 +149,7 @@ class @Chosen extends AbstractChosen
     this.close_field() if not @active_field and @container.hasClassName("chosen-container-active")
 
   close_field: ->
-    document.stopObserving "click", @click_test_action
+    @container.ownerDocument.stopObserving "click", @click_test_action
 
     @active_field = false
     this.results_hide()
@@ -219,14 +226,13 @@ class @Chosen extends AbstractChosen
       return false
 
     @container.addClassName "chosen-with-drop"
-    @form_field.fire("chosen:showing_dropdown", {chosen: this})
-
     @results_showing = true
 
     @search_field.focus()
     @search_field.value = @search_field.value
 
     this.winnow_results()
+    @form_field.fire("chosen:showing_dropdown", {chosen: this})
 
   update_results_content: (content) ->
     @search_results.update content
@@ -278,7 +284,7 @@ class @Chosen extends AbstractChosen
     this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
 
   choice_build: (item) ->
-    choice = new Element('li', { class: "search-choice" }).update("<span>#{item.html}</span>")
+    choice = new Element('li', { class: "search-choice" }).update("<span>#{this.choice_label(item)}</span>")
 
     if item.disabled
       choice.addClassName 'search-choice-disabled'
@@ -343,14 +349,15 @@ class @Chosen extends AbstractChosen
       if @is_multiple
         this.choice_build item
       else
-        this.single_set_selected_text(item.text)
+        this.single_set_selected_text(this.choice_label(item))
 
       this.results_hide() unless (@autohide_results_multiple or evt.metaKey or evt.ctrlKey) and @is_multiple
-
-      @search_field.value = ""
+      this.show_search_field_default()
 
       @form_field.simulate("change") if typeof Event.simulate is 'function' && (@is_multiple || @form_field.selectedIndex != @current_selectedIndex)
       @current_selectedIndex = @form_field.selectedIndex
+
+      evt.preventDefault()
 
       this.search_field_scale()
 
@@ -387,7 +394,7 @@ class @Chosen extends AbstractChosen
     @selected_item.addClassName("chosen-single-with-deselect")
 
   get_search_text: ->
-    if @search_field.value is @default_text then "" else @search_field.value.strip().escapeHTML()
+    @search_field.value.strip().escapeHTML()
 
   winnow_results_set_highlight: ->
     if not @is_multiple
@@ -400,6 +407,7 @@ class @Chosen extends AbstractChosen
 
   no_results: (terms) ->
     @search_results.insert @no_results_temp.evaluate( terms: terms )
+    @form_field.fire("chosen:no_results", {chosen: this})
 
   no_results_clear: ->
     nr = null
@@ -460,7 +468,10 @@ class @Chosen extends AbstractChosen
         @mouse_on_container = false
         break
       when 13
-        evt.preventDefault()
+        evt.preventDefault() if this.results_showing
+        break
+      when 32
+        evt.preventDefault() if @disable_search
         break
       when 38
         evt.preventDefault()
