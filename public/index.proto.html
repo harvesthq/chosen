@@ -1327,7 +1327,7 @@
         </div>
       </div>
 
-      <h2><a name="change-update-events" class="anchor" href="#change-update-events">Change / Update Events</a></h2>
+      <h2><a name="change-update-events" class="anchor" href="#change-update-events">Change / Update / Destroy Events</a></h2>
       <div class="side-by-side clearfix">
         <ul>
           <li>
@@ -1340,6 +1340,14 @@
             <h3>Updating Chosen Dynamically</h3>
             <p>If you need to update the options in your select field and want Chosen to pick up the changes, you'll need to trigger the "chosen:updated" event on the field. Chosen will re-build itself based on the updated content.</p>
             <pre><code class="language-javascript">Event.fire($("form_field"), "chosen:updated");</code></pre>
+          </li>
+          <li>
+            <h3>Destroying Chosen</h3>
+            <p>To destroy Chosen and revert back to the native select, call <code class="language-javascript">destroy</code> on the Chosen instance:</p>
+              <pre><code class="language-javascript">chosen = new Chosen($("form_field"));
+
+// ...later
+chosen.destroy();</code></pre>
           </li>
         </ul>
       </div>
