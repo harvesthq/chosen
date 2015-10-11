@@ -38,9 +38,7 @@
   "bowerJSON":{
     "main": [
       "chosen.jquery.js",
-      "chosen.css",
-      "chosen-sprite@2x.png",
-      "chosen-sprite.png"
+      "chosen.css"
     ]
   },
   "jqueryJSON": {
