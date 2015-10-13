@@ -11,8 +11,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
   display: inline-block;
   vertical-align: middle;
   font-size: 13px;
-  zoom: 1;
-  *display: inline;
   @include user-select(none);
   * {
     @include box-sizing(border-box);
@@ -34,7 +32,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
   a{
     cursor: pointer;
   }
-  
+
   .search-choice, .chosen-single{
     .group-name{
       margin-right: 4px;
