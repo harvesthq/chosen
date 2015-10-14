@@ -245,7 +245,7 @@ class AbstractChosen
       when 27
         this.results_hide() if @results_showing
         return true
-      when 9, 38, 40, 16, 91, 17
+      when 9, 35, 36, 38, 40, 16, 91, 17
         # don't do anything on these keys
       else this.results_search()
 
