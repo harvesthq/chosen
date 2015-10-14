@@ -9,7 +9,7 @@ if [ $CURRENT_BRANCH != 'master' ] ; then
   exit 0
 fi
 
-CHOSEN_VERSION=`git tag -l "*.*.*" | sed 's/^v//' | sort -V | tail -1`
+CHOSEN_VERSION=`git tag --sort=v:refname | tail -1`
 
 git config --global user.email "notmyemail@bower-chosen.lol"
 git config --global user.name "bower-chosen"
@@ -19,7 +19,7 @@ rm -rf bower-chosen/*
 cp public/bower.json public/*.png public/chosen.jquery.js public/chosen.css bower-chosen/
 cd bower-chosen
 
-LATEST_VERSION=`git tag -l "*.*.*" | sed 's/^v//' | sort -V | tail -1`
+LATEST_VERSION=`git tag --sort=v:refname | tail -1`
 
 if [ "$LATEST_VERSION" = "$CHOSEN_VERSION" ] ; then
   echo "No Chosen version change. Skipped tagging"
