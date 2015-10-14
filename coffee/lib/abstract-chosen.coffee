@@ -20,6 +20,8 @@ class AbstractChosen
     @mouse_on_container = false
     @results_showing = false
     @result_highlighted = null
+    @selected_elements = []
+    @holding_shift = false
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
     @disable_search_threshold = @options.disable_search_threshold || 0
     @disable_search = @options.disable_search || false
@@ -242,10 +244,13 @@ class AbstractChosen
       when 13
         evt.preventDefault()
         this.result_select(evt) if this.results_showing
+      when 16
+        @holding_shift = false if this.results_showing and @is_multiple
+        break
       when 27
         this.results_hide() if @results_showing
         return true
-      when 9, 38, 40, 16, 91, 17
+      when 9, 38, 40, 91, 17
         # don't do anything on these keys
       else this.results_search()
 

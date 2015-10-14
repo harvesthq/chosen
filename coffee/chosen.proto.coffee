@@ -271,7 +271,47 @@ class @Chosen extends AbstractChosen
 
   search_results_mouseup: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
-    if target
+    if @holding_shift
+      if @selected_elements.length < 1
+        target.addClassName "first-selected selected-result"
+        @selected_elements.push(target);
+        true
+      else
+        selected = null
+        direction = if target.previous('.first-selected') then 'back' else 'forward'
+
+        return false if target == @selected_elements[0]
+
+        if direction == "back"
+          selected = target.previousSiblings().collect( (t) ->
+            if t.previous(".first-selected") and not t.hasClassName("result-selected") or t.hasClassName("first-selected")
+              return t
+            else
+              return false
+          )
+          selected.reverse().push(target)
+        else
+          selected = target.nextSiblings().collect( (t) ->
+            if t.next(".first-selected") and not t.hasClassName("result-selected") or t.hasClassName("first-selected")
+              return t
+            else
+              return false
+          )
+          selected.reverse().push(target)
+          selected.reverse()
+
+
+        selected.each (elem) =>
+          @result_highlight = elem
+          @result_select(evt)
+
+        @selected_elements[0].removeClassName "first-selected selected-result"
+        @selected_elements = []
+        @holding_shift = false
+        selected = false
+
+        return @search_field.focus()
+    else if target
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
@@ -351,7 +391,7 @@ class @Chosen extends AbstractChosen
       else
         this.single_set_selected_text(this.choice_label(item))
 
-      this.results_hide() unless (evt.metaKey or evt.ctrlKey) and @is_multiple
+      this.results_hide() unless (evt.metaKey or evt.ctrlKey or evt.shiftKey) and @is_multiple
       this.show_search_field_default()
 
       @form_field.simulate("change") if typeof Event.simulate is 'function' && (@is_multiple || @form_field.selectedIndex != @current_selectedIndex)
@@ -472,6 +512,9 @@ class @Chosen extends AbstractChosen
         break
       when 32
         evt.preventDefault() if @disable_search
+        break
+      when 16
+        @holding_shift = true if this.results_showing and @is_multiple
         break
       when 38
         evt.preventDefault()
