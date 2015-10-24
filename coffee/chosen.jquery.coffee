@@ -499,7 +499,7 @@ class Chosen extends AbstractChosen
   keydown_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
     if stroke == 91
-     @keynum = stroke
+     @keynum = 0
 
   search_field_scale: ->
     if @is_multiple
