@@ -22,6 +22,7 @@ $.fn.extend({
 class Chosen extends AbstractChosen
 
   setup: ->
+    @keynum = 0
     @form_field_jq = $ @form_field
     @current_selectedIndex = @form_field.selectedIndex
     @is_rtl = @form_field_jq.hasClass "chosen-rtl"
@@ -287,7 +288,14 @@ class Chosen extends AbstractChosen
 
   search_results_mouseover: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    this.result_do_highlight( target ) if target
+    if target
+      if @keynum==91
+        @result_highlight = target
+        this.result_select(evt)
+        @search_field.focus()
+      else
+        this.result_do_highlight( target )
+
 
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
@@ -460,6 +468,7 @@ class Chosen extends AbstractChosen
 
   keydown_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
+    @keynum = stroke
     this.search_field_scale()
 
     this.clear_backstroke() if stroke != 8 and this.pending_backstroke
@@ -486,6 +495,11 @@ class Chosen extends AbstractChosen
         evt.preventDefault()
         this.keydown_arrow()
         break
+ 
+  keydown_checker: (evt) ->
+    stroke = evt.which ? evt.keyCode
+    if stroke == 91
+     @keynum = stroke
 
   search_field_scale: ->
     if @is_multiple
