@@ -285,7 +285,7 @@ class AbstractChosen
     if /iP(od|hone)/i.test(window.navigator.userAgent)
       return false
     if /Android/i.test(window.navigator.userAgent)
-      return false if /Mobile/i.test(window.navigator.userAgent)
+      return false
     if /IEMobile/i.test(window.navigator.userAgent)
       return false
     if /Windows Phone/i.test(window.navigator.userAgent)
