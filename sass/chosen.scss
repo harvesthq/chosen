@@ -5,42 +5,54 @@
 $chosen-sprite: image-url('chosen-sprite.png') !default;
 $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
 
+$chosen-height: 27px;
+$chosen-radius: 4px;
+
+$chosen-border: #aaa;
+$chosen-highlight: #3875d7;
+$chosen-text: #444;
+
 /* @group Base */
 .chosen-container {
-  position: relative;
   display: inline-block;
-  vertical-align: middle;
+  font-family: sans-serif;
   font-size: 13px;
   @include user-select(none);
+  position: relative;
+  vertical-align: middle;
   * {
     @include box-sizing(border-box);
   }
   .chosen-drop {
+    background: #eee;
+    border: 1px solid #bbb;
+    border-radius: $chosen-radius;
+    box-shadow: 0 4px 10px 1px rgba(#000, 0.2);
+    left: -9999px;
+    margin-top: 2px;
+    overflow: hidden;
+    padding: 4px 0;
     position: absolute;
     top: 100%;
-    left: -9999px;
-    z-index: 1010;
     width: 100%;
-    border: 1px solid #aaa;
-    border-top: 0;
-    background: #fff;
-    box-shadow: 0 4px 5px rgba(#000,.15);
+    z-index: 1010;
   }
   &.chosen-with-drop .chosen-drop {
     left: 0;
   }
-  a{
+  a {
     cursor: pointer;
   }
 
+  /* What is this? */
   .search-choice, .chosen-single{
-    .group-name{
+    .group-name {
+      color: #999;
+      font-weight: normal;
       margin-right: 4px;
       overflow: hidden;
-      white-space: nowrap;
       text-overflow: ellipsis;
-      font-weight: normal;
-      color: #999999;
+      white-space: nowrap;
       &:after {
         content: ":";
         padding-left: 2px;
@@ -52,92 +64,68 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
 /* @end */
 
 /* @group Single Chosen */
-.chosen-container-single{
+.chosen-container-single {
   .chosen-single {
+    background: #fff;
+    border: 1px solid $chosen-border;
+    border-radius: $chosen-radius;
+    color: $chosen-text;
+    display: block;
+    height: $chosen-height;
+    line-height: $chosen-height - 2px;
+    overflow: hidden;
+    padding: 0 24px 0 8px;
     position: relative;
-    display: block;
-    overflow: hidden;
-    padding: 0 0 0 8px;
-    height: 25px;
-    border: 1px solid #aaa;
-    border-radius: 5px;
-    background-color: #fff;
-    @include background(linear-gradient(#fff 20%, #f6f6f6 50%, #eee 52%, #f4f4f4 100%));
-    background-clip: padding-box;
-    box-shadow: 0 0 3px #fff inset, 0 1px 1px rgba(#000,.1);
-    color: #444;
     text-decoration: none;
-    white-space: nowrap;
-    line-height: 24px;
-  }
-  .chosen-default {
-    color: #999;
-  }
-  .chosen-single span {
-    display: block;
-    overflow: hidden;
-    margin-right: 26px;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-  .chosen-single-with-deselect span {
-    margin-right: 38px;
-  }
-  .chosen-single abbr {
-    position: absolute;
-    top: 6px;
-    right: 26px;
-    display: block;
-    width: 12px;
-    height: 12px;
-    background: $chosen-sprite -42px 1px no-repeat;
-    font-size: 1px;
-    &:hover {
-      background-position: -42px -10px;
+    &.chosen-default {
+      color: #999;
     }
-  }
-  &.chosen-disabled .chosen-single abbr:hover {
-    background-position: -42px -10px;
-  }
-  .chosen-single div {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: block;
-    width: 18px;
-    height: 100%;
-    b {
-      display: block;
-      width: 100%;
+    /* down arrow */
+    > div {
+      background: $chosen-sprite no-repeat 0 3px;
       height: 100%;
-      background: $chosen-sprite no-repeat 0px 2px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 18px;
+    }
+    /* deselect icon */
+    &.chosen-single-with-deselect {
+      padding-right: 40px;
+      > abbr {
+        background: $chosen-sprite no-repeat -42px 1px;
+        height: 12px;
+        position: absolute;
+        right: 26px;
+        top: 6px;
+        width: 12px;
+        &:hover {
+          background-position: -42px -10px;
+        }
+      }
     }
   }
   .chosen-search {
+    margin: 0 4px 4px 4px;
     position: relative;
-    z-index: 1010;
-    margin: 0;
-    padding: 3px 4px;
     white-space: nowrap;
+    z-index: 1010;
     input[type="text"] {
+      background: #fff $chosen-sprite no-repeat 100% -20px;
+      border: 1px solid $chosen-border;
+      border-radius: $chosen-radius - 1px;
+      box-shadow: inset 0 1px 2px rgba(#000, 0.1);
+      font-family: sans-serif;
+      font-size: 1em;
+      height: auto;
+      line-height: normal;
       margin: 1px 0;
+      outline: 0;
       padding: 4px 20px 4px 5px;
       width: 100%;
-      height: auto;
-      outline: 0;
-      border: 1px solid #aaa;
-      background: #fff $chosen-sprite no-repeat 100% -20px;
-      @include background($chosen-sprite no-repeat 100% -20px);
-      font-size: 1em;
-      font-family: sans-serif;
-      line-height: normal;
-      border-radius: 0;
     }
-  }
-  .chosen-drop {
-    margin-top: -1px;
-    border-radius: 0 0 4px 4px;
-    background-clip: padding-box;
   }
   &.chosen-container-single-nosearch .chosen-search {
     position: absolute;
@@ -147,41 +135,41 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
 /* @end */
 
 /* @group Results */
-.chosen-container .chosen-results {
-  color: #444;
-  position: relative;
+.chosen-container ul.chosen-results {
+  color: $chosen-text;
+  max-height: 250px;
   overflow-x: hidden;
   overflow-y: auto;
-  margin: 0 4px 4px 0;
-  padding: 0 0 0 4px;
-  max-height: 240px;
+  margin: 0;
+  padding: 0;
+  position: relative;
   -webkit-overflow-scrolling: touch;
   li {
     display: none;
-    margin: 0;
-    padding: 5px 6px;
-    list-style: none;
     line-height: 15px;
+    list-style: none;
+    margin: 0;
+    padding: 5px 10px;
     word-wrap: break-word;
     -webkit-touch-callout: none;
     &.active-result {
       display: list-item;
       cursor: pointer;
     }
-    &.disabled-result {
+    &.disabled-result,
+    &.result-selected {
       display: list-item;
       color: #ccc;
       cursor: default;
     }
     &.highlighted {
-      background-color: #3875d7;
-      @include background-image(linear-gradient(#3875d7 20%, #2a62bc 90%));
+      background-color: $chosen-highlight;
       color: #fff;
     }
     &.no-results {
-      color: #777;
+      color: #999;
       display: list-item;
-      background: #f4f4f4;
+      font-style: italic;
     }
     &.group-result {
       display: list-item;
@@ -200,60 +188,50 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
 /* @end */
 
 /* @group Multi Chosen */
-.chosen-container-multi{
+.chosen-container-multi {
   .chosen-choices {
+    background-color: #fff;
+    border: 1px solid $chosen-border;
+    border-radius: $chosen-radius;
+    cursor: text;
+    height: auto !important;
+    margin: 0;
+    padding: 0 4px;
     position: relative;
     overflow: hidden;
-    margin: 0;
-    padding: 0 5px;
     width: 100%;
-    height: auto !important;
-    height: 1%;
-    border: 1px solid #aaa;
-    background-color: #fff;
-    @include background-image(linear-gradient(#eee 1%, #fff 15%));
-    cursor: text;
   }
   .chosen-choices li {
     float: left;
     list-style: none;
-    &.search-field {
+    margin: 0;
+    padding: 0;
+    &.search-field input[type="text"] {
+      background: transparent !important;
+      border: 0 !important;
+      color: #999;
+      font-family: sans-serif;
+      font-size: 100%;
+      height: $chosen-height - 2px;
+      line-height: $chosen-height - 2px;
       margin: 0;
-      padding: 0;
-      white-space: nowrap;
-      input[type="text"] {
-        margin: 1px 0;
-        padding: 0;
-        height: 25px;
-        outline: 0;
-        border: 0 !important;
-        background: transparent !important;
-        box-shadow: none;
-        color: #999;
-        font-size: 100%;
-        font-family: sans-serif;
-        line-height: normal;
-        border-radius: 0;
-      }
+      padding: 0 0 0 6px;
+      outline: 0;
     }
     &.search-choice {
-      position: relative;
-      margin: 3px 5px 3px 0;
-      padding: 3px 20px 3px 5px;
-      border: 1px solid #aaa;
-      max-width: 100%;
-      border-radius: 3px;
-      background-color: #eeeeee;
-      @include background-image(linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%));
-      background-size: 100% 19px;
-      background-repeat: repeat-x;
-      background-clip: padding-box;
-      box-shadow: 0 0 2px #fff inset, 0 1px 0 rgba(#000,.05);
-      color: #333;
-      line-height: 13px;
+      background-color: #eee;
+      border: 1px solid $chosen-border;
+      border-radius: $chosen-radius - 1px;
+      color: $chosen-text;
       cursor: default;
-      span {
-        word-wrap: break-word;
+      line-height: 13px;
+      margin: 2px 4px 2px 0;
+      max-width: 100%;
+      padding: 3px 20px 3px 5px;
+      position: relative;
+      word-wrap: break-word;
+      &:last-of-type {
+        margin-right: -5px;
       }
       .search-choice-close {
         position: absolute;
@@ -270,12 +248,11 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
       }
     }
     &.search-choice-disabled {
-      padding-right: 5px;
-      border: 1px solid #ccc;
-      background-color: #e4e4e4;
-      @include background-image(linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%));
-      color: #666;
+      border-color: #ccc;
+      color: #999;
     }
+
+    /* Is this still possible? */
     &.search-choice-focus {
       background: #d4d4d4;
       .search-choice-close {
@@ -283,41 +260,13 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
       }
     }
   }
-  .chosen-results {
-    margin: 0;
-    padding: 0;
-  }
-  .chosen-drop .result-selected {
-    display: list-item;
-    color: #ccc;
-    cursor: default;
-  }
 }
 /* @end */
 
 /* @group Active  */
-.chosen-container-active{
+.chosen-container-active {
   .chosen-single {
-    border: 1px solid #5897fb;
-    box-shadow: 0 0 5px rgba(#000,.3);
-  }
-  &.chosen-with-drop{
-    .chosen-single {
-      border: 1px solid #aaa;
-      -moz-border-radius-bottomright: 0;
-      border-bottom-right-radius: 0;
-      -moz-border-radius-bottomleft: 0;
-      border-bottom-left-radius: 0;
-      @include background-image(linear-gradient(#eee 20%, #fff 80%));
-      box-shadow: 0 1px 0 #fff inset;
-    }
-    .chosen-single div {
-      border-left: none;
-      background: transparent;
-      b {
-        background-position: -18px 2px;
-      }
-    }
+    border-color: $chosen-highlight;
   }
   .chosen-choices {
     border: 1px solid #5897fb;
@@ -333,13 +282,21 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
 .chosen-disabled {
   opacity: 0.5 !important;
   cursor: default;
+}
+.chosen-container-single.chosen-disabled {
   .chosen-single {
     cursor: default;
+    &.chosen-single-with-deselect > abbr:hover {
+      background-position: -42px 1px;
+    }
   }
+}
+.chosen-container-multi.chosen-disabled {
   .chosen-choices .search-choice .search-choice-close {
     cursor: default;
   }
 }
+
 /* @end */
 
 /* @group Right to Left */
@@ -397,7 +354,6 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
   .chosen-search input[type="text"] {
     padding: 4px 5px 4px 20px;
     background: #fff $chosen-sprite no-repeat -30px -20px;
-    @include background($chosen-sprite no-repeat -30px -20px);
     direction: rtl;
   }
   &.chosen-container-single{
