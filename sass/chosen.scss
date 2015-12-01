@@ -8,6 +8,7 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
 $chosen-height: 27px;
 $chosen-radius: 4px;
 
+$chosen-background: #fff;
 $chosen-border: #aaa;
 $chosen-highlight: #3875d7;
 $chosen-text: #444;
@@ -24,14 +25,14 @@ $chosen-text: #444;
     @include box-sizing(border-box);
   }
   .chosen-drop {
-    background: #eee;
-    border: 1px solid #bbb;
+    background: $chosen-background;
+    border: 1px solid $chosen-border;
     border-radius: $chosen-radius;
-    box-shadow: 0 4px 10px 1px rgba(#000, 0.2);
+    box-shadow: 0 2px 8px rgba(#000, 0.2);
     left: -9999px;
     margin-top: 2px;
     overflow: hidden;
-    padding: 4px 0;
+    padding: 5px;
     position: absolute;
     top: 100%;
     width: 100%;
@@ -45,19 +46,11 @@ $chosen-text: #444;
   }
 
   /* What is this? */
-  .search-choice, .chosen-single{
-    .group-name {
-      color: #999;
-      font-weight: normal;
-      margin-right: 4px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      &:after {
-        content: ":";
-        padding-left: 2px;
-        vertical-align: top;
-      }
+  .group-name {
+    font-weight: bold;
+    margin-right: 4px;
+    &:after {
+      content: ":";
     }
   }
 }
@@ -66,7 +59,7 @@ $chosen-text: #444;
 /* @group Single Chosen */
 .chosen-container-single {
   .chosen-single {
-    background: #fff;
+    background: $chosen-background;
     border: 1px solid $chosen-border;
     border-radius: $chosen-radius;
     color: $chosen-text;
@@ -74,7 +67,7 @@ $chosen-text: #444;
     height: $chosen-height;
     line-height: $chosen-height - 2px;
     overflow: hidden;
-    padding: 0 24px 0 8px;
+    padding: 0 25px 0 8px;
     position: relative;
     text-decoration: none;
     text-overflow: ellipsis;
@@ -93,13 +86,13 @@ $chosen-text: #444;
     }
     /* deselect icon */
     &.chosen-single-with-deselect {
-      padding-right: 40px;
+      padding-right: 45px;
       > abbr {
         background: $chosen-sprite no-repeat -42px 1px;
         height: 12px;
         position: absolute;
-        right: 26px;
-        top: 6px;
+        right: 28px;
+        top: 7px;
         width: 12px;
         &:hover {
           background-position: -42px -10px;
@@ -107,13 +100,19 @@ $chosen-text: #444;
       }
     }
   }
+  /* active */
+  &.chosen-container-active .chosen-single {
+    border-color: $chosen-highlight;
+    outline: auto 5px -webkit-focus-ring-color;
+    outline-offset: -2px;
+  }
   .chosen-search {
-    margin: 0 4px 4px 4px;
+    margin: 0 0 5px;
     position: relative;
     white-space: nowrap;
     z-index: 1010;
     input[type="text"] {
-      background: #fff $chosen-sprite no-repeat 100% -20px;
+      background: $chosen-background $chosen-sprite no-repeat right -20px;
       border: 1px solid $chosen-border;
       border-radius: $chosen-radius - 1px;
       box-shadow: inset 0 1px 2px rgba(#000, 0.1);
@@ -123,8 +122,11 @@ $chosen-text: #444;
       line-height: normal;
       margin: 1px 0;
       outline: 0;
-      padding: 4px 20px 4px 5px;
+      padding: 4px 22px 4px 7px;
       width: 100%;
+      &:focus {
+        border-color: $chosen-highlight;
+      }
     }
   }
   &.chosen-container-single-nosearch .chosen-search {
@@ -135,54 +137,67 @@ $chosen-text: #444;
 /* @end */
 
 /* @group Results */
-.chosen-container ul.chosen-results {
-  color: $chosen-text;
-  max-height: 250px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  -webkit-overflow-scrolling: touch;
-  li {
-    display: none;
-    line-height: 15px;
-    list-style: none;
+.chosen-container {
+  ul.chosen-results {
+    color: $chosen-text;
+    max-height: 250px;
+    overflow-x: hidden;
+    overflow-y: auto;
     margin: 0;
-    padding: 5px 10px;
-    word-wrap: break-word;
-    -webkit-touch-callout: none;
-    &.active-result {
-      display: list-item;
-      cursor: pointer;
+    padding: 0;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+    li {
+      border-radius: $chosen-radius - 1px;
+      display: none;
+      line-height: 15px;
+      list-style: none;
+      margin: 0;
+      padding: 5px 8px;
+      word-wrap: break-word;
+      -webkit-touch-callout: none;
+      &.active-result {
+        display: list-item;
+        cursor: pointer;
+      }
+      &.disabled-result {
+        display: list-item;
+        color: #ccc;
+        cursor: default;
+      }
+      &.result-selected {
+        display: list-item;
+        &:after {
+          content: " ✔";
+          float: right;
+        }
+      }
+      &.highlighted {
+        background-color: $chosen-highlight;
+        color: #fff;
+      }
+      &.no-results {
+        color: #999;
+        display: list-item;
+        font-style: italic;
+      }
+      &.group-result {
+        display: list-item;
+        font-weight: bold;
+        cursor: default;
+      }
+      &.group-option {
+        padding-left: 15px;
+      }
+      em {
+        font-style: normal;
+        text-decoration: underline;
+      }
     }
-    &.disabled-result,
-    &.result-selected {
-      display: list-item;
-      color: #ccc;
-      cursor: default;
-    }
-    &.highlighted {
-      background-color: $chosen-highlight;
-      color: #fff;
-    }
-    &.no-results {
-      color: #999;
-      display: list-item;
-      font-style: italic;
-    }
-    &.group-result {
-      display: list-item;
-      font-weight: bold;
-      cursor: default;
-    }
-    &.group-option {
-      padding-left: 15px;
-    }
-    em {
-      font-style: normal;
-      text-decoration: underline;
-    }
+  }
+  &.chosen-container-multi ul.chosen-results li.result-selected {
+    color: #999;
+    cursor: default;
   }
 }
 /* @end */
@@ -190,9 +205,10 @@ $chosen-text: #444;
 /* @group Multi Chosen */
 .chosen-container-multi {
   .chosen-choices {
-    background-color: #fff;
+    background-color: $chosen-background;
     border: 1px solid $chosen-border;
     border-radius: $chosen-radius;
+    box-shadow: inset 0 1px 2px rgba(#000, 0.1);
     cursor: text;
     height: auto !important;
     margin: 0;
@@ -200,50 +216,47 @@ $chosen-text: #444;
     position: relative;
     overflow: hidden;
     width: 100%;
-  }
-  .chosen-choices li {
-    float: left;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    &.search-field input[type="text"] {
-      background: transparent !important;
-      border: 0 !important;
-      color: #999;
-      font-family: sans-serif;
-      font-size: 100%;
-      height: $chosen-height - 2px;
-      line-height: $chosen-height - 2px;
+    li {
+      float: left;
+      list-style: none;
       margin: 0;
-      padding: 0 0 0 6px;
-      outline: 0;
-    }
-    &.search-choice {
-      background-color: #eee;
-      border: 1px solid $chosen-border;
-      border-radius: $chosen-radius - 1px;
-      color: $chosen-text;
-      cursor: default;
-      line-height: 13px;
-      margin: 2px 4px 2px 0;
-      max-width: 100%;
-      padding: 3px 20px 3px 5px;
-      position: relative;
-      word-wrap: break-word;
-      &:last-of-type {
-        margin-right: -5px;
+      padding: 0;
+      &.search-field input[type="text"] {
+        background: transparent !important;
+        border: 0 !important;
+        color: #999;
+        font-family: sans-serif;
+        font-size: 100%;
+        height: $chosen-height;
+        line-height: $chosen-height;
+        margin: 0;
+        padding: 0 0 0 4px;
+        outline: 0;
       }
-      .search-choice-close {
-        position: absolute;
-        top: 4px;
-        right: 3px;
-        display: block;
-        width: 12px;
-        height: 12px;
-        background: $chosen-sprite -42px 1px no-repeat;
-        font-size: 1px;
-        &:hover {
-          background-position: -42px -10px;
+      &.search-choice {
+        background-color: #eee;
+        border: 1px solid $chosen-border;
+        border-radius: $chosen-radius - 1px;
+        color: $chosen-text;
+        cursor: default;
+        line-height: 13px;
+        margin: 3px 4px 3px 0;
+        max-width: 100%;
+        padding: 3px 20px 3px 5px;
+        position: relative;
+        word-wrap: break-word;
+        .search-choice-close {
+          position: absolute;
+          top: 4px;
+          right: 3px;
+          display: block;
+          width: 12px;
+          height: 12px;
+          background: $chosen-sprite -42px 1px no-repeat;
+          font-size: 1px;
+          &:hover {
+            background-position: -42px -10px;
+          }
         }
       }
     }
@@ -251,28 +264,16 @@ $chosen-text: #444;
       border-color: #ccc;
       color: #999;
     }
-
-    /* Is this still possible? */
-    &.search-choice-focus {
-      background: #d4d4d4;
-      .search-choice-close {
-        background-position: -42px -10px;
+  }
+  /* active */
+  &.chosen-container-active {
+    .chosen-choices {
+      border-color: $chosen-highlight;
+      outline: auto 5px -webkit-focus-ring-color;
+      outline-offset: -2px;
+      li.search-field input[type="text"] {
+        color: $chosen-text;
       }
-    }
-  }
-}
-/* @end */
-
-/* @group Active  */
-.chosen-container-active {
-  .chosen-single {
-    border-color: $chosen-highlight;
-  }
-  .chosen-choices {
-    border: 1px solid #5897fb;
-    box-shadow: 0 0 5px rgba(#000,.3);
-    li.search-field input[type="text"] {
-      color: #222 !important;
     }
   }
 }
@@ -296,31 +297,25 @@ $chosen-text: #444;
     cursor: default;
   }
 }
-
 /* @end */
 
 /* @group Right to Left */
 .chosen-rtl {
   text-align: right;
   .chosen-single {
-    overflow: visible;
-    padding: 0 8px 0 0;
-  }
-  .chosen-single span {
-    margin-right: 0;
-    margin-left: 26px;
-    direction: rtl;
-  }
-  .chosen-single-with-deselect span {
-    margin-left: 38px;
-  }
-  .chosen-single div {
-    right: auto;
-    left: 3px;
-  }
-  .chosen-single abbr {
-    right: auto;
-    left: 26px;
+    padding: 0 8px 0 25px;
+    > div {
+      left: 8px;
+      right: auto;
+    }
+    &.chosen-single-with-deselect {
+      padding-left: 45px;
+      padding-right: 8px;
+      > abbr {
+        left: 28px;
+        right: auto;
+      }
+    }
   }
   .chosen-choices li {
     float: right;
@@ -328,8 +323,10 @@ $chosen-text: #444;
       direction: rtl;
     }
     &.search-choice {
-      margin: 3px 5px 3px 0;
-      padding: 3px 5px 3px 19px;
+      margin-left: 5px;
+      margin-right: 0;
+      padding-left: 20px;
+      padding-right: 5px;
       .search-choice-close {
         right: auto;
         left: 4px;
@@ -340,45 +337,30 @@ $chosen-text: #444;
   .chosen-drop {
     left: 9999px;
   }
-  &.chosen-container-single .chosen-results {
-    margin: 0 0 4px 4px;
-    padding: 0 4px 0 0;
-  }
-  .chosen-results li.group-option {
-    padding-right: 15px;
-    padding-left: 0;
-  }
-  &.chosen-container-active.chosen-with-drop .chosen-single div {
-    border-right: none;
+  &.chosen-container ul.chosen-results li {
+    .group-option {
+      padding-left: 0;
+      padding-right: 15px;
+    }
+    &.result-selected:after {
+      float: left;
+    }
   }
   .chosen-search input[type="text"] {
-    padding: 4px 5px 4px 20px;
-    background: #fff $chosen-sprite no-repeat -30px -20px;
+    padding: 4px 7px 4px 20px;
+    background-position: -29px -20px;
     direction: rtl;
   }
-  &.chosen-container-single{
-    .chosen-single div b {
-      background-position: 6px 2px;
-    }
-    &.chosen-with-drop{
-      .chosen-single div b {
-        background-position: -12px 2px;
-      }
-    }
-  }
 }
-
 /* @end */
 
 /* @group Retina compatibility */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi), only screen and (min-resolution: 1.5dppx) {
   .chosen-rtl .chosen-search input[type="text"],
   .chosen-container-single .chosen-single abbr,
-  .chosen-container-single .chosen-single div b,
+  .chosen-container-single .chosen-single div,
   .chosen-container-single .chosen-search input[type="text"],
-  .chosen-container-multi .chosen-choices .search-choice .search-choice-close,
-  .chosen-container .chosen-results-scroll-down span,
-  .chosen-container .chosen-results-scroll-up span {
+  .chosen-container-multi .chosen-choices .search-choice .search-choice-close {
     background-image: $chosen-sprite-retina !important;
     background-size: 52px 37px !important;
     background-repeat: no-repeat !important;
