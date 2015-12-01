@@ -246,14 +246,14 @@ $chosen-text: #444;
         position: relative;
         word-wrap: break-word;
         .search-choice-close {
-          position: absolute;
-          top: 4px;
-          right: 3px;
+          background: $chosen-sprite no-repeat -42px 1px;
           display: block;
-          width: 12px;
-          height: 12px;
-          background: $chosen-sprite -42px 1px no-repeat;
           font-size: 1px;
+          height: 12px;
+          position: absolute;
+          right: 3px;
+          top: 4px;
+          width: 12px;
           &:hover {
             background-position: -42px -10px;
           }
@@ -328,8 +328,8 @@ $chosen-text: #444;
       padding-left: 20px;
       padding-right: 5px;
       .search-choice-close {
-        right: auto;
         left: 4px;
+        right: auto;
       }
     }
   }
@@ -347,9 +347,9 @@ $chosen-text: #444;
     }
   }
   .chosen-search input[type="text"] {
-    padding: 4px 7px 4px 20px;
     background-position: -29px -20px;
     direction: rtl;
+    padding: 4px 7px 4px 20px;
   }
 }
 /* @end */
@@ -362,8 +362,8 @@ $chosen-text: #444;
   .chosen-container-single .chosen-search input[type="text"],
   .chosen-container-multi .chosen-choices .search-choice .search-choice-close {
     background-image: $chosen-sprite-retina !important;
-    background-size: 52px 37px !important;
     background-repeat: no-repeat !important;
+    background-size: 52px 37px !important;
   }
 }
 /* @end */
