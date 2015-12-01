@@ -282,7 +282,7 @@ class AbstractChosen
   # class methods and variables ============================================================
 
   @browser_is_supported: ->
-    if /iP(od|hone)/i.test(window.navigator.userAgent)
+    if /iPad|iPhone|iPod/i.test(window.navigator.userAgent)
       return false
     if /Android/i.test(window.navigator.userAgent)
       return false
