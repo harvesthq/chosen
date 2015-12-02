@@ -31,6 +31,7 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+    @min_char_to_start_search = @options.min_char_to_start_search || 0
     @include_group_label_in_selected = @options.include_group_label_in_selected || false
     @max_shown_results = @options.max_shown_results || Number.POSITIVE_INFINITY
 
@@ -247,7 +248,7 @@ class AbstractChosen
         return true
       when 9, 38, 40, 16, 91, 17, 18
         # don't do anything on these keys
-      else this.results_search()
+      else this.results_search() if this.search_field.val().length >= @min_char_to_start_search
 
   clipboard_event_checker: (evt) ->
     setTimeout (=> this.results_search()), 50
