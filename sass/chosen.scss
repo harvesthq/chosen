@@ -5,13 +5,13 @@
 $chosen-sprite: image-url('chosen-sprite.png') !default;
 $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
 
-$chosen-height: 27px;
-$chosen-radius: 4px;
+$chosen-height: 27px !default;
+$chosen-radius: 4px !default;
 
-$chosen-background: #fff;
-$chosen-border: #aaa;
-$chosen-highlight: #3875d7;
-$chosen-text: #444;
+$chosen-background: #fff !default;
+$chosen-border: #aaa !default;
+$chosen-highlight: #3875d7 !default;
+$chosen-text: #444 !default;
 
 /* @group Base */
 .chosen-container {
