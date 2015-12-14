@@ -18,7 +18,7 @@ $chosen-choice-background: #eee !default;
 $chosen-highlight-background: #3875d7 !default;
 $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background, 5%)) !default;
 
-/* @group Base */
+// @group Base
 .chosen-container {
   display: inline-block;
   font-family: sans-serif;
@@ -51,7 +51,7 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
     cursor: pointer;
   }
 
-  /* include_group_label_in_selected */
+  // include_group_label_in_selected
   .group-name {
     font-weight: bold;
     margin-right: 4px;
@@ -60,9 +60,9 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
     }
   }
 }
-/* @end */
+// @end
 
-/* @group Single Chosen */
+// @group Single Chosen
 .chosen-container-single {
   .chosen-single {
     background: $chosen-background $chosen-gradient;
@@ -82,7 +82,7 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
     &.chosen-default {
       color: #999;
     }
-    /* down arrow */
+    // down arrow
     > div {
       background: $chosen-sprite no-repeat 9px 10px;
       height: 100%;
@@ -91,7 +91,7 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
       top: 0;
       width: 25px;
     }
-    /* deselect icon */
+    // deselect icon
     &.chosen-single-with-deselect {
       padding-right: 45px;
       > abbr {
@@ -107,13 +107,13 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
       }
     }
   }
-  /* active */
+  // active
   &.chosen-container-active .chosen-single {
     border-color: $chosen-highlight-background;
     outline: auto 5px -webkit-focus-ring-color;
     outline-offset: -2px;
   }
-  /* with drop */
+  // with drop
   &.chosen-container-active.chosen-with-drop .chosen-single {
     background: $chosen-choice-background;
     border-color: $chosen-border;
@@ -150,9 +150,9 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
     left: -9999px;
   }
 }
-/* @end */
+// @end
 
-/* @group Results */
+// @group Results
 .chosen-container {
   ul.chosen-results {
     color: $chosen-text;
@@ -215,9 +215,9 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
     opacity: 0.5;
   }
 }
-/* @end */
+// @end
 
-/* @group Multi Chosen */
+// @group Multi Chosen
 .chosen-container-multi {
   .chosen-choices {
     background-color: $chosen-background;
@@ -281,7 +281,7 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
       color: #999;
     }
   }
-  /* active */
+  // active
   &.chosen-container-active {
     .chosen-choices {
       border-color: $chosen-highlight-background;
@@ -293,9 +293,9 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
     }
   }
 }
-/* @end */
+// @end
 
-/* @group Disabled Support */
+// @group Disabled Support
 .chosen-disabled {
   opacity: 0.5 !important;
   cursor: default;
@@ -313,9 +313,9 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
     cursor: default;
   }
 }
-/* @end */
+// @end
 
-/* @group Right to Left */
+// @group Right to Left Support
 .chosen-rtl {
   text-align: right;
   .chosen-single {
@@ -374,9 +374,9 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
     padding-right: 7px;
   }
 }
-/* @end */
+// @end
 
-/* @group Retina compatibility */
+// @group Retina Compatibility
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi), only screen and (min-resolution: 1.5dppx) {
   .chosen-container-single .chosen-single div,
   .chosen-container-single .chosen-single abbr,
@@ -388,4 +388,4 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
     background-size: $chosen-retina-background-size !important;
   }
 }
-/* @end */
+// @end
