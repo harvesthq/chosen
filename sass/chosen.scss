@@ -10,8 +10,9 @@ $chosen-height: 27px !default;
 $chosen-radius: 4px !default;
 
 $chosen-font-size: 13px !default;
-
 $chosen-text: #444 !default;
+$chosen-light-text: #999 !default;
+
 $chosen-border: #bbb !default;
 $chosen-background: #fff !default;
 $chosen-choice-background: #eee !default;
@@ -80,7 +81,7 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
     text-overflow: ellipsis;
     white-space: nowrap;
     &.chosen-default {
-      color: #999;
+      color: $chosen-light-text;
     }
     // down arrow
     > div {
@@ -178,8 +179,8 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
       }
       &.disabled-result {
         display: list-item;
-        color: #ccc;
         cursor: default;
+        opacity: 0.3;
       }
       &.result-selected {
         background: $chosen-sprite no-repeat right -68px;
@@ -190,10 +191,11 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
       }
       &.highlighted {
         background-color: $chosen-highlight-background;
-        color: #fff;
+        color: $chosen-background;
       }
       &.no-results {
-        color: #999;
+        background: $chosen-choice-background;
+        color: $chosen-light-text;
         display: list-item;
         font-style: italic;
       }
@@ -212,7 +214,8 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
     }
   }
   &.chosen-container-multi ul.chosen-results li.result-selected {
-    opacity: 0.5;
+    cursor: default;
+    opacity: 0.6;
   }
 }
 // @end
@@ -239,7 +242,7 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
       &.search-field input[type="text"] {
         background: transparent !important;
         border: 0 !important;
-        color: #999;
+        color: $chosen-light-text;
         font-family: sans-serif;
         font-size: 100%;
         height: $chosen-height;
@@ -254,31 +257,27 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
         border-radius: $chosen-radius - 1px;
         color: $chosen-text;
         cursor: default;
-        height: $chosen-height - 6px;
-        line-height: $chosen-height - 8px;
+        line-height: $chosen-height - 10px;
         margin: 3px 4px 0 0;
         max-width: 100%;
-        padding: 0 20px 0 5px;
+        padding: 1px 5px;
         position: relative;
         word-wrap: break-word;
         .search-choice-close {
           background: $chosen-sprite no-repeat left -21px;
-          display: block;
+          float: right;
           font-size: 1px;
           height: 10px;
-          position: absolute;
-          right: 4px;
-          top: 5px;
+          margin: 4px -1px 0 5px;
           width: 9px;
           &:hover {
             background-position: left -32px;
           }
         }
       }
-    }
-    &.search-choice-disabled {
-      border-color: #ccc;
-      color: #999;
+      &.search-choice-disabled {
+        opacity: 0.6;
+      }
     }
   }
   // active
@@ -341,11 +340,10 @@ $chosen-gradient: linear-gradient($chosen-background, darken($chosen-background,
     &.search-choice {
       margin-left: 5px;
       margin-right: 0;
-      padding-left: 20px;
-      padding-right: 5px;
       .search-choice-close {
-        left: 4px;
-        right: auto;
+        float: left;
+        margin-left: -1px;
+        margin-right: 5px;
       }
     }
   }
