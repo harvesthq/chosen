@@ -15,10 +15,9 @@ $chosen-light-text: #999 !default;
 
 $chosen-border: #bbb !default;
 $chosen-background: #fff !default;
-$chosen-choice-background: #eee !default;
+$chosen-choice-background: #f2f2f2 !default;
 $chosen-highlight-background: #3875d7 !default;
-$chosen-gradient: linear-gradient($chosen-background, darken($chosen-background, 5%)) !default;
-$chosen-box-shadow: 0 1px 1px rgba(#000, 0.1);
+$chosen-box-shadow: inset 0 1px 2px rgba(#000, 0.1);
 
 // @group Base
 .chosen-container {
@@ -67,10 +66,9 @@ $chosen-box-shadow: 0 1px 1px rgba(#000, 0.1);
 // @group Single Chosen
 .chosen-container-single {
   .chosen-single {
-    background: $chosen-background $chosen-gradient;
+    background: $chosen-background;
     border: 1px solid $chosen-border;
     border-radius: $chosen-radius;
-    box-shadow: $chosen-box-shadow;
     color: $chosen-text;
     display: block;
     height: $chosen-height;
@@ -119,7 +117,7 @@ $chosen-box-shadow: 0 1px 1px rgba(#000, 0.1);
   &.chosen-container-active.chosen-with-drop .chosen-single {
     background: $chosen-choice-background;
     border-color: $chosen-border;
-    box-shadow: inset 0 1px 2px rgba(#000, 0.1);
+    box-shadow: $chosen-box-shadow;
     outline: 0;
   }
   .chosen-search {
@@ -131,7 +129,7 @@ $chosen-box-shadow: 0 1px 1px rgba(#000, 0.1);
       background: $chosen-background $chosen-sprite no-repeat right -46px;
       border: 1px solid $chosen-border;
       border-radius: $chosen-radius - 1px;
-      box-shadow: inset 0 1px 2px rgba(#000, 0.1);
+      box-shadow: $chosen-box-shadow;
       color: inherit;
       font-family: sans-serif;
       font-size: 1em;
@@ -227,7 +225,6 @@ $chosen-box-shadow: 0 1px 1px rgba(#000, 0.1);
     background-color: $chosen-background;
     border: 1px solid $chosen-border;
     border-radius: $chosen-radius;
-    box-shadow: inset $chosen-box-shadow;
     cursor: text;
     height: auto !important;
     margin: 0;
@@ -286,6 +283,7 @@ $chosen-box-shadow: 0 1px 1px rgba(#000, 0.1);
   &.chosen-container-active {
     .chosen-choices {
       border-color: $chosen-highlight-background;
+      box-shadow: $chosen-box-shadow;
       outline: auto 5px -webkit-focus-ring-color;
       outline-offset: -2px;
       li.search-field input[type="text"] {
@@ -298,20 +296,25 @@ $chosen-box-shadow: 0 1px 1px rgba(#000, 0.1);
 
 // @group Disabled Support
 .chosen-disabled {
+  cursor: not-allowed;
   opacity: 0.5 !important;
-  cursor: default;
+  pointer-events: none;
 }
 .chosen-container-single.chosen-disabled {
   .chosen-single {
-    cursor: default;
+    cursor: not-allowed;
     &.chosen-single-with-deselect > abbr:hover {
       background-position: left -20px;
     }
   }
 }
 .chosen-container-multi.chosen-disabled {
-  .chosen-choices .search-choice .search-choice-close {
-    cursor: default;
+  cursor: not-allowed;
+  .chosen-choices,
+  .chosen-choices li.search-choice,
+  .chosen-choices li.search-choice .search-choice-close,
+  .chosen-choices li.search-field input[type="text"] {
+    cursor: not-allowed;
   }
 }
 // @end
@@ -382,7 +385,7 @@ $chosen-box-shadow: 0 1px 1px rgba(#000, 0.1);
   .chosen-container-single .chosen-single abbr,
   .chosen-container-single .chosen-search input[type="text"],
   .chosen-container .chosen-results .result-selected,
-  .chosen-container-multi .chosen-choices .search-choice .search-choice-close {
+  .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
     background-image: $chosen-sprite-retina !important;
     background-repeat: no-repeat !important;
     background-size: $chosen-retina-background-size !important;
