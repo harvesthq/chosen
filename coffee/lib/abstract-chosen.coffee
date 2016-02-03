@@ -20,7 +20,7 @@ class AbstractChosen
     @mouse_on_container = false
     @results_showing = false
     @result_highlighted = null
-    @scroll_to_highlighted = true
+    @scroll_to_highlighted = if @options.scroll_to_highlighted != null then @options.scroll_to_highlighted else true
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
     @disable_search_threshold = @options.disable_search_threshold || 0
     @disable_search = @options.disable_search || false
@@ -255,6 +255,9 @@ class AbstractChosen
 
   container_width: ->
     return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
+    
+  scroll_to_highlighted: ->
+    return if @options.scroll_to_highlighted? then @options.scroll_to_highlighted else true
 
   include_option_in_results: (option) ->
     return false if @is_multiple and (not @display_selected_options and option.selected)
