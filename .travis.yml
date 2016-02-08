@@ -1,12 +1,22 @@
+sudo: false
+
 language: node_js
 
 node_js:
   - "0.10"
 
+addons:
+  apt:
+    sources:
+      - git-core
+    packages:
+      - git
+
 before_install:
   - npm install -g grunt-cli
   - gem install bundler
   - bundle install
+
 before_script: grunt build
 
 after_success: ./bower-publish.sh
