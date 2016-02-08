@@ -4,6 +4,9 @@ node_js:
   - "0.10"
 
 before_install:
+  - sudo add-apt-repository ppa:git-core/ppa -y
+  - sudo apt-get update
+  - sudo apt-get install git -y
   - npm install -g grunt-cli
   - gem install bundler
   - bundle install
