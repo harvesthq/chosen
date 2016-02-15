@@ -2,6 +2,7 @@
 node_modules
 .project
 public/*.css
+public/*.js
 public/bower.json
 chosen.zip
 .sass-cache
