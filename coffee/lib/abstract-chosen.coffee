@@ -286,10 +286,9 @@ class AbstractChosen
        /IEMobile/i.test(window.navigator.userAgent) or
        /Windows Phone/i.test(window.navigator.userAgent) or
        /BlackBerry/i.test(window.navigator.userAgent) or
-       /BB10/i.test(window.navigator.userAgent)
+       /BB10/i.test(window.navigator.userAgent) or
+       /Android.*Mobile/i.test(window.navigator.userAgent)
       return false
-    if /Android/i.test(window.navigator.userAgent)
-      return false if /Mobile/i.test(window.navigator.userAgent)
     if "Microsoft Internet Explorer" is window.navigator.appName
       return document.documentMode >= 8
     return true
