@@ -8,9 +8,11 @@ $.fn.extend({
     this.each (input_field) ->
       $this = $ this
       chosen = $this.data('chosen')
-      if options is 'destroy' && chosen instanceof Chosen
-        chosen.destroy()
-      else unless chosen instanceof Chosen
+      if options is 'destroy'
+        if chosen instanceof Chosen
+          chosen.destroy()
+        return
+      unless chosen instanceof Chosen
         $this.data('chosen', new Chosen(this, options))
 
       return

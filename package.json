@@ -1,7 +1,7 @@
 {
   "author": "harvest",
   "name": "chosen",
-  "version": "1.4.2",
+  "version": "1.5.1",
   "description": "Chosen is a JavaScript plugin that makes select boxes user-friendly. It is currently available in both jQuery and Prototype flavors.",
   "repository": {
     "type": "git",
@@ -38,9 +38,7 @@
   "bowerJSON":{
     "main": [
       "chosen.jquery.js",
-      "chosen.css",
-      "chosen-sprite@2x.png",
-      "chosen-sprite.png"
+      "chosen.css"
     ]
   },
   "jqueryJSON": {
