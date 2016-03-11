@@ -1,46 +1,47 @@
 <!---
-Please read our [Contributing Guidelines](https://github.com/harvesthq/chosen/blob/master/contributing.md) before opening this bug report or feature request.
+Please read our Contributing Guidelines before opening this issue: https://github.com/harvesthq/chosen/blob/master/contributing.md
 
-Following these guidelines will help us get back to you more quickly, and will show that you care about making Chosen better just like we do!
+Specifically, please note that the issue tracker is intended for bug reports and specific feature requests.
+
+If you have a general support or usage question, please post somewhere like StackOverflow using the `jquery-chosen` tag: http://stackoverflow.com/questions/tagged/jquery-chosen — you'll be much more likely to get a quick answer there.
 -->
 
-## Bug Report Template
-
-Describe your issue here.
-
-### My environment
-A summary of the issue and the browser/OS environment in which it occurs.
+Summarize your issue here.
 
 ### Steps to reproduce
+
 Tell us how to reproduce this issue.
 
-1. This is the first step
-2. This is the second step
-3. Further steps, etc.
+  1. This is the first step
 
-Please provide a working demo, you can use [this template](https://jsfiddle.net/hyktf3he) as a base.
+  2. This is the second step
 
-### Expected behaviour
+  3. Further steps, etc.
+
+Additionally, please link to a working demo that shows the issue so we can attempt to reproduce.  You can use [this template](https://jsfiddle.net/5v3v353z/) as a base.  Alternatively, confirm that the [Chosen demo page](http://harvesthq.github.io/chosen/) shows the issue.
+
+
+### Expected behavior
+
 Tell us what should happen.
 
-### Actual behaviour
+
+### Actual behavior
+
 Tell us what happens instead.
 
-### Additional information
-Any other information you want to share that is relevant to the issue being reported. This might include the lines of code that you have identified as causing the bug, and potential solutions (and your opinions on their merits).
 
-See [here](https://github.com/harvesthq/chosen/blob/master/contributing.md#bug-reports) for more detail on what is expected of a feature request.
+### Environment
 
----
+  - **Chosen Version**:
 
-## Feature Request Template
+  - **jQuery or Prototype Version**:
 
-A description of the problem you're trying to solve, including *why* you think this is a problem, please add as much detail as possible.
+  - **Browser and Version**:
 
-### Proposed Solution
-An overview of the suggested solution and why you believe this solution is appropriate.
+  - **OS and Version**:
+
 
 ### Additional information
-Any other information you want to share that is relevant to the feature request. This might include proposed changes to the code, a breakdown of the problem or a mockup of how the new feature should look.
 
-See [here](https://github.com/harvesthq/chosen/blob/master/contributing.md#feature-requests) for more detail on what is expected of a feature request.
+Any other information you want to share that is relevant to the issue being reported. This might include the lines of code that you have identified as causing the bug, or potential solutions and workarounds.

@@ -1,18 +1,23 @@
 <!---
-Good pull requests &mdash; patches, improvements, new features &mdash; are a fantastic help.
-They should remain focused in scope and avoid containing unrelated commits.
+Good pull requests — patches, improvements, new features — are a fantastic help.  They should remain focused in scope and avoid containing unrelated commits.
 
-Please follow our [code conventions](https://github.com/harvesthq/chosen/blob/master/contributing.md#code-conventions) before submitting your work. Adhering to these guidelines is the best way to get your work included in Chosen.
+Please review the Pull Requests section of our Contributing Guidelines before submitting your work: https://github.com/harvesthq/chosen/blob/master/contributing.md#pull-requests
 -->
 
-## Pull Request Template
+### Summary
 
-Please provide: a clear title and description of the changes you've made, details of any issues these changes fix, why you believe this PR is suitable to be merged into chosen, and double check that:
+Provide a general description of the code changes in your pull request.
 
-- [ ] All changes were made in CoffeeScript files, **not** JavaScript files.
-- [ ] You have used [Grunt](https://github.com/harvesthq/chosen/blob/master/contributing.md#grunt) to build the JavaScript files.
-- [ ] You've updated both the jQuery *and* Prototype versions
-- [ ] You haven't manually updated the version number in `package.json`.
-- [ ] If adding to, or adjusting, configuration; you've added, or updated, the [appropriate documentation](https://github.com/harvesthq/chosen/blob/master/public/options.html).
+Please double-check that:
 
-See [here](https://github.com/harvesthq/chosen/blob/master/contributing.md#pull-requests) for more detail on what is expected of a pull request.
+  - [ ] All changes were made in CoffeeScript files, **not** JavaScript files.
+  - [ ] You used [Grunt](https://github.com/harvesthq/chosen/blob/master/contributing.md#grunt) to build the JavaScript files and tested them locally.
+  - [ ] You've updated both the jQuery *and* Prototype versions.
+  - [ ] You haven't manually updated the version number in `package.json`.
+  - [ ] If necessary, you've updated [the documentation](https://github.com/harvesthq/chosen/blob/master/public/options.html).
+
+See the [Pull Requests section of our Contributing Guidelines](https://github.com/harvesthq/chosen/blob/master/contributing.md#pull-requests) for more details.
+
+### References
+
+If your pull request is in reference to one or more open GitHub issues, please mention them here to keep the conversations linked together.
