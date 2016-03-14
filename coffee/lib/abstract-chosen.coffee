@@ -1,3 +1,24 @@
+fuzzysearch = `function (needle, haystack) {
+  var hlen = haystack.length;
+  var nlen = needle.length;
+  if (nlen > hlen) {
+    return false;
+  }
+  if (nlen === hlen) {
+    return needle === haystack;
+  }
+  outer: for (var i = 0, j = 0; i < nlen; i++) {
+    var nch = needle.charCodeAt(i);
+    while (j < hlen) {
+      if (haystack.charCodeAt(j++) === nch) {
+        continue outer;
+      }
+    }
+    return false;
+  }
+  return true;
+}`
+
 class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
@@ -154,9 +175,6 @@ class AbstractChosen
     results = 0
 
     searchText = this.get_search_text()
-    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-    zregex = new RegExp(escapedSearchText, 'i')
-    regex = this.get_search_regex(escapedSearchText)
 
     for option in @results_data
 
@@ -177,15 +195,10 @@ class AbstractChosen
         option.search_text = if option.group then option.label else option.html
 
         unless option.group and not @group_search
-          option.search_match = this.search_string_match(option.search_text, regex)
+          option.search_match = fuzzysearch(searchText, option.search_text.toLowerCase())
           results += 1 if option.search_match and not option.group
 
           if option.search_match
-            if searchText.length
-              startpos = option.search_text.search zregex
-              text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
-              option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
-
             results_group.group_match = true if results_group?
 
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
@@ -199,21 +212,6 @@ class AbstractChosen
     else
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
-
-  get_search_regex: (escaped_search_string) ->
-    regex_anchor = if @search_contains then "" else "^"
-    new RegExp(regex_anchor + escaped_search_string, 'i')
-
-  search_string_match: (search_string, regex) ->
-    if regex.test search_string
-      return true
-    else if @enable_split_word_search and (search_string.indexOf(" ") >= 0 or search_string.indexOf("[") == 0)
-      #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-      parts = search_string.replace(/\[|\]/g, "").split(" ")
-      if parts.length
-        for part in parts
-          if regex.test part
-            return true
 
   choices_count: ->
     return @selected_option_count if @selected_option_count?
