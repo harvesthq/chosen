@@ -33,6 +33,7 @@ class AbstractChosen
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
     @include_group_label_in_selected = @options.include_group_label_in_selected || false
     @max_shown_results = @options.max_shown_results || Number.POSITIVE_INFINITY
+    @autohide_results_multiple = if @options.autohide_results_multiple? then @options.autohide_results_multiple else true
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -301,4 +302,3 @@ class AbstractChosen
   @default_multiple_text: "Select Some Options"
   @default_single_text: "Select an Option"
   @default_no_result_text: "No results match"
-
