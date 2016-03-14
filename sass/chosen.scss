@@ -413,6 +413,69 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
 
 /* @end */
 
+/* @group Right to Left */
+
+.chosen-image-container {
+
+  .chosen-results li,
+  .chosen-single span.image {
+    background-position: 3px 45%;
+    background-size: 19px 19px;
+    padding-left: 27px;
+    height: 25px;
+  }
+
+  .chosen-single {
+    padding: 0 0 0 4px;
+
+    span.image {
+      background-position: 3px 40%;
+      background-repeat: no-repeat;
+      padding-left: 27px;
+    }
+  }
+
+  .chosen-choices {
+    padding: 3px 3px 0;
+    min-height: 27px;
+
+    li.search-field input[type="text"] {
+      height: 28px;
+      margin: 0;
+      padding-bottom: 2px;
+    }
+
+    li.search-choice {
+      height: 25px;
+      margin: 0 3px 3px 0;
+      padding: 2px 24px 2px 5px;
+      line-height: 19px;
+      border-radius: 2px;
+
+      span.image {
+        background-repeat: no-repeat;
+        padding-left: 25px;
+        background-size: 19px 19px;
+        display: inline-block;
+      }
+
+      .search-choice-close {
+        top: 6px;
+        right: 5px;
+      }
+    }
+  }
+
+  .chosen-results li {
+    background-repeat: no-repeat;
+    &.highlighted {
+      background-size: 19px;
+    }
+  }
+}
+
+/* @end */
+
 /* @group Retina compatibility */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi), only screen and (min-resolution: 1.5dppx) {
   .chosen-rtl .chosen-search input[type="text"],

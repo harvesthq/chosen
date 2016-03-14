@@ -39,6 +39,7 @@ class SelectParser
           group_array_index: group_position
           group_label: if group_position? then @parsed[group_position].label else null
           classes: option.className
+          img_src: option.getAttribute("data-img-src")
           style: option.style.cssText
       else
         @parsed.push

@@ -1415,6 +1415,41 @@
         </div>
       </div>
 
+      <h2><a name="option-image-support" class="anchor" href="#option-image-support">Option Image Support</a></h2>
+      <div class="side-by-side clearfix">
+        <p>Set chosen options like this:</p>
+        <pre><code class="language-javascript"> $(".chosen-select").chosen({option_images: true}); </code></pre>
+        <p>Specify image src on needed option elements with attribute <code class="language-html">data-img-src</code> like this:</p>
+        <pre><code class="language-markup">&lt;select data-placeholder="Choose a country..." class="chosen-select"&gt;
+  &lt;option data-img-src="http://www.example.com/images/be.png">Belgium&lt;/option&gt;
+  &lt;option data-img-src="http://www.example.com/images/lv.png" selected>Latvia&lt;/option&gt;
+  &lt;option data-img-src="http://www.example.com/images/us.png">USA&lt;/option&gt;
+  &lt;option data-img-src="http://www.example.com/images/jp.png">Japan&lt;/option&gt;
+  &lt;option>Neverland&lt;/option&gt;
+&lt;/select&gt;</code></pre>
+        <div>
+          <em>Single Select</em>
+
+          <select data-placeholder="Choose a country..." class="chosen-select-images" style="width:350px;" tabindex="19">
+            <option data-img-src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.7.1/flags/4x3/be.svg">Belgium</option>
+            <option data-img-src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.7.1/flags/4x3/lv.svg" selected>Latvia</option>
+            <option data-img-src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.7.1/flags/4x3/us.svg">USA</option>
+            <option data-img-src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.7.1/flags/4x3/jp.svg">Japan</option>
+            <option>Neverland</option>
+          </select>
+        </div>
+        <div>
+          <em>Multiple Select</em>
+          <select data-placeholder="Choose a country..." class="chosen-select-images" style="width:350px;" tabindex="20" multiple>
+            <option data-img-src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.7.1/flags/4x3/be.svg">Belgium</option>
+            <option data-img-src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.7.1/flags/4x3/lv.svg" selected>Latvia</option>
+            <option data-img-src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.7.1/flags/4x3/us.svg">USA</option>
+            <option data-img-src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.7.1/flags/4x3/jp.svg">Japan</option>
+            <option selected>Neverland</option>
+          </select>
+        </div>
+      </div>
+
       <h2><a name="setup" class="anchor" href="#setup">Setup</a></h2>
       <p>Using Chosen is easy as can be.</p>
       <ol>
@@ -1467,7 +1502,8 @@
       '.chosen-select-deselect'  : {allow_single_deselect:true},
       '.chosen-select-no-single' : {disable_search_threshold:10},
       '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-      '.chosen-select-width'     : {width:"95%"}
+      '.chosen-select-width'     : {width:"95%"},
+      '.chosen-select-images'    : {option_images: true}
     }
     for (var selector in config) {
       $(selector).chosen(config[selector]);
