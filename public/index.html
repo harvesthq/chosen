@@ -1415,6 +1415,40 @@
         </div>
       </div>
 
+      <h2><a name="native-placeholder" class="anchor" href="#native-placeholder">Native placeholder</a></h2>
+      <div class="side-by-side clearfix">
+        <p>Use native placeholder instead of default input value. It will be visible if input is empty. Useful for multiple select to display what is expected from user when something is already selected.</p>
+        <pre><code class="language-javascript"> $(".chosen-select").chosen({native_placeholder: true}); </code></pre>
+        <div>
+          <em><label for="single-label-example">Click to Highlight Single Select</label></em>
+          <select data-placeholder="Your Favorite Types of Bear" class="chosen-select-placeholder" style="width:350px;" tabindex="19" id="single-label-example">
+            <option value=""></option>
+            <option>American Black Bear</option>
+            <option>Asiatic Black Bear</option>
+            <option>Brown Bear</option>
+            <option>Giant Panda</option>
+            <option>Sloth Bear</option>
+            <option>Sun Bear</option>
+            <option>Polar Bear</option>
+            <option>Spectacled Bear</option>
+          </select>
+        </div>
+        <div>
+          <em><label for="multiple-label-example">Click to Highlight Multiple Select</label></em>
+          <select data-placeholder="Type in Bear Name" multiple class="chosen-select-placeholder" style="width:350px;" tabindex="20" id="multiple-label-example">
+            <option value=""></option>
+            <option>American Black Bear</option>
+            <option>Asiatic Black Bear</option>
+            <option>Brown Bear</option>
+            <option>Giant Panda</option>
+            <option>Sloth Bear</option>
+            <option>Sun Bear</option>
+            <option>Polar Bear</option>
+            <option>Spectacled Bear</option>
+          </select>
+        </div>
+      </div>
+
       <h2><a name="setup" class="anchor" href="#setup">Setup</a></h2>
       <p>Using Chosen is easy as can be.</p>
       <ol>
@@ -1463,11 +1497,12 @@
   <script src="docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript">
     var config = {
-      '.chosen-select'           : {},
-      '.chosen-select-deselect'  : {allow_single_deselect:true},
-      '.chosen-select-no-single' : {disable_search_threshold:10},
-      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-      '.chosen-select-width'     : {width:"95%"}
+      '.chosen-select'              : {},
+      '.chosen-select-deselect'     : {allow_single_deselect:true},
+      '.chosen-select-no-single'    : {disable_search_threshold:10},
+      '.chosen-select-no-results'   : {no_results_text:'Oops, nothing found!'},
+      '.chosen-select-width'        : {width:"95%"},
+      '.chosen-select-placeholder'  : {native_placeholder:true, allow_single_deselect: true}
     }
     for (var selector in config) {
       $(selector).chosen(config[selector]);
