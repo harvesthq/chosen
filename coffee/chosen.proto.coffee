@@ -289,7 +289,7 @@ class @Chosen extends AbstractChosen
     if item.disabled
       choice.addClassName 'search-choice-disabled'
     else
-      close_link = new Element('a', { href: '#', class: 'search-choice-close', rel: item.array_index })
+      close_link = new Element('a', { href: '#', class: 'search-choice-close', rel: item.data['option-array-index'] })
       close_link.observe "click", (evt) => this.choice_destroy_link_click(evt)
       choice.insert close_link
 

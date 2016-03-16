@@ -28,7 +28,6 @@ class SelectParser
         if group_position?
           @parsed[group_position].children += 1
         @parsed.push
-          array_index: @parsed.length
           options_index: @options_index
           value: option.value
           text: option.text
@@ -43,9 +42,9 @@ class SelectParser
           data: this.parseDataAttributes(option)
       else
         @parsed.push
-          array_index: @parsed.length
           options_index: @options_index
           empty: true
+          data: this.parseDataAttributes(option)
       @options_index += 1
 
   escapeExpression: (text) ->
