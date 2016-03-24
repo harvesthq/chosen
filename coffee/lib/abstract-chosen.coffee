@@ -33,6 +33,7 @@ class AbstractChosen
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
     @include_group_label_in_selected = @options.include_group_label_in_selected || false
     @max_shown_results = @options.max_shown_results || Number.POSITIVE_INFINITY
+    @case_sensitive_search = @options.case_sensitive_search || false
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -202,7 +203,8 @@ class AbstractChosen
 
   get_search_regex: (escaped_search_string) ->
     regex_anchor = if @search_contains then "" else "^"
-    new RegExp(regex_anchor + escaped_search_string, 'i')
+    regex_flag = if @case_sensitive_search then "" else "i"
+    new RegExp(regex_anchor + escaped_search_string, regex_flag)
 
   search_string_match: (search_string, regex) ->
     if regex.test search_string
