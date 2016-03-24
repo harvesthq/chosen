@@ -284,20 +284,15 @@ class AbstractChosen
   # class methods and variables ============================================================
 
   @browser_is_supported: ->
-    if /iP(od|hone)/i.test(window.navigator.userAgent)
-      return false
-    if /Android/i.test(window.navigator.userAgent)
-      return false if /Mobile/i.test(window.navigator.userAgent)
-    if /IEMobile/i.test(window.navigator.userAgent)
-      return false
-    if /Windows Phone/i.test(window.navigator.userAgent)
-      return false
-    if /BlackBerry/i.test(window.navigator.userAgent)
-      return false
-    if /BB10/i.test(window.navigator.userAgent)
-      return false
-    if window.navigator.appName is "Microsoft Internet Explorer"
+    if "Microsoft Internet Explorer" is window.navigator.appName
       return document.documentMode >= 8
+    if /iP(od|hone)/i.test(window.navigator.userAgent) or
+       /IEMobile/i.test(window.navigator.userAgent) or
+       /Windows Phone/i.test(window.navigator.userAgent) or
+       /BlackBerry/i.test(window.navigator.userAgent) or
+       /BB10/i.test(window.navigator.userAgent) or
+       /Android.*Mobile/i.test(window.navigator.userAgent)
+      return false
     return true
 
   @default_multiple_text: "Select Some Options"
