@@ -44,7 +44,7 @@ Guidelines for bug reports:
    repository's latest `master` changes.
 
 3. **Isolate the problem** &mdash; ideally create a [reduced test
-   case](http://css-tricks.com/6263-reduced-test-cases/) and a live example
+   case](https://css-tricks.com/reduced-test-cases/) and a live example
    (perhaps a [fiddle](http://jsfiddle.net)).
 
 A good bug report shouldn't leave others needing to contact you for more
