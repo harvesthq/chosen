@@ -243,7 +243,14 @@ class AbstractChosen
           this.results_search()
       when 13
         evt.preventDefault()
-        this.result_select(evt) if this.results_showing
+        # Work around Firefox preventing keystrokes from being detected
+        # while composing with an IME.
+        is_firefox = typeof InstallTrigger != 'undefined';
+        if is_firefox and !@enter_was_keyed_down
+          this.results_search()
+        else
+          this.result_select(evt) if this.results_showing
+        @enter_was_keyed_down = false
       when 27
         this.results_hide() if @results_showing
         return true

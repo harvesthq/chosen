@@ -469,6 +469,7 @@ class @Chosen extends AbstractChosen
         break
       when 13
         evt.preventDefault() if this.results_showing
+        @enter_was_keyed_down = true
         break
       when 32
         evt.preventDefault() if @disable_search
