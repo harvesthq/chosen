@@ -40,6 +40,7 @@ class SelectParser
           group_label: if group_position? then @parsed[group_position].label else null
           classes: option.className
           style: option.style.cssText
+          data: this.parseDataAttributes(option)
       else
         @parsed.push
           array_index: @parsed.length
@@ -61,6 +62,15 @@ class SelectParser
     unsafe_chars = /&(?!\w+;)|[\<\>\"\'\`]/g
     text.replace unsafe_chars, (chr) ->
       map[chr] || "&amp;"
+
+  parseDataAttributes: (option) ->
+    dataAttr = 'option-array-index' : this.parsed.length
+    if option?
+      for attr in option.attributes
+        attrName = attr.nodeName
+        if matches = attrName.match(/data-(.*)/)
+          dataAttr[ matches[1] ] = attr.nodeValue
+    return dataAttr
 
 SelectParser.select_to_array = (select) ->
   parser = new SelectParser()

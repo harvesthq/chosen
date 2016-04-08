@@ -104,7 +104,9 @@ class AbstractChosen
     option_el = document.createElement("li")
     option_el.className = classes.join(" ")
     option_el.style.cssText = option.style
-    option_el.setAttribute("data-option-array-index", option.array_index)
+    for attrName of option.data
+      if option.data.hasOwnProperty(attrName)
+        option_el.setAttribute('data-'+attrName, option.data[attrName])
     option_el.innerHTML = option.search_text
     option_el.title = option.title if option.title
 
