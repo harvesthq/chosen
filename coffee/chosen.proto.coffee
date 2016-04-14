@@ -27,7 +27,10 @@ class @Chosen extends AbstractChosen
 
     @container = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
-    @form_field.hide().insert({ after: @container })
+    @form_field.setStyle({
+      position: 'absolute',
+      opacity: '0'
+    }).insert({ after: @container })
     @dropdown = @container.down('div.chosen-drop')
 
     @search_field = @container.down('input')
