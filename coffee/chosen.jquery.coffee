@@ -91,6 +91,7 @@ class Chosen extends AbstractChosen
     @search_results.on 'touchend.chosen', (evt) => this.search_results_touchend(evt); return
 
     @form_field_jq.on "chosen:updated.chosen", (evt) => this.results_update_field(evt); return
+    @form_field_jq.on "chosen:buildresultslist.chosen", (evt) => this.winnow_results(); return
     @form_field_jq.on "chosen:activate.chosen", (evt) => this.activate_field(evt); return
     @form_field_jq.on "chosen:open.chosen", (evt) => this.container_mousedown(evt); return
     @form_field_jq.on "chosen:close.chosen", (evt) => this.close_field(evt); return
