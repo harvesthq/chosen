@@ -187,6 +187,7 @@ class @Chosen extends AbstractChosen
 
     @active_field = false
     this.results_hide()
+    @search_field.attr "aria-expanded", false
 
     @container.removeClassName "chosen-container-active"
     this.clear_backstroke()
@@ -202,6 +203,7 @@ class @Chosen extends AbstractChosen
     @active_field = true
 
     @search_field.value = this.get_search_field_value()
+    @search_field.attr "aria-expanded", true
     @search_field.focus()
 
   test_active_click: (evt) ->

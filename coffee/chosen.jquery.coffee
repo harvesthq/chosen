@@ -182,6 +182,7 @@ class Chosen extends AbstractChosen
 
     @active_field = false
     this.results_hide()
+    @search_field.attr("aria-expanded",false);
 
     @container.removeClass "chosen-container-active"
     this.clear_backstroke()
@@ -197,6 +198,7 @@ class Chosen extends AbstractChosen
     @active_field = true
 
     @search_field.val(@search_field.val())
+    @search_field.attr("aria-expanded",true);
     @search_field.focus()
 
 
