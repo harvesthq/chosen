@@ -2,6 +2,15 @@ class @Chosen extends AbstractChosen
 
   setup: ->
     @current_selectedIndex = @form_field.selectedIndex
+    @is_rtl = @form_field.hasClassName "chosen-rtl"
+
+  set_default_values: ->
+    super()
+
+    # HTML Templates
+    @single_temp = new Template('<a class="chosen-single chosen-default"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" /></div><ul class="chosen-results"></ul></div>')
+    @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>')
+    @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
     container_classes = ["chosen-container"]
@@ -30,6 +39,7 @@ class @Chosen extends AbstractChosen
 
     @search_field = @container.down('input')
     @search_results = @container.down('ul.chosen-results')
+    @search_results.writeAttribute('id', "#{@form_field.id}-chosen-search-results")
     this.search_field_scale()
 
     @search_no_results = @container.down('li.no-results')
@@ -41,6 +51,7 @@ class @Chosen extends AbstractChosen
       @search_container = @container.down('div.chosen-search')
       @selected_item = @container.down('.chosen-single')
 
+    this.set_aria_labels()
     this.results_build()
     this.set_tab_index()
     this.set_label_behavior()
@@ -107,6 +118,21 @@ class @Chosen extends AbstractChosen
 
     @container.remove()
     @form_field.show()
+
+  set_aria_labels: ->
+    @search_field.writeAttribute "aria-owns", @search_results.readAttribute "id"
+    if @form_field.attributes["aria-label"]
+      @search_field.writeAttribute "aria-label", @form_field.attributes["aria-label"]
+
+    if @form_field.attributes["aria-labelledby"]
+      @search_field.writeAttribute "aria-labelledby", @form_field.attributes["aria-labelledby"]
+    else if @form_field.labels.length
+      labelledbyList = ""
+      for label, i in @form_field.labels
+        if label.id is ""
+          label.id = "#{@form_field.id}-chosen-label-#{i}"
+        labelledbyList += @form_field.labels[i].id + " "
+      @search_field.writeAttribute "aria-labelledby", labelledbyList
 
   search_field_disabled: ->
     @is_disabled = @form_field.disabled || @form_field.up('fieldset')?.disabled || false
@@ -213,6 +239,8 @@ class @Chosen extends AbstractChosen
 
       @result_highlight = el
       @result_highlight.addClassName "highlighted"
+
+      @search_field.attr("aria-activedescendant", @result_highlight.attr("id"))
 
       maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
       visible_top = @search_results.scrollTop
