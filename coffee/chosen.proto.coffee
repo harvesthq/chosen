@@ -8,8 +8,8 @@ class @Chosen extends AbstractChosen
     super()
 
     # HTML Templates
-    @single_temp = new Template('<a class="chosen-single chosen-default"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" /></div><ul class="chosen-results"></ul></div>')
-    @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>')
+    @single_temp = new Template('<a class="chosen-single chosen-default"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" /></div><ul class="chosen-results" role="listbox" aria-busy="true"></ul></div>')
+    @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results" role="listbox" aria-busy="true"></ul></div>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
@@ -204,6 +204,7 @@ class @Chosen extends AbstractChosen
 
     @search_field.value = this.get_search_field_value()
     @search_field.attr "aria-expanded", true
+    this.attr "aria-busy", false
     @search_field.focus()
 
   test_active_click: (evt) ->
