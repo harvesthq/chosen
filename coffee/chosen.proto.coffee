@@ -184,7 +184,7 @@ class @Chosen extends AbstractChosen
 
     @search_field.value = @search_field.value
     @search_field.attr "aria-expanded", true
-    this.attr "aria-busy", false
+    this.search_results.attr "aria-busy", false
     @search_field.focus()
 
   test_active_click: (evt) ->

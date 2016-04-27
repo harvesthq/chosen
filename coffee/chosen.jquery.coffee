@@ -189,7 +189,7 @@ class Chosen extends AbstractChosen
 
     @search_field.val(@search_field.val())
     @search_field.attr("aria-expanded",true);
-    this.attr("aria-busy", false);
+    this.search_results.attr("aria-busy", false);
     @search_field.focus()
 
 
