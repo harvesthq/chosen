@@ -42,9 +42,9 @@ class Chosen extends AbstractChosen
     @container = ($ "<div />", container_props)
 
     if @is_multiple
-      @container.html '<ul class="chosen-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results" role="listbox"></ul></div>'
+      @container.html '<ul class="chosen-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results" role="listbox" aria-busy="true"></ul></div>'
     else
-      @container.html '<a class="chosen-single chosen-default"><span>' + @default_text + '</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" autocomplete="off" /></div><ul class="chosen-results" role="listbox"></ul></div>'
+      @container.html '<a class="chosen-single chosen-default"><span>' + @default_text + '</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" autocomplete="off" /></div><ul class="chosen-results" role="listbox" aria-busy="true"></ul></div>'
 
     @form_field_jq.hide().after @container
     @dropdown = @container.find('div.chosen-drop').first()
@@ -190,6 +190,7 @@ class Chosen extends AbstractChosen
 
     @search_field.val(@search_field.val())
     @search_field.attr("aria-expanded",true);
+    this.attr("aria-busy", false);
     @search_field.focus()
 
 
