@@ -170,7 +170,6 @@ class @Chosen extends AbstractChosen
 
     @active_field = false
     this.results_hide()
-    @search_field.attr "aria-expanded", false
 
     @container.removeClassName "chosen-container-active"
     this.clear_backstroke()
@@ -183,8 +182,6 @@ class @Chosen extends AbstractChosen
     @active_field = true
 
     @search_field.value = @search_field.value
-    @search_field.attr "aria-expanded", true
-    this.search_results.attr "aria-busy", false
     @search_field.focus()
 
   test_active_click: (evt) ->
@@ -224,7 +221,7 @@ class @Chosen extends AbstractChosen
       @result_highlight = el
       @result_highlight.addClassName "highlighted"
 
-      @search_field.attr("aria-activedescendant", @result_highlight.attr("id"))
+      @search_field.writeAttribute("aria-activedescendant", @result_highlight.attr("id"))
 
       maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
       visible_top = @search_results.scrollTop
