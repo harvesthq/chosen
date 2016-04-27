@@ -72,7 +72,6 @@ class @Chosen extends AbstractChosen
     @search_results.observe "touchend", (evt) => this.search_results_touchend(evt)
 
     @form_field.observe "chosen:updated", (evt) => this.results_update_field(evt)
-    @form_field.observe "chosen:buildresultslist", (evt) => this.winnow_results()
     @form_field.observe "chosen:activate", (evt) => this.activate_field(evt)
     @form_field.observe "chosen:open", (evt) => this.container_mousedown(evt)
     @form_field.observe "chosen:close", (evt) => this.input_blur(evt)
