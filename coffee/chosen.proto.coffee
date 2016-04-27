@@ -8,8 +8,8 @@ class @Chosen extends AbstractChosen
     super()
 
     # HTML Templates
-    @single_temp = new Template('<a class="chosen-single chosen-default"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" /></div><ul class="chosen-results"></ul></div>')
-    @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>')
+    @single_temp = new Template('<a class="chosen-single chosen-default"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" /></div><ul class="chosen-results" role="listbox" aria-busy="true"></ul></div>')
+    @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results" role="listbox" aria-busy="true"></ul></div>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
@@ -72,7 +72,6 @@ class @Chosen extends AbstractChosen
     @search_results.observe "touchend", (evt) => this.search_results_touchend(evt)
 
     @form_field.observe "chosen:updated", (evt) => this.results_update_field(evt)
-    @form_field.observe "chosen:buildresultslist", (evt) => this.winnow_results()
     @form_field.observe "chosen:activate", (evt) => this.activate_field(evt)
     @form_field.observe "chosen:open", (evt) => this.container_mousedown(evt)
     @form_field.observe "chosen:close", (evt) => this.input_blur(evt)
@@ -185,6 +184,7 @@ class @Chosen extends AbstractChosen
 
     @search_field.value = @search_field.value
     @search_field.attr "aria-expanded", true
+    this.search_results.attr "aria-busy", false
     @search_field.focus()
 
   test_active_click: (evt) ->
