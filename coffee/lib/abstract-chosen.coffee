@@ -236,13 +236,13 @@ class AbstractChosen
   get_tokenized_search_string: (text) ->
     text.split ' '
 
-  get_search_regex: (text) ->
+  get_search_regex: (escaped_search_string) ->
     if @search_fuzzy
-      new RegExp(this.get_tokenized_regex_string(text), 'i')
+      new RegExp(this.get_tokenized_regex_string(escaped_search_string), 'i')
     else
-      text = text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
       regex_anchor = if @search_contains then "" else "^"
-      new RegExp(text, 'i')
+      regex_flag = if @case_sensitive_search then "" else "i"
+      new RegExp(regex_anchor + escaped_search_string, regex_flag)
 
   search_string_match: (search_string, regex) ->
     if regex.test search_string
