@@ -11,6 +11,10 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   compass
+
+BUNDLED WITH
+   1.11.2
