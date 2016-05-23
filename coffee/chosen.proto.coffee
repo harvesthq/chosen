@@ -126,7 +126,7 @@ class @Chosen extends AbstractChosen
 
     if @form_field.attributes["aria-labelledby"]
       @search_field.writeAttribute "aria-labelledby", @form_field.attributes["aria-labelledby"]
-    else if @form_field.hasOwnProperty('labels') && @form_field.labels.length
+    else if Object.prototype.hasOwnProperty.call(@form_field,'labels') && @form_field.labels.length
       labelledbyList = ""
       for label, i in @form_field.labels
         if label.id is ""
