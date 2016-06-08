@@ -1,3 +1,14 @@
+# Changes from my side
+
+I added the funtionallity to disable the automatic scroll towards the highlighted option:
+Use it like this:
+
+    $('your_select').chosen({
+      scroll_to_highlighted: false
+    });
+
+the parameter ´scroll_to_highlighted´ is optional and default true
+
 # Chosen
 
 Chosen is a library for making long, unwieldy select boxes more user friendly.
