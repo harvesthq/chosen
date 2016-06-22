@@ -1,0 +1,15 @@
+sudo: false
+
+language: node_js
+
+node_js:
+  - "node"
+
+deploy:
+  provider: npm
+  email: chosenjs@getharvest.com
+  api_key:
+    secure: jilkDlYp31lPr5AxNTSoC7cgeJv1k+HFyD97RdscUm7Oc45397H//62twQY1w8gUtonjqoncSUe+deElbBs8Zm1RXoX3F3YdcrdhLgmpUFa6Qt2L1ttSJRJ/HOn7NxupwNAHCFiLib5ffFED6FvntHJG/A1693yQeR9lycMsmrQ=
+  on:
+    tags: true
+    repo: harvesthq/chosen-package
