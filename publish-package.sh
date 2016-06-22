@@ -23,6 +23,11 @@ git config user.name "chosen-package"
 
 LATEST_VERSION=`git tag --sort=v:refname | tail -1`
 
+git remote set-url origin $GITHUB_URL
+
+git add -A
+git commit -m "Chosen build to chosen-package"
+
 if [ "$LATEST_VERSION" = "$CHOSEN_VERSION" ] ; then
   echo "No Chosen version change. Skipped tagging"
 else
@@ -30,10 +35,6 @@ else
   git tag -a "${CHOSEN_VERSION}" -m "Version ${CHOSEN_VERSION}"
 fi
 
-git remote set-url origin $GITHUB_URL
-
-git add -A
-git commit -m "Chosen build to chosen-package"
 git push origin master
 git push origin --tags
 
