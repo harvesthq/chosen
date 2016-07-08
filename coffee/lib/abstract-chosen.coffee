@@ -286,7 +286,7 @@ class AbstractChosen
   @browser_is_supported: ->
     if "Microsoft Internet Explorer" is window.navigator.appName
       return document.documentMode >= 8
-    if /iP(od|hone)/i.test(window.navigator.userAgent) or
+    if /iP(ad|od|hone)/i.test(window.navigator.userAgent) or
        /IEMobile/i.test(window.navigator.userAgent) or
        /Windows Phone/i.test(window.navigator.userAgent) or
        /BlackBerry/i.test(window.navigator.userAgent) or
