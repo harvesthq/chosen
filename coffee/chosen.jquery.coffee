@@ -478,6 +478,10 @@ class Chosen extends AbstractChosen
       when 32
         evt.preventDefault() if @disable_search
         break
+      when 36
+        this.result_deselect(this.current_selectedIndex)
+        this.search_results.scrollTop(0)
+        break
       when 38
         evt.preventDefault()
         this.keyup_arrow()
