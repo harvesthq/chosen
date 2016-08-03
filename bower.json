@@ -1,5 +1,5 @@
 {
-  "name": "chosen-js",
+  "name": "chosen",
   "description": "Chosen is a JavaScript plugin that makes select boxes user-friendly. It is currently available in both jQuery and Prototype flavors.",
   "keywords": [
     "select",
@@ -34,7 +34,9 @@
   },
   "main": [
     "chosen.jquery.js",
-    "chosen.css"
+    "chosen.css",
+    "chosen-sprite@2x.png",
+    "chosen-sprite.png"
   ],
   "ignore": [],
   "repository": {
