@@ -34,6 +34,7 @@ class AbstractChosen
     @include_group_label_in_selected = @options.include_group_label_in_selected || false
     @max_shown_results = @options.max_shown_results || Number.POSITIVE_INFINITY
     @case_sensitive_search = @options.case_sensitive_search || false
+    @process_results = @options.process_results || false
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -150,6 +151,9 @@ class AbstractChosen
       this.results_show()
 
   winnow_results: ->
+    if @process_results
+      return this.process_results(this);
+
     this.no_results_clear()
 
     results = 0
