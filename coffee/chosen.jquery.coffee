@@ -340,6 +340,8 @@ class Chosen extends AbstractChosen
 
   result_select: (evt) ->
     if $(evt.target).hasClass "group-result"
+      if not @can_select_by_group
+        return
       $(evt.target).nextAll().each (_, option) =>
         if not $(option).hasClass "group-result"
           array_index = $(option).attr "data-option-array-index"
