@@ -286,13 +286,13 @@ class AbstractChosen
   @browser_is_supported: ->
     if "Microsoft Internet Explorer" is window.navigator.appName
       return document.documentMode >= 8
-    if /iP(od|hone)/i.test(window.navigator.userAgent) or
-       /IEMobile/i.test(window.navigator.userAgent) or
-       /Windows Phone/i.test(window.navigator.userAgent) or
-       /BlackBerry/i.test(window.navigator.userAgent) or
-       /BB10/i.test(window.navigator.userAgent) or
-       /Android.*Mobile/i.test(window.navigator.userAgent)
-      return false
+    # if /iP(od|hone)/i.test(window.navigator.userAgent) or
+    #  /IEMobile/i.test(window.navigator.userAgent) or
+    #  /Windows Phone/i.test(window.navigator.userAgent) or
+    #  /BlackBerry/i.test(window.navigator.userAgent) or
+    #  /BB10/i.test(window.navigator.userAgent) or
+    #  /Android.*Mobile/i.test(window.navigator.userAgent)
+    # return false
     return true
 
   @default_multiple_text: "Select Some Options"
