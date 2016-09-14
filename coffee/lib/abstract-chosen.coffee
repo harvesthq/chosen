@@ -34,6 +34,7 @@ class AbstractChosen
     @include_group_label_in_selected = @options.include_group_label_in_selected || false
     @max_shown_results = @options.max_shown_results || Number.POSITIVE_INFINITY
     @case_sensitive_search = @options.case_sensitive_search || false
+    @hide_results_on_select = if @options.hide_results_on_select? then @options.hide_results_on_select else true
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
