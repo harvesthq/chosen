@@ -1,4 +1,4 @@
-class @Chosen extends AbstractChosen
+class Chosen extends AbstractChosen
 
   setup: ->
     @current_selectedIndex = @form_field.selectedIndex
@@ -199,22 +199,22 @@ class @Chosen extends AbstractChosen
     @parsing = false
 
   result_do_highlight: (el) ->
-      this.result_clear_highlight()
+    this.result_clear_highlight()
 
-      @result_highlight = el
-      @result_highlight.addClassName "highlighted"
+    @result_highlight = el
+    @result_highlight.addClassName "highlighted"
 
-      maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
-      visible_top = @search_results.scrollTop
-      visible_bottom = maxHeight + visible_top
+    maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
+    visible_top = @search_results.scrollTop
+    visible_bottom = maxHeight + visible_top
 
-      high_top = @result_highlight.positionedOffset().top
-      high_bottom = high_top + @result_highlight.getHeight()
+    high_top = @result_highlight.positionedOffset().top
+    high_bottom = high_top + @result_highlight.getHeight()
 
-      if high_bottom >= visible_bottom
-        @search_results.scrollTop = if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
-      else if high_top < visible_top
-        @search_results.scrollTop = high_top
+    if high_bottom >= visible_bottom
+      @search_results.scrollTop = if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
+    else if high_top < visible_top
+      @search_results.scrollTop = high_top
 
   result_clear_highlight: ->
     @result_highlight.removeClassName('highlighted') if @result_highlight
@@ -505,3 +505,8 @@ class @Chosen extends AbstractChosen
         w = f_width - 10
 
       @search_field.setStyle({'width': w + 'px'})
+
+if module && module.exports
+  module.exports = Chosen
+else
+  @.Chosen = Chosen
