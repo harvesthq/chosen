@@ -506,7 +506,7 @@ class Chosen extends AbstractChosen
 
       @search_field.setStyle({'width': w + 'px'})
 
-if module && module.exports
+if typeof module is 'object' && module.exports isnt 'undefined'
   module.exports = Chosen
 else
-  @.Chosen = Chosen
+  @Chosen = Chosen
