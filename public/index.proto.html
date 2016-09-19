@@ -1297,13 +1297,13 @@
         </div>
       </div>
 
-      <h2><a name="right-to-left-support" class="anchor" href="#right-to-left-support">Right to Left Support</a></h2>
+      <h2><a name="right-to-left-support" class="anchor" href="#right-to-left-support">Right-to-Left Support</a></h2>
       <div class="side-by-side clearfix">
-        <p>Chosen supports right to left select boxes too. just add <code class="language-markup">"chosen-rtl"</code> in addition to <code class="language-markup">"chosen-select"</code> to your select tags and you are good to go.</p>
-        <pre><code class="language-markup">&lt;select class="chosen-select <strong>chosen-rtl</strong>"&gt;</code></pre>
+        <p>You can set right-to-left text by setting <code class="language-javascript">rtl: true</code></p>
+        <pre><code class="language-javascript"> $(".chosen-select").chosen({rtl: true}); </code></pre>
         <div>
-          <em>Single right to left select</em>
-          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chosen-select chosen-rtl" tabindex="13">
+          <em>Single Right-to-Left Select</em>
+          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chosen-select-rtl" tabindex="13">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1314,8 +1314,8 @@
           </select>
         </div>
         <div>
-          <em>Multiple right to left select</em>
-          <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chosen-select  chosen-rtl" tabindex="14">
+          <em>Multiple Right-to-Left Select</em>
+          <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chosen-select-rtl" tabindex="14">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
@@ -1469,6 +1469,7 @@ chosen.destroy();</code></pre>
       '.chosen-select-deselect'  : {allow_single_deselect:true},
       '.chosen-select-no-single' : {disable_search_threshold:10},
       '.chosen-select-no-results': {no_results_text: "Oops, nothing found!"},
+      '.chosen-select-rtl'       : {rtl: true},
       '.chosen-select-width'     : {width: "95%"}
     }
     var results = [];
