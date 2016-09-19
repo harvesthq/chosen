@@ -157,8 +157,8 @@ class AbstractChosen
 
     searchText = this.get_search_text()
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-    zregex = new RegExp(escapedSearchText, 'i')
     regex = this.get_search_regex(escapedSearchText)
+    highlightRegex = this.get_highlight_regex(escapedSearchText)
 
     for option in @results_data
 
@@ -184,7 +184,7 @@ class AbstractChosen
 
           if option.search_match
             if searchText.length
-              startpos = option.search_text.search zregex
+              startpos = option.search_text.search highlightRegex
               text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
@@ -204,6 +204,11 @@ class AbstractChosen
 
   get_search_regex: (escaped_search_string) ->
     regex_anchor = if @search_contains then "" else "^"
+    regex_flag = if @case_sensitive_search then "" else "i"
+    new RegExp(regex_anchor + escaped_search_string, regex_flag)
+
+  get_highlight_regex: (escaped_search_string) ->
+    regex_anchor = if @search_contains then "" else "\\b"
     regex_flag = if @case_sensitive_search then "" else "i"
     new RegExp(regex_anchor + escaped_search_string, regex_flag)
 
