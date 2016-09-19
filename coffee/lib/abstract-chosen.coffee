@@ -282,6 +282,9 @@ class AbstractChosen
   search_results_touchend: (evt) ->
     this.search_results_mouseup(evt) if @touch_started
 
+  search_disabled: ->
+    @disable_search or @form_field.options.length <= @disable_search_threshold
+
   outerHTML: (element) ->
     return element.outerHTML if element.outerHTML
     tmp = document.createElement("div")

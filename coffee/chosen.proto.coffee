@@ -164,7 +164,7 @@ class @Chosen extends AbstractChosen
     @active_field = true
 
     @search_field.value = @search_field.value
-    @search_field.focus()
+    @search_field.focus() unless @search_disabled()
 
   test_active_click: (evt) ->
     if evt.target.up('.chosen-container') is @container
@@ -182,7 +182,7 @@ class @Chosen extends AbstractChosen
       @search_choices.select("li.search-choice").invoke("remove")
     else if not @is_multiple
       this.single_set_selected_text()
-      if @disable_search or @form_field.options.length <= @disable_search_threshold
+      if @search_disabled()
         @search_field.readOnly = true
         @container.addClassName "chosen-container-single-nosearch"
       else
@@ -227,7 +227,7 @@ class @Chosen extends AbstractChosen
     @container.addClassName "chosen-with-drop"
     @results_showing = true
 
-    @search_field.focus()
+    @search_field.focus() unless @search_disabled()
     @search_field.value = @search_field.value
 
     this.winnow_results()
@@ -273,7 +273,7 @@ class @Chosen extends AbstractChosen
     if target
       @result_highlight = target
       this.result_select(evt)
-      @search_field.focus()
+      @search_field.focus() unless @search_disabled() or !@is_multiple
 
   search_results_mouseover: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
