@@ -1,4 +1,4 @@
-$ = jQuery
+$ = if typeof require is 'function' then require('jquery') else jQuery
 
 $.fn.extend({
   chosen: (options) ->

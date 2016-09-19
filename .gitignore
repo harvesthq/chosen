@@ -1,9 +1,6 @@
 .DS_Store
 node_modules
 .project
-public/*.js
-public/*.css
-public/*.json
 chosen*.zip
 .sass-cache
 .ruby-version
@@ -11,3 +8,4 @@ chosen*.zip
 .grunt
 _SpecRunner.html
 spec/public
+.idea/
