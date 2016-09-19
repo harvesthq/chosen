@@ -12,11 +12,7 @@ addons:
     packages:
       - git
 
-before_install:
-  - npm install -g grunt-cli
-  - gem install bundler
-  - bundle install
-
+before_install: npm install -g grunt-cli
 before_script: grunt build package-npm package-bower
 
 after_success: ./publish-package.sh

@@ -180,7 +180,7 @@ license your work under the [MIT License](http://en.wikipedia.org/wiki/MIT_Licen
 
 To install all development dependencies, in the project's root directory, run
 
-    npm install && gem install bundler && bundle install
+    npm install
 
 Once you're configured, building the JavaScript from the command line is easy:
 
