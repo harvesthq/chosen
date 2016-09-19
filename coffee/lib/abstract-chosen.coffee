@@ -231,7 +231,7 @@ class AbstractChosen
     evt.preventDefault()
     this.results_show() unless @results_showing or @is_disabled
 
-  input_checker: (evt) ->
+  keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
     this.search_field_scale()
 
