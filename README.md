@@ -14,7 +14,7 @@ https://github.com/harvesthq/chosen/releases/
 ### Package managers
 
 Chosen is available through [Bower](https://bower.io/) and [npm](https://www.npmjs.com),
-_however, the package names are not the same_
+_however, the package names are not the same_.
 
 To install with Bower:
 
