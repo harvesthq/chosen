@@ -262,7 +262,14 @@ class AbstractChosen
     setTimeout (=> this.results_search()), 50
 
   container_width: ->
-    return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"
+    return @options.width if @options.width?
+
+    if jQuery? and $ is jQuery
+      return width if width = $(@form_field).css('width')
+    else
+      return width if width = @form_field.getStyle('width')
+
+    @form_field.offsetWidth
 
   include_option_in_results: (option) ->
     return false if @is_multiple and (not @display_selected_options and option.selected)
