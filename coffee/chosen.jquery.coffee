@@ -324,7 +324,7 @@ class Chosen extends AbstractChosen
     this.single_set_selected_text()
     this.show_search_field_default()
     this.results_reset_cleanup()
-    @form_field_jq.trigger "change"
+    this.trigger_form_field_change()
     this.results_hide() if @active_field
 
   results_reset_cleanup: ->
@@ -362,7 +362,7 @@ class Chosen extends AbstractChosen
       this.results_hide() unless @is_multiple && (!@hide_results_on_select || (evt.metaKey or evt.ctrlKey))
       this.show_search_field_default()
 
-      @form_field_jq.trigger "change", {'selected': @form_field.options[item.options_index].value} if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
+      this.trigger_form_field_change selected: @form_field.options[item.options_index].value  if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
       @current_selectedIndex = @form_field.selectedIndex
 
       evt.preventDefault()
@@ -390,7 +390,7 @@ class Chosen extends AbstractChosen
       this.result_clear_highlight()
       this.winnow_results() if @results_showing
 
-      @form_field_jq.trigger "change", {deselected: @form_field.options[result_data.options_index].value}
+      this.trigger_form_field_change deselected: @form_field.options[result_data.options_index].value
       this.search_field_scale()
 
       return true
@@ -510,3 +510,7 @@ class Chosen extends AbstractChosen
         w = f_width - 10
 
       @search_field.css({'width': w + 'px'})
+
+  trigger_form_field_change: (extra) ->
+    @form_field_jq.trigger "input", extra
+    @form_field_jq.trigger "change", extra
