@@ -403,7 +403,7 @@ class Chosen extends AbstractChosen
     @selected_item.addClass("chosen-single-with-deselect")
 
   get_search_text: ->
-    $('<div/>').text($.trim(@search_field.val())).html()
+    $.trim(@search_field.val())
 
   winnow_results_set_highlight: ->
     selected_results = if not @is_multiple then @search_results.find(".result-selected.active-result") else []

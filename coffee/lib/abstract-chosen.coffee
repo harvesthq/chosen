@@ -177,7 +177,7 @@ class AbstractChosen
           results += 1 if results_group.active_options is 0 and results_group.search_match
           results_group.active_options += 1
 
-        option.search_text = if option.group then option.label else option.html
+        option.search_text = if option.group then option.label else option.text
 
         unless option.group and not @group_search
           option.search_match = this.search_string_match(option.search_text, regex)
