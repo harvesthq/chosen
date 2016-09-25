@@ -506,4 +506,15 @@ class @Chosen extends AbstractChosen
       @search_field.setStyle({'width': w + 'px'})
 
   trigger_form_field_change:  ->
-    @form_field.simulate("change") if typeof Event.simulate is 'function'
+    triggerHtmlEvent @form_field, 'change'
+
+  triggerHtmlEvent = (element, eventType) ->
+    if element.dispatchEvent  # Modern way:
+      try
+        evt = new Event(eventType, bubbles: true, cancelable: true)
+      catch
+        evt = document.createEvent('HTMLEvents')
+        evt.initEvent(eventType, true, true);
+      element.dispatchEvent(evt)
+    else # Old IE:
+      element.fireEvent("on#{eventType}", document.createEventObject());
