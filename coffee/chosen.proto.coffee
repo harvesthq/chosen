@@ -395,6 +395,9 @@ class @Chosen extends AbstractChosen
   get_search_text: ->
     @search_field.value.strip()
 
+  get_escaped_text: (text) ->
+    text.escapeHTML()
+
   winnow_results_set_highlight: ->
     if not @is_multiple
       do_high = @search_results.down(".result-selected.active-result")

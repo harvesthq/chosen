@@ -178,6 +178,7 @@ class AbstractChosen
           results_group.active_options += 1
 
         option.search_text = if option.group then option.label else option.text
+        escaped = false
 
         unless option.group and not @group_search
           option.search_match = this.search_string_match(option.search_text, regex)
@@ -186,13 +187,22 @@ class AbstractChosen
           if option.search_match
             if searchText.length
               startpos = option.search_text.search highlightRegex
-              text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
-              option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+              #text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
+              textstart = option.search_text.substr(0, startpos + searchText.length)
+              text = [
+	              this.get_escaped_text(textstart.substr(0, startpos))
+	              this.get_escaped_text(textstart.substr(startpos))
+	              this.get_escaped_text(option.search_text.substr(startpos + searchText.length))
+              ]
+              #option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+              option.search_text = text[0] + '<em>' + text[1] + '</em>' + text[2]
+              escaped = true
 
             results_group.group_match = true if results_group?
-
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
+        if not escaped
+          option.search_text = this.get_escaped_text(option.search_text)
 
     this.result_clear_highlight()
 
