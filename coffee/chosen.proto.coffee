@@ -315,7 +315,7 @@ class @Chosen extends AbstractChosen
     this.single_set_selected_text()
     this.show_search_field_default()
     this.results_reset_cleanup()
-    @form_field.simulate("change") if typeof Event.simulate is 'function'
+    this.trigger_form_field_change()
     this.results_hide() if @active_field
 
   results_reset_cleanup: ->
@@ -353,7 +353,7 @@ class @Chosen extends AbstractChosen
       this.results_hide() unless @is_multiple && (!@hide_results_on_select || (evt.metaKey or evt.ctrlKey))
       this.show_search_field_default()
 
-      @form_field.simulate("change") if typeof Event.simulate is 'function' && (@is_multiple || @form_field.selectedIndex != @current_selectedIndex)
+      this.trigger_form_field_change() if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
       @current_selectedIndex = @form_field.selectedIndex
 
       evt.preventDefault()
@@ -381,7 +381,7 @@ class @Chosen extends AbstractChosen
       this.result_clear_highlight()
       this.winnow_results() if @results_showing
 
-      @form_field.simulate("change") if typeof Event.simulate is 'function'
+      this.trigger_form_field_change()
       this.search_field_scale()
       return true
     else
@@ -504,3 +504,6 @@ class @Chosen extends AbstractChosen
         w = f_width - 10
 
       @search_field.setStyle({'width': w + 'px'})
+
+  trigger_form_field_change:  ->
+    @form_field.simulate("change") if typeof Event.simulate is 'function'
