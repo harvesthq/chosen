@@ -506,6 +506,7 @@ class @Chosen extends AbstractChosen
       @search_field.setStyle({'width': w + 'px'})
 
   trigger_form_field_change:  ->
+    triggerHtmlEvent @form_field, 'input'
     triggerHtmlEvent @form_field, 'change'
 
   triggerHtmlEvent = (element, eventType) ->

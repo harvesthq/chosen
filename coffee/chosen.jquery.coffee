@@ -512,4 +512,5 @@ class Chosen extends AbstractChosen
       @search_field.css({'width': w + 'px'})
 
   trigger_form_field_change: (extra) ->
+    @form_field_jq.trigger "input", extra
     @form_field_jq.trigger "change", extra
