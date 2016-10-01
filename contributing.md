@@ -186,7 +186,7 @@ Once you're configured, `grunt` tasks are available:
 
     grunt test                 # run the tests in spec/
 
-    grunt build                # build Chosen from CoffeeScript source
+    grunt build                # build Chosen from source
 
     grunt watch                # watch coffee/ for changes and build Chosen
 
