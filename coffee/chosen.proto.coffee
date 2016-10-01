@@ -71,7 +71,7 @@ class @Chosen extends AbstractChosen
     @form_field.observe "chosen:updated", (evt) => this.results_update_field(evt)
     @form_field.observe "chosen:activate", (evt) => this.activate_field(evt)
     @form_field.observe "chosen:open", (evt) => this.container_mousedown(evt)
-    @form_field.observe "chosen:close", (evt) => this.input_blur(evt)
+    @form_field.observe "chosen:close", (evt) => this.close_field(evt)
 
     @search_field.observe "blur", (evt) => this.input_blur(evt)
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
@@ -158,6 +158,7 @@ class @Chosen extends AbstractChosen
 
     this.show_search_field_default()
     this.search_field_scale()
+    @search_field.blur()
 
   activate_field: ->
     @container.addClassName "chosen-container-active"
