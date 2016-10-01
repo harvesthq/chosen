@@ -175,7 +175,7 @@ license your work under the [MIT License](http://en.wikipedia.org/wiki/MIT_Licen
 4. Don't manually update the version number in `package.json`. This is done using a Grunt task on deployment.
 
 <a name="grunt"></a>
-#### Grunt tasks: Running Tests and using CoffeeScript
+#### Grunt tasks: Running Tests and building Chosen
 
 
 To install all development dependencies, in the project's root directory, run
