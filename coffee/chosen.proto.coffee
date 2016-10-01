@@ -301,7 +301,10 @@ class @Chosen extends AbstractChosen
 
   choice_destroy: (link) ->
     if this.result_deselect link.readAttribute("rel")
-      this.show_search_field_default()
+      if @active_field
+        @search_field.focus()
+      else
+        this.show_search_field_default()
 
       this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.value.length < 1
 
