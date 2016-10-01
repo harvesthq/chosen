@@ -396,7 +396,10 @@ class @Chosen extends AbstractChosen
     @search_field.value
 
   get_search_text: ->
-    this.get_search_field_value().strip().escapeHTML()
+    this.escape_html this.get_search_field_value().strip()
+
+  escape_html: (text) ->
+    text.escapeHTML()
 
   winnow_results_set_highlight: ->
     if not @is_multiple
