@@ -163,7 +163,7 @@ class @Chosen extends AbstractChosen
     @container.addClassName "chosen-container-active"
     @active_field = true
 
-    @search_field.value = @search_field.value
+    @search_field.value = this.get_search_field_value()
     @search_field.focus()
 
   test_active_click: (evt) ->
@@ -228,7 +228,7 @@ class @Chosen extends AbstractChosen
     @results_showing = true
 
     @search_field.focus()
-    @search_field.value = @search_field.value
+    @search_field.value = this.get_search_field_value()
 
     this.winnow_results()
     @form_field.fire("chosen:showing_dropdown", {chosen: this})
@@ -303,7 +303,7 @@ class @Chosen extends AbstractChosen
     if this.result_deselect link.readAttribute("rel")
       this.show_search_field_default()
 
-      this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.value.length < 1
+      this.results_hide() if @is_multiple and this.choices_count() > 0 and this.get_search_field_value().length < 1
 
       link.up('li').remove()
 
@@ -392,8 +392,11 @@ class @Chosen extends AbstractChosen
     @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } unless @selected_item.down("abbr")
     @selected_item.addClassName("chosen-single-with-deselect")
 
+  get_search_field_value: ->
+    @search_field.value
+
   get_search_text: ->
-    @search_field.value.strip().escapeHTML()
+    this.get_search_field_value().strip().escapeHTML()
 
   winnow_results_set_highlight: ->
     if not @is_multiple
@@ -492,7 +495,7 @@ class @Chosen extends AbstractChosen
       for style in styles
         style_block += style + ":" + @search_field.getStyle(style) + ";"
 
-      div = new Element('div', { 'style' : style_block }).update(@search_field.value.escapeHTML())
+      div = new Element('div', { 'style' : style_block }).update(this.get_search_field_value().escapeHTML())
       document.body.appendChild(div)
 
       w = Element.measure(div, 'width') + 25
