@@ -88,7 +88,9 @@ class @Chosen extends AbstractChosen
   destroy: ->
     @container.ownerDocument.stopObserving "click", @click_test_action
 
-    @form_field.stopObserving()
+    for event in ['chosen:updated', 'chosen:activate', 'chosen:open', 'chosen:close']
+      @form_field.stopObserving(event)
+
     @container.stopObserving()
     @search_results.stopObserving()
     @search_field.stopObserving()
