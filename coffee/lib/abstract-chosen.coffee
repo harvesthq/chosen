@@ -271,21 +271,25 @@ class AbstractChosen
     this.search_field_scale()
 
     switch stroke
-      when 8
+      when 8 # backspace
         if @is_multiple and @backstroke_length < 1 and this.choices_count() > 0
           this.keydown_backstroke()
         else if not @pending_backstroke
           this.result_clear_highlight()
           this.results_search()
-      when 13
+        break
+      when 13 # enter
         evt.preventDefault()
         this.result_select(evt) if this.results_showing
-      when 27
+        break
+      when 27 # escape
         this.results_hide() if @results_showing
-        return true
-      when 9, 38, 40, 16, 91, 17, 18
+        break
+      when 9, 16, 17, 18, 38, 40, 91
         # don't do anything on these keys
-      else this.results_search()
+      else
+        this.results_search()
+        break
 
   clipboard_event_checker: (evt) ->
     setTimeout (=> this.results_search()), 50
