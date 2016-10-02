@@ -460,35 +460,6 @@ class Chosen extends AbstractChosen
     @pending_backstroke.removeClass "search-choice-focus" if @pending_backstroke
     @pending_backstroke = null
 
-  keydown_checker: (evt) ->
-    stroke = evt.which ? evt.keyCode
-    this.search_field_scale()
-
-    this.clear_backstroke() if stroke != 8 and this.pending_backstroke
-
-    switch stroke
-      when 8
-        @backstroke_length = this.search_field.val().length
-        break
-      when 9
-        this.result_select(evt) if this.results_showing and not @is_multiple
-        @mouse_on_container = false
-        break
-      when 13
-        evt.preventDefault() if this.results_showing
-        break
-      when 32
-        evt.preventDefault() if @disable_search
-        break
-      when 38
-        evt.preventDefault()
-        this.keyup_arrow()
-        break
-      when 40
-        evt.preventDefault()
-        this.keydown_arrow()
-        break
-
   search_field_scale: ->
     if @is_multiple
       h = 0

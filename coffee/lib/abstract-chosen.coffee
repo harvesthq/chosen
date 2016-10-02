@@ -237,6 +237,35 @@ class AbstractChosen
     evt.preventDefault()
     this.results_show() unless @results_showing or @is_disabled
 
+  keydown_checker: (evt) ->
+    stroke = evt.which ? evt.keyCode
+    this.search_field_scale()
+
+    this.clear_backstroke() if stroke != 8 and @pending_backstroke
+
+    switch stroke
+      when 8 # backspace
+        @backstroke_length = this.get_search_field_value().length
+        break
+      when 9 # tab
+        this.result_select(evt) if @results_showing and not @is_multiple
+        @mouse_on_container = false
+        break
+      when 13 # enter
+        evt.preventDefault() if @results_showing
+        break
+      when 32 # space
+        evt.preventDefault() if @disable_search
+        break
+      when 38 # up arrow
+        evt.preventDefault()
+        this.keyup_arrow()
+        break
+      when 40 # down arrow
+        evt.preventDefault()
+        this.keydown_arrow()
+        break
+
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
     this.search_field_scale()
