@@ -486,8 +486,8 @@ class @Chosen extends AbstractChosen
       h = 0
       w = 0
 
-      style_block = "position:absolute; left: -1000px; top: -1000px; display:none;"
-      styles = ['font-size','font-style', 'font-weight', 'font-family','line-height', 'text-transform', 'letter-spacing']
+      style_block = "position:absolute; left: -1000px; top: -1000px; display: none; white-space: pre;"
+      styles = ['font-size', 'font-style', 'font-weight', 'font-family', 'line-height', 'text-transform', 'letter-spacing']
 
       for style in styles
         style_block += style + ":" + @search_field.getStyle(style) + ";"
