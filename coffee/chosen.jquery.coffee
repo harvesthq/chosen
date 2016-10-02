@@ -281,8 +281,8 @@ class Chosen extends AbstractChosen
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
     if target.length
       @result_highlight = target
-      this.result_select(evt)
       @search_field.focus()
+      this.result_select(evt)
 
   search_results_mouseover: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
