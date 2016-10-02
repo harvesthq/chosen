@@ -270,6 +270,11 @@ class AbstractChosen
         evt.preventDefault()
         this.keydown_arrow()
         break
+      when 46 # delete
+        if @allow_single_deselect and not @results_showing
+          evt.preventDefault()
+          this.results_reset()
+        break
 
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
@@ -290,7 +295,7 @@ class AbstractChosen
       when 27 # escape
         this.results_hide() if @results_showing
         break
-      when 9, 16, 17, 18, 38, 40, 91
+      when 9, 16, 17, 18, 38, 40, 46, 91
         # don't do anything on these keys
       else
         this.results_search()
