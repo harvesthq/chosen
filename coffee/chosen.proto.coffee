@@ -110,8 +110,16 @@ class @Chosen extends AbstractChosen
     @form_field.show()
 
   search_field_disabled: ->
-    @is_disabled = @form_field.disabled
-    if(@is_disabled)
+    @is_disabled = @form_field.disabled || (=>
+      element = @form_field
+      disabled = false
+      while (element = element.parentElement) && element != element.ownerDocument
+        disabled = element.nodeName.toUpperCase() == 'FIELDSET' && element.disabled
+        break if disabled
+      disabled
+    )()
+
+    if @is_disabled
       @container.addClassName 'chosen-disabled'
       @search_field.disabled = true
       @selected_item.stopObserving "focus", @activate_action if !@is_multiple
