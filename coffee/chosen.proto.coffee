@@ -393,7 +393,10 @@ class @Chosen extends AbstractChosen
     @selected_item.addClassName("chosen-single-with-deselect")
 
   get_search_text: ->
-    @search_field.value.strip().escapeHTML()
+    @search_field.value.strip()
+
+  get_escaped_text: (text) ->
+    text.escapeHTML()
 
   winnow_results_set_highlight: ->
     if not @is_multiple

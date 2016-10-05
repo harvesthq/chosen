@@ -15,7 +15,7 @@ class SelectParser
     @parsed.push
       array_index: group_position
       group: true
-      label: this.escapeExpression(group.label)
+      label: group.label
       title: group.title if group.title
       children: 0
       disabled: group.disabled,
@@ -37,7 +37,7 @@ class SelectParser
           selected: option.selected
           disabled: if group_disabled is true then group_disabled else option.disabled
           group_array_index: group_position
-          group_label: if group_position? then @parsed[group_position].label else null
+          group_label: if group_position? then this.escapeExpression(@parsed[group_position].label) else null
           classes: option.className
           style: option.style.cssText
       else
