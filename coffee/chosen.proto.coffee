@@ -12,19 +12,14 @@ class @Chosen extends AbstractChosen
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
 
   set_up_html: ->
-    container_classes = ["chosen-container"]
-    container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
-    container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
-    container_classes.push "chosen-rtl" if @is_rtl
-
     container_props =
-      'class': container_classes.join ' '
       'style': "width: #{this.container_width()};"
-      'title': @form_field.title
 
     container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
-
+    
     @container = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
+    this.update_inherited_classes();
+    this.update_title_from_form_field();
 
     @form_field.hide().insert({ after: @container })
     @dropdown = @container.down('div.chosen-drop')
@@ -45,6 +40,17 @@ class @Chosen extends AbstractChosen
     this.results_build()
     this.set_tab_index()
     this.set_label_behavior()
+
+  update_inherited_classes: ->
+    container_classes = ["chosen-container"]
+    container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
+    container_classes.push @form_field.className if @inherit_select_classes && @form_field.className
+    container_classes.push "chosen-rtl" if @is_rtl
+
+    @container.writeAttribute('class', container_classes.join ' ')
+
+  update_title_from_form_field: ->
+    @container.writeAttribute('title', @form_field.title)
 
   on_ready: ->
     @form_field.fire("chosen:ready", {chosen: this})
@@ -178,6 +184,8 @@ class @Chosen extends AbstractChosen
 
     @results_data = SelectParser.select_to_array @form_field
 
+    this.update_inherited_classes();
+
     if @is_multiple
       @search_choices.select("li.search-choice").invoke("remove")
     else if not @is_multiple
@@ -191,6 +199,7 @@ class @Chosen extends AbstractChosen
 
     this.update_results_content this.results_option_build({first:true})
 
+    this.update_title_from_form_field();
     this.search_field_disabled()
     this.show_search_field_default()
     this.search_field_scale()
