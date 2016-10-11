@@ -35,3 +35,43 @@ describe "Basic setup", ->
 
     expect($F(select)).toBe "Afghanistan"
     div.remove()
+
+  describe "data-placeholder", ->
+
+    it "should render", ->
+      tmpl = "
+        <select data-placeholder='Choose a Country...'>
+          <option value=''></option>
+          <option value='United States'>United States</option>
+          <option value='United Kingdom'>United Kingdom</option>
+          <option value='Afghanistan'>Afghanistan</option>
+        </select>
+      "
+      div = new Element("div")
+      document.body.insert(div)
+      div.update(tmpl)
+      select = div.down("select")
+      expect(select).toBeDefined()
+      new Chosen(select)
+
+      placeholder = div.down(".chosen-single > span")
+      expect(placeholder.innerText).toBe("Choose a Country...")
+
+    it "should render with special characters", ->
+      tmpl = "
+        <select data-placeholder='&lt;None&gt;'>
+          <option value=''></option>
+          <option value='United States'>United States</option>
+          <option value='United Kingdom'>United Kingdom</option>
+          <option value='Afghanistan'>Afghanistan</option>
+        </select>
+      "
+      div = new Element("div")
+      document.body.insert(div)
+      div.update(tmpl)
+      select = div.down("select")
+      expect(select).toBeDefined()
+      new Chosen(select)
+
+      placeholder = div.down(".chosen-single > span")
+      expect(placeholder.innerText).toBe("<None>")
