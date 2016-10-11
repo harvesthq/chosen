@@ -104,7 +104,9 @@ class Chosen extends AbstractChosen
       @container.bind 'click.chosen', (evt) -> evt.preventDefault(); return # gobble click of anchor
 
   destroy: ->
-    $(@container[0].ownerDocument).unbind "click.chosen", @click_test_action
+    $(@container[0].ownerDocument).unbind 'click.chosen', @click_test_action
+    @form_field_label.unbind 'click.chosen' if @form_field_label.length > 0
+
     if @search_field[0].tabIndex
       @form_field_jq[0].tabIndex = @search_field[0].tabIndex
 
