@@ -45,6 +45,8 @@ class AbstractChosen
     else
       @default_text = @options.placeholder_text_single || @options.placeholder_text || AbstractChosen.default_single_text
 
+    @default_text = this.escape_html(@default_text)
+
     @results_none_found = @form_field.getAttribute("data-no_results_text") || @options.no_results_text || AbstractChosen.default_no_result_text
 
   choice_label: (item) ->

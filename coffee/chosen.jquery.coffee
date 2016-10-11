@@ -406,7 +406,10 @@ class Chosen extends AbstractChosen
     @search_field.val()
 
   get_search_text: ->
-    $('<div/>').text($.trim(this.get_search_field_value())).html()
+    this.escape_html $.trim(this.get_search_field_value())
+
+  escape_html: (text) ->
+    $('<div/>').text(text).html()
 
   winnow_results_set_highlight: ->
     selected_results = if not @is_multiple then @search_results.find(".result-selected.active-result") else []
