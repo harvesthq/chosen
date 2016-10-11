@@ -237,7 +237,7 @@ class Chosen extends AbstractChosen
     @results_showing = true
 
     @search_field.focus()
-    @search_field.val @search_field.val()
+    @search_field.val this.get_search_field_value()
 
     this.winnow_results()
     @form_field_jq.trigger("chosen:showing_dropdown", {chosen: this})
@@ -312,7 +312,7 @@ class Chosen extends AbstractChosen
     if this.result_deselect( link[0].getAttribute("data-option-array-index") )
       this.show_search_field_default()
 
-      this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.val().length < 1
+      this.results_hide() if @is_multiple and this.choices_count() > 0 and this.get_search_field_value().length < 1
 
       link.parents('li').first().remove()
 
@@ -402,8 +402,11 @@ class Chosen extends AbstractChosen
     @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" unless @selected_item.find("abbr").length
     @selected_item.addClass("chosen-single-with-deselect")
 
+  get_search_field_value: ->
+    @search_field.val()
+
   get_search_text: ->
-    $('<div/>').text($.trim(@search_field.val())).html()
+    $('<div/>').text($.trim(this.get_search_field_value())).html()
 
   winnow_results_set_highlight: ->
     selected_results = if not @is_multiple then @search_results.find(".result-selected.active-result") else []
@@ -457,35 +460,6 @@ class Chosen extends AbstractChosen
     @pending_backstroke.removeClass "search-choice-focus" if @pending_backstroke
     @pending_backstroke = null
 
-  keydown_checker: (evt) ->
-    stroke = evt.which ? evt.keyCode
-    this.search_field_scale()
-
-    this.clear_backstroke() if stroke != 8 and this.pending_backstroke
-
-    switch stroke
-      when 8
-        @backstroke_length = this.search_field.val().length
-        break
-      when 9
-        this.result_select(evt) if this.results_showing and not @is_multiple
-        @mouse_on_container = false
-        break
-      when 13
-        evt.preventDefault() if this.results_showing
-        break
-      when 32
-        evt.preventDefault() if @disable_search
-        break
-      when 38
-        evt.preventDefault()
-        this.keyup_arrow()
-        break
-      when 40
-        evt.preventDefault()
-        this.keydown_arrow()
-        break
-
   search_field_scale: ->
     if @is_multiple
       h = 0
@@ -498,7 +472,7 @@ class Chosen extends AbstractChosen
         style_block += style + ":" + @search_field.css(style) + ";"
 
       div = $('<div />', { 'style' : style_block })
-      div.text @search_field.val()
+      div.text this.get_search_field_value()
       $('body').append div
 
       w = div.width() + 25

@@ -237,26 +237,62 @@ class AbstractChosen
     evt.preventDefault()
     this.results_show() unless @results_showing or @is_disabled
 
+  keydown_checker: (evt) ->
+    stroke = evt.which ? evt.keyCode
+    this.search_field_scale()
+
+    this.clear_backstroke() if stroke != 8 and @pending_backstroke
+
+    switch stroke
+      when 8 # backspace
+        @backstroke_length = this.get_search_field_value().length
+        break
+      when 9 # tab
+        this.result_select(evt) if @results_showing and not @is_multiple
+        @mouse_on_container = false
+        break
+      when 13 # enter
+        evt.preventDefault() if @results_showing
+        break
+      when 27 # escape
+        evt.preventDefault() if @results_showing
+        break
+      when 32 # space
+        evt.preventDefault() if @disable_search
+        break
+      when 38 # up arrow
+        evt.preventDefault()
+        this.keyup_arrow()
+        break
+      when 40 # down arrow
+        evt.preventDefault()
+        this.keydown_arrow()
+        break
+
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
     this.search_field_scale()
 
     switch stroke
-      when 8
+      when 8 # backspace
         if @is_multiple and @backstroke_length < 1 and this.choices_count() > 0
           this.keydown_backstroke()
         else if not @pending_backstroke
           this.result_clear_highlight()
           this.results_search()
-      when 13
+        break
+      when 13 # enter
         evt.preventDefault()
         this.result_select(evt) if this.results_showing
-      when 27
+        break
+      when 27 # escape
         this.results_hide() if @results_showing
-        return true
-      when 9, 38, 40, 16, 91, 17, 18
+        break
+      when 9, 16, 17, 18, 38, 40, 91
         # don't do anything on these keys
-      else this.results_search()
+      else
+        this.results_search()
+        break
 
   clipboard_event_checker: (evt) ->
     setTimeout (=> this.results_search()), 50
