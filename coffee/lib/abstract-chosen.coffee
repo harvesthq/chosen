@@ -153,6 +153,16 @@ class AbstractChosen
     else
       this.results_show()
 
+  search_field_disabled: ->
+    if @form_field.disabled
+      this.disable()
+    else
+      this.enable()
+
+  single_deselect: (evt) ->
+    unless @is_multiple
+      this.results_reset()
+
   winnow_results: ->
     this.no_results_clear()
 
@@ -237,7 +247,7 @@ class AbstractChosen
 
   choices_click: (evt) ->
     evt.preventDefault()
-    this.results_show() unless @results_showing or @is_disabled
+    this.results_show() unless @results_showing or @form_field.disabled
 
   keydown_checker: (evt) ->
     stroke = evt.which ? evt.keyCode

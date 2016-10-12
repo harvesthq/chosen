@@ -72,6 +72,9 @@ class @Chosen extends AbstractChosen
     @form_field.observe "chosen:activate", (evt) => this.activate_field(evt)
     @form_field.observe "chosen:open", (evt) => this.container_mousedown(evt)
     @form_field.observe "chosen:close", (evt) => this.input_blur(evt)
+    @form_field.observe "chosen:enable", (evt) => this.enable(evt)
+    @form_field.observe "chosen:disable", (evt) => this.disable(evt)
+    @form_field.observe "chosen:deselect", (evt) => this.single_deselect(evt)
 
     @search_field.observe "blur", (evt) => this.input_blur(evt)
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
@@ -109,20 +112,22 @@ class @Chosen extends AbstractChosen
     @container.remove()
     @form_field.show()
 
-  search_field_disabled: ->
-    @is_disabled = @form_field.disabled
-    if(@is_disabled)
-      @container.addClassName 'chosen-disabled'
-      @search_field.disabled = true
-      @selected_item.stopObserving "focus", @activate_action if !@is_multiple
-      this.close_field()
-    else
+  enable: ->
+    if @form_field.disabled
+      @form_field.disabled = false
       @container.removeClassName 'chosen-disabled'
       @search_field.disabled = false
-      @selected_item.observe "focus", @activate_action if !@is_multiple
+      @selected_item.observe "focus", @activate_action unless @is_multiple
+
+  disable: ->
+    @form_field.disabled = true
+    @container.addClassName 'chosen-disabled'
+    @search_field.disabled = true
+    @selected_item.stopObserving "focus", @activate_action unless @is_multiple
+    this.close_field()
 
   container_mousedown: (evt) ->
-    if !@is_disabled
+    unless @form_field.disabled
       if evt and evt.type is "mousedown" and not @results_showing
         evt.stop()
 
@@ -137,7 +142,7 @@ class @Chosen extends AbstractChosen
         this.activate_field()
 
   container_mouseup: (evt) ->
-    this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
+    this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @form_field.disabled
 
   search_results_mousewheel: (evt) ->
     delta = evt.deltaY or -evt.wheelDelta or evt.detail
@@ -299,7 +304,7 @@ class @Chosen extends AbstractChosen
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
     evt.stopPropagation()
-    this.choice_destroy evt.target unless @is_disabled
+    this.choice_destroy evt.target unless @form_field.disabled
 
   choice_destroy: (link) ->
     if this.result_deselect link.readAttribute("rel")
