@@ -132,7 +132,7 @@ class Chosen extends AbstractChosen
         evt.preventDefault()
 
       if not (evt? and ($ evt.target).hasClass "search-choice-close")
-        if not @active_field
+        if not @results_showing
           @search_field.val "" if @is_multiple
           $(@container[0].ownerDocument).bind 'click.chosen', @click_test_action
           this.results_show()

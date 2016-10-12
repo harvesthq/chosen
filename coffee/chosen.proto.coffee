@@ -127,7 +127,7 @@ class @Chosen extends AbstractChosen
         evt.stop()
 
       if not (evt? and evt.target.hasClassName "search-choice-close")
-        if not @active_field
+        if not @results_showing
           @search_field.clear() if @is_multiple
           @container.ownerDocument.observe "click", @click_test_action
           this.results_show()
