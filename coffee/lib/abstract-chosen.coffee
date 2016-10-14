@@ -69,6 +69,12 @@ class AbstractChosen
       @active_field = false
       setTimeout (=> this.blur_test()), 100
 
+  label_click_handler: (evt) =>
+    if @is_multiple
+      this.container_mousedown(evt)
+    else
+      this.activate_field()
+
   results_option_build: (options) ->
     content = ''
     shown_results = 0
