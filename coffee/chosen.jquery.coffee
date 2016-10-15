@@ -143,7 +143,8 @@ class Chosen extends AbstractChosen
         this.activate_field()
 
   container_mouseup: (evt) ->
-    this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
+    if not @is_disabled and @allow_single_deselect and $(evt.target).hasClass('search-choice-close')
+      this.results_reset(evt)
 
   search_results_mousewheel: (evt) ->
     delta = evt.originalEvent.deltaY or -evt.originalEvent.wheelDelta or evt.originalEvent.detail if evt.originalEvent
@@ -331,7 +332,7 @@ class Chosen extends AbstractChosen
 
   results_reset_cleanup: ->
     @current_selectedIndex = @form_field.selectedIndex
-    @selected_item.find("abbr").remove()
+    @selected_item.find('.search-choice-close').remove()
 
   result_select: (evt) ->
     if @result_highlight
@@ -402,8 +403,9 @@ class Chosen extends AbstractChosen
 
   single_deselect_control_build: ->
     return unless @allow_single_deselect
-    @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" unless @selected_item.find("abbr").length
-    @selected_item.addClass("chosen-single-with-deselect")
+    unless @selected_item.find('.search-choice-close').length
+      @selected_item.find('span').first().after '<a class="search-choice-close"></a>'
+    @selected_item.addClass('chosen-single-with-deselect')
 
   get_search_field_value: ->
     @search_field.val()

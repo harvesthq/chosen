@@ -79,7 +79,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
   .chosen-single-with-deselect span {
     margin-right: 38px;
   }
-  .chosen-single abbr {
+  .chosen-single .search-choice-close {
     position: absolute;
     top: 6px;
     right: 26px;
@@ -92,7 +92,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
       background-position: -42px -10px;
     }
   }
-  &.chosen-disabled .chosen-single abbr:hover {
+  &.chosen-disabled .chosen-single .search-choice-close:hover {
     background-position: -42px -10px;
   }
   .chosen-single div {
@@ -355,7 +355,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     right: auto;
     left: 3px;
   }
-  .chosen-single abbr {
+  .chosen-single .search-choice-close {
     right: auto;
     left: 26px;
   }
@@ -410,7 +410,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
 /* @group Retina compatibility */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi), only screen and (min-resolution: 1.5dppx) {
   .chosen-rtl .chosen-search input[type="text"],
-  .chosen-container-single .chosen-single abbr,
+  .chosen-container-single .chosen-single .search-choice-close,
   .chosen-container-single .chosen-single div b,
   .chosen-container-single .chosen-search input[type="text"],
   .chosen-container-multi .chosen-choices .search-choice .search-choice-close,

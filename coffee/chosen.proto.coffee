@@ -98,7 +98,7 @@ class @Chosen extends AbstractChosen
 
     if @is_multiple
       @search_choices.stopObserving()
-      @container.select(".search-choice-close").each (choice) ->
+      @container.select('.search-choice-close').each (choice) ->
         choice.stopObserving()
     else
       @selected_item.stopObserving()
@@ -322,7 +322,7 @@ class @Chosen extends AbstractChosen
 
   results_reset_cleanup: ->
     @current_selectedIndex = @form_field.selectedIndex
-    deselect_trigger = @selected_item.down("abbr")
+    deselect_trigger = @selected_item.down('.search-choice-close')
     deselect_trigger.remove() if(deselect_trigger)
 
   result_select: (evt) ->
@@ -392,8 +392,9 @@ class @Chosen extends AbstractChosen
 
   single_deselect_control_build: ->
     return unless @allow_single_deselect
-    @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } unless @selected_item.down("abbr")
-    @selected_item.addClassName("chosen-single-with-deselect")
+    unless @selected_item.down('.search-choice-close')
+      @selected_item.down('span').insert { after: '<a class="search-choice-close"></a>' }
+    @selected_item.addClassName('chosen-single-with-deselect')
 
   get_search_field_value: ->
     @search_field.value
