@@ -136,7 +136,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
   }
   &.chosen-container-single-nosearch .chosen-search {
     position: absolute;
-    left: -9999px;
+    clip: rect(0,0,0,0);
   }
 }
 /* @end */
