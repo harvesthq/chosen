@@ -115,6 +115,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     margin: 0;
     padding: 3px 4px;
     white-space: nowrap;
+
     input[type="text"] {
       margin: 1px 0;
       padding: 4px 20px 4px 5px;
@@ -228,6 +229,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
         font-family: sans-serif;
         line-height: normal;
         border-radius: 0;
+        width: 25px;
       }
     }
     &.search-choice {
