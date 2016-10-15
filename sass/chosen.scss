@@ -14,16 +14,16 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
   .chosen-drop {
     position: absolute;
     top: 100%;
-    left: -9999px;
     z-index: 1010;
     width: 100%;
     border: 1px solid #aaa;
     border-top: 0;
     background: #fff;
     box-shadow: 0 4px 5px rgba(#000,.15);
+    clip: rect(0,0,0,0);
   }
   &.chosen-with-drop .chosen-drop {
-    left: 0;
+    clip: auto;
   }
   a{
     cursor: pointer;
