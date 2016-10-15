@@ -69,8 +69,8 @@ class Chosen extends AbstractChosen
     @form_field_jq.trigger("chosen:ready", {chosen: this})
 
   register_observers: ->
-    @container.bind 'touchstart.chosen', (evt) => this.container_mousedown(evt); evt.preventDefault()
-    @container.bind 'touchend.chosen', (evt) => this.container_mouseup(evt); evt.preventDefault()
+    @container.bind 'touchstart.chosen', (evt) => this.container_mousedown(evt); return
+    @container.bind 'touchend.chosen', (evt) => this.container_mouseup(evt); return
 
     @container.bind 'mousedown.chosen', (evt) => this.container_mousedown(evt); return
     @container.bind 'mouseup.chosen', (evt) => this.container_mouseup(evt); return
@@ -129,7 +129,7 @@ class Chosen extends AbstractChosen
   container_mousedown: (evt) ->
     return if @is_disabled
 
-    if evt and evt.type is "mousedown" and not @results_showing
+    if evt and evt.type in ['mousedown', 'touchstart'] and not @results_showing
       evt.preventDefault()
 
     if not (evt? and ($ evt.target).hasClass "search-choice-close")
