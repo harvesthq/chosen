@@ -476,29 +476,32 @@ class Chosen extends AbstractChosen
     @pending_backstroke = null
 
   search_field_scale: ->
-    if @is_multiple
-      h = 0
-      w = 0
+    return unless @is_multiple
 
-      style_block = "position:absolute; left: -1000px; top: -1000px; display: none; white-space: pre;"
-      styles = ['font-size', 'font-style', 'font-weight', 'font-family', 'line-height', 'text-transform', 'letter-spacing']
+    style_block =
+      position: 'absolute'
+      left: '-1000px'
+      top: '-1000px'
+      display: 'none'
+      whiteSpace: 'pre'
 
-      for style in styles
-        style_block += style + ":" + @search_field.css(style) + ";"
+    styles = ['fontSize', 'fontStyle', 'fontWeight', 'fontFamily', 'lineHeight', 'textTransform', 'letterSpacing']
 
-      div = $('<div />', { 'style' : style_block })
-      div.text this.get_search_field_value()
-      $('body').append div
+    for style in styles
+      style_block[style] = @search_field.css(style)
 
-      w = div.width() + 25
-      div.remove()
+    div = $('<div />').css(style_block)
+    div.text this.get_search_field_value()
+    $('body').append div
 
-      f_width = @container.outerWidth()
+    width = div.width() + 25
+    div.remove()
 
-      if( w > f_width - 10 )
-        w = f_width - 10
+    container_width = @container.outerWidth()
 
-      @search_field.css({'width': w + 'px'})
+    width = Math.min(container_width - 10, width)
+
+    @search_field.width(width)
 
   trigger_form_field_change: (extra) ->
     @form_field_jq.trigger "input", extra
