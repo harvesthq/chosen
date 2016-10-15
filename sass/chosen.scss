@@ -373,10 +373,6 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
       }
     }
   }
-  &.chosen-container-single-nosearch .chosen-search,
-  .chosen-drop {
-    left: 9999px;
-  }
   &.chosen-container-single .chosen-results {
     margin: 0 0 4px 4px;
     padding: 0 4px 0 0;
