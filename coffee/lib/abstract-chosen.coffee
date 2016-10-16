@@ -303,6 +303,7 @@ class AbstractChosen
         break
 
   clipboard_event_checker: (evt) ->
+    return if @is_disabled
     setTimeout (=> this.results_search()), 50
 
   container_width: ->
