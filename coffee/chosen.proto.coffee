@@ -122,19 +122,20 @@ class @Chosen extends AbstractChosen
       @selected_item.observe "focus", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
-    if !@is_disabled
-      if evt and evt.type is "mousedown" and not @results_showing
-        evt.stop()
+    return if @is_disabled
 
-      if not (evt? and evt.target.hasClassName "search-choice-close")
-        if not @active_field
-          @search_field.clear() if @is_multiple
-          @container.ownerDocument.observe "click", @click_test_action
-          this.results_show()
-        else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chosen-single"))
-          this.results_toggle()
+    if evt and evt.type is "mousedown" and not @results_showing
+      evt.stop()
 
-        this.activate_field()
+    if not (evt? and evt.target.hasClassName "search-choice-close")
+      if not @active_field
+        @search_field.clear() if @is_multiple
+        @container.ownerDocument.observe "click", @click_test_action
+        this.results_show()
+      else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chosen-single"))
+        this.results_toggle()
+
+      this.activate_field()
 
   container_mouseup: (evt) ->
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
@@ -163,6 +164,8 @@ class @Chosen extends AbstractChosen
     @search_field.blur()
 
   activate_field: ->
+    return if @is_disabled
+
     @container.addClassName "chosen-container-active"
     @active_field = true
 
@@ -261,7 +264,7 @@ class @Chosen extends AbstractChosen
       @form_field_label = $$("label[for='#{@form_field.id}']").first() #next check for a for=#{id}
 
     if @form_field_label?
-      @form_field_label.observe "click", (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
+      @form_field_label.observe "click", this.label_click_handler
 
   show_search_field_default: ->
     if @is_multiple and this.choices_count() < 1 and not @active_field

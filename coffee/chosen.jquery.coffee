@@ -127,20 +127,21 @@ class Chosen extends AbstractChosen
       @selected_item.bind "focus.chosen", @activate_action if !@is_multiple
 
   container_mousedown: (evt) ->
-    if !@is_disabled
-      if evt and evt.type is "mousedown" and not @results_showing
+    return if @is_disabled
+
+    if evt and evt.type is "mousedown" and not @results_showing
+      evt.preventDefault()
+
+    if not (evt? and ($ evt.target).hasClass "search-choice-close")
+      if not @active_field
+        @search_field.val "" if @is_multiple
+        $(@container[0].ownerDocument).bind 'click.chosen', @click_test_action
+        this.results_show()
+      else if not @is_multiple and evt and (($(evt.target)[0] == @selected_item[0]) || $(evt.target).parents("a.chosen-single").length)
         evt.preventDefault()
+        this.results_toggle()
 
-      if not (evt? and ($ evt.target).hasClass "search-choice-close")
-        if not @active_field
-          @search_field.val "" if @is_multiple
-          $(@container[0].ownerDocument).bind 'click.chosen', @click_test_action
-          this.results_show()
-        else if not @is_multiple and evt and (($(evt.target)[0] == @selected_item[0]) || $(evt.target).parents("a.chosen-single").length)
-          evt.preventDefault()
-          this.results_toggle()
-
-        this.activate_field()
+      this.activate_field()
 
   container_mouseup: (evt) ->
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
@@ -169,6 +170,8 @@ class Chosen extends AbstractChosen
     @search_field.blur()
 
   activate_field: ->
+    return if @is_disabled
+
     @container.addClass "chosen-container-active"
     @active_field = true
 
@@ -270,7 +273,7 @@ class Chosen extends AbstractChosen
       @form_field_label = $("label[for='#{@form_field.id}']") #next check for a for=#{id}
 
     if @form_field_label.length > 0
-      @form_field_label.bind 'click.chosen', (evt) => if @is_multiple then this.container_mousedown(evt) else this.activate_field()
+      @form_field_label.bind 'click.chosen', this.label_click_handler
 
   show_search_field_default: ->
     if @is_multiple and this.choices_count() < 1 and not @active_field
