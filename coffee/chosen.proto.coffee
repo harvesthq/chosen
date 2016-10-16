@@ -125,7 +125,7 @@ class @Chosen extends AbstractChosen
     return if @is_disabled
 
     if evt and evt.type in ['mousedown', 'touchstart'] and not @results_showing
-      evt.stop()
+      evt.preventDefault()
 
     if not (evt? and evt.target.hasClassName "search-choice-close")
       if not @active_field
