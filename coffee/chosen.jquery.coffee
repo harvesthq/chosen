@@ -89,7 +89,7 @@ class Chosen extends AbstractChosen
     @form_field_jq.bind "chosen:updated.chosen", (evt) => this.results_update_field(evt); return
     @form_field_jq.bind "chosen:activate.chosen", (evt) => this.activate_field(evt); return
     @form_field_jq.bind "chosen:open.chosen", (evt) => this.container_mousedown(evt); return
-    @form_field_jq.bind "chosen:close.chosen", (evt) => this.input_blur(evt); return
+    @form_field_jq.bind "chosen:close.chosen", (evt) => this.close_field(evt); return
 
     @search_field.bind 'blur.chosen', (evt) => this.input_blur(evt); return
     @search_field.bind 'keyup.chosen', (evt) => this.keyup_checker(evt); return
@@ -166,6 +166,7 @@ class Chosen extends AbstractChosen
 
     this.show_search_field_default()
     this.search_field_scale()
+    @search_field.blur()
 
   activate_field: ->
     @container.addClass "chosen-container-active"
