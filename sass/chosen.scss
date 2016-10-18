@@ -29,7 +29,8 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     cursor: pointer;
   }
 
-  .search-choice, .chosen-single{
+  .search-choice,
+  .chosen-single{
     .group-name{
       margin-right: 4px;
       overflow: hidden;
@@ -42,6 +43,21 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
         padding-left: 2px;
         vertical-align: top;
       }
+    }
+  }
+  .search-choice-close {
+    border: none;
+    cursor: pointer;
+    background: none;
+    display: block;
+    width: 12px;
+    height: 12px;
+    background: $chosen-sprite -42px 1px no-repeat;
+    font-size: 1px;
+
+    &:hover,
+    &:focus {
+      background-position: -42px -10px;
     }
   }
 }
@@ -83,17 +99,6 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     position: absolute;
     top: 6px;
     right: 26px;
-    display: block;
-    width: 12px;
-    height: 12px;
-    background: $chosen-sprite -42px 1px no-repeat;
-    font-size: 1px;
-    &:hover {
-      background-position: -42px -10px;
-    }
-  }
-  &.chosen-disabled .chosen-single .search-choice-close:hover {
-    background-position: -42px -10px;
   }
   .chosen-single div {
     position: absolute;
@@ -253,14 +258,6 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
         position: absolute;
         top: 4px;
         right: 3px;
-        display: block;
-        width: 12px;
-        height: 12px;
-        background: $chosen-sprite -42px 1px no-repeat;
-        font-size: 1px;
-        &:hover {
-          background-position: -42px -10px;
-        }
       }
     }
     &.search-choice-disabled {
@@ -330,8 +327,14 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
   .chosen-single {
     cursor: default;
   }
-  .chosen-choices .search-choice .search-choice-close {
+  .search-choice-close {
     cursor: default;
+    &:hover,
+    &:focus {
+      outline: none;
+      background-position: -42px 1px;
+      cursor: default;
+    }
   }
 }
 /* @end */

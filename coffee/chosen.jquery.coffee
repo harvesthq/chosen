@@ -300,7 +300,7 @@ class Chosen extends AbstractChosen
     if item.disabled
       choice.addClass 'search-choice-disabled'
     else
-      close_link = $('<a />', { class: 'search-choice-close', 'data-option-array-index': item.array_index })
+      close_link = $('<button />', { type: 'button', class: 'search-choice-close', 'data-option-array-index': item.array_index })
       close_link.bind 'click.chosen', (evt) => this.choice_destroy_link_click(evt)
       choice.append close_link
 
@@ -404,7 +404,7 @@ class Chosen extends AbstractChosen
   single_deselect_control_build: ->
     return unless @allow_single_deselect
     unless @selected_item.find('.search-choice-close').length
-      @selected_item.find('span').first().after '<a class="search-choice-close"></a>'
+      @selected_item.find('span').first().after '<button type="button" class="search-choice-close"></button>'
     @selected_item.addClass('chosen-single-with-deselect')
 
   get_search_field_value: ->
