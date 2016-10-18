@@ -446,7 +446,7 @@ class @Chosen extends AbstractChosen
 
   keydown_backstroke: ->
     if @pending_backstroke
-      this.choice_destroy @pending_backstroke.down("a")
+      this.choice_destroy @pending_backstroke.down(".search-choice-close")
       this.clear_backstroke()
     else
       next_available_destroy = @search_container.siblings().last()
