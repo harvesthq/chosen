@@ -290,7 +290,7 @@ class @Chosen extends AbstractChosen
     if item.disabled
       choice.addClassName 'search-choice-disabled'
     else
-      close_link = new Element('button', { type: 'button', class: 'search-choice-close', rel: item.array_index })
+      close_link = new Element('button', { type: 'button', tabindex: -1, class: 'search-choice-close', rel: item.array_index })
       close_link.observe "click", (evt) => this.choice_destroy_link_click(evt)
       choice.insert close_link
 
@@ -393,7 +393,7 @@ class @Chosen extends AbstractChosen
   single_deselect_control_build: ->
     return unless @allow_single_deselect
     unless @selected_item.down('.search-choice-close')
-      @selected_item.down('span').insert { after: '<button type="button" class="search-choice-close"></button>' }
+      @selected_item.down('span').insert { after: '<button type="button" tabindex="-1" class="search-choice-close"></button>' }
     @selected_item.addClassName('chosen-single-with-deselect')
 
   get_search_field_value: ->
