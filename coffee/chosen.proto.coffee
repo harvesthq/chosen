@@ -74,7 +74,7 @@ class @Chosen extends AbstractChosen
     @search_results.observe "touchend", (evt) => this.search_results_touchend(evt)
 
     @form_field.observe "chosen:updated", (evt) => this.results_update_field(evt)
-    @form_field.observe "chosen:activate", (evt) => this.activate_field(evt)
+    @form_field.observe "chosen:activate", this.activate_field
     @form_field.observe "chosen:open", (evt) => this.container_mousedown(evt)
     @form_field.observe "chosen:close", (evt) => this.close_field(evt)
 
@@ -174,7 +174,7 @@ class @Chosen extends AbstractChosen
     this.search_field_scale()
     @search_field.blur()
 
-  activate_field: ->
+  activate_field: =>
     return if @is_disabled
 
     @container.addClassName "chosen-container-active"
