@@ -110,7 +110,7 @@ class Chosen extends AbstractChosen
     @form_field_label.unbind 'click.chosen' if @form_field_label.length > 0
 
     if @search_field[0].tabIndex
-      @form_field_jq[0].tabIndex = @search_field[0].tabIndex
+      @form_field.tabIndex = @search_field[0].tabIndex
 
     @container.remove()
     @form_field_jq.removeData('chosen')
@@ -264,12 +264,11 @@ class Chosen extends AbstractChosen
 
     @results_showing = false
 
-
-  set_tab_index: (el) ->
+  set_tab_index: ->
     if @form_field.tabIndex
-      ti = @form_field.tabIndex
+      tabIndex = @form_field.tabIndex
       @form_field.tabIndex = -1
-      @search_field[0].tabIndex = ti
+      @search_field[0].tabIndex = tabIndex
 
   set_label_behavior: ->
     @form_field_label = @form_field_jq.parents("label") # first check for a parent label
