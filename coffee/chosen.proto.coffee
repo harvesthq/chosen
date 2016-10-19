@@ -91,7 +91,7 @@ class @Chosen extends AbstractChosen
       @container.observe "click", (evt) => evt.preventDefault() # gobble click of anchor
 
   destroy: ->
-    @container.ownerDocument.stopObserving "click", @click_test_action
+    @container.ownerDocument.stopObserving 'click', this.test_active_click
 
     for event in ['chosen:updated', 'chosen:activate', 'chosen:open', 'chosen:close']
       @form_field.stopObserving(event)
@@ -141,7 +141,7 @@ class @Chosen extends AbstractChosen
     if not (evt? and evt.target.hasClassName "search-choice-close")
       if not @active_field
         @search_field.clear() if @is_multiple
-        @container.ownerDocument.observe "click", @click_test_action
+        @container.ownerDocument.observe 'click', this.test_active_click
         this.results_show()
       else if not @is_multiple and evt and (evt.target is @selected_item || evt.target.up("a.chosen-single"))
         this.results_toggle()
@@ -162,7 +162,7 @@ class @Chosen extends AbstractChosen
     this.close_field() if not @active_field and @container.hasClassName("chosen-container-active")
 
   close_field: ->
-    @container.ownerDocument.stopObserving "click", @click_test_action
+    @container.ownerDocument.stopObserving 'click', this.test_active_click
 
     @active_field = false
     this.results_hide()
@@ -183,7 +183,7 @@ class @Chosen extends AbstractChosen
     @search_field.value = this.get_search_field_value()
     @search_field.focus()
 
-  test_active_click: (evt) ->
+  test_active_click: (evt) =>
     if evt.target.up('.chosen-container') is @container
       @active_field = true
     else

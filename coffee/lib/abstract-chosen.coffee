@@ -14,7 +14,6 @@ class AbstractChosen
     this.on_ready()
 
   set_default_values: ->
-    @click_test_action = (evt) => this.test_active_click(evt)
     @active_field = false
     @mouse_on_container = false
     @results_showing = false
