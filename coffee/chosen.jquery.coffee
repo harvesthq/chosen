@@ -157,7 +157,7 @@ class Chosen extends AbstractChosen
       delta = delta * 40 if evt.type is 'DOMMouseScroll'
       @search_results.scrollTop(delta + @search_results.scrollTop())
 
-  blur_test: (evt) ->
+  blur_test: ->
     this.close_field() if not @active_field and @container.hasClass "chosen-container-active"
 
   close_field: ->

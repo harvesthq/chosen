@@ -56,13 +56,13 @@ class AbstractChosen
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
 
-  input_focus: (evt) ->
+  input_focus: ->
     if @is_multiple
       setTimeout (=> this.container_mousedown()), 50 unless @active_field
     else
       @activate_field() unless @active_field
 
-  input_blur: (evt) ->
+  input_blur: ->
     if not @mouse_on_container
       @active_field = false
       setTimeout (=> this.blur_test()), 100
@@ -151,7 +151,7 @@ class AbstractChosen
     else
       this.results_show()
 
-  results_search: (evt) ->
+  results_search: ->
     if @results_showing
       this.winnow_results()
     else
@@ -300,7 +300,7 @@ class AbstractChosen
         this.results_search()
         break
 
-  clipboard_event_checker: (evt) ->
+  clipboard_event_checker: ->
     return if @is_disabled
     setTimeout (=> this.results_search()), 50
 
