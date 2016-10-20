@@ -7,7 +7,7 @@ class @Chosen extends AbstractChosen
     super()
 
     # HTML Templates
-    @no_results_temp = new Template(this.get_no_results_template('#{terms}'))
+    @no_results_temp = new Template(this.get_no_results_html('#{terms}'))
 
   set_up_html: ->
     container_classes = ["chosen-container"]
@@ -27,9 +27,9 @@ class @Chosen extends AbstractChosen
     @container.setStyle(width: this.container_width())
 
     if @is_multiple
-      @container.update this.get_multi_template()
+      @container.update this.get_multi_html()
     else
-      @container.update this.get_single_template()
+      @container.update this.get_single_html()
 
     @form_field.hide().insert({ after: @container })
     @dropdown = @container.down('div.chosen-drop')

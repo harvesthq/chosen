@@ -43,9 +43,9 @@ class Chosen extends AbstractChosen
     @container.width this.container_width()
 
     if @is_multiple
-      @container.html this.get_multi_template()
+      @container.html this.get_multi_html()
     else
-      @container.html this.get_single_template()
+      @container.html this.get_single_html()
 
     @form_field_jq.hide().after @container
     @dropdown = @container.find('div.chosen-drop').first()
@@ -432,7 +432,7 @@ class Chosen extends AbstractChosen
     this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
-    no_results_html = this.get_no_results_template(terms)
+    no_results_html = this.get_no_results_html(terms)
     @search_results.append no_results_html
     @form_field_jq.trigger("chosen:no_results", {chosen:this})
 
