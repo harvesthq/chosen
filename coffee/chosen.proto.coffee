@@ -55,40 +55,40 @@ class @Chosen extends AbstractChosen
     @form_field.fire("chosen:ready", {chosen: this})
 
   register_observers: ->
-    @container.observe "touchstart", (evt) => this.container_mousedown(evt)
-    @container.observe "touchend", (evt) => this.container_mouseup(evt)
+    @container.observe 'touchstart', this.container_mousedown
+    @container.observe 'touchend', this.container_mouseup
 
-    @container.observe "mousedown", (evt) => this.container_mousedown(evt)
-    @container.observe "mouseup", (evt) => this.container_mouseup(evt)
-    @container.observe "mouseenter", (evt) => this.mouse_enter(evt)
-    @container.observe "mouseleave", (evt) => this.mouse_leave(evt)
+    @container.observe 'mousedown', this.container_mousedown
+    @container.observe 'mouseup', this.container_mouseup
+    @container.observe 'mouseenter', this.mouse_enter
+    @container.observe 'mouseleave', this.mouse_leave
 
-    @search_results.observe "mouseup", (evt) => this.search_results_mouseup(evt)
-    @search_results.observe "mouseover", (evt) => this.search_results_mouseover(evt)
-    @search_results.observe "mouseout", (evt) => this.search_results_mouseout(evt)
-    @search_results.observe "mousewheel", (evt) => this.search_results_mousewheel(evt)
-    @search_results.observe "DOMMouseScroll", (evt) => this.search_results_mousewheel(evt)
+    @search_results.observe 'mouseup', this.search_results_mouseup
+    @search_results.observe 'mouseover', this.search_results_mouseover
+    @search_results.observe 'mouseout', this.search_results_mouseout
+    @search_results.observe 'mousewheel', this.search_results_mousewheel
+    @search_results.observe 'DOMMouseScroll', this.search_results_mousewheel
 
-    @search_results.observe "touchstart", (evt) => this.search_results_touchstart(evt)
-    @search_results.observe "touchmove", (evt) => this.search_results_touchmove(evt)
-    @search_results.observe "touchend", (evt) => this.search_results_touchend(evt)
+    @search_results.observe 'touchstart', this.search_results_touchstart
+    @search_results.observe 'touchmove', this.search_results_touchmove
+    @search_results.observe 'touchend', this.search_results_touchend
 
-    @form_field.observe "chosen:updated", (evt) => this.results_update_field(evt)
-    @form_field.observe "chosen:activate", this.activate_field
-    @form_field.observe "chosen:open", (evt) => this.container_mousedown(evt)
-    @form_field.observe "chosen:close", (evt) => this.close_field(evt)
+    @form_field.observe 'chosen:updated', this.results_update_field
+    @form_field.observe 'chosen:activate', this.activate_field
+    @form_field.observe 'chosen:open', this.container_mousedown
+    @form_field.observe 'chosen:close', this.close_field
 
-    @search_field.observe "blur", (evt) => this.input_blur(evt)
-    @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
-    @search_field.observe "keydown", (evt) => this.keydown_checker(evt)
-    @search_field.observe "focus", (evt) => this.input_focus(evt)
-    @search_field.observe "cut", (evt) => this.clipboard_event_checker(evt)
-    @search_field.observe "paste", (evt) => this.clipboard_event_checker(evt)
+    @search_field.observe 'blur', this.input_blur
+    @search_field.observe 'keyup', this.keyup_checker
+    @search_field.observe 'keydown', this.keydown_checker
+    @search_field.observe 'focus', this.input_focus
+    @search_field.observe 'cut', this.clipboard_event_checker
+    @search_field.observe 'paste', this.clipboard_event_checker
 
     if @is_multiple
-      @search_choices.observe "click", (evt) => this.choices_click(evt)
+      @search_choices.observe 'click', this.choices_click
     else
-      @container.observe "click", (evt) => evt.preventDefault() # gobble click of anchor
+      @container.observe 'click', (evt) => evt.preventDefault() # gobble click of anchor
 
   destroy: ->
     @container.ownerDocument.stopObserving 'click', this.test_active_click
@@ -132,7 +132,7 @@ class @Chosen extends AbstractChosen
     else unless @is_multiple
       @selected_item.observe 'focus', this.activate_field
 
-  container_mousedown: (evt) ->
+  container_mousedown: (evt) =>
     return if @is_disabled
 
     if evt and evt.type in ['mousedown', 'touchstart'] and not @results_showing
@@ -148,10 +148,10 @@ class @Chosen extends AbstractChosen
 
       this.activate_field()
 
-  container_mouseup: (evt) ->
+  container_mouseup: (evt) =>
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
 
-  search_results_mousewheel: (evt) ->
+  search_results_mousewheel: (evt) =>
     delta = evt.deltaY or -evt.wheelDelta or evt.detail
     if delta?
       evt.preventDefault()
@@ -161,7 +161,7 @@ class @Chosen extends AbstractChosen
   blur_test: ->
     this.close_field() if not @active_field and @container.hasClassName("chosen-container-active")
 
-  close_field: ->
+  close_field: =>
     @container.ownerDocument.stopObserving 'click', this.test_active_click
 
     @active_field = false
@@ -285,18 +285,18 @@ class @Chosen extends AbstractChosen
       @search_field.value = ""
       @search_field.removeClassName "default"
 
-  search_results_mouseup: (evt) ->
+  search_results_mouseup: (evt) =>
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
     if target
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
-  search_results_mouseover: (evt) ->
+  search_results_mouseover: (evt) =>
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
     this.result_do_highlight( target ) if target
 
-  search_results_mouseout: (evt) ->
+  search_results_mouseout: (evt) =>
     this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
 
   choice_build: (item) ->

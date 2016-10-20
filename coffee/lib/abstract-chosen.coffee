@@ -53,16 +53,16 @@ class AbstractChosen
     else
       item.html
 
-  mouse_enter: -> @mouse_on_container = true
-  mouse_leave: -> @mouse_on_container = false
+  mouse_enter: => @mouse_on_container = true
+  mouse_leave: => @mouse_on_container = false
 
-  input_focus: ->
+  input_focus: =>
     if @is_multiple
-      setTimeout (=> this.container_mousedown()), 50 unless @active_field
+      setTimeout (this.container_mousedown), 50 unless @active_field
     else
       @activate_field() unless @active_field
 
-  input_blur: ->
+  input_blur: =>
     if not @mouse_on_container
       @active_field = false
       setTimeout (=> this.blur_test()), 100
@@ -134,7 +134,7 @@ class AbstractChosen
 
     this.outerHTML(group_el)
 
-  results_update_field: ->
+  results_update_field: =>
     this.set_default_text()
     this.results_reset_cleanup() if not @is_multiple
     this.result_clear_highlight()
@@ -239,11 +239,11 @@ class AbstractChosen
 
     return @selected_option_count
 
-  choices_click: (evt) ->
+  choices_click: (evt) =>
     evt.preventDefault()
     this.results_show() unless @results_showing or @is_disabled
 
-  keydown_checker: (evt) ->
+  keydown_checker: (evt) =>
     stroke = evt.which ? evt.keyCode
     this.search_field_scale()
 
@@ -275,7 +275,7 @@ class AbstractChosen
         this.keydown_arrow()
         break
 
-  keyup_checker: (evt) ->
+  keyup_checker: (evt) =>
     stroke = evt.which ? evt.keyCode
     this.search_field_scale()
 
@@ -300,7 +300,7 @@ class AbstractChosen
         this.results_search()
         break
 
-  clipboard_event_checker: ->
+  clipboard_event_checker: =>
     return if @is_disabled
     setTimeout (=> this.results_search()), 50
 
@@ -314,15 +314,15 @@ class AbstractChosen
 
     return true
 
-  search_results_touchstart: (evt) ->
+  search_results_touchstart: (evt) =>
     @touch_started = true
     this.search_results_mouseover(evt)
 
-  search_results_touchmove: (evt) ->
+  search_results_touchmove: (evt) =>
     @touch_started = false
     this.search_results_mouseout(evt)
 
-  search_results_touchend: (evt) ->
+  search_results_touchend: (evt) =>
     this.search_results_mouseup(evt) if @touch_started
 
   outerHTML: (element) ->

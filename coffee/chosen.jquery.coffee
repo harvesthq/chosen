@@ -71,37 +71,37 @@ class Chosen extends AbstractChosen
     @form_field_jq.trigger("chosen:ready", {chosen: this})
 
   register_observers: ->
-    @container.bind 'touchstart.chosen', (evt) => this.container_mousedown(evt); return
-    @container.bind 'touchend.chosen', (evt) => this.container_mouseup(evt); return
+    @container.bind 'touchstart.chosen', this.container_mousedown
+    @container.bind 'touchend.chosen', this.container_mouseup
 
-    @container.bind 'mousedown.chosen', (evt) => this.container_mousedown(evt); return
-    @container.bind 'mouseup.chosen', (evt) => this.container_mouseup(evt); return
-    @container.bind 'mouseenter.chosen', (evt) => this.mouse_enter(evt); return
-    @container.bind 'mouseleave.chosen', (evt) => this.mouse_leave(evt); return
+    @container.bind 'mousedown.chosen', this.container_mousedown
+    @container.bind 'mouseup.chosen', this.container_mouseup
+    @container.bind 'mouseenter.chosen', this.mouse_enter
+    @container.bind 'mouseleave.chosen', this.mouse_leave
 
-    @search_results.bind 'mouseup.chosen', (evt) => this.search_results_mouseup(evt); return
-    @search_results.bind 'mouseover.chosen', (evt) => this.search_results_mouseover(evt); return
-    @search_results.bind 'mouseout.chosen', (evt) => this.search_results_mouseout(evt); return
-    @search_results.bind 'mousewheel.chosen DOMMouseScroll.chosen', (evt) => this.search_results_mousewheel(evt); return
+    @search_results.bind 'mouseup.chosen', this.search_results_mouseup
+    @search_results.bind 'mouseover.chosen', this.search_results_mouseover
+    @search_results.bind 'mouseout.chosen', this.search_results_mouseout
+    @search_results.bind 'mousewheel.chosen DOMMouseScroll.chosen', this.search_results_mousewheel
 
-    @search_results.bind 'touchstart.chosen', (evt) => this.search_results_touchstart(evt); return
-    @search_results.bind 'touchmove.chosen', (evt) => this.search_results_touchmove(evt); return
-    @search_results.bind 'touchend.chosen', (evt) => this.search_results_touchend(evt); return
+    @search_results.bind 'touchstart.chosen', this.search_results_touchstart
+    @search_results.bind 'touchmove.chosen', this.search_results_touchmove
+    @search_results.bind 'touchend.chosen', this.search_results_touchend
 
-    @form_field_jq.bind "chosen:updated.chosen", (evt) => this.results_update_field(evt); return
-    @form_field_jq.bind "chosen:activate.chosen", this.activate_field
-    @form_field_jq.bind "chosen:open.chosen", (evt) => this.container_mousedown(evt); return
-    @form_field_jq.bind "chosen:close.chosen", (evt) => this.close_field(evt); return
+    @form_field_jq.bind 'chosen:updated.chosen', this.results_update_field
+    @form_field_jq.bind 'chosen:activate.chosen', this.activate_field
+    @form_field_jq.bind 'chosen:open.chosen', this.container_mousedown
+    @form_field_jq.bind 'chosen:close.chosen', this.close_field
 
-    @search_field.bind 'blur.chosen', (evt) => this.input_blur(evt); return
-    @search_field.bind 'keyup.chosen', (evt) => this.keyup_checker(evt); return
-    @search_field.bind 'keydown.chosen', (evt) => this.keydown_checker(evt); return
-    @search_field.bind 'focus.chosen', (evt) => this.input_focus(evt); return
-    @search_field.bind 'cut.chosen', (evt) => this.clipboard_event_checker(evt); return
-    @search_field.bind 'paste.chosen', (evt) => this.clipboard_event_checker(evt); return
+    @search_field.bind 'blur.chosen', this.input_blur
+    @search_field.bind 'keyup.chosen', this.keyup_checker
+    @search_field.bind 'keydown.chosen', this.keydown_checker
+    @search_field.bind 'focus.chosen', this.input_focus
+    @search_field.bind 'cut.chosen', this.clipboard_event_checker
+    @search_field.bind 'paste.chosen', this.clipboard_event_checker
 
     if @is_multiple
-      @search_choices.bind 'click.chosen', (evt) => this.choices_click(evt); return
+      @search_choices.bind 'click.chosen', this.choices_click
     else
       @container.bind 'click.chosen', (evt) -> evt.preventDefault(); return # gobble click of anchor
 
@@ -130,7 +130,7 @@ class Chosen extends AbstractChosen
     else unless @is_multiple
       @selected_item.bind 'focus.chosen', this.activate_field
 
-  container_mousedown: (evt) ->
+  container_mousedown: (evt) =>
     return if @is_disabled
 
     if evt and evt.type in ['mousedown', 'touchstart'] and not @results_showing
@@ -147,10 +147,10 @@ class Chosen extends AbstractChosen
 
       this.activate_field()
 
-  container_mouseup: (evt) ->
+  container_mouseup: (evt) =>
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
 
-  search_results_mousewheel: (evt) ->
+  search_results_mousewheel: (evt) =>
     delta = evt.originalEvent.deltaY or -evt.originalEvent.wheelDelta or evt.originalEvent.detail if evt.originalEvent
     if delta?
       evt.preventDefault()
@@ -160,7 +160,7 @@ class Chosen extends AbstractChosen
   blur_test: ->
     this.close_field() if not @active_field and @container.hasClass "chosen-container-active"
 
-  close_field: ->
+  close_field: =>
     $(@container[0].ownerDocument).unbind 'click.chosen', this.test_active_click
 
     @active_field = false
@@ -286,18 +286,18 @@ class Chosen extends AbstractChosen
       @search_field.val("")
       @search_field.removeClass "default"
 
-  search_results_mouseup: (evt) ->
+  search_results_mouseup: (evt) =>
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
     if target.length
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
-  search_results_mouseover: (evt) ->
+  search_results_mouseover: (evt) =>
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
     this.result_do_highlight( target ) if target
 
-  search_results_mouseout: (evt) ->
+  search_results_mouseout: (evt) =>
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
 
   choice_build: (item) ->
