@@ -37,7 +37,8 @@
     "grunt-postcss": "^0.7.1",
     "grunt-sass": "^1.1.0",
     "grunt-zip": "~0.9.2",
-    "load-grunt-tasks": "^3.0.0"
+    "load-grunt-tasks": "^3.0.0",
+    "simulant": "^0.2.2"
   },
   "contributors": [
     {
