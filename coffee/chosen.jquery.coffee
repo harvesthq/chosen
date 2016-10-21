@@ -141,9 +141,10 @@ class Chosen extends AbstractChosen
         @search_field.val "" if @is_multiple
         $(@container[0].ownerDocument).bind 'click.chosen', @click_test_action
         this.results_show()
-      else if not @is_multiple and evt and (($(evt.target)[0] == @selected_item[0]) || $(evt.target).parents("a.chosen-single").length)
-        evt.preventDefault()
-        this.results_toggle()
+      else if not @is_multiple and evt
+        if $(evt.target)[0] == @selected_item[0] or $(evt.target).parents("a.chosen-single").length
+          evt.preventDefault()
+          this.results_toggle()
 
       this.activate_field()
 
@@ -288,18 +289,25 @@ class Chosen extends AbstractChosen
       @search_field.removeClass "default"
 
   search_results_mouseup: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+    target = if $(evt.target).hasClass "active-result"
+      $(evt.target)
+    else
+      $(evt.target).parents(".active-result").first()
     if target.length
       @result_highlight = target
       this.result_select(evt)
       @search_field.focus()
 
   search_results_mouseover: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+    target = if $(evt.target).hasClass "active-result"
+      $(evt.target)
+    else
+      $(evt.target).parents(".active-result").first()
     this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
-    this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
+    if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
+      this.result_clear_highlight()
 
   choice_build: (item) ->
     choice = $('<li />', { class: "search-choice" }).html("<span>#{this.choice_label(item)}</span>")
@@ -376,7 +384,8 @@ class Chosen extends AbstractChosen
         this.results_hide()
         this.show_search_field_default()
 
-      this.trigger_form_field_change selected: @form_field.options[item.options_index].value  if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
+      if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
+        this.trigger_form_field_change selected: @form_field.options[item.options_index].value
       @current_selectedIndex = @form_field.selectedIndex
 
       evt.preventDefault()
@@ -413,7 +422,8 @@ class Chosen extends AbstractChosen
 
   single_deselect_control_build: ->
     return unless @allow_single_deselect
-    @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" unless @selected_item.find("abbr").length
+    unless @selected_item.find("abbr").length
+      @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>"
     @selected_item.addClass("chosen-single-with-deselect")
 
   get_search_field_value: ->
@@ -427,7 +437,10 @@ class Chosen extends AbstractChosen
 
   winnow_results_set_highlight: ->
     selected_results = if not @is_multiple then @search_results.find(".result-selected.active-result") else []
-    do_high = if selected_results.length then selected_results.first() else @search_results.find(".active-result").first()
+    do_high = if selected_results.length
+      selected_results.first()
+    else
+      @search_results.find(".active-result").first()
 
     this.result_do_highlight do_high if do_high?
 

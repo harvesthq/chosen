@@ -88,7 +88,7 @@ class @Chosen extends AbstractChosen
     if @is_multiple
       @search_choices.observe "click", (evt) => this.choices_click(evt)
     else
-      @container.observe "click", (evt) => evt.preventDefault() # gobble click of anchor
+      @container.observe "click", (evt) -> evt.preventDefault() # gobble click of anchor
 
   destroy: ->
     @container.ownerDocument.stopObserving "click", @click_test_action
@@ -215,22 +215,22 @@ class @Chosen extends AbstractChosen
     @parsing = false
 
   result_do_highlight: (el) ->
-      this.result_clear_highlight()
+    this.result_clear_highlight()
 
-      @result_highlight = el
-      @result_highlight.addClassName "highlighted"
+    @result_highlight = el
+    @result_highlight.addClassName "highlighted"
 
-      maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
-      visible_top = @search_results.scrollTop
-      visible_bottom = maxHeight + visible_top
+    maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
+    visible_top = @search_results.scrollTop
+    visible_bottom = maxHeight + visible_top
 
-      high_top = @result_highlight.positionedOffset().top
-      high_bottom = high_top + @result_highlight.getHeight()
+    high_top = @result_highlight.positionedOffset().top
+    high_bottom = high_top + @result_highlight.getHeight()
 
-      if high_bottom >= visible_bottom
-        @search_results.scrollTop = if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
-      else if high_top < visible_top
-        @search_results.scrollTop = high_top
+    if high_bottom >= visible_bottom
+      @search_results.scrollTop = if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
+    else if high_top < visible_top
+      @search_results.scrollTop = high_top
 
   result_clear_highlight: ->
     @result_highlight.removeClassName('highlighted') if @result_highlight
@@ -410,7 +410,8 @@ class @Chosen extends AbstractChosen
 
   single_deselect_control_build: ->
     return unless @allow_single_deselect
-    @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } unless @selected_item.down("abbr")
+    unless @selected_item.down("abbr")
+      @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" }
     @selected_item.addClassName("chosen-single-with-deselect")
 
   get_search_field_value: ->
@@ -467,7 +468,8 @@ class @Chosen extends AbstractChosen
       this.clear_backstroke()
     else
       next_available_destroy = @search_container.siblings().last()
-      if next_available_destroy and next_available_destroy.hasClassName("search-choice") and not next_available_destroy.hasClassName("search-choice-disabled")
+      if next_available_destroy and next_available_destroy.hasClassName("search-choice") and
+      not next_available_destroy.hasClassName("search-choice-disabled")
         @pending_backstroke = next_available_destroy
         @pending_backstroke.addClassName("search-choice-focus") if @pending_backstroke
         if @single_backstroke_delete
@@ -518,7 +520,7 @@ class @Chosen extends AbstractChosen
         evt = new Event(eventType, bubbles: true, cancelable: true)
       catch
         evt = document.createEvent('HTMLEvents')
-        evt.initEvent(eventType, true, true);
+        evt.initEvent(eventType, true, true)
       element.dispatchEvent(evt)
     else # Old IE:
-      element.fireEvent("on#{eventType}", document.createEventObject());
+      element.fireEvent("on#{eventType}", document.createEventObject())

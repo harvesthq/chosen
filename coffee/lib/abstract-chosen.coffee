@@ -21,7 +21,10 @@ class AbstractChosen
     @results_showing = false
     @result_highlighted = null
     @is_rtl = @options.rtl || /\bchosen-rtl\b/.test(@form_field.className)
-    @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
+    @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]?.text is ""
+      @options.allow_single_deselect
+    else
+      false
     @disable_search_threshold = @options.disable_search_threshold || 0
     @disable_search = @options.disable_search || false
     @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
@@ -38,16 +41,17 @@ class AbstractChosen
     @hide_results_on_select = if @options.hide_results_on_select? then @options.hide_results_on_select else true
 
   set_default_text: ->
-    if @form_field.getAttribute("data-placeholder")
-      @default_text = @form_field.getAttribute("data-placeholder")
+    @default_text = if @form_field.getAttribute("data-placeholder")
+      @form_field.getAttribute("data-placeholder")
     else if @is_multiple
-      @default_text = @options.placeholder_text_multiple || @options.placeholder_text || AbstractChosen.default_multiple_text
+      @options.placeholder_text_multiple || @options.placeholder_text || AbstractChosen.default_multiple_text
     else
-      @default_text = @options.placeholder_text_single || @options.placeholder_text || AbstractChosen.default_single_text
+      @options.placeholder_text_single || @options.placeholder_text || AbstractChosen.default_single_text
 
     @default_text = this.escape_html(@default_text)
 
-    @results_none_found = @form_field.getAttribute("data-no_results_text") || @options.no_results_text || AbstractChosen.default_no_result_text
+    @results_none_found = @form_field.getAttribute("data-no_results_text") ||
+      @options.no_results_text || AbstractChosen.default_no_result_text
 
   choice_label: (item) ->
     if @include_group_label_in_selected and item.group_label?
@@ -194,7 +198,8 @@ class AbstractChosen
           if option.search_match
             if searchText.length
               startpos = option.search_text.search highlightRegex
-              text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
+              text = option.search_text.substr(0, startpos + searchText.length) + '</em>' +
+                option.search_text.substr(startpos + searchText.length)
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
             results_group.group_match = true if results_group?
