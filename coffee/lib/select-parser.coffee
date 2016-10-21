@@ -5,7 +5,7 @@ class SelectParser
     @parsed = []
 
   add_node: (child) ->
-    if child.nodeName.toUpperCase() is "OPTGROUP"
+    if child.nodeName.toUpperCase() is 'OPTGROUP'
       this.add_group child
     else
       this.add_option child
@@ -23,8 +23,8 @@ class SelectParser
     this.add_option( option, group_position, group.disabled ) for option in group.childNodes
 
   add_option: (option, group_position, group_disabled) ->
-    if option.nodeName.toUpperCase() is "OPTION"
-      if option.text != ""
+    if option.nodeName.toUpperCase() is 'OPTION'
+      if option.text != ''
         if group_position?
           @parsed[group_position].children += 1
         @parsed.push
@@ -49,18 +49,18 @@ class SelectParser
 
   escapeExpression: (text) ->
     if not text? or text is false
-      return ""
+      return ''
     unless /[\&\<\>\"\'\`]/.test(text)
       return text
     map =
-      "<": "&lt;"
-      ">": "&gt;"
-      '"': "&quot;"
-      "'": "&#x27;"
-      "`": "&#x60;"
+      '<': '&lt;'
+      '>': '&gt;'
+      '"': '&quot;'
+      "'": '&#x27;'
+      '`': '&#x60;'
     unsafe_chars = /&(?!\w+;)|[\<\>\"\'\`]/g
     text.replace unsafe_chars, (chr) ->
-      map[chr] || "&amp;"
+      map[chr] || '&amp;'
 
 SelectParser.select_to_array = (select) ->
   parser = new SelectParser()

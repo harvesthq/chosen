@@ -1,6 +1,6 @@
 class AbstractChosen
 
-  constructor: (@form_field, @options={}) ->
+  constructor: (@form_field, @options = {}) ->
     return unless AbstractChosen.browser_is_supported()
     @is_multiple = @form_field.multiple
     this.set_default_text()
@@ -21,7 +21,7 @@ class AbstractChosen
     @results_showing = false
     @result_highlighted = null
     @is_rtl = @options.rtl || /\bchosen-rtl\b/.test(@form_field.className)
-    @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]?.text is ""
+    @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]?.text is ''
       @options.allow_single_deselect
     else
       false
@@ -41,8 +41,8 @@ class AbstractChosen
     @hide_results_on_select = if @options.hide_results_on_select? then @options.hide_results_on_select else true
 
   set_default_text: ->
-    @default_text = if @form_field.getAttribute("data-placeholder")
-      @form_field.getAttribute("data-placeholder")
+    @default_text = if @form_field.getAttribute('data-placeholder')
+      @form_field.getAttribute('data-placeholder')
     else if @is_multiple
       @options.placeholder_text_multiple || @options.placeholder_text || AbstractChosen.default_multiple_text
     else
@@ -50,7 +50,7 @@ class AbstractChosen
 
     @default_text = this.escape_html(@default_text)
 
-    @results_none_found = @form_field.getAttribute("data-no_results_text") ||
+    @results_none_found = @form_field.getAttribute('data-no_results_text') ||
       @options.no_results_text || AbstractChosen.default_no_result_text
 
   choice_label: (item) ->
@@ -110,16 +110,16 @@ class AbstractChosen
     return '' unless this.include_option_in_results(option)
 
     classes = []
-    classes.push "active-result" if !option.disabled and !(option.selected and @is_multiple)
-    classes.push "disabled-result" if option.disabled and !(option.selected and @is_multiple)
-    classes.push "result-selected" if option.selected
-    classes.push "group-option" if option.group_array_index?
-    classes.push option.classes if option.classes != ""
+    classes.push 'active-result' if !option.disabled and !(option.selected and @is_multiple)
+    classes.push 'disabled-result' if option.disabled and !(option.selected and @is_multiple)
+    classes.push 'result-selected' if option.selected
+    classes.push 'group-option' if option.group_array_index?
+    classes.push option.classes if option.classes != ''
 
-    option_el = document.createElement("li")
-    option_el.className = classes.join(" ")
+    option_el = document.createElement('li')
+    option_el.className = classes.join(' ')
     option_el.style.cssText = option.style
-    option_el.setAttribute("data-option-array-index", option.array_index)
+    option_el.setAttribute('data-option-array-index', option.array_index)
     option_el.innerHTML = option.search_text
     option_el.title = option.title if option.title
 
@@ -130,11 +130,11 @@ class AbstractChosen
     return '' unless group.active_options > 0
 
     classes = []
-    classes.push "group-result"
+    classes.push 'group-result'
     classes.push group.classes if group.classes
 
-    group_el = document.createElement("li")
-    group_el.className = classes.join(" ")
+    group_el = document.createElement('li')
+    group_el.className = classes.join(' ')
     group_el.innerHTML = group.search_text
     group_el.title = group.title if group.title
 
@@ -147,7 +147,7 @@ class AbstractChosen
     this.results_build()
     this.winnow_results() if @results_showing
 
-  reset_single_select_options: () ->
+  reset_single_select_options: ->
     for result in @results_data
       result.selected = false if result.selected
 
@@ -169,7 +169,7 @@ class AbstractChosen
     results = 0
 
     searchText = this.get_search_text()
-    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
     regex = this.get_search_regex(escapedSearchText)
     highlightRegex = this.get_highlight_regex(escapedSearchText)
 
@@ -210,28 +210,28 @@ class AbstractChosen
     this.result_clear_highlight()
 
     if results < 1 and searchText.length
-      this.update_results_content ""
+      this.update_results_content ''
       this.no_results searchText
     else
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
 
   get_search_regex: (escaped_search_string) ->
-    regex_anchor = if @search_contains then "" else "^"
-    regex_flag = if @case_sensitive_search then "" else "i"
+    regex_anchor = if @search_contains then '' else '^'
+    regex_flag = if @case_sensitive_search then '' else 'i'
     new RegExp(regex_anchor + escaped_search_string, regex_flag)
 
   get_highlight_regex: (escaped_search_string) ->
-    regex_anchor = if @search_contains then "" else "\\b"
-    regex_flag = if @case_sensitive_search then "" else "i"
+    regex_anchor = if @search_contains then '' else '\\b'
+    regex_flag = if @case_sensitive_search then '' else 'i'
     new RegExp(regex_anchor + escaped_search_string, regex_flag)
 
   search_string_match: (search_string, regex) ->
     if regex.test search_string
       return true
-    else if @enable_split_word_search and (search_string.indexOf(" ") >= 0 or search_string.indexOf("[") == 0)
+    else if @enable_split_word_search and (search_string.indexOf(' ') >= 0 or search_string.indexOf('[') == 0)
       #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-      parts = search_string.replace(/\[|\]/g, "").split(" ")
+      parts = search_string.replace(/\[|\]/g, '').split(' ')
       if parts.length
         for part in parts
           if regex.test part
@@ -334,7 +334,7 @@ class AbstractChosen
 
   outerHTML: (element) ->
     return element.outerHTML if element.outerHTML
-    tmp = document.createElement("div")
+    tmp = document.createElement('div')
     tmp.appendChild(element)
     tmp.innerHTML
 
@@ -374,7 +374,7 @@ class AbstractChosen
   # class methods and variables ============================================================
 
   @browser_is_supported: ->
-    if "Microsoft Internet Explorer" is window.navigator.appName
+    if 'Microsoft Internet Explorer' is window.navigator.appName
       return document.documentMode >= 8
     if /iP(od|hone)/i.test(window.navigator.userAgent) or
        /IEMobile/i.test(window.navigator.userAgent) or
@@ -385,7 +385,6 @@ class AbstractChosen
       return false
     return true
 
-  @default_multiple_text: "Select Some Options"
-  @default_single_text: "Select an Option"
-  @default_no_result_text: "No results match"
-
+  @default_multiple_text: 'Select Some Options'
+  @default_single_text: 'Select an Option'
+  @default_no_result_text: 'No results match'
