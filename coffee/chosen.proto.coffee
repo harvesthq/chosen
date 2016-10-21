@@ -110,14 +110,7 @@ class @Chosen extends AbstractChosen
     @form_field.show()
 
   search_field_disabled: ->
-    @is_disabled = @form_field.disabled || (=>
-      element = @form_field
-      disabled = false
-      while (element = element.parentElement) && element != element.ownerDocument
-        disabled = element.nodeName.toUpperCase() == 'FIELDSET' && element.disabled
-        break if disabled
-      disabled
-    )()
+    @is_disabled = @form_field.disabled || @form_field.up('fieldset')?.disabled || false
 
     if @is_disabled
       @container.addClassName 'chosen-disabled'

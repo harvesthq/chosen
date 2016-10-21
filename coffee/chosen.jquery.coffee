@@ -115,14 +115,8 @@ class Chosen extends AbstractChosen
     @form_field_jq.show()
 
   search_field_disabled: ->
-    @is_disabled = @form_field.disabled || (=>
-      element = @form_field
-      disabled = false
-      while (element = element.parentElement) && element != element.ownerDocument
-        disabled = element.nodeName.toUpperCase() == 'FIELDSET' && element.disabled
-        break if disabled
-      disabled
-    )()
+    @is_disabled = @form_field.disabled || @form_field_jq.parents('fieldset').is(':disabled')
+
     @container.toggleClass 'chosen-disabled', @is_disabled
     @search_field[0].disabled = @is_disabled
 
