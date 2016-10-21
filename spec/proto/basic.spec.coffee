@@ -75,3 +75,26 @@ describe "Basic setup", ->
 
       placeholder = div.down(".chosen-single > span")
       expect(placeholder.innerText).toBe("<None>")
+
+  describe "disabled fieldset", ->
+
+    it "should render as disabled", ->
+      tmpl = "
+        <fieldset disabled>
+          <select data-placeholder='Choose a Country...'>
+            <option value=''></option>
+            <option value='United States'>United States</option>
+            <option value='United Kingdom'>United Kingdom</option>
+            <option value='Afghanistan'>Afghanistan</option>
+          </select>
+        </fieldset>
+      "
+      div = new Element("div")
+      document.body.insert(div)
+      div.update(tmpl)
+      select = div.down("select")
+      expect(select).toBeDefined()
+      new Chosen(select)
+
+      container = div.down(".chosen-container")
+      expect(container.hasClassName("chosen-disabled")).toBe true
