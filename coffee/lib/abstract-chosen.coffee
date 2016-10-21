@@ -349,5 +349,5 @@ class AbstractChosen
 
   @default_multiple_text: "Select Some Options"
   @default_single_text: "Select an Option"
-  @default_no_result_text: "No results match"
+  @default_no_result_text: 'No results match "%s"'
 
