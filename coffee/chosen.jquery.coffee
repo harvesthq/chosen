@@ -123,16 +123,16 @@ class Chosen extends AbstractChosen
         break if disabled
       disabled
     )()
+    @container.toggleClass 'chosen-disabled', @is_disabled
+    @search_field[0].disabled = @is_disabled
+
+    unless @is_multiple
+      @selected_item.unbind 'focus.chosen', this.activate_field
 
     if @is_disabled
-      @container.addClass 'chosen-disabled'
-      @search_field[0].disabled = true
-      @selected_item.unbind "focus.chosen", @activate_action if !@is_multiple
       this.close_field()
-    else
-      @container.removeClass 'chosen-disabled'
-      @search_field[0].disabled = false
-      @selected_item.bind "focus.chosen", @activate_action if !@is_multiple
+    else unless @is_multiple
+      @selected_item.bind 'focus.chosen', this.activate_field
 
   container_mousedown: (evt) ->
     return if @is_disabled
