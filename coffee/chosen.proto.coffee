@@ -7,9 +7,7 @@ class @Chosen extends AbstractChosen
     super()
 
     # HTML Templates
-    @single_temp = new Template('<a class="chosen-single chosen-default"><span>#{default}</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>')
-    @multi_temp = new Template('<ul class="chosen-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>')
-    @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
+    @no_results_temp = new Template(this.get_no_results_html('#{terms}'))
 
   set_up_html: ->
     container_classes = ["chosen-container"]
@@ -19,12 +17,19 @@ class @Chosen extends AbstractChosen
 
     container_props =
       'class': container_classes.join ' '
-      'style': "width: #{this.container_width()};"
       'title': @form_field.title
 
     container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
 
-    @container = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
+    @container = new Element('div', container_props)
+
+    # CSP without 'unsafe-inline' doesn't allow setting the style attribute directly
+    @container.setStyle(width: this.container_width())
+
+    if @is_multiple
+      @container.update this.get_multi_html()
+    else
+      @container.update this.get_single_html()
 
     @form_field.hide().insert({ after: @container })
     @dropdown = @container.down('div.chosen-drop')
@@ -475,28 +480,33 @@ class @Chosen extends AbstractChosen
     @pending_backstroke = null
 
   search_field_scale: ->
-    if @is_multiple
-      h = 0
-      w = 0
+    return unless @is_multiple
 
-      style_block = "position:absolute; left: -1000px; top: -1000px; display: none; white-space: pre;"
-      styles = ['font-size', 'font-style', 'font-weight', 'font-family', 'line-height', 'text-transform', 'letter-spacing']
+    style_block =
+      position: 'absolute'
+      left: '-1000px'
+      top: '-1000px'
+      display: 'none'
+      whiteSpace: 'pre'
 
-      for style in styles
-        style_block += style + ":" + @search_field.getStyle(style) + ";"
+    styles = ['fontSize', 'fontStyle', 'fontWeight', 'fontFamily', 'lineHeight', 'textTransform', 'letterSpacing']
 
-      div = new Element('div', { 'style' : style_block }).update(this.get_search_field_value().escapeHTML())
-      document.body.appendChild(div)
+    for style in styles
+      style_block[style] = @search_field.getStyle(style)
 
-      w = Element.measure(div, 'width') + 25
-      div.remove()
+    div = new Element('div').update(this.escape_html(this.get_search_field_value()))
+    # CSP without 'unsafe-inline' doesn't allow setting the style attribute directly
+    div.setStyle(style_block)
+    document.body.appendChild(div)
 
-      f_width = @container.getWidth()
+    width = div.measure('width') + 25
+    div.remove()
 
-      if( w > f_width-10 )
-        w = f_width - 10
+    container_width = @container.getWidth()
 
-      @search_field.setStyle({'width': w + 'px'})
+    width = Math.min(container_width - 10, width)
+
+    @search_field.setStyle(width: width + 'px')
 
   trigger_form_field_change:  ->
     triggerHtmlEvent @form_field, 'input'

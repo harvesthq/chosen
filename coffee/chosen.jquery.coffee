@@ -33,17 +33,19 @@ class Chosen extends AbstractChosen
 
     container_props =
       'class': container_classes.join ' '
-      'style': "width: #{this.container_width()};"
       'title': @form_field.title
 
     container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
 
     @container = ($ "<div />", container_props)
 
+    # CSP without 'unsafe-inline' doesn't allow setting the style attribute directly
+    @container.width this.container_width()
+
     if @is_multiple
-      @container.html '<ul class="chosen-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>'
+      @container.html this.get_multi_html()
     else
-      @container.html '<a class="chosen-single chosen-default"><span>' + @default_text + '</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>'
+      @container.html this.get_single_html()
 
     @form_field_jq.hide().after @container
     @dropdown = @container.find('div.chosen-drop').first()
@@ -430,9 +432,7 @@ class Chosen extends AbstractChosen
     this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
-    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
-    no_results_html.find("span").first().html(terms)
-
+    no_results_html = this.get_no_results_html(terms)
     @search_results.append no_results_html
     @form_field_jq.trigger("chosen:no_results", {chosen:this})
 
@@ -476,29 +476,32 @@ class Chosen extends AbstractChosen
     @pending_backstroke = null
 
   search_field_scale: ->
-    if @is_multiple
-      h = 0
-      w = 0
+    return unless @is_multiple
 
-      style_block = "position:absolute; left: -1000px; top: -1000px; display: none; white-space: pre;"
-      styles = ['font-size', 'font-style', 'font-weight', 'font-family', 'line-height', 'text-transform', 'letter-spacing']
+    style_block =
+      position: 'absolute'
+      left: '-1000px'
+      top: '-1000px'
+      display: 'none'
+      whiteSpace: 'pre'
 
-      for style in styles
-        style_block += style + ":" + @search_field.css(style) + ";"
+    styles = ['fontSize', 'fontStyle', 'fontWeight', 'fontFamily', 'lineHeight', 'textTransform', 'letterSpacing']
 
-      div = $('<div />', { 'style' : style_block })
-      div.text this.get_search_field_value()
-      $('body').append div
+    for style in styles
+      style_block[style] = @search_field.css(style)
 
-      w = div.width() + 25
-      div.remove()
+    div = $('<div />').css(style_block)
+    div.text this.get_search_field_value()
+    $('body').append div
 
-      f_width = @container.outerWidth()
+    width = div.width() + 25
+    div.remove()
 
-      if( w > f_width - 10 )
-        w = f_width - 10
+    container_width = @container.outerWidth()
 
-      @search_field.css({'width': w + 'px'})
+    width = Math.min(container_width - 10, width)
+
+    @search_field.width(width)
 
   trigger_form_field_change: (extra) ->
     @form_field_jq.trigger "input", extra
