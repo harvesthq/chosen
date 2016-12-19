@@ -31,3 +31,57 @@ describe "Basic setup", ->
 
     expect(select.val()).toBe "Afghanistan"
 
+  describe "data-placeholder", ->
+
+    it "should render", ->
+      tmpl = "
+        <select data-placeholder='Choose a Country...'>
+          <option value=''></option>
+          <option value='United States'>United States</option>
+          <option value='United Kingdom'>United Kingdom</option>
+          <option value='Afghanistan'>Afghanistan</option>
+        </select>
+      "
+      div = $("<div>").html(tmpl)
+      select = div.find("select")
+      expect(select.size()).toBe(1)
+      select.chosen()
+      placeholder = div.find(".chosen-single > span")
+      expect(placeholder.text()).toBe("Choose a Country...")
+
+    it "should render with special characters", ->
+      tmpl = "
+        <select data-placeholder='&lt;None&gt;'>
+          <option value=''></option>
+          <option value='United States'>United States</option>
+          <option value='United Kingdom'>United Kingdom</option>
+          <option value='Afghanistan'>Afghanistan</option>
+        </select>
+      "
+      div = $("<div>").html(tmpl)
+      select = div.find("select")
+      expect(select.size()).toBe(1)
+      select.chosen()
+      placeholder = div.find(".chosen-single > span")
+      expect(placeholder.text()).toBe("<None>")
+
+  describe "disabled fieldset", ->
+
+    it "should render as disabled", ->
+      tmpl = "
+        <fieldset disabled>
+          <select data-placeholder='Choose a Country...'>
+            <option value=''></option>
+            <option value='United States'>United States</option>
+            <option value='United Kingdom'>United Kingdom</option>
+            <option value='Afghanistan'>Afghanistan</option>
+          </select>
+        </fieldset>
+      "
+      div = $("<div>").html(tmpl)
+      select = div.find("select")
+      expect(select.size()).toBe(1)
+      select.chosen()
+
+      container = div.find(".chosen-container")
+      expect(container.hasClass("chosen-disabled")).toBe true
