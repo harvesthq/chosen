@@ -108,6 +108,7 @@ class AbstractChosen
     option_el.setAttribute("data-option-array-index", option.array_index)
     option_el.setAttribute("role", "option")
     option_el.id = "#{@form_field.id}-chosen-search-result-#{option.array_index}"
+    option_el.setAttribute("aria-selected", "true") if option.selected
     option_el.innerHTML = option.search_text
     option_el.title = option.title if option.title
 

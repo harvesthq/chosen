@@ -42,11 +42,12 @@ class Chosen extends AbstractChosen
     @container = ($ "<div />", container_props)
 
     if @is_multiple
-      @container.html '<ul class="chosen-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results" role="listbox" aria-busy="true"></ul></div>'
+      @container.html '<ul class="chosen-choices"><li class="search-field"><input type="text" value="' + @default_text + '" class="default" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" style="width:25px;" /></li></ul><div class="chosen-drop" aria-hidden="true"><ul class="chosen-results" role="listbox" aria-busy="true"></ul></div>'
     else
-      @container.html '<a class="chosen-single chosen-default"><span>' + @default_text + '</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" autocomplete="off" /></div><ul class="chosen-results" role="listbox" aria-busy="true"></ul></div>'
+      @container.html '<a class="chosen-single chosen-default"><span>' + @default_text + '</span><div><b></b></div></a><div class="chosen-drop" aria-hidden="true"><div class="chosen-search"><input type="text" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" autocomplete="off" /></div><ul class="chosen-results" role="listbox" aria-busy="true"></ul></div>'
 
     @form_field_jq.hide().after @container
+    @form_field_jq.attr "hidden", true
     @dropdown = @container.find('div.chosen-drop').first()
 
     @search_field = @container.find('input').first()
@@ -256,6 +257,7 @@ class Chosen extends AbstractChosen
       return false
 
     @container.addClass "chosen-with-drop"
+    @dropdown.attr "aria-hidden", false
     @results_showing = true
 
     @search_field.focus()
@@ -272,6 +274,7 @@ class Chosen extends AbstractChosen
       this.result_clear_highlight()
 
       @container.removeClass "chosen-with-drop"
+      @dropdown.attr "aria-hidden", true
       @form_field_jq.trigger("chosen:hiding_dropdown", {chosen: this})
 
     @results_showing = false
@@ -369,6 +372,7 @@ class Chosen extends AbstractChosen
         this.reset_single_select_options()
 
       high.addClass("result-selected")
+      high.attr "aria-selected", true
 
       item = @results_data[ high[0].getAttribute("data-option-array-index") ]
       item.selected = true
