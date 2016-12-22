@@ -318,7 +318,7 @@ class Chosen extends AbstractChosen
 
   search_results_mouseout: (evt) ->
     if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
-      if not (@result_highlight and $.contains(@result_highlight, $(evt.relatedTarget)))
+      if not (@result_highlight and $.contains(@result_highlight.get(0), evt.relatedTarget))
         this.result_clear_highlight() 
 
   choice_build: (item) ->
