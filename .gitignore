@@ -3,7 +3,7 @@ node_modules
 .project
 public/*.js
 public/*.css
-public/bower.json
+public/*.json
 chosen.zip
 .sass-cache
 .ruby-version

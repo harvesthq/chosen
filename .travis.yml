@@ -3,7 +3,7 @@ sudo: false
 language: node_js
 
 node_js:
-  - "0.10"
+  - "node"
 
 addons:
   apt:
@@ -17,9 +17,9 @@ before_install:
   - gem install bundler
   - bundle install
 
-before_script: grunt build
+before_script: grunt build package-npm package-bower
 
-after_success: ./bower-publish.sh
+after_success: ./publish-package.sh
 
 env:
   global:
