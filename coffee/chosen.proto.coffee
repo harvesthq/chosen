@@ -224,7 +224,8 @@ class @Chosen extends AbstractChosen
 
       @result_highlight = el
       @result_highlight.addClassName "highlighted"
-
+      @result_highlight.innerHTML = "<strong>" + @result_highlight.innerHTML + "</strong>"
+      
       @search_field.writeAttribute("aria-activedescendant", @result_highlight.readAttribute("id"))
 
       maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
@@ -240,7 +241,9 @@ class @Chosen extends AbstractChosen
         @search_results.scrollTop = high_top
 
   result_clear_highlight: ->
-    @result_highlight.removeClassName('highlighted') if @result_highlight
+    if @result_highlight
+      @result_highlight.removeClassName('highlighted') 
+      @result_highlight.innerHTML = @result_highlight.down('strong').innerHTML
     @result_highlight = null
 
   results_show: ->
@@ -306,7 +309,9 @@ class @Chosen extends AbstractChosen
     this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
-    this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
+    if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
+      if not (@result_highlight and Element.extend(evt.relatedTarget).descendantOf(@result_highlight))
+        this.result_clear_highlight();
 
   choice_build: (item) ->
     choice = new Element('li', { class: "search-choice" }).update("<span>#{this.choice_label(item)}</span>")

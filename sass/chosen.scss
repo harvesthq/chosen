@@ -195,6 +195,9 @@ $chosen-sprite-retina: image-url('chosen-sprite@2x.png') !default;
       font-style: normal;
       text-decoration: underline;
     }
+    strong {
+      font-weight: normal;
+    }
   }
 }
 /* @end */
