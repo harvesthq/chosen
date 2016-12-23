@@ -232,7 +232,6 @@ class Chosen extends AbstractChosen
 
       @result_highlight = el
       @result_highlight.addClass "highlighted"
-      @result_highlight.html "<strong>" + @result_highlight.html() + "</strong>"
 
       @search_field.attr("aria-activedescendant", @result_highlight.attr("id"))
 
@@ -249,9 +248,7 @@ class Chosen extends AbstractChosen
         @search_results.scrollTop high_top
 
   result_clear_highlight: ->
-    if @result_highlight
-      @result_highlight.removeClass "highlighted"
-      @result_highlight.html @result_highlight.children("strong").html()
+    @result_highlight.removeClass "highlighted" if @result_highlight
     @result_highlight = null
 
   results_show: ->
@@ -317,9 +314,7 @@ class Chosen extends AbstractChosen
     this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
-    if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
-      if not (@result_highlight and $.contains(@result_highlight.get(0), evt.relatedTarget))
-        this.result_clear_highlight() 
+    this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
 
   choice_build: (item) ->
     choice = $('<li />', { class: "search-choice" }).html("<span>#{this.choice_label(item)}</span>")
