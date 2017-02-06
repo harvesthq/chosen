@@ -1,11 +1,13 @@
 .DS_Store
 node_modules
 .project
-dist/
 public/*.js
 public/*.css
-public/*.map
-chosen.zip
+public/*.json
+chosen*.zip
 .sass-cache
 .ruby-version
 .rbenv-gemsets
+.grunt
+_SpecRunner.html
+spec/public

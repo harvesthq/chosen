@@ -202,3 +202,18 @@ i { font-style: italic; }
   padding-left: 27px;
   text-decoration: none;
 }
+
+.select,
+.chosen-select,
+.chosen-select-no-single,
+.chosen-select-no-results,
+.chosen-select-deselect,
+.chosen-select-rtl,
+.chosen-select-width {
+  width: 350px;
+}
+
+.jquery-version-refer {
+  margin-top: 40px;
+  font-style: italic;
+}

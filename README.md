@@ -11,32 +11,24 @@ http://harvesthq.github.io/chosen/
 For **downloads**, see:
 https://github.com/harvesthq/chosen/releases/
 
-### Bower Installation
+### Package managers
 
-Chosen does _**not**_ currently support command-line `bower install chosen` installation. This is because the repo does not contain the compiled sources, and bower does not currently support adding a post-install/build step.
+Chosen is available through [Bower](https://bower.io/) and [npm](https://www.npmjs.com),
+_however, the package names are not the same_.
 
-However, you can specify that you'd like to use [the release ZIP](https://github.com/harvesthq/chosen/releases/latest), which includes the compiled and minified sources.
-
-Either install from the command line with
+To install with Bower:
 
 ```
-$ bower install https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip
-````
-
-or add Chosen to your own project's `bower.json` file, like:
-
-```json
-{
-  "name": "my-project",
-  "version": "1.0.0",
-  "dependencies": {
-    "jquery": "1.11.0",
-    "chosen": "https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip"
-  }
-}
+bower install chosen
 ```
 
-See [#1509](https://github.com/harvesthq/chosen/issues/1509), [#1472](https://github.com/harvesthq/chosen/issues/1472), and [#1333](https://github.com/harvesthq/chosen/issues/1333) for more info.
+To install with npm:
+
+```
+npm install chosen-js
+```
+
+The compiled files for these packages are automatically generated and stored in a [2nd Chosen repository](https://github.com/harvesthq/chosen-package). No pull requests will be accepted to that repository.
 
 ### Contributing to this project
 

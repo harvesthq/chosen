@@ -10,6 +10,8 @@ class AbstractChosen
 
     this.set_up_html()
     this.register_observers()
+    # instantiation done, fire ready
+    this.on_ready()
 
   set_default_values: ->
     @click_test_action = (evt) => this.test_active_click(evt)
@@ -18,6 +20,7 @@ class AbstractChosen
     @mouse_on_container = false
     @results_showing = false
     @result_highlighted = null
+    @is_rtl = @options.rtl || /\bchosen-rtl\b/.test(@form_field.className)
     @allow_single_deselect = if @options.allow_single_deselect? and @form_field.options[0]? and @form_field.options[0].text is "" then @options.allow_single_deselect else false
     @disable_search_threshold = @options.disable_search_threshold || 0
     @disable_search = @options.disable_search || false
@@ -29,6 +32,10 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+    @include_group_label_in_selected = @options.include_group_label_in_selected || false
+    @max_shown_results = @options.max_shown_results || Number.POSITIVE_INFINITY
+    @case_sensitive_search = @options.case_sensitive_search || false
+    @hide_results_on_select = if @options.hide_results_on_select? then @options.hide_results_on_select else true
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -38,7 +45,15 @@ class AbstractChosen
     else
       @default_text = @options.placeholder_text_single || @options.placeholder_text || AbstractChosen.default_single_text
 
+    @default_text = this.escape_html(@default_text)
+
     @results_none_found = @form_field.getAttribute("data-no_results_text") || @options.no_results_text || AbstractChosen.default_no_result_text
+
+  choice_label: (item) ->
+    if @include_group_label_in_selected and item.group_label?
+      "<b class='group-name'>#{item.group_label}</b>#{item.html}"
+    else
+      item.html
 
   mouse_enter: -> @mouse_on_container = true
   mouse_leave: -> @mouse_on_container = false
@@ -54,13 +69,24 @@ class AbstractChosen
       @active_field = false
       setTimeout (=> this.blur_test()), 100
 
+  label_click_handler: (evt) =>
+    if @is_multiple
+      this.container_mousedown(evt)
+    else
+      this.activate_field()
+
   results_option_build: (options) ->
     content = ''
+    shown_results = 0
     for data in @results_data
+      data_content = ''
       if data.group
-        content += this.result_add_group data
+        data_content = this.result_add_group data
       else
-        content += this.result_add_option data
+        data_content = this.result_add_option data
+      if data_content != ''
+        shown_results++
+        content += data_content
 
       # this select logic pins on an awkward flag
       # we can make it better
@@ -68,7 +94,10 @@ class AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          this.single_set_selected_text(data.text)
+          this.single_set_selected_text(this.choice_label(data))
+
+      if shown_results >= @max_shown_results
+        break
 
     content
 
@@ -88,6 +117,7 @@ class AbstractChosen
     option_el.style.cssText = option.style
     option_el.setAttribute("data-option-array-index", option.array_index)
     option_el.innerHTML = option.search_text
+    option_el.title = option.title if option.title
 
     this.outerHTML(option_el)
 
@@ -95,9 +125,14 @@ class AbstractChosen
     return '' unless group.search_match || group.group_match
     return '' unless group.active_options > 0
 
+    classes = []
+    classes.push "group-result"
+    classes.push group.classes if group.classes
+
     group_el = document.createElement("li")
-    group_el.className = "group-result"
+    group_el.className = classes.join(" ")
     group_el.innerHTML = group.search_text
+    group_el.title = group.title if group.title
 
     this.outerHTML(group_el)
 
@@ -131,8 +166,8 @@ class AbstractChosen
 
     searchText = this.get_search_text()
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-    zregex = new RegExp(escapedSearchText, 'i')
     regex = this.get_search_regex(escapedSearchText)
+    highlightRegex = this.get_highlight_regex(escapedSearchText)
 
     for option in @results_data
 
@@ -149,21 +184,21 @@ class AbstractChosen
           results_group = @results_data[option.group_array_index]
           results += 1 if results_group.active_options is 0 and results_group.search_match
           results_group.active_options += 1
-                
-        unless option.group and not @group_search
 
-          option.search_text = if option.group then option.label else option.text
+        option.search_text = if option.group then option.label else option.html
+
+        unless option.group and not @group_search
           option.search_match = this.search_string_match(option.search_text, regex)
           results += 1 if option.search_match and not option.group
 
           if option.search_match
             if searchText.length
-              startpos = option.search_text.search zregex
+              startpos = option.search_text.search highlightRegex
               text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
             results_group.group_match = true if results_group?
-          
+
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
 
@@ -178,7 +213,13 @@ class AbstractChosen
 
   get_search_regex: (escaped_search_string) ->
     regex_anchor = if @search_contains then "" else "^"
-    new RegExp(regex_anchor + escaped_search_string, 'i')
+    regex_flag = if @case_sensitive_search then "" else "i"
+    new RegExp(regex_anchor + escaped_search_string, regex_flag)
+
+  get_highlight_regex: (escaped_search_string) ->
+    regex_anchor = if @search_contains then "" else "\\b"
+    regex_flag = if @case_sensitive_search then "" else "i"
+    new RegExp(regex_anchor + escaped_search_string, regex_flag)
 
   search_string_match: (search_string, regex) ->
     if regex.test search_string
@@ -197,35 +238,73 @@ class AbstractChosen
     @selected_option_count = 0
     for option in @form_field.options
       @selected_option_count += 1 if option.selected
-    
+
     return @selected_option_count
 
   choices_click: (evt) ->
     evt.preventDefault()
+    this.activate_field()
     this.results_show() unless @results_showing or @is_disabled
+
+  keydown_checker: (evt) ->
+    stroke = evt.which ? evt.keyCode
+    this.search_field_scale()
+
+    this.clear_backstroke() if stroke != 8 and @pending_backstroke
+
+    switch stroke
+      when 8 # backspace
+        @backstroke_length = this.get_search_field_value().length
+        break
+      when 9 # tab
+        this.result_select(evt) if @results_showing and not @is_multiple
+        @mouse_on_container = false
+        break
+      when 13 # enter
+        evt.preventDefault() if @results_showing
+        break
+      when 27 # escape
+        evt.preventDefault() if @results_showing
+        break
+      when 32 # space
+        evt.preventDefault() if @disable_search
+        break
+      when 38 # up arrow
+        evt.preventDefault()
+        this.keyup_arrow()
+        break
+      when 40 # down arrow
+        evt.preventDefault()
+        this.keydown_arrow()
+        break
 
   keyup_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
     this.search_field_scale()
 
     switch stroke
-      when 8
+      when 8 # backspace
         if @is_multiple and @backstroke_length < 1 and this.choices_count() > 0
           this.keydown_backstroke()
         else if not @pending_backstroke
           this.result_clear_highlight()
           this.results_search()
-      when 13
+        break
+      when 13 # enter
         evt.preventDefault()
         this.result_select(evt) if this.results_showing
-      when 27
+        break
+      when 27 # escape
         this.results_hide() if @results_showing
-        return true
-      when 9, 38, 40, 16, 91, 17
+        break
+      when 9, 16, 17, 18, 38, 40, 91
         # don't do anything on these keys
-      else this.results_search()
+      else
+        this.results_search()
+        break
 
   clipboard_event_checker: (evt) ->
+    return if @is_disabled
     setTimeout (=> this.results_search()), 50
 
   container_width: ->
@@ -255,15 +334,51 @@ class AbstractChosen
     tmp.appendChild(element)
     tmp.innerHTML
 
-  # class methods and variables ============================================================ 
+  get_single_html: ->
+    """
+      <a class="chosen-single chosen-default">
+        <span>#{@default_text}</span>
+        <div><b></b></div>
+      </a>
+      <div class="chosen-drop">
+        <div class="chosen-search">
+          <input class="chosen-search-input" type="text" autocomplete="off" />
+        </div>
+        <ul class="chosen-results"></ul>
+      </div>
+    """
+
+  get_multi_html: ->
+    """
+      <ul class="chosen-choices">
+        <li class="search-field">
+          <input class="chosen-search-input" type="text" autocomplete="off" value="#{@default_text}" />
+        </li>
+      </ul>
+      <div class="chosen-drop">
+        <ul class="chosen-results"></ul>
+      </div>
+    """
+
+  get_no_results_html: (terms) ->
+    """
+      <li class="no-results">
+        #{@results_none_found} <span>#{terms}</span>
+      </li>
+    """
+
+  # class methods and variables ============================================================
 
   @browser_is_supported: ->
-    if window.navigator.appName == "Microsoft Internet Explorer"
+    if "Microsoft Internet Explorer" is window.navigator.appName
       return document.documentMode >= 8
-    if /iP(od|hone)/i.test(window.navigator.userAgent)
+    if /iP(od|hone)/i.test(window.navigator.userAgent) or
+       /IEMobile/i.test(window.navigator.userAgent) or
+       /Windows Phone/i.test(window.navigator.userAgent) or
+       /BlackBerry/i.test(window.navigator.userAgent) or
+       /BB10/i.test(window.navigator.userAgent) or
+       /Android.*Mobile/i.test(window.navigator.userAgent)
       return false
-    if /Android/i.test(window.navigator.userAgent)
-      return false if /Mobile/i.test(window.navigator.userAgent)
     return true
 
   @default_multiple_text: "Select Some Options"
