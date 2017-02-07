@@ -245,7 +245,14 @@ class Chosen extends AbstractChosen
 
     @container.addClass "chosen-with-drop"
     @results_showing = true
-
+    
+    $drop_results = @dropdown.find('.chzn-results')
+    drop_bottom = $drop_results.offset().top + $drop_results.height()
+    hidden_drop = drop_bottom - $(document).height()
+    if (hidden_drop) {
+      $drop_results.css({height: $drop_results.height() - hidden_drop})
+    }
+      
     @search_field.focus()
     @search_field.val this.get_search_field_value()
 
