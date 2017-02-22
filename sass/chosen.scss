@@ -20,10 +20,10 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     border-top: 0;
     background: #fff;
     box-shadow: 0 4px 5px rgba(#000,.15);
-    clip: rect(0,0,0,0);
+    display: none;
   }
   &.chosen-with-drop .chosen-drop {
-    clip: auto;
+    display: block;
   }
   a{
     cursor: pointer;
@@ -136,8 +136,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     background-clip: padding-box;
   }
   &.chosen-container-single-nosearch .chosen-search {
-    position: absolute;
-    clip: rect(0,0,0,0);
+    display: none;
   }
 }
 /* @end */
