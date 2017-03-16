@@ -166,7 +166,7 @@ class AbstractChosen
     results = 0
 
     searchText = this.get_search_text()
-    searchMatchFromValue = null
+    searchMatchFromValue = false
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regex = this.get_search_regex(escapedSearchText)
     highlightRegex = this.get_highlight_regex(escapedSearchText)
@@ -192,14 +192,14 @@ class AbstractChosen
         unless option.group and not @group_search
           option.search_match = this.search_string_match(option.search_text, regex)
           
-          if !option.search_match and @search_in_values
+          if not option.search_match and @search_in_values
             option.search_match = this.search_string_match(option.value, regex)
             searchMatchFromValue = true
           
           results += 1 if option.search_match and not option.group
 
           if option.search_match
-            if searchText.length and !searchMatchFromValue
+            if searchText.length and not searchMatchFromValue
               startpos = option.search_text.search highlightRegex
               text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
