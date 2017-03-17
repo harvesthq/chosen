@@ -357,8 +357,6 @@ class @Chosen extends AbstractChosen
       else
         this.reset_single_select_options()
 
-      high.addClassName("result-selected")
-
       item = @results_data[ high.getAttribute("data-option-array-index") ]
       item.selected = true
 
