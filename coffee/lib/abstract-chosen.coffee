@@ -2,6 +2,7 @@ class AbstractChosen
 
   constructor: (@form_field, @options={}) ->
     return unless AbstractChosen.browser_is_supported()
+    return unless AbstractChosen.tagname_is_valid(@form_field)
     @is_multiple = @form_field.multiple
     this.set_default_text()
     this.set_default_values()
@@ -381,7 +382,15 @@ class AbstractChosen
       return false
     return true
 
+  @tagname_is_valid: (@form_field) ->
+    if @form_field.tagName.toUpperCase() != 'SELECT'
+      console?.error 'Chosen error: invalid tagName ' + @form_field.selector + ' is not a select' 
+      return false
+    if @form_field.options.length == 0
+      console?.error 'Chosen error: ' + @form_field.selector + ' has no options children '
+      return false
+    return true
+
   @default_multiple_text: "Select Some Options"
   @default_single_text: "Select an Option"
   @default_no_result_text: "No results match"
-
