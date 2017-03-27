@@ -302,7 +302,7 @@ class Chosen extends AbstractChosen
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
 
   choice_build: (item) ->
-    choice = $('<li />', { class: "search-choice" }).html("<span>#{this.choice_label(item)}</span>")
+    choice = $('<li />', { class: "search-choice", "data-value": item.value}).html("<span>#{this.choice_label(item)}</span>")
 
     if item.disabled
       choice.addClass 'search-choice-disabled'
@@ -370,7 +370,7 @@ class Chosen extends AbstractChosen
       if @is_multiple
         this.choice_build item
       else
-        this.single_set_selected_text(this.choice_label(item))
+        this.single_set_selected_text(this.choice_label(item), item)
 
       unless @is_multiple && (!@hide_results_on_select || (evt.metaKey or evt.ctrlKey))
         this.results_hide()
@@ -383,12 +383,14 @@ class Chosen extends AbstractChosen
 
       this.search_field_scale()
 
-  single_set_selected_text: (text=@default_text) ->
+  single_set_selected_text: (text=@default_text, item) ->
     if text is @default_text
       @selected_item.addClass("chosen-default")
+      @selected_item.removeAttr("data-value")
     else
       this.single_deselect_control_build()
       @selected_item.removeClass("chosen-default")
+      @selected_item.attr("data-value", item.value)
 
     @selected_item.find("span").html(text)
 

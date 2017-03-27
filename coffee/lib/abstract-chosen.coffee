@@ -94,7 +94,7 @@ class AbstractChosen
         if data.selected and @is_multiple
           this.choice_build data
         else if data.selected and not @is_multiple
-          this.single_set_selected_text(this.choice_label(data))
+          this.single_set_selected_text(this.choice_label(data), data)
 
       if shown_results >= @max_shown_results
         break
@@ -116,6 +116,7 @@ class AbstractChosen
     option_el.className = classes.join(" ")
     option_el.style.cssText = option.style
     option_el.setAttribute("data-option-array-index", option.array_index)
+    option_el.setAttribute("data-value", option.value)
     option_el.innerHTML = option.search_text
     option_el.title = option.title if option.title
 
