@@ -91,6 +91,7 @@ class @Chosen extends AbstractChosen
       @container.observe "click", (evt) => evt.preventDefault() # gobble click of anchor
 
   destroy: ->
+    @disable_search = true
     @container.ownerDocument.stopObserving "click", @click_test_action
 
     for event in ['chosen:updated', 'chosen:activate', 'chosen:open', 'chosen:close']
