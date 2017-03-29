@@ -94,7 +94,7 @@ class Chosen extends AbstractChosen
     @form_field_jq.bind "chosen:close.chosen", (evt) => this.close_field(evt); return
 
     @search_field.bind 'blur.chosen', (evt) => this.input_blur(evt); return
-    @search_field.bind 'keyup.chosen', (evt) => this.keyup_checker(evt); return
+    @search_field.bind 'input.chosen', (evt) => this.keyup_checker(evt); return
     @search_field.bind 'keydown.chosen', (evt) => this.keydown_checker(evt); return
     @search_field.bind 'focus.chosen', (evt) => this.input_focus(evt); return
     @search_field.bind 'cut.chosen', (evt) => this.clipboard_event_checker(evt); return
