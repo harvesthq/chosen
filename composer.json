@@ -1,0 +1,13 @@
+{
+    "name": "harvesthq/chosen",
+    "description": "Chosen is a library for making long, unwieldy select boxes more friendly.",
+    "authors": [
+        {
+            "name": "Patrick Filler",
+            "email": "pfiller@mailinator.com"
+        }
+    ],
+    "require": {
+
+    }
+}
