@@ -31,7 +31,7 @@ class SelectParser
           array_index: @parsed.length
           options_index: @options_index
           value: option.value
-          text: option.text
+          text: this.escapeExpression(option.text)
           html: option.innerHTML
           title: option.title if option.title
           selected: option.selected
