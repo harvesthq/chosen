@@ -193,7 +193,11 @@ class @Chosen extends AbstractChosen
     @parsing = true
     @selected_option_count = null
 
-    @results_data = SelectParser.select_to_array @form_field
+    form_fields = SelectParser.select_to_array @form_field
+    for field in form_fields
+      field.html = field.html.trim()
+
+    @results_data = form_fields
 
     if @is_multiple
       @search_choices.select("li.search-choice").invoke("remove")
