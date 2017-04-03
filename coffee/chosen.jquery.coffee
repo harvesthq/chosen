@@ -344,6 +344,29 @@ class Chosen extends AbstractChosen
     @current_selectedIndex = @form_field.selectedIndex
     @selected_item.find("abbr").remove()
 
+  set_selection: (value) ->
+    contains = (arr, wanted) ->
+      (item for item in arr when item == wanted).length > 0
+
+    if @is_multiple
+      values = value
+      items = (data for data in @results_data when contains(values, data.value))
+      @search_choices.find("li.search-choice").remove()
+      for option in @form_field.options
+        option.selected = false
+      @choice_build item for item in items
+      for item in items
+        @form_field.options[item.options_index].selected = true
+    else
+      item = @results_data.filter((data) ->
+        data.value == value
+      )[0]
+      if (!item)
+        throw new Error('Invalid value: ' + value)
+      @single_set_selected_text(item.text)
+      @form_field.options[item.options_index].selected = true
+    return
+
   result_select: (evt) ->
     if @result_highlight
       high = @result_highlight
