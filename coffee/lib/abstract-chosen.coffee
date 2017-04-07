@@ -256,6 +256,7 @@ class AbstractChosen
 
   choices_click: (evt) ->
     evt.preventDefault()
+    this.activate_field()
     this.results_show() unless @results_showing or @is_disabled
 
   keydown_checker: (evt) ->
