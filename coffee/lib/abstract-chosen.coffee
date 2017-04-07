@@ -175,6 +175,7 @@ class AbstractChosen
     searchText = this.get_search_text()
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regex = this.get_search_regex(escapedSearchText)
+    exactRegex = new RegExp("^#{escapedSearchText}$")
     highlightRegex = this.get_highlight_regex(escapedSearchText)
 
     for option in @results_data
@@ -199,7 +200,7 @@ class AbstractChosen
           option.search_match = this.search_string_match(option.search_text, regex)
           results += 1 if option.search_match and not option.group
 
-          exact_result = exact_result || eregex.test option.html
+          exact_result = exact_result || exactRegex.test option.html
 
           if option.search_match
             if searchText.length
