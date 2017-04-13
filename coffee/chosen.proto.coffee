@@ -9,6 +9,16 @@ class @Chosen extends AbstractChosen
     # HTML Templates
     @no_results_temp = new Template(this.get_no_results_html('#{terms}'))
 
+  container_width: ->
+    if @options.width?
+      return @options.width
+    else
+      if @form_field.offsetWidth is 0
+        return @form_field.getWidth() + "px"
+      else
+        return "#{@form_field.offsetWidth}px"
+
+
   set_up_html: ->
     container_classes = ["chosen-container"]
     container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
