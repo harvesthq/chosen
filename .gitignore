@@ -3,8 +3,8 @@ node_modules
 .project
 public/*.js
 public/*.css
-public/bower.json
-chosen.zip
+public/*.json
+chosen*.zip
 .sass-cache
 .ruby-version
 .rbenv-gemsets

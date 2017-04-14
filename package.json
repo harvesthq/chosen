@@ -1,11 +1,19 @@
 {
   "author": "harvest",
   "name": "chosen",
-  "version": "1.4.2",
+  "version": "1.7.0",
   "description": "Chosen is a JavaScript plugin that makes select boxes user-friendly. It is currently available in both jQuery and Prototype flavors.",
+  "keywords": [
+    "select",
+    "multiselect",
+    "dropdown",
+    "form",
+    "input",
+    "ui"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/harvesthq/chosen"
+    "url": "https://github.com/harvesthq/chosen.git"
   },
   "engines": {
     "node": ">=0.4.0"
@@ -15,71 +23,59 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "autoprefixer": "^6.1.2",
     "coffee-script": ">= 1.6",
     "grunt": "~0.4.1",
     "grunt-contrib-coffee": "~0.6.4",
-    "grunt-contrib-compass": "~0.5.0",
     "grunt-contrib-concat": "~0.1.3",
     "grunt-contrib-cssmin": "~0.6.1",
-    "grunt-contrib-jasmine": "~0.5.1",
+    "grunt-contrib-jasmine": "~1.0.3",
     "grunt-contrib-uglify": "~0.2.0",
     "grunt-contrib-watch": "~0.3.1",
     "grunt-dom-munger": "~2.0.1",
     "grunt-gh-pages": "~0.10.0",
+    "grunt-postcss": "^0.7.1",
+    "grunt-sass": "^1.1.0",
     "grunt-zip": "~0.9.2",
-    "load-grunt-tasks": "^3.0.0"
+    "load-grunt-tasks": "^3.0.0",
+    "simulant": "^0.2.2"
   },
-  "licenses": [
+  "contributors": [
     {
-      "type": "MIT",
-      "url": "https://github.com/harvesthq/chosen/blob/master/LICENSE.md"
+      "name": "Patrick Filler",
+      "url": "https://github.com/pfiller"
+    },
+    {
+      "name": "Christophe Coevoet",
+      "url": "https://github.com/stof"
+    },
+    {
+      "name": "Ken Earley",
+      "url": "https://github.com/kenearley"
+    },
+    {
+      "name": "Koen Punt",
+      "url": "https://github.com/koenpunt"
     }
   ],
-  "bowerJSON":{
-    "main": [
+  "license": "MIT",
+  "homepage": "https://harvesthq.github.io/chosen/",
+  "bugs": "https://github.com/harvesthq/chosen/issues",
+  "_extra": {
+    "title": "Chosen",
+    "license": {
+      "type": "MIT",
+      "url": "https://github.com/harvesthq/chosen/blob/master/LICENSE.md"
+    },
+    "links": {
+      "download": "https://github.com/harvesthq/chosen/releases",
+      "docs": "https://harvesthq.github.io/chosen/"
+    },
+    "files": [
       "chosen.jquery.js",
       "chosen.css",
       "chosen-sprite@2x.png",
       "chosen-sprite.png"
     ]
-  },
-  "jqueryJSON": {
-    "title": "Chosen",
-    "keywords": [
-      "select",
-      "multiselect",
-      "dropdown",
-      "form",
-      "input",
-      "ui"
-    ],
-    "author": {
-      "url": "http://getharvest.com"
-    },
-    "maintainers": [
-      {
-        "name": "Patrick Filler",
-        "url": "https://github.com/pfiller"
-      },
-      {
-        "name": "Christophe Coevoet",
-        "url": "https://github.com/stof"
-      },
-      {
-        "name": "Ken Earley",
-        "url": "https://github.com/kenearley"
-      },
-      {
-        "name": "Koen Punt",
-        "url": "https://github.com/koenpunt"
-      }
-    ],
-    "download": "https://github.com/harvesthq/chosen/releases",
-    "homepage": "http://harvesthq.github.io/chosen/",
-    "docs": "http://harvesthq.github.io/chosen/",
-    "bugs": "https://github.com/harvesthq/chosen/issues",
-    "dependencies": {
-      "jquery": ">=1.4.4"
-    }
   }
 }
