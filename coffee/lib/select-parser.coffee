@@ -31,6 +31,7 @@ class SelectParser
           array_index: @parsed.length
           options_index: @options_index
           value: option.value
+          label: option.label
           text: option.text
           html: option.innerHTML
           title: option.title if option.title
