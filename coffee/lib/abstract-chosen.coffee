@@ -38,7 +38,9 @@ class AbstractChosen
     @hide_results_on_select = if @options.hide_results_on_select? then @options.hide_results_on_select else true
 
   set_default_text: ->
-    if @form_field.getAttribute("data-placeholder")
+    if @form_field.getAttribute("placeholder")
+      @default_text = @form_field.getAttribute("placeholder")
+    else if @form_field.getAttribute("data-placeholder")
       @default_text = @form_field.getAttribute("data-placeholder")
     else if @is_multiple
       @default_text = @options.placeholder_text_multiple || @options.placeholder_text || AbstractChosen.default_multiple_text
