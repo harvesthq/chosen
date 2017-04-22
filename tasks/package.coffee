@@ -37,7 +37,7 @@ module.exports = (grunt) ->
       contributors: pkg.contributors
       dependencies: pkg.dependencies
       files: extra.files
-      main: extra.files[0]
+      main: extra.main[0]
       repository: pkg.repository
 
     grunt.file.write('public/package.json', JSON.stringify(json, null, 2) + "\n")
@@ -54,7 +54,7 @@ module.exports = (grunt) ->
       license: extra.license.url
       authors: pkg.contributors
       dependencies: pkg.dependencies
-      main: extra.files
+      main: extra.main
       ignore: []
       repository: pkg.repository
 
