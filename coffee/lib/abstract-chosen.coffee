@@ -245,6 +245,8 @@ class AbstractChosen
     evt.preventDefault()
     this.activate_field()
     this.results_show() unless @results_showing or @is_disabled
+    if @results_showing and not @is_disabled
+      @search_field.focus() unless @is_multiple and @max_selected_options <= this.choices_count()
 
   keydown_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
