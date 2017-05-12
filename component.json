@@ -1,0 +1,8 @@
+{
+  "name": "jQuery Chosen",
+  "version": "0.9.8",
+  "main": ["./chosen/chosen.jquery.js", "./chosen/chosen.css", "./chosen/chosen-sprite.png"],
+  "dependencies": {
+    "jquery": "~1.8.2"
+  }
+}
