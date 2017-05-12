@@ -217,7 +217,7 @@ class AbstractChosen
     new RegExp(regex_anchor + escaped_search_string, regex_flag)
 
   get_highlight_regex: (escaped_search_string) ->
-    regex_anchor = if @search_contains then "" else "\\b"
+    regex_anchor = if @search_contains then "" else "(?<=(^|\\s))"
     regex_flag = if @case_sensitive_search then "" else "i"
     new RegExp(regex_anchor + escaped_search_string, regex_flag)
 
