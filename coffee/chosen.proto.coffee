@@ -4,10 +4,19 @@ class @Chosen extends AbstractChosen
     @current_selectedIndex = @form_field.selectedIndex
 
   set_default_values: ->
+    this.set_options()
+
     super()
 
     # HTML Templates
     @no_results_temp = new Template(this.get_no_results_html('#{terms}'))
+
+  set_options: () ->
+    options = {}
+    Object.extend(options, AbstractChosen.default_options)
+    Object.extend(options, Chosen.default_options)
+    Object.extend(options, @options)
+    @options = options
 
   set_up_html: ->
     container_classes = ["chosen-container"]
