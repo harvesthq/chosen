@@ -145,7 +145,9 @@ class AbstractChosen
 
   reset_single_select_options: () ->
     for result in @results_data
-      result.selected = false if result.selected
+      if result.selected    
+        result.selected = false
+        @selected_item.removeClassName("chosen-single-with-deselect")
 
   results_toggle: ->
     if @results_showing
