@@ -87,6 +87,9 @@ class @Chosen extends AbstractChosen
 
     if @is_multiple
       @search_choices.observe "click", (evt) => this.choices_click(evt)
+      @search_choices.observe "touchstart", (evt) => 
+        this.container_mousedown(evt)
+        this.choices_click(evt)
     else
       @container.observe "click", (evt) => evt.preventDefault() # gobble click of anchor
 
@@ -307,6 +310,7 @@ class @Chosen extends AbstractChosen
     else
       close_link = new Element('a', { href: '#', class: 'search-choice-close', rel: item.array_index })
       close_link.observe "click", (evt) => this.choice_destroy_link_click(evt)
+      close_link.observe "touchstart", (evt) => this.choice_destroy_link_click(evt)
       choice.insert close_link
 
     @search_container.insert { before: choice }
