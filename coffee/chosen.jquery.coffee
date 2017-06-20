@@ -299,7 +299,7 @@ class Chosen extends AbstractChosen
     this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
-    this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
+    this.result_clear_highlight() if $(evt.target).hasClass("active-result") or $(evt.target).parents('.active-result').first()
 
   choice_build: (item) ->
     choice = $('<li />', { class: "search-choice" }).html("<span>#{this.choice_label(item)}</span>")
