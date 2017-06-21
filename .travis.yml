@@ -3,7 +3,8 @@ sudo: false
 language: node_js
 
 node_js:
-  - "node"
+  - 6
+  - node
 
 addons:
   apt:
@@ -11,6 +12,11 @@ addons:
       - git-core
     packages:
       - git
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - node_js: node
 
 before_install: npm install -g grunt-cli
 before_script: grunt build package-npm package-bower
