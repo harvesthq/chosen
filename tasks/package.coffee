@@ -24,6 +24,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'package-npm', 'Generate npm manifest', () ->
     pkg = grunt.config.get('pkg')
+    extra = pkg._extra
 
     json =
       name: "#{pkg.name}-js"
@@ -35,8 +36,8 @@ module.exports = (grunt) ->
       license: pkg.license
       contributors: pkg.contributors
       dependencies: pkg.dependencies
-      files: pkg._extra.files
-      main: pkg._extra.files[0]
+      files: extra.files
+      main: extra.main[0]
       repository: pkg.repository
 
     grunt.file.write('public/package.json', JSON.stringify(json, null, 2) + "\n")
@@ -53,7 +54,7 @@ module.exports = (grunt) ->
       license: extra.license.url
       authors: pkg.contributors
       dependencies: pkg.dependencies
-      main: extra.files
+      main: extra.main
       ignore: []
       repository: pkg.repository
 

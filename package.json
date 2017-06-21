@@ -71,9 +71,17 @@
       "download": "https://github.com/harvesthq/chosen/releases",
       "docs": "https://harvesthq.github.io/chosen/"
     },
+    "main": [
+      "chosen.jquery.js",
+      "chosen.css"
+    ],
     "files": [
       "chosen.jquery.js",
+      "chosen.jquery.min.js",
+      "chosen.proto.js",
+      "chosen.proto.min.js",
       "chosen.css",
+      "chosen.min.css",
       "chosen-sprite@2x.png",
       "chosen-sprite.png"
     ]
