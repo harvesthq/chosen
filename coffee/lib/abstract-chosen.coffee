@@ -193,7 +193,7 @@ class AbstractChosen
 
           if option.search_match
             if searchText.length
-              startpos = option.search_text.search highlightRegex
+              startpos = option.search_text.indexOf highlightRegex.exec(option.search_text)[1]
               text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
@@ -217,9 +217,9 @@ class AbstractChosen
     new RegExp(regex_anchor + escaped_search_string, regex_flag)
 
   get_highlight_regex: (escaped_search_string) ->
-    regex_anchor = if @search_contains then "" else "\\b"
+    regex_anchor = if @search_contains then "" else "(?:^|\\s)"
     regex_flag = if @case_sensitive_search then "" else "i"
-    new RegExp(regex_anchor + escaped_search_string, regex_flag)
+    new RegExp(regex_anchor + "(" + escaped_search_string + ")", regex_flag)
 
   search_string_match: (search_string, regex) ->
     if regex.test search_string
