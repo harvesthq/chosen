@@ -116,7 +116,7 @@ class AbstractChosen
     option_el.className = classes.join(" ")
     option_el.style.cssText = option.style
     option_el.setAttribute("data-option-array-index", option.array_index)
-    option_el.innerHTML = option.search_text
+    option_el.innerHTML = option.highlighted_html or option.html
     option_el.title = option.title if option.title
 
     this.outerHTML(option_el)
@@ -131,7 +131,7 @@ class AbstractChosen
 
     group_el = document.createElement("li")
     group_el.className = classes.join(" ")
-    group_el.innerHTML = group.search_text
+    group_el.innerHTML = group.highlighted_html or group.label
     group_el.title = group.title if group.title
 
     this.outerHTML(group_el)
@@ -173,6 +173,7 @@ class AbstractChosen
       option.search_match = false
       results_group = null
       search_match = null
+      option.highlighted_html = ''
 
       if this.include_option_in_results(option)
 
@@ -200,7 +201,7 @@ class AbstractChosen
               prefix = option.search_text.slice(0, startpos)
               fix    = option.search_text.slice(startpos, startpos + query.length)
               suffix = option.search_text.slice(startpos + query.length)
-              option.search_text = "#{this.escape_html(prefix)}<em>#{this.escape_html(fix)}</em>#{this.escape_html(suffix)}"
+              option.highlighted_html = "#{this.escape_html(prefix)}<em>#{this.escape_html(fix)}</em>#{this.escape_html(suffix)}"
 
             results_group.group_match = true if results_group?
 
