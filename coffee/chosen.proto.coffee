@@ -417,7 +417,7 @@ class @Chosen extends AbstractChosen
     @search_field.value
 
   get_search_text: ->
-    this.escape_html this.get_search_field_value().strip()
+    this.get_search_field_value().strip()
 
   escape_html: (text) ->
     text.escapeHTML()
