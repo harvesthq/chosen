@@ -163,53 +163,64 @@ class AbstractChosen
     this.no_results_clear()
 
     results = 0
-
     searchText = this.get_search_text()
-    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-    regex = this.get_search_regex(escapedSearchText)
-    highlightRegex = this.get_highlight_regex(escapedSearchText)
+    searchArray = []
+    self = this
+    multiple = false
+    searchArray.push(searchText)
 
-    for option in @results_data
+    re = new RegExp(/\;\s*|\,\s*|\t/)
+    if searchText.search(re) >= 0
+      searchArray = searchText.split(re) || null
+      multiple = true
 
-      option.search_match = false
-      results_group = null
+    searchArray.forEach (searchText) ->
+      escapedSearchText = searchText.replace(/[-[\]{}()*+?.\\^$|#\s]/g, "\\$&")
+      regex = self.get_search_regex(escapedSearchText)
+      highlightRegex = self.get_highlight_regex(escapedSearchText)
 
-      if this.include_option_in_results(option)
+      for option in self.results_data
+        option.search_match = false
+        results_group = null
 
-        if option.group
-          option.group_match = false
-          option.active_options = 0
+        if self.include_option_in_results(option)
 
-        if option.group_array_index? and @results_data[option.group_array_index]
-          results_group = @results_data[option.group_array_index]
-          results += 1 if results_group.active_options is 0 and results_group.search_match
-          results_group.active_options += 1
+          if option.group
+            option.group_match = false
+            option.active_options = 0
 
-        option.search_text = if option.group then option.label else option.html
+          if option.group_array_index? and @results_data[option.group_array_index]
+            results_group = @results_data[option.group_array_index]
+            results += 1 if results_group.active_options is 0 and results_group.search_match
+            results_group.active_options += 1
 
-        unless option.group and not @group_search
-          option.search_match = this.search_string_match(option.search_text, regex)
-          results += 1 if option.search_match and not option.group
+          option.search_text = if option.group then option.label else option.html
 
-          if option.search_match
-            if searchText.length
-              startpos = option.search_text.search highlightRegex
-              text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
-              option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+          unless option.group and not @group_search
+            option.search_match = self.search_string_match(option.search_text, regex)
+            results += 1 if option.search_match and not option.group
 
-            results_group.group_match = true if results_group?
+            if option.search_match
+              if searchText.length
+                startpos = option.search_text.search highlightRegex
+                text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
+                option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
-          else if option.group_array_index? and @results_data[option.group_array_index].search_match
-            option.search_match = true
+              results_group.group_match = true if results_group?
 
-    this.result_clear_highlight()
+            else if option.group_array_index? and @results_data[option.group_array_index].search_match
+              option.search_match = true
 
-    if results < 1 and searchText.length
-      this.update_results_content ""
-      this.no_results searchText
-    else
-      this.update_results_content this.results_option_build()
-      this.winnow_results_set_highlight()
+      self.result_clear_highlight()
+
+      if results < 1 and searchText.length
+        self.update_results_content ""
+        self.no_results searchText
+      else       
+        self.update_results_content self.results_option_build()
+        self.winnow_results_set_highlight()
+        if multiple
+          self.result_select({metaKey: true, preventDefault: -> })
 
   get_search_regex: (escaped_search_string) ->
     regex_anchor = if @search_contains then "" else "^"
