@@ -216,7 +216,8 @@ class AbstractChosen
   get_search_regex: (escaped_search_string) ->
     regex_string = if @search_contains then escaped_search_string else "\\b#{escaped_search_string}\\w*\\b"
     regex_string = "^#{regex_string}" unless @enable_split_word_search or @search_contains
-    new RegExp(regex_string, 'i')
+    regex_flag = if @case_sensitive_search then "" else "i"
+    new RegExp(regex_string, regex_flag)
 
   search_string_match: (search_string, regex) ->
     regex.exec(search_string)
