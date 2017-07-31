@@ -71,43 +71,43 @@ class Chosen extends AbstractChosen
     @form_field_jq.trigger("chosen:ready", {chosen: this})
 
   register_observers: ->
-    @container.bind 'touchstart.chosen', (evt) => this.container_mousedown(evt); return
-    @container.bind 'touchend.chosen', (evt) => this.container_mouseup(evt); return
+    @container.on 'touchstart.chosen', (evt) => this.container_mousedown(evt); return
+    @container.on 'touchend.chosen', (evt) => this.container_mouseup(evt); return
 
-    @container.bind 'mousedown.chosen', (evt) => this.container_mousedown(evt); return
-    @container.bind 'mouseup.chosen', (evt) => this.container_mouseup(evt); return
-    @container.bind 'mouseenter.chosen', (evt) => this.mouse_enter(evt); return
-    @container.bind 'mouseleave.chosen', (evt) => this.mouse_leave(evt); return
+    @container.on 'mousedown.chosen', (evt) => this.container_mousedown(evt); return
+    @container.on 'mouseup.chosen', (evt) => this.container_mouseup(evt); return
+    @container.on 'mouseenter.chosen', (evt) => this.mouse_enter(evt); return
+    @container.on 'mouseleave.chosen', (evt) => this.mouse_leave(evt); return
 
-    @search_results.bind 'mouseup.chosen', (evt) => this.search_results_mouseup(evt); return
-    @search_results.bind 'mouseover.chosen', (evt) => this.search_results_mouseover(evt); return
-    @search_results.bind 'mouseout.chosen', (evt) => this.search_results_mouseout(evt); return
-    @search_results.bind 'mousewheel.chosen DOMMouseScroll.chosen', (evt) => this.search_results_mousewheel(evt); return
+    @search_results.on 'mouseup.chosen', (evt) => this.search_results_mouseup(evt); return
+    @search_results.on 'mouseover.chosen', (evt) => this.search_results_mouseover(evt); return
+    @search_results.on 'mouseout.chosen', (evt) => this.search_results_mouseout(evt); return
+    @search_results.on 'mousewheel.chosen DOMMouseScroll.chosen', (evt) => this.search_results_mousewheel(evt); return
 
-    @search_results.bind 'touchstart.chosen', (evt) => this.search_results_touchstart(evt); return
-    @search_results.bind 'touchmove.chosen', (evt) => this.search_results_touchmove(evt); return
-    @search_results.bind 'touchend.chosen', (evt) => this.search_results_touchend(evt); return
+    @search_results.on 'touchstart.chosen', (evt) => this.search_results_touchstart(evt); return
+    @search_results.on 'touchmove.chosen', (evt) => this.search_results_touchmove(evt); return
+    @search_results.on 'touchend.chosen', (evt) => this.search_results_touchend(evt); return
 
-    @form_field_jq.bind "chosen:updated.chosen", (evt) => this.results_update_field(evt); return
-    @form_field_jq.bind "chosen:activate.chosen", (evt) => this.activate_field(evt); return
-    @form_field_jq.bind "chosen:open.chosen", (evt) => this.container_mousedown(evt); return
-    @form_field_jq.bind "chosen:close.chosen", (evt) => this.close_field(evt); return
+    @form_field_jq.on "chosen:updated.chosen", (evt) => this.results_update_field(evt); return
+    @form_field_jq.on "chosen:activate.chosen", (evt) => this.activate_field(evt); return
+    @form_field_jq.on "chosen:open.chosen", (evt) => this.container_mousedown(evt); return
+    @form_field_jq.on "chosen:close.chosen", (evt) => this.close_field(evt); return
 
-    @search_field.bind 'blur.chosen', (evt) => this.input_blur(evt); return
-    @search_field.bind 'keyup.chosen', (evt) => this.keyup_checker(evt); return
-    @search_field.bind 'keydown.chosen', (evt) => this.keydown_checker(evt); return
-    @search_field.bind 'focus.chosen', (evt) => this.input_focus(evt); return
-    @search_field.bind 'cut.chosen', (evt) => this.clipboard_event_checker(evt); return
-    @search_field.bind 'paste.chosen', (evt) => this.clipboard_event_checker(evt); return
+    @search_field.on 'blur.chosen', (evt) => this.input_blur(evt); return
+    @search_field.on 'keyup.chosen', (evt) => this.keyup_checker(evt); return
+    @search_field.on 'keydown.chosen', (evt) => this.keydown_checker(evt); return
+    @search_field.on 'focus.chosen', (evt) => this.input_focus(evt); return
+    @search_field.on 'cut.chosen', (evt) => this.clipboard_event_checker(evt); return
+    @search_field.on 'paste.chosen', (evt) => this.clipboard_event_checker(evt); return
 
     if @is_multiple
-      @search_choices.bind 'click.chosen', (evt) => this.choices_click(evt); return
+      @search_choices.on 'click.chosen', (evt) => this.choices_click(evt); return
     else
-      @container.bind 'click.chosen', (evt) -> evt.preventDefault(); return # gobble click of anchor
+      @container.on 'click.chosen', (evt) -> evt.preventDefault(); return # gobble click of anchor
 
   destroy: ->
-    $(@container[0].ownerDocument).unbind 'click.chosen', @click_test_action
-    @form_field_label.unbind 'click.chosen' if @form_field_label.length > 0
+    $(@container[0].ownerDocument).off 'click.chosen', @click_test_action
+    @form_field_label.off 'click.chosen' if @form_field_label.length > 0
 
     if @search_field[0].tabIndex
       @form_field_jq[0].tabIndex = @search_field[0].tabIndex
@@ -123,12 +123,12 @@ class Chosen extends AbstractChosen
     @search_field[0].disabled = @is_disabled
 
     unless @is_multiple
-      @selected_item.unbind 'focus.chosen', this.activate_field
+      @selected_item.off 'focus.chosen', this.activate_field
 
     if @is_disabled
       this.close_field()
     else unless @is_multiple
-      @selected_item.bind 'focus.chosen', this.activate_field
+      @selected_item.on 'focus.chosen', this.activate_field
 
   container_mousedown: (evt) ->
     return if @is_disabled
@@ -139,7 +139,7 @@ class Chosen extends AbstractChosen
     if not (evt? and ($ evt.target).hasClass "search-choice-close")
       if not @active_field
         @search_field.val "" if @is_multiple
-        $(@container[0].ownerDocument).bind 'click.chosen', @click_test_action
+        $(@container[0].ownerDocument).on 'click.chosen', @click_test_action
         this.results_show()
       else if not @is_multiple and evt and (($(evt.target)[0] == @selected_item[0]) || $(evt.target).parents("a.chosen-single").length)
         evt.preventDefault()
@@ -161,7 +161,7 @@ class Chosen extends AbstractChosen
     this.close_field() if not @active_field and @container.hasClass "chosen-container-active"
 
   close_field: ->
-    $(@container[0].ownerDocument).unbind "click.chosen", @click_test_action
+    $(@container[0].ownerDocument).off "click.chosen", @click_test_action
 
     @active_field = false
     this.results_hide()
@@ -277,7 +277,7 @@ class Chosen extends AbstractChosen
       @form_field_label = $("label[for='#{@form_field.id}']") #next check for a for=#{id}
 
     if @form_field_label.length > 0
-      @form_field_label.bind 'click.chosen', this.label_click_handler
+      @form_field_label.on 'click.chosen', this.label_click_handler
 
   show_search_field_default: ->
     if @is_multiple and this.choices_count() < 1 and not @active_field
@@ -308,7 +308,7 @@ class Chosen extends AbstractChosen
       choice.addClass 'search-choice-disabled'
     else
       close_link = $('<a />', { class: 'search-choice-close', 'data-option-array-index': item.array_index })
-      close_link.bind 'click.chosen', (evt) => this.choice_destroy_link_click(evt)
+      close_link.on 'click.chosen', (evt) => this.choice_destroy_link_click(evt)
       choice.append close_link
 
     @search_container.before  choice
