@@ -167,12 +167,12 @@ class AbstractChosen
     searchText = this.get_search_text()
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regex = this.get_search_regex(escapedSearchText)
-    highlightRegex = this.get_highlight_regex(escapedSearchText)
 
     for option in @results_data
 
       option.search_match = false
       results_group = null
+      search_match = null
 
       if this.include_option_in_results(option)
 
@@ -188,12 +188,14 @@ class AbstractChosen
         option.search_text = if option.group then option.label else option.html
 
         unless option.group and not @group_search
-          option.search_match = this.search_string_match(option.search_text, regex)
+          search_match = this.search_string_match(option.search_text, regex)
+          option.search_match = search_match?
+
           results += 1 if option.search_match and not option.group
 
           if option.search_match
             if searchText.length
-              startpos = option.search_text.search highlightRegex
+              startpos = search_match.index
               text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
               option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
@@ -212,25 +214,13 @@ class AbstractChosen
       this.winnow_results_set_highlight()
 
   get_search_regex: (escaped_search_string) ->
-    regex_anchor = if @search_contains then "" else "^"
+    regex_string = if @search_contains then escaped_search_string else "\\b#{escaped_search_string}\\w*\\b"
+    regex_string = "^#{regex_string}" unless @enable_split_word_search or @search_contains
     regex_flag = if @case_sensitive_search then "" else "i"
-    new RegExp(regex_anchor + escaped_search_string, regex_flag)
-
-  get_highlight_regex: (escaped_search_string) ->
-    regex_anchor = if @search_contains then "" else "\\b"
-    regex_flag = if @case_sensitive_search then "" else "i"
-    new RegExp(regex_anchor + escaped_search_string, regex_flag)
+    new RegExp(regex_string, regex_flag)
 
   search_string_match: (search_string, regex) ->
-    if regex.test search_string
-      return true
-    else if @enable_split_word_search and (search_string.indexOf(" ") >= 0 or search_string.indexOf("[") == 0)
-      #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-      parts = search_string.replace(/\[|\]/g, "").split(" ")
-      if parts.length
-        for part in parts
-          if regex.test part
-            return true
+    regex.exec(search_string)
 
   choices_count: ->
     return @selected_option_count if @selected_option_count?
