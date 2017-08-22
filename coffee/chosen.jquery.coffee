@@ -102,6 +102,10 @@ class Chosen extends AbstractChosen
 
     if @is_multiple
       @search_choices.bind 'click.chosen', (evt) => this.choices_click(evt); return
+      @search_choices.bind 'touchstart.chosen', (evt) =>
+        this.container_mousedown(evt)
+        this.choices_click(evt)
+        return
     else
       @container.bind 'click.chosen', (evt) -> evt.preventDefault(); return # gobble click of anchor
 
@@ -308,7 +312,7 @@ class Chosen extends AbstractChosen
       choice.addClass 'search-choice-disabled'
     else
       close_link = $('<a />', { class: 'search-choice-close', 'data-option-array-index': item.array_index })
-      close_link.bind 'click.chosen', (evt) => this.choice_destroy_link_click(evt)
+      close_link.bind 'click.chosen touchstart.chosen', (evt) => this.choice_destroy_link_click(evt)
       choice.append close_link
 
     @search_container.before  choice
