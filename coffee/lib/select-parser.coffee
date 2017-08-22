@@ -1,8 +1,9 @@
 class SelectParser
 
-  constructor: ->
+  constructor: (options) ->
     @options_index = 0
     @parsed = []
+    @copy_data_attributes = options.copy_data_attributes || false
 
   add_node: (child) ->
     if child.nodeName.toUpperCase() is "OPTGROUP"
@@ -28,7 +29,6 @@ class SelectParser
         if group_position?
           @parsed[group_position].children += 1
         @parsed.push
-          array_index: @parsed.length
           options_index: @options_index
           value: option.value
           text: option.text
@@ -40,11 +40,12 @@ class SelectParser
           group_label: if group_position? then @parsed[group_position].label else null
           classes: option.className
           style: option.style.cssText
+          data: this.parseDataAttributes(option)
       else
         @parsed.push
-          array_index: @parsed.length
           options_index: @options_index
           empty: true
+          data: this.parseDataAttributes(option)
       @options_index += 1
 
   escapeExpression: (text) ->
@@ -62,7 +63,16 @@ class SelectParser
     text.replace unsafe_chars, (chr) ->
       map[chr] || "&amp;"
 
-SelectParser.select_to_array = (select) ->
-  parser = new SelectParser()
+  parseDataAttributes: (option) ->
+    dataAttr = 'data-option-array-index' : this.parsed.length
+    if @copy_data_attributes && option
+      for attr in option.attributes
+        attrName = attr.nodeName
+        if /data-.*/.test(attrName)
+          dataAttr[ attrName ] = attr.nodeValue
+    return dataAttr
+
+SelectParser.select_to_array = (select, options) ->
+  parser = new SelectParser(options)
   parser.add_node( child ) for child in select.childNodes
   parser.parsed

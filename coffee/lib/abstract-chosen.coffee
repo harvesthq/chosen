@@ -32,6 +32,7 @@ class AbstractChosen
     @inherit_select_classes = @options.inherit_select_classes || false
     @display_selected_options = if @options.display_selected_options? then @options.display_selected_options else true
     @display_disabled_options = if @options.display_disabled_options? then @options.display_disabled_options else true
+    @parser_config = @options.parser_config || {}
     @include_group_label_in_selected = @options.include_group_label_in_selected || false
     @max_shown_results = @options.max_shown_results || Number.POSITIVE_INFINITY
     @case_sensitive_search = @options.case_sensitive_search || false
@@ -115,7 +116,9 @@ class AbstractChosen
     option_el = document.createElement("li")
     option_el.className = classes.join(" ")
     option_el.style.cssText = option.style
-    option_el.setAttribute("data-option-array-index", option.array_index)
+    for attrName of option.data
+      if option.data.hasOwnProperty(attrName)
+        option_el.setAttribute(attrName, option.data[attrName])
     option_el.innerHTML = option.search_text
     option_el.title = option.title if option.title
 

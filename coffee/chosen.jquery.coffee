@@ -194,7 +194,7 @@ class Chosen extends AbstractChosen
     @parsing = true
     @selected_option_count = null
 
-    @results_data = SelectParser.select_to_array @form_field
+    @results_data = SelectParser.select_to_array(@form_field, @parser_config)
 
     if @is_multiple
       @search_choices.find("li.search-choice").remove()
@@ -307,7 +307,7 @@ class Chosen extends AbstractChosen
     if item.disabled
       choice.addClass 'search-choice-disabled'
     else
-      close_link = $('<a />', { class: 'search-choice-close', 'data-option-array-index': item.array_index })
+      close_link = $('<a />', { class: 'search-choice-close', 'data-option-array-index': item.data['option-array-index'] })
       close_link.bind 'click.chosen', (evt) => this.choice_destroy_link_click(evt)
       choice.append close_link
 
