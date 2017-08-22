@@ -29,7 +29,8 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     cursor: pointer;
   }
 
-  .search-choice, .chosen-single{
+  .search-choice,
+  .chosen-single{
     .group-name{
       margin-right: 4px;
       overflow: hidden;
@@ -42,6 +43,21 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
         padding-left: 2px;
         vertical-align: top;
       }
+    }
+  }
+  .search-choice-close {
+    border: none;
+    cursor: pointer;
+    background: none;
+    display: block;
+    width: 12px;
+    height: 12px;
+    background: $chosen-sprite -42px 1px no-repeat;
+    font-size: 1px;
+
+    &:hover,
+    &:focus {
+      background-position: -42px -10px;
     }
   }
 }
@@ -79,21 +95,10 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
   .chosen-single-with-deselect span {
     margin-right: 38px;
   }
-  .chosen-single abbr {
+  .chosen-single .search-choice-close {
     position: absolute;
     top: 6px;
     right: 26px;
-    display: block;
-    width: 12px;
-    height: 12px;
-    background: $chosen-sprite -42px 1px no-repeat;
-    font-size: 1px;
-    &:hover {
-      background-position: -42px -10px;
-    }
-  }
-  &.chosen-disabled .chosen-single abbr:hover {
-    background-position: -42px -10px;
   }
   .chosen-single div {
     position: absolute;
@@ -255,14 +260,6 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
         position: absolute;
         top: 4px;
         right: 3px;
-        display: block;
-        width: 12px;
-        height: 12px;
-        background: $chosen-sprite -42px 1px no-repeat;
-        font-size: 1px;
-        &:hover {
-          background-position: -42px -10px;
-        }
       }
     }
     &.search-choice-disabled {
@@ -332,8 +329,14 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
   .chosen-single {
     cursor: default;
   }
-  .chosen-choices .search-choice .search-choice-close {
+  .search-choice-close {
     cursor: default;
+    &:hover,
+    &:focus {
+      outline: none;
+      background-position: -42px 1px;
+      cursor: default;
+    }
   }
 }
 /* @end */
@@ -357,7 +360,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     right: auto;
     left: 3px;
   }
-  .chosen-single abbr {
+  .chosen-single .search-choice-close {
     right: auto;
     left: 26px;
   }
@@ -408,10 +411,9 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
 /* @group Retina compatibility */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi), only screen and (min-resolution: 1.5dppx) {
   .chosen-rtl .chosen-search input[type="text"],
-  .chosen-container-single .chosen-single abbr,
   .chosen-container-single .chosen-single div b,
   .chosen-container-single .chosen-search input[type="text"],
-  .chosen-container-multi .chosen-choices .search-choice .search-choice-close,
+  .chosen-container .search-choice-close,
   .chosen-container .chosen-results-scroll-down span,
   .chosen-container .chosen-results-scroll-up span {
     background-image: $chosen-sprite-retina !important;

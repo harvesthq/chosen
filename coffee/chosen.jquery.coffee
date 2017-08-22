@@ -148,7 +148,8 @@ class Chosen extends AbstractChosen
       this.activate_field()
 
   container_mouseup: (evt) ->
-    this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
+    if not @is_disabled and @allow_single_deselect and $(evt.target).hasClass('search-choice-close')
+      this.results_reset(evt)
 
   search_results_mousewheel: (evt) ->
     delta = evt.originalEvent.deltaY or -evt.originalEvent.wheelDelta or evt.originalEvent.detail if evt.originalEvent
@@ -307,7 +308,7 @@ class Chosen extends AbstractChosen
     if item.disabled
       choice.addClass 'search-choice-disabled'
     else
-      close_link = $('<a />', { class: 'search-choice-close', 'data-option-array-index': item.array_index })
+      close_link = $('<button />', { type: 'button', tabindex: -1, class: 'search-choice-close', 'data-option-array-index': item.array_index })
       close_link.bind 'click.chosen', (evt) => this.choice_destroy_link_click(evt)
       choice.append close_link
 
@@ -342,7 +343,7 @@ class Chosen extends AbstractChosen
 
   results_reset_cleanup: ->
     @current_selectedIndex = @form_field.selectedIndex
-    @selected_item.find("abbr").remove()
+    @selected_item.find('.search-choice-close').remove()
 
   result_select: (evt) ->
     if @result_highlight
@@ -413,8 +414,9 @@ class Chosen extends AbstractChosen
 
   single_deselect_control_build: ->
     return unless @allow_single_deselect
-    @selected_item.find("span").first().after "<abbr class=\"search-choice-close\"></abbr>" unless @selected_item.find("abbr").length
-    @selected_item.addClass("chosen-single-with-deselect")
+    unless @selected_item.find('.search-choice-close').length
+      @selected_item.find('span').first().after '<button type="button" tabindex="-1" class="search-choice-close"></button>'
+    @selected_item.addClass('chosen-single-with-deselect')
 
   get_search_field_value: ->
     @search_field.val()
@@ -460,7 +462,7 @@ class Chosen extends AbstractChosen
 
   keydown_backstroke: ->
     if @pending_backstroke
-      this.choice_destroy @pending_backstroke.find("a").first()
+      this.choice_destroy @pending_backstroke.find('.search-choice-close').first()
       this.clear_backstroke()
     else
       next_available_destroy = @search_container.siblings("li.search-choice").last()

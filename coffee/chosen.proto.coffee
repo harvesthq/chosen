@@ -103,7 +103,7 @@ class @Chosen extends AbstractChosen
 
     if @is_multiple
       @search_choices.stopObserving()
-      @container.select(".search-choice-close").each (choice) ->
+      @container.select('.search-choice-close').each (choice) ->
         choice.stopObserving()
     else
       @selected_item.stopObserving()
@@ -305,7 +305,7 @@ class @Chosen extends AbstractChosen
     if item.disabled
       choice.addClassName 'search-choice-disabled'
     else
-      close_link = new Element('a', { href: '#', class: 'search-choice-close', rel: item.array_index })
+      close_link = new Element('button', { type: 'button', tabindex: -1, class: 'search-choice-close', rel: item.array_index })
       close_link.observe "click", (evt) => this.choice_destroy_link_click(evt)
       choice.insert close_link
 
@@ -340,7 +340,7 @@ class @Chosen extends AbstractChosen
 
   results_reset_cleanup: ->
     @current_selectedIndex = @form_field.selectedIndex
-    deselect_trigger = @selected_item.down("abbr")
+    deselect_trigger = @selected_item.down('.search-choice-close')
     deselect_trigger.remove() if(deselect_trigger)
 
   result_select: (evt) ->
@@ -410,8 +410,9 @@ class @Chosen extends AbstractChosen
 
   single_deselect_control_build: ->
     return unless @allow_single_deselect
-    @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } unless @selected_item.down("abbr")
-    @selected_item.addClassName("chosen-single-with-deselect")
+    unless @selected_item.down('.search-choice-close')
+      @selected_item.down('span').insert { after: '<button type="button" tabindex="-1" class="search-choice-close"></button>' }
+    @selected_item.addClassName('chosen-single-with-deselect')
 
   get_search_field_value: ->
     @search_field.value
@@ -463,7 +464,7 @@ class @Chosen extends AbstractChosen
 
   keydown_backstroke: ->
     if @pending_backstroke
-      this.choice_destroy @pending_backstroke.down("a")
+      this.choice_destroy @pending_backstroke.down(".search-choice-close")
       this.clear_backstroke()
     else
       next_available_destroy = @search_container.siblings().last()
