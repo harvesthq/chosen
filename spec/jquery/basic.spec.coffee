@@ -13,12 +13,12 @@ describe "Basic setup", ->
     "
     div = $("<div>").html(tmpl)
     select = div.find("select")
-    expect(select.size()).toBe(1)
+    expect(select.length).toBe(1)
     select.chosen()
     # very simple check that the necessary elements have been created
     ["container", "container-single", "single", "default"].forEach (clazz)->
       el = div.find(".chosen-#{clazz}")
-      expect(el.size()).toBe(1)
+      expect(el.length).toBe(1)
 
     # test a few interactions
     expect(select.val()).toBe ""
@@ -44,7 +44,7 @@ describe "Basic setup", ->
       "
       div = $("<div>").html(tmpl)
       select = div.find("select")
-      expect(select.size()).toBe(1)
+      expect(select.length).toBe(1)
       select.chosen()
       placeholder = div.find(".chosen-single > span")
       expect(placeholder.text()).toBe("Choose a Country...")
@@ -60,7 +60,7 @@ describe "Basic setup", ->
       "
       div = $("<div>").html(tmpl)
       select = div.find("select")
-      expect(select.size()).toBe(1)
+      expect(select.length).toBe(1)
       select.chosen()
       placeholder = div.find(".chosen-single > span")
       expect(placeholder.text()).toBe("<None>")
@@ -80,7 +80,7 @@ describe "Basic setup", ->
       "
       div = $("<div>").html(tmpl)
       select = div.find("select")
-      expect(select.size()).toBe(1)
+      expect(select.length).toBe(1)
       select.chosen()
 
       container = div.find(".chosen-container")
