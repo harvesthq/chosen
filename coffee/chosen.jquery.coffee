@@ -52,6 +52,7 @@ class Chosen extends AbstractChosen
 
     @search_field = @container.find('input').first()
     @search_results = @container.find('ul.chosen-results').first()
+    @search_groups = @container.find('li.group-results').first()
     this.search_field_scale()
 
     @search_no_results = @container.find('li.no-results').first()
@@ -78,6 +79,11 @@ class Chosen extends AbstractChosen
     @container.bind 'mouseup.chosen', (evt) => this.container_mouseup(evt); return
     @container.bind 'mouseenter.chosen', (evt) => this.mouse_enter(evt); return
     @container.bind 'mouseleave.chosen', (evt) => this.mouse_leave(evt); return
+
+    @search_groups.bind 'mouseup.chosen', (evt) => this.search_results_mouseup(evt); return
+    @search_groups.bind 'mouseover.chosen', (evt) => this.search_results_mouseover(evt); return
+    @search_groups.bind 'mouseout.chosen', (evt) => this.search_results_mouseout(evt); return
+    @search_groups.bind 'mousewheel.chosen DOMMouseScroll.chosen', (evt) => this.search_results_mousewheel(evt); return
 
     @search_results.bind 'mouseup.chosen', (evt) => this.search_results_mouseup(evt); return
     @search_results.bind 'mouseover.chosen', (evt) => this.search_results_mouseover(evt); return
@@ -288,7 +294,7 @@ class Chosen extends AbstractChosen
       @search_field.removeClass "default"
 
   search_results_mouseup: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+    target = if $(evt.target).is ".active-result,.group-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
     if target.length
       @result_highlight = target
       this.result_select(evt)
@@ -345,6 +351,25 @@ class Chosen extends AbstractChosen
     @selected_item.find("abbr").remove()
 
   result_select: (evt) ->
+    if $(evt.target).hasClass "group-result"
+      if not @can_select_by_group
+        return
+      $(evt.target).nextAll().each (_, option) =>
+        if not $(option).hasClass "group-result"
+          array_index = $(option).attr "data-option-array-index"
+          is_chosen = false
+          $('#pops_chosen > .chosen-choices').find('.search-choice-close').each (_, choice) =>
+            if $(choice).attr("data-option-array-index") is array_index
+              is_chosen = true;
+              return false;
+          if not is_chosen
+            @result_highlight = $(option)
+            evt.target = option
+            evt.selected = true
+            this.result_select evt
+        else return false
+      return
+
     if @result_highlight
       high = @result_highlight
 
