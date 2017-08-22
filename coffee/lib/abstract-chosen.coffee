@@ -116,7 +116,7 @@ class AbstractChosen
     option_el.className = classes.join(" ")
     option_el.style.cssText = option.style
     option_el.setAttribute("data-option-array-index", option.array_index)
-    option_el.innerHTML = option.search_text
+    option_el.innerHTML = option.highlighted_html or option.html
     option_el.title = option.title if option.title
 
     this.outerHTML(option_el)
@@ -131,7 +131,7 @@ class AbstractChosen
 
     group_el = document.createElement("li")
     group_el.className = classes.join(" ")
-    group_el.innerHTML = group.search_text
+    group_el.innerHTML = group.highlighted_html or group.label
     group_el.title = group.title if group.title
 
     this.outerHTML(group_el)
@@ -164,15 +164,16 @@ class AbstractChosen
 
     results = 0
 
-    searchText = this.get_search_text()
-    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-    regex = this.get_search_regex(escapedSearchText)
+    query = this.get_search_text()
+    escapedQuery = query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    regex = this.get_search_regex(escapedQuery)
 
     for option in @results_data
 
       option.search_match = false
       results_group = null
       search_match = null
+      option.highlighted_html = ''
 
       if this.include_option_in_results(option)
 
@@ -185,19 +186,21 @@ class AbstractChosen
           results += 1 if results_group.active_options is 0 and results_group.search_match
           results_group.active_options += 1
 
-        option.search_text = if option.group then option.label else option.html
+        text = if option.group then option.label else option.text
 
         unless option.group and not @group_search
-          search_match = this.search_string_match(option.search_text, regex)
+          search_match = this.search_string_match(text, regex)
           option.search_match = search_match?
 
           results += 1 if option.search_match and not option.group
 
           if option.search_match
-            if searchText.length
+            if query.length
               startpos = search_match.index
-              text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
-              option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+              prefix = text.slice(0, startpos)
+              fix    = text.slice(startpos, startpos + query.length)
+              suffix = text.slice(startpos + query.length)
+              option.highlighted_html = "#{this.escape_html(prefix)}<em>#{this.escape_html(fix)}</em>#{this.escape_html(suffix)}"
 
             results_group.group_match = true if results_group?
 
@@ -206,9 +209,9 @@ class AbstractChosen
 
     this.result_clear_highlight()
 
-    if results < 1 and searchText.length
+    if results < 1 and query.length
       this.update_results_content ""
-      this.no_results searchText
+      this.no_results query
     else
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
