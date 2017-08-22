@@ -36,6 +36,7 @@ class AbstractChosen
     @max_shown_results = @options.max_shown_results || Number.POSITIVE_INFINITY
     @case_sensitive_search = @options.case_sensitive_search || false
     @hide_results_on_select = if @options.hide_results_on_select? then @options.hide_results_on_select else true
+    @escape_special_characters = true
 
   set_default_text: ->
     if @form_field.getAttribute("data-placeholder")
@@ -165,7 +166,10 @@ class AbstractChosen
     results = 0
 
     searchText = this.get_search_text()
-    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    if @escape_special_characters
+      escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    else
+      escapedSearchText = searchText
     regex = this.get_search_regex(escapedSearchText)
 
     for option in @results_data
