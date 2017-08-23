@@ -17,7 +17,7 @@ describe "Searching", ->
 
     # Both options should be active
     results = div.find(".active-result")
-    expect(results.size()).toBe(2)
+    expect(results.length).toBe(2)
 
     # Search for the html entity by name
     search_field = div.find(".chosen-search input").first()
@@ -25,4 +25,4 @@ describe "Searching", ->
     search_field.trigger("keyup")
 
     results = div.find(".active-result")
-    expect(results.size()).toBe(0)
+    expect(results.length).toBe(0)
