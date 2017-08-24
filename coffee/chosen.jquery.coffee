@@ -366,13 +366,16 @@ class Chosen extends AbstractChosen
 
       @form_field.options[item.options_index].selected = true
       @selected_option_count = null
+      @search_field.val("")
 
       if @is_multiple
         this.choice_build item
       else
         this.single_set_selected_text(this.choice_label(item))
 
-      unless @is_multiple && (!@hide_results_on_select || (evt.metaKey or evt.ctrlKey))
+      if @is_multiple && (!@hide_results_on_select || (evt.metaKey or evt.ctrlKey))
+        this.winnow_results()
+      else
         this.results_hide()
         this.show_search_field_default()
 
