@@ -72,3 +72,27 @@ describe "Searching", ->
 
     expect(div.select(".group-result").length).toBe(1)
     expect(div.down(".group-result").innerHTML).toBe("<em>A</em> &amp; B")
+
+  it "renders no results message correctly when it contains characters that require HTML encoding", ->
+    div = new Element("div")
+    div.update("""
+      <select>
+        <option value="Item">Item</option>
+      </select>
+    """)
+
+    new Chosen(div.down("select"))
+    simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
+
+    search_field = div.down(".chosen-search-input")
+    search_field.value = "&"
+    simulant.fire(search_field, "keyup")
+
+    expect(div.select(".no-results").length).toBe(1)
+    expect(div.down(".no-results").innerHTML.trim()).toBe("No results match <span>&amp;</span>")
+
+    search_field.value = "&amp;"
+    simulant.fire(search_field, "keyup")
+
+    expect(div.select(".no-results").length).toBe(1)
+    expect(div.down(".no-results").innerHTML.trim()).toBe("No results match <span>&amp;amp;</span>")

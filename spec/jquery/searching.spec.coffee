@@ -68,3 +68,26 @@ describe "Searching", ->
 
     expect(div.find(".group-result").length).toBe(1)
     expect(div.find(".group-result").first().html()).toBe("<em>A</em> &amp; B")
+
+  it "renders no results message correctly when it contains characters that require HTML encoding", ->
+    div = $("<div>").html("""
+      <select>
+        <option value="Item">Item</option>
+      </select>
+    """)
+
+    div.find("select").chosen()
+    div.find(".chosen-container").trigger("mousedown") # open the drop
+
+    search_field = div.find(".chosen-search-input").first()
+    search_field.val("&")
+    search_field.trigger("keyup")
+
+    expect(div.find(".no-results").length).toBe(1)
+    expect(div.find(".no-results").first().html().trim()).toBe("No results match <span>&amp;</span>")
+
+    search_field.val("&amp;")
+    search_field.trigger("keyup")
+
+    expect(div.find(".no-results").length).toBe(1)
+    expect(div.find(".no-results").first().html().trim()).toBe("No results match <span>&amp;amp;</span>")

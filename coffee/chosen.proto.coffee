@@ -3,12 +3,6 @@ class @Chosen extends AbstractChosen
   setup: ->
     @current_selectedIndex = @form_field.selectedIndex
 
-  set_default_values: ->
-    super()
-
-    # HTML Templates
-    @no_results_temp = new Template(this.get_no_results_html('#{terms}'))
-
   set_up_html: ->
     container_classes = ["chosen-container"]
     container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
@@ -435,7 +429,7 @@ class @Chosen extends AbstractChosen
     this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
-    @search_results.insert @no_results_temp.evaluate( terms: terms )
+    @search_results.insert this.get_no_results_html(terms)
     @form_field.fire("chosen:no_results", {chosen: this})
 
   no_results_clear: ->

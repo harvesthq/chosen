@@ -356,7 +356,7 @@ class AbstractChosen
   get_no_results_html: (terms) ->
     """
       <li class="no-results">
-        #{@results_none_found} <span>#{terms}</span>
+        #{@results_none_found} <span>#{this.escape_html(terms)}</span>
       </li>
     """
 
