@@ -197,7 +197,6 @@ class AbstractChosen
           if option.search_match
             if query.length
               startpos = search_match.index
-              startpos += 1 if search_match[1] # make up for lack of lookbehind operator
               prefix = text.slice(0, startpos)
               fix    = text.slice(startpos, startpos + query.length)
               suffix = text.slice(startpos + query.length)
@@ -224,7 +223,9 @@ class AbstractChosen
     new RegExp(regex_string, regex_flag)
 
   search_string_match: (search_string, regex) ->
-    regex.exec(search_string)
+    match = regex.exec(search_string)
+    match.index += 1 if !@search_contains && match?[1] # make up for lack of lookbehind operator in regex
+    match
 
   choices_count: ->
     return @selected_option_count if @selected_option_count?
