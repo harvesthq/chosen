@@ -197,7 +197,7 @@ class AbstractChosen
           if option.search_match
             if query.length
               startpos = search_match.index
-              startpos += 1 if /\s/.test(search_match[0]) # make up for lack of lookbehind operator
+              startpos += 1 if search_match[1] # make up for lack of lookbehind operator
               prefix = text.slice(0, startpos)
               fix    = text.slice(startpos, startpos + query.length)
               suffix = text.slice(startpos + query.length)
@@ -218,7 +218,7 @@ class AbstractChosen
       this.winnow_results_set_highlight()
 
   get_search_regex: (escaped_search_string) ->
-    regex_string = if @search_contains then escaped_search_string else "(?:^|\\s)#{escaped_search_string}[^\\s]*"
+    regex_string = if @search_contains then escaped_search_string else "(^|\\s)#{escaped_search_string}[^\\s]*"
     regex_string = "^#{regex_string}" unless @enable_split_word_search or @search_contains
     regex_flag = if @case_sensitive_search then "" else "i"
     new RegExp(regex_string, regex_flag)
