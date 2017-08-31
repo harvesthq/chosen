@@ -28,3 +28,47 @@ describe "Searching", ->
 
     results = div.select(".active-result")
     expect(results.length).toBe(0)
+
+  it "renders options correctly when they contain characters that require HTML encoding", ->
+    div = new Element("div")
+    div.update("""
+      <select>
+        <option value="A &amp; B">A &amp; B</option>
+      </select>
+    """)
+
+    new Chosen(div.down("select"))
+    simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
+
+    expect(div.select(".active-result").length).toBe(1)
+    expect(div.down(".active-result").innerHTML).toBe("A &amp; B")
+
+    search_field = div.down(".chosen-search-input")
+    search_field.value = "A"
+    simulant.fire(search_field, "keyup")
+
+    expect(div.select(".active-result").length).toBe(1)
+    expect(div.down(".active-result").innerHTML).toBe("<em>A</em> &amp; B")
+
+  it "renders optgroups correctly when they contain characters that require HTML encoding", ->
+    div = new Element("div")
+    div.update("""
+      <select>
+        <optgroup label="A &amp; B">
+          <option value="Item">Item</option>
+        </optgroup>
+      </select>
+    """)
+
+    new Chosen(div.down("select"))
+    simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
+
+    expect(div.select(".group-result").length).toBe(1)
+    expect(div.down(".group-result").innerHTML).toBe("A &amp; B")
+
+    search_field = div.down(".chosen-search-input")
+    search_field.value = "A"
+    simulant.fire(search_field, "keyup")
+
+    expect(div.select(".group-result").length).toBe(1)
+    expect(div.down(".group-result").innerHTML).toBe("<em>A</em> &amp; B")

@@ -26,3 +26,45 @@ describe "Searching", ->
 
     results = div.find(".active-result")
     expect(results.length).toBe(0)
+
+  it "renders options correctly when they contain characters that require HTML encoding", ->
+    div = $("<div>").html("""
+      <select>
+        <option value="A &amp; B">A &amp; B</option>
+      </select>
+    """)
+
+    div.find("select").chosen()
+    div.find(".chosen-container").trigger("mousedown") # open the drop
+
+    expect(div.find(".active-result").length).toBe(1)
+    expect(div.find(".active-result").first().html()).toBe("A &amp; B")
+
+    search_field = div.find(".chosen-search-input").first()
+    search_field.val("A")
+    search_field.trigger("keyup")
+
+    expect(div.find(".active-result").length).toBe(1)
+    expect(div.find(".active-result").first().html()).toBe("<em>A</em> &amp; B")
+
+  it "renders optgroups correctly when they contain characters that require HTML encoding", ->
+    div = $("<div>").html("""
+      <select>
+        <optgroup label="A &amp; B">
+          <option value="Item">Item</option>
+        </optgroup>
+      </select>
+    """)
+
+    div.find("select").chosen()
+    div.find(".chosen-container").trigger("mousedown") # open the drop
+
+    expect(div.find(".group-result").length).toBe(1)
+    expect(div.find(".group-result").first().html()).toBe("A &amp; B")
+
+    search_field = div.find(".chosen-search-input").first()
+    search_field.val("A")
+    search_field.trigger("keyup")
+
+    expect(div.find(".group-result").length).toBe(1)
+    expect(div.find(".group-result").first().html()).toBe("<em>A</em> &amp; B")
