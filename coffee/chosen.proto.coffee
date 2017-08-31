@@ -505,9 +505,8 @@ class @Chosen extends AbstractChosen
     width = div.measure('width') + 25
     div.remove()
 
-    container_width = @container.getWidth()
-
-    width = Math.min(container_width - 10, width)
+    if container_width = @container.getWidth()
+      width = Math.min(container_width - 10, width)
 
     @search_field.setStyle(width: width + 'px')
 
