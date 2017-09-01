@@ -217,7 +217,7 @@ class AbstractChosen
       this.winnow_results_set_highlight()
 
   get_search_regex: (escaped_search_string) ->
-    regex_string = if @search_contains then escaped_search_string else "(^|\\s)#{escaped_search_string}[^\\s]*"
+    regex_string = if @search_contains then escaped_search_string else "(^|\\s|\\b)#{escaped_search_string}[^\\s]*"
     regex_string = "^#{regex_string}" unless @enable_split_word_search or @search_contains
     regex_flag = if @case_sensitive_search then "" else "i"
     new RegExp(regex_string, regex_flag)

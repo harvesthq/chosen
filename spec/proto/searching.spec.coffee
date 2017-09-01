@@ -174,3 +174,36 @@ describe "Searching", ->
 
     expect(div.select(".active-result").length).toBe(1)
     expect(div.select(".active-result")[0].innerHTML).toBe("oh <em>h</em>ello")
+
+  describe "respects word boundaries when not using search_contains", ->
+    div = new Element("div")
+    div.update("""
+      <select>
+        <option value="(lparen">(lparen</option>
+        <option value="&lt;langle">&lt;langle</option>
+        <option value="[lbrace">[lbrace</option>
+        <option value="{lcurly">{lcurly</option>
+        <option value="¡upsidedownbang">¡upsidedownbang</option>
+        <option value="¿upsidedownqmark">¿upsidedownqmark</option>
+        <option value=".period">.period</option>
+        <option value="-dash">-dash</option>
+        <option value='"leftquote'>"leftquote</option>
+        <option value="'leftsinglequote">'leftsinglequote</option>
+        <option value="“angledleftquote">“angledleftquote</option>
+        <option value="‘angledleftsinglequote">‘angledleftsinglequote</option>
+        <option value="«guillemet">«guillemet</option>
+      </select>
+    """)
+
+    new Chosen(div.down("select"))
+    simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
+
+    search_field = div.down(".chosen-search-input")
+
+    div.select("option").forEach (option) ->
+      boundary_thing = option.value.slice(1)
+      it "correctly finds words that start after a(n) #{boundary_thing}", ->
+        search_field.value = boundary_thing
+        simulant.fire(search_field, "keyup")
+        expect(div.select(".active-result").length).toBe(1)
+        expect(div.select(".active-result")[0].innerText.slice(1)).toBe(boundary_thing)
