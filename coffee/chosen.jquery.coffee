@@ -500,9 +500,8 @@ class Chosen extends AbstractChosen
     width = div.width() + 25
     div.remove()
 
-    container_width = @container.outerWidth()
-
-    width = Math.min(container_width - 10, width)
+    if @container.is(':visible')
+      width = Math.min(@container.outerWidth() - 10, width)
 
     @search_field.width(width)
 
