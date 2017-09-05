@@ -217,13 +217,15 @@ class AbstractChosen
       this.winnow_results_set_highlight()
 
   get_search_regex: (escaped_search_string) ->
-    regex_string = if @search_contains then escaped_search_string else "\\b#{escaped_search_string}\\w*\\b"
+    regex_string = if @search_contains then escaped_search_string else "(^|\\s|\\b)#{escaped_search_string}[^\\s]*"
     regex_string = "^#{regex_string}" unless @enable_split_word_search or @search_contains
     regex_flag = if @case_sensitive_search then "" else "i"
     new RegExp(regex_string, regex_flag)
 
   search_string_match: (search_string, regex) ->
-    regex.exec(search_string)
+    match = regex.exec(search_string)
+    match.index += 1 if !@search_contains && match?[1] # make up for lack of lookbehind operator in regex
+    match
 
   choices_count: ->
     return @selected_option_count if @selected_option_count?
