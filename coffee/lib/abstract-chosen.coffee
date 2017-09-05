@@ -131,7 +131,7 @@ class AbstractChosen
 
     group_el = document.createElement("li")
     group_el.className = classes.join(" ")
-    group_el.innerHTML = group.highlighted_html or group.label
+    group_el.innerHTML = group.highlighted_html or this.escape_html(group.label)
     group_el.title = group.title if group.title
 
     this.outerHTML(group_el)

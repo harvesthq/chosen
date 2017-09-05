@@ -47,7 +47,22 @@ describe "Searching", ->
     expect(div.find(".active-result").length).toBe(1)
     expect(div.find(".active-result").first().html()).toBe("<em>A</em> &amp; B")
 
-  it "renders optgroups correctly when they contain characters that require HTML encoding", ->
+  it "renders optgroups correctly when they contain html encoded tags", ->
+    div = $("<div>").html("""
+      <select>
+        <optgroup label="A &lt;b&gt;hi&lt;/b&gt; B">
+          <option value="Item">Item</option>
+        </optgroup>
+      </select>
+    """)
+
+    div.find("select").chosen()
+    div.find(".chosen-container").trigger("mousedown") # open the drop
+
+    expect(div.find(".group-result").length).toBe(1)
+    expect(div.find(".group-result").first().html()).toBe("A &lt;b&gt;hi&lt;/b&gt; B")
+
+  it "renders optgroups correctly when they contain characters that require HTML encoding when searching", ->
     div = $("<div>").html("""
       <select>
         <optgroup label="A &amp; B">

@@ -54,6 +54,22 @@ describe "Searching", ->
     div = new Element("div")
     div.update("""
       <select>
+        <optgroup label="A &lt;b&gt;hi&lt;/b&gt; B">
+          <option value="Item">Item</option>
+        </optgroup>
+      </select>
+    """)
+
+    new Chosen(div.down("select"))
+    simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
+
+    expect(div.select(".group-result").length).toBe(1)
+    expect(div.down(".group-result").innerHTML).toBe("A &lt;b&gt;hi&lt;/b&gt; B")
+
+  it "renders optgroups correctly when they contain characters that require HTML encoding when searching", ->
+    div = new Element("div")
+    div.update("""
+      <select>
         <optgroup label="A &amp; B">
           <option value="Item">Item</option>
         </optgroup>
