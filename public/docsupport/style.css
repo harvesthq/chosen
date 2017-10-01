@@ -59,7 +59,7 @@ div.side-by-side > div > em { margin-bottom: 10px; display: block; }
   visibility: hidden;
 }
 
-a { color: #F36C00; outline: none; text-decoration: none; }
+a { color: #F36C00; /*outline: none;*/ text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 ul.credits li { margin-bottom: .25em; }
@@ -84,7 +84,7 @@ i { font-style: italic; }
   font-weight: 500;
   height: 31px;
   line-height: 28px;
-  outline: none;
+  /*outline: none;*/
   padding: 0 13px;
   text-shadow: 0 1px 0 white;
   text-decoration: none;
@@ -160,6 +160,10 @@ i { font-style: italic; }
   background-color: #333333;
 }
 
+.docs-table {
+    margin-bottom: 2em;
+}
+
 .docs-table th, .docs-table td {
   border: 1px solid #000;
   padding: 4px 6px;
@@ -209,11 +213,39 @@ i { font-style: italic; }
 .chosen-select-no-results,
 .chosen-select-deselect,
 .chosen-select-rtl,
-.chosen-select-width {
+.chosen-select-width,
+.chosen-select-sb {
   width: 350px;
 }
 
 .jquery-version-refer {
   margin-top: 40px;
   font-style: italic;
+}
+
+.search-behaviour ul {
+  margin: .5em 1em;
+}
+.search-behaviour li {
+  margin: .5em 0;
+  list-style: none;
+  position: relative;
+}
+.search-behaviour li label > span {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    border: 1px solid #eee;
+    z-index: 2;
+    padding: 4px 8px;
+    pointer-events: none;
+}
+.search-behaviour li label:hover > span {
+    display: block;
+}
+
+.search-behaviour-right > div {
+  margin-bottom: 5em;
 }

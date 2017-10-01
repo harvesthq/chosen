@@ -11,3 +11,4 @@ chosen*.zip
 .grunt
 _SpecRunner.html
 spec/public
+nbproject
