@@ -30,7 +30,56 @@
     width: "95%"
   });</code>
 </pre>
+    
+    <h3>Options related to search behaviour</h3>
+      <table class="docs-table">
+        <tr>
+          <td>case_sensitive_search</td>
+          <td>false</td>
+          <td>
+            <p>By default Chosen's search is case-insensitive. Setting this option to <code class="language-javascript">true</code> makes the search case-sensitive.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>search_term_delimiter</td>
+          <td>false</td>
+          <td>
+            <p>By default Chosen will consider the query literal - ie. "John Doe" will match "John Doe Smith", but not "John Smith Doe". Setting this option to <code class="language-javascript">true</code> interprets whitespaces in the query as term delimiters. Useful for most "natural" searches like first, middle and last names. You can also pass a string (fx. '*', '_' or '?') for simple wildcard-character searching. Or pass in a RegExp object to use multiple delimiters / wildcards, for example <code class="language-javascript">/\s|,|*|?/</code></p>
+          </td>
+        </tr>
+        <tr>
+          <td>search_contains</td>
+          <td>false</td>
+          <td>By default, Chosen’s search matches starting at the beginning of a word. Setting this option to <code class="language-javascript">true</code> allows matches starting from anywhere within a word. This is especially useful for options that include a lot of special characters or phrases in ()s and []s.<br>Setting this to <code class="language-javascript">true</code> is equivalent to <code class="language-javascript">{search_word_boundary: '', enable_split_word_search: true}</code></td>
+        </tr>
+        <tr>
+          <td>enable_split_word_search</td>
+          <td>true</td>
+          <td>By default, searching will match on any word within an option tag. Set this option to <code class="language-javascript">false</code> if you want to only match at the beginning of an option tag.</td>
+        </tr>
+        <tr>
+          <td>search_word_boundary</td>
+          <td>^|\\b|\\s</td>
+          <td>By default, chosen uses JS RegExp's built-in word boundary to detect word beginnings as well as whitespace or the beginning of the entire label. Works great for ascii-only languages, but <strong>will</strong> erroneously detect word boundaries after letters with umlauts among many, many others.<br>You can pass a string (that will be interpreted as a regex) refined for your language and use case to correctly detect word boundaries. See the demo page for further information and a few examples.</td>
+        </tr>
+        <tr>
+          <td>search_in_order</td>
+          <td>false</td>
+          <td>By default "terms" (as determined by <code class="language-javascript">search_term_delimiter</code>) will be matched in any order. Set this to <code class="language-javascript">true</code> to only match options where the terms occur in the same order as the query.</td>
+        </tr>
+        <tr>
+          <td>group_search</td>
+          <td>true</td>
+          <td>By default chosen will search group labels as well as options, and display all options belonging to matching groups. Set this to false to only search inside options.</td>
+        </tr>
+        <tr>
+          <td>search_highlight_full_match</td>
+          <td>false</td>
+          <td>By default chosen will highlight only the terms entered. Set this to true to highlight everything from the first matching character to the last.</td>
+        </tr>
+      </table>
 
+    <h3>Other options</h3>
       <table class="docs-table">
         <tr>
           <th>Option</th><th>Default</th><th>Description</th>
@@ -49,11 +98,6 @@
           <td>disable_search_threshold</td>
           <td>0</td>
           <td>Hide the search input on single selects if there are <i>n</i> or fewer options.</td>
-        </tr>
-        <tr>
-          <td>enable_split_word_search</td>
-          <td>true</td>
-          <td>By default, searching will match on any word within an option tag. Set this option to <code class="language-javascript">false</code> if you want to only match on the entire text of an option tag.</td>
         </tr>
         <tr>
           <td>inherit_select_classes</td>
@@ -80,11 +124,6 @@
           <td>placeholder_text_single</td>
           <td>"Select an Option"</td>
           <td>The text to be displayed as a placeholder when no options are selected for a single select.</td>
-        </tr>
-        <tr>
-          <td>search_contains</td>
-          <td>false</td>
-          <td>By default, Chosen’s search matches starting at the beginning of a word. Setting this option to <code class="language-javascript">true</code> allows matches starting from anywhere within a word. This is especially useful for options that include a lot of special characters or phrases in ()s and []s.</td>
         </tr>
         <tr>
           <td>single_backstroke_delete</td>
@@ -121,13 +160,6 @@
           <td>Infinity</td>
           <td>
             <p>Only show the first (n) matching options in the results. This can be used to increase performance for selects with very many options.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>case_sensitive_search</td>
-          <td>false</td>
-          <td>
-            <p>By default Chosen's search is case-insensitive. Setting this option to <code class="language-javascript">true</code> makes the search case-sensitive.</p>
           </td>
         </tr>
         <tr>
