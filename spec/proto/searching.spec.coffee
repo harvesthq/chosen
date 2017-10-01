@@ -1,93 +1,197 @@
 describe "Searching", ->
-  it "should not match the actual text of HTML entities", ->
-    tmpl = "
-      <select data-placeholder='Choose an HTML Entity...'>
-        <option value=''></option>
-        <option value='This & That'>This &amp; That</option>
-        <option value='This < That'>This &lt; That</option>
-      </select>
-    "
+  describe "should not match the actual text of HTML entities", ->
+    for search_in_order_setting in [true, false]
+      do (search_in_order_setting) ->
+        it "when search_in_order is " + search_in_order_setting, ->
+          tmpl = "
+            <select data-placeholder='Choose an HTML Entity...'>
+              <option value=''></option>
+              <option value='This & That'>This &amp; That</option>
+              <option value='This < That'>This &lt; That</option>
+            </select>
+          "
 
-    div = new Element('div')
-    document.body.insert(div)
-    div.update(tmpl)
-    select = div.down('select')
-    new Chosen(select, {search_contains: true})
+          div = new Element('div')
+          document.body.insert(div)
+          div.update(tmpl)
+          select = div.down('select')
+          new Chosen(select, {search_contains: true, search_in_order: search_in_order_setting})
 
-    container = div.down('.chosen-container')
-    simulant.fire(container, 'mousedown') # open the drop
+          container = div.down('.chosen-container')
+          simulant.fire(container, 'mousedown') # open the drop
 
-    # Both options should be active
-    results = div.select('.active-result')
-    expect(results.length).toBe(2)
+          # Both options should be active
+          results = div.select('.active-result')
+          expect(results.length).toBe(2)
 
-    # Search for the html entity by name
-    search_field = div.down(".chosen-search input")
-    search_field.value = "mp"
-    simulant.fire(search_field, 'keyup')
+          # Search for the html entity by name
+          search_field = div.down(".chosen-search input")
+          search_field.value = "mp"
+          simulant.fire(search_field, 'keyup')
 
-    results = div.select(".active-result")
-    expect(results.length).toBe(0)
+          results = div.select(".active-result")
+          expect(results.length).toBe(0)
 
-  it "renders options correctly when they contain characters that require HTML encoding", ->
-    div = new Element("div")
-    div.update("""
-      <select>
-        <option value="A &amp; B">A &amp; B</option>
-      </select>
-    """)
+  describe "renders options correctly when they contain characters that require HTML encoding", ->
+    for search_in_order_setting in [true, false]
+      do (search_in_order_setting) ->
+        it "when search_in_order is " + search_in_order_setting, ->
+          div = new Element("div")
+          div.update("""
+            <select>
+              <option value="A &amp; B">A &amp; B</option>
+            </select>
+          """)
 
-    new Chosen(div.down("select"))
-    simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
+          new Chosen(div.down("select"), {search_in_order: search_in_order_setting})
+          simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
 
-    expect(div.select(".active-result").length).toBe(1)
-    expect(div.down(".active-result").innerHTML).toBe("A &amp; B")
+          expect(div.select(".active-result").length).toBe(1)
+          expect(div.down(".active-result").innerHTML).toBe("A &amp; B")
 
-    search_field = div.down(".chosen-search-input")
-    search_field.value = "A"
-    simulant.fire(search_field, "keyup")
+          search_field = div.down(".chosen-search-input")
+          search_field.value = "A"
+          simulant.fire(search_field, "keyup")
 
-    expect(div.select(".active-result").length).toBe(1)
-    expect(div.down(".active-result").innerHTML).toBe("<em>A</em> &amp; B")
+          expect(div.select(".active-result").length).toBe(1)
+          expect(div.down(".active-result").innerHTML).toBe("<em>A</em> &amp; B")
 
-  it "renders optgroups correctly when they contain characters that require HTML encoding", ->
-    div = new Element("div")
-    div.update("""
-      <select>
-        <optgroup label="A &lt;b&gt;hi&lt;/b&gt; B">
-          <option value="Item">Item</option>
-        </optgroup>
-      </select>
-    """)
+  describe "renders optgroups correctly when they contain characters that require HTML encoding", ->
+    for search_in_order_setting in [true, false]
+      do (search_in_order_setting) ->
+        it "when search_in_order is " + search_in_order_setting, ->
+          div = new Element("div")
+          div.update("""
+            <select>
+              <optgroup label="A &lt;b&gt;hi&lt;/b&gt; B">
+                <option value="Item">Item</option>
+              </optgroup>
+            </select>
+          """)
 
-    new Chosen(div.down("select"))
-    simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
+          new Chosen(div.down("select"), {search_in_order: search_in_order_setting})
+          simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
 
-    expect(div.select(".group-result").length).toBe(1)
-    expect(div.down(".group-result").innerHTML).toBe("A &lt;b&gt;hi&lt;/b&gt; B")
+          expect(div.select(".group-result").length).toBe(1)
+          expect(div.down(".group-result").innerHTML).toBe("A &lt;b&gt;hi&lt;/b&gt; B")
 
-  it "renders optgroups correctly when they contain characters that require HTML encoding when searching", ->
-    div = new Element("div")
-    div.update("""
-      <select>
-        <optgroup label="A &amp; B">
-          <option value="Item">Item</option>
-        </optgroup>
-      </select>
-    """)
+  describe "renders optgroups correctly when they contain characters that require HTML encoding when searching", ->
+    for search_in_order_setting in [true, false]
+      do (search_in_order_setting) ->
+        it "when search_in_order is " + search_in_order_setting, ->
+          div = new Element("div")
+          div.update("""
+            <select>
+              <optgroup label="A &amp; B">
+                <option value="Item">Item</option>
+              </optgroup>
+            </select>
+          """)
 
-    new Chosen(div.down("select"))
-    simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
+          new Chosen(div.down("select"), {search_in_order: search_in_order_setting})
+          simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
 
-    expect(div.select(".group-result").length).toBe(1)
-    expect(div.down(".group-result").innerHTML).toBe("A &amp; B")
+          expect(div.select(".group-result").length).toBe(1)
+          expect(div.down(".group-result").innerHTML).toBe("A &amp; B")
 
-    search_field = div.down(".chosen-search-input")
-    search_field.value = "A"
-    simulant.fire(search_field, "keyup")
+          search_field = div.down(".chosen-search-input")
+          search_field.value = "A"
+          simulant.fire(search_field, "keyup")
 
-    expect(div.select(".group-result").length).toBe(1)
-    expect(div.down(".group-result").innerHTML).toBe("<em>A</em> &amp; B")
+          expect(div.select(".group-result").length).toBe(1)
+          expect(div.down(".group-result").innerHTML).toBe("<em>A</em> &amp; B")
+
+
+
+
+
+
+  describe "finding and highlighting", ->
+    setup_results_test = (query, settings = {}) ->
+      div = new Element("div")
+      div.update("""
+        <select>
+          <option value="abbbba">abbbba</option>
+          <option value="Frank Miller">Frank Miller</option>
+          <option value="Frank Møller">Frank Møller</option>
+          <option value="Frank Øller">Frank Øller</option>
+          <option value="John Doe Smith">John Doe Smith</option>
+          <option value="John Smith">John Smith</option>
+          <option value="Smith Johnson">Smith Johnson</option>
+          <option value="Smith F. Johnson">Smith F. Johnson</option>
+        </select>
+      """)
+      correct_results_chosen = new Chosen(div.down("select"), settings)
+      simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
+      search_field = div.down(".chosen-search-input")
+      search_field.value = query
+      simulant.fire(search_field, "keyup")
+      div.select(".active-result")
+    
+    it "treats space literally by default", ->
+      results = setup_results_test 'John D'
+      expect(results.length).toBe(1)
+      expect(results[0].innerHTML).toBe('<em>John D</em>oe Smith')
+    it "treats space as term delimiter when search_term_delimiter is true", ->
+      results = setup_results_test 'John Smi', {search_term_delimiter: true}
+      expect(results.length).toBe(4)
+      expect(results[0].innerHTML).toBe('<em>John</em> Doe <em>Smi</em>th')
+      expect(results[1].innerHTML).toBe('<em>John Smi</em>th')
+      expect(results[2].innerHTML).toBe('<em>Smi</em>th <em>John</em>son')
+      expect(results[3].innerHTML).toBe('<em>Smi</em>th F. <em>John</em>son')
+    it "treats asterix as term delimiter when search_term_delimiter is '*'", ->
+      results = setup_results_test 'John*Smi', {search_term_delimiter: '*'}
+      expect(results.length).toBe(4)
+      expect(results[0].innerHTML).toBe('<em>John</em> Doe <em>Smi</em>th')
+    it "respects word boundaries when search_term_delimiter is true", ->
+      results = setup_results_test 'John mi', {search_term_delimiter: true}
+      expect(results.length).toBe(0)
+    it "ignores word boundaries when search_term_delimiter and search_contains are true", ->
+      results = setup_results_test 'John mi', {search_term_delimiter: true, search_contains: true}
+      expect(results.length).toBe(4)
+      expect(results[0].innerHTML).toBe('<em>John</em> Doe S<em>mi</em>th')
+      expect(results[1].innerHTML).toBe('<em>John</em> S<em>mi</em>th')
+      expect(results[2].innerHTML).toBe('S<em>mi</em>th <em>John</em>son')
+      expect(results[3].innerHTML).toBe('S<em>mi</em>th F. <em>John</em>son')
+    it "only finds options with terms in correct order when search_in_order is true", ->
+      results = setup_results_test 'John Smi', {search_term_delimiter: true, search_in_order: true}
+      expect(results.length).toBe(2)
+      expect(results[0].innerHTML).toBe('<em>John</em> Doe <em>Smi</em>th')
+    it "includes spaces between neighbouring terms in highlight", ->
+      results = setup_results_test 'John Smi', {search_term_delimiter: true, search_in_order: true}
+      expect(results.length).toBe(2)
+      expect(results[0].innerHTML).toBe('<em>John</em> Doe <em>Smi</em>th')
+      expect(results[1].innerHTML).toBe('<em>John Smi</em>th')
+    it "includes characters between terms in highlight when search_highlight_full_match is true", ->
+      results = setup_results_test 'John Smi', {search_term_delimiter: true, search_highlight_full_match: true}
+      expect(results.length).toBe(4)
+      expect(results[0].innerHTML).toBe('<em>John Doe Smi</em>th')
+      expect(results[1].innerHTML).toBe('<em>John Smi</em>th')
+      expect(results[2].innerHTML).toBe('<em>Smith John</em>son')
+      expect(results[3].innerHTML).toBe('<em>Smith F. John</em>son')
+    it "considers non-ascii characters word-boundaries by default", ->
+      results = setup_results_test 'ller', {}
+      expect(results.length).toBe(2)
+      expect(results[0].innerHTML).toBe('Frank Mø<em>ller</em>')
+      expect(results[1].innerHTML).toBe('Frank Ø<em>ller</em>')
+    it "does not consider non-ascii characters word-boundaries if search_word_boundary is '^|\\s'", ->
+      results = setup_results_test 'ller', {search_word_boundary: '^|\\s'}
+      expect(results.length).toBe(0)
+    it "correctly highlights terms despite capturing group(s) in search_word_boundary", ->
+      results = setup_results_test 'Øller', {search_word_boundary: '(^|\\s|(,))'}
+      expect(results.length).toBe(1)
+      expect(results[0].innerHTML).toBe('Frank <em>Øller</em>')
+    it "does not include redundant '</em><em>' in highlighted results", ->
+      results = setup_results_test 'ab bb ba', {search_term_delimiter: true, search_contains: true}
+      expect(results.length).toBe(1)
+      expect(results[0].innerHTML).toBe('<em>abbbba</em>')
+
+
+
+
+
+
+
 
   it "renders no results message correctly when it contains characters that require HTML encoding", ->
     div = new Element("div")
