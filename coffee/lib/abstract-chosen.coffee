@@ -27,6 +27,7 @@ class AbstractChosen
     @enable_split_word_search = if @options.enable_split_word_search? then @options.enable_split_word_search else true
     @group_search = if @options.group_search? then @options.group_search else true
     @search_contains = @options.search_contains || false
+    @search_word_boundary = if @options.search_word_boundary? then @options.search_word_boundary else '^|\\s|\\b'
     @single_backstroke_delete = if @options.single_backstroke_delete? then @options.single_backstroke_delete else true
     @max_selected_options = @options.max_selected_options || Infinity
     @inherit_select_classes = @options.inherit_select_classes || false
@@ -217,7 +218,7 @@ class AbstractChosen
       this.winnow_results_set_highlight()
 
   get_search_regex: (escaped_search_string) ->
-    regex_string = if @search_contains then escaped_search_string else "(^|\\s|\\b)#{escaped_search_string}[^\\s]*"
+    regex_string = if @search_contains then escaped_search_string else "(#{@search_word_boundary})#{escaped_search_string}[^\\s]*"
     regex_string = "^#{regex_string}" unless @enable_split_word_search or @search_contains
     regex_flag = if @case_sensitive_search then "" else "i"
     new RegExp(regex_string, regex_flag)
