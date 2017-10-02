@@ -87,6 +87,11 @@
           <td>By default, Chosen’s search matches starting at the beginning of a word. Setting this option to <code class="language-javascript">true</code> allows matches starting from anywhere within a word. This is especially useful for options that include a lot of special characters or phrases in ()s and []s.</td>
         </tr>
         <tr>
+          <td>search_word_boundary</td>
+          <td>^|\\b|\\s</td>
+          <td>By default, chosen uses JS RegExp's built-in word boundary to detect word beginnings as well as whitespace or the beginning of the entire label. Works great for ascii-only languages, but <strong>will</strong> erroneously detect word boundaries after letters with umlauts among many, many others.<br>You can pass a string (that will be interpreted as a regex) refined for your language and use case to correctly detect word boundaries.</td>
+        </tr>
+        <tr>
           <td>single_backstroke_delete</td>
           <td>true</td>
           <td>By default, pressing delete/backspace on multiple selects will remove a selected choice. When <code class="language-javascript">false</code>, pressing delete/backspace will highlight the last choice, and a second press deselects it.</td>
