@@ -291,3 +291,22 @@ describe "Searching", ->
         simulant.fire(search_field, "keyup")
         expect(div.select(".active-result").length).toBe(1)
         expect(div.select(".active-result")[0].innerText.slice(1)).toBe(boundary_thing)
+        
+  it "respects custom search_word_boundary when not using search_contains", ->
+    div = new Element("div")
+    div.update("""
+      <select>
+        <option value="Frank Møller">Frank Møller</option>
+      </select>
+    """)
+    new Chosen(div.down("select"), {search_word_boundary: '^|[^A-zæøåÆØÅ]'})
+    simulant.fire(div.down(".chosen-container"), "mousedown") # open the drop
+
+    search_field = div.down(".chosen-search-input")
+    search_field.value = 'ller'
+    simulant.fire(search_field, "keyup")
+    expect(div.select(".active-result").length).toBe(0)
+    search_field.value = 'Møl'
+    simulant.fire(search_field, "keyup")
+    expect(div.select(".active-result").length).toBe(1)
+    expect(div.select(".active-result")[0].innerHTML).toBe('Frank <em>Møl</em>ler')
