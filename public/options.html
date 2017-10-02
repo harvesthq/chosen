@@ -97,6 +97,11 @@
           <td>By default, Chosen will search group labels as well as options, and filter to show all options below matching groups. Set this to <code class="language-javascript">false</code> to search only in the options.</td>
         </tr>
         <tr>
+          <td>search_word_boundary</td>
+          <td>^|\\b|\\s</td>
+          <td>By default, Chosen uses JS RegExp's built-in word boundary to detect word beginnings as well as whitespace or the beginning of the entire label. That works great for ascii-only languages, but <strong>will</strong> erroneously detect word boundaries after letters with umlauts among many, many others.<br>You can pass a string (that will be interpreted as part of a <code class="language-javascript">RegExp</code>) refined for your language and use case to correctly detect word boundaries. A (simplified) example could be <code class="language-javascript">'^|[^A-zæøåÆØÅ]'</code> for Danish.</td>
+        </tr>
+        <tr>
           <td>single_backstroke_delete</td>
           <td>true</td>
           <td>By default, pressing delete/backspace on multiple selects will remove a selected choice. When <code class="language-javascript">false</code>, pressing delete/backspace will highlight the last choice, and a second press deselects it.</td>
