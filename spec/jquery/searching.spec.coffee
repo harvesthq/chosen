@@ -247,7 +247,7 @@ describe "Searching", ->
 
     expect(div.find(".active-result").length).toBe(1)
     expect(div.find(".active-result")[0].innerHTML).toBe("oh <em>h</em>ello")
-
+    
   describe "respects word boundaries when not using search_contains", ->
     div = $("<div>").html("""
       <select>
@@ -279,3 +279,21 @@ describe "Searching", ->
         search_field.trigger("keyup")
         expect(div.find(".active-result").length).toBe(1)
         expect(div.find(".active-result")[0].innerText.slice(1)).toBe(boundary_thing)
+
+  it "respects custom search_word_boundary when not using search_contains", ->
+    div = $("<div>").html("""
+      <select>
+        <option value="Frank Møller">Frank Møller</option>
+      </select>
+    """)
+    div.find("select").chosen({search_word_boundary: '^|[^A-zæøåÆØÅ]'})
+    div.find(".chosen-container").trigger("mousedown") # open the drop
+
+    search_field = div.find(".chosen-search-input")
+    search_field.val('ller')
+    search_field.trigger("keyup")
+    expect(div.find(".active-result").length).toBe(0)
+    search_field.val('Møl')
+    search_field.trigger("keyup")
+    expect(div.find(".active-result").length).toBe(1)
+    expect(div.find(".active-result")[0].innerHTML).toBe('Frank <em>Møl</em>ler')
