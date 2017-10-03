@@ -259,7 +259,7 @@ describe "Searching", ->
     expect(div.select(".active-result").length).toBe(1)
     expect(div.select(".active-result")[0].innerHTML).toBe("oh <em>h</em>ello")
 
-  describe "respects word boundaries when not using search_contains", ->
+  it "respects word boundaries when not using search_contains", ->
     div = new Element("div")
     div.update("""
       <select>

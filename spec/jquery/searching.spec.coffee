@@ -248,7 +248,7 @@ describe "Searching", ->
     expect(div.find(".active-result").length).toBe(1)
     expect(div.find(".active-result")[0].innerHTML).toBe("oh <em>h</em>ello")
 
-  describe "respects word boundaries when not using search_contains", ->
+  it "respects word boundaries when not using search_contains", ->
     div = $("<div>").html("""
       <select>
         <option value="(lparen">(lparen</option>
