@@ -30,7 +30,7 @@
         <div>
           <em>Turns This</em>
           <select data-placeholder="Choose a Country..." class="select" tabindex="1">
-            <option value=""></option>
+            <option value="" selected disabled hidden>Choose a Country...</option>
             <option value="United States">United States</option>
             <option value="United Kingdom">United Kingdom</option>
             <option value="Afghanistan">Afghanistan</option>
@@ -287,7 +287,7 @@
         <div>
           <em>Into This</em>
           <select data-placeholder="Choose a Country..." class="chosen-select" tabindex="2">
-            <option value=""></option>
+            <option value="" selected disabled hidden>Choose a Country...</option>
             <option value="United States">United States</option>
             <option value="United Kingdom">United Kingdom</option>
             <option value="Afghanistan">Afghanistan</option>
@@ -1173,16 +1173,16 @@
         </div>
       </div>
 
-      <h2><a name="selected-and-disabled-support" class="anchor" href="#selected-and-disabled-support">Selected and Disabled Support</a></h2>
+      <h2><a name="selected-and-disabled-support" class="anchor" href="#selected-and-disabled-support">Selected, Disabled and Hidden Support</a></h2>
       <div class="side-by-side clearfix">
-        <p>Chosen automatically highlights selected options and removes disabled options.</p>
+        <p>Chosen automatically highlights selected options and removes disabled and / or hidden options.</p>
         <div>
           <em>Single Select</em>
           <select data-placeholder="Your Favorite Type of Bear" class="chosen-select" tabindex="7">
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
-            <option>Brown Bear</option>
+            <option hidden>Brown Bear</option>
             <option>Giant Panda</option>
             <option selected>Sloth Bear</option>
             <option disabled>Sun Bear</option>
@@ -1196,7 +1196,7 @@
             <option value=""></option>
             <option>American Black Bear</option>
             <option>Asiatic Black Bear</option>
-            <option>Brown Bear</option>
+            <option hidden>Brown Bear</option>
             <option>Giant Panda</option>
             <option selected>Sloth Bear</option>
             <option disabled>Sun Bear</option>
@@ -1231,7 +1231,8 @@
       <div class="side-by-side clearfix">
         <p>Chosen automatically sets the default field text ("Choose a country...") by reading the select element's data-placeholder value. If no data-placeholder value is present, it will default to "Select an Option" or "Select Some Options" depending on whether the select is single or multiple. You can change these elements in the plugin js file as you see fit.</p>
         <pre><code class="language-markup">&lt;select <strong>data-placeholder="Choose a country..."</strong> multiple class="chosen-select"&gt;</code></pre>
-        <p><strong>Note:</strong> on single selects, the first element is assumed to be selected by the browser. To take advantage of the default text support, you will need to include a blank option as the first element of your select list.</p>
+        <p><strong>Note:</strong> on single selects, the first element is assumed to be selected by the browser. To take advantage of the default text support, you will need to include a blank option as the first element of your select list - or include an element with the same label as the placeholder and set the <code class="language-javascript">hidden</code>, <code class="language-javascript">selected</code> and <code class="language-javascript">disabled</code> attributes on it for a more graceful degradation on devices Chosen does not support:</p>
+        <pre><code class="language-markup">&lt;option value="" selected disabled hidden&gt;Choose a country...&lt;/option&gt;</code></pre>
       </div>
 
       <h2><a name="no-results-text-support" class="anchor" href="#no-results-text-support">No Results Text Support</a></h2>
