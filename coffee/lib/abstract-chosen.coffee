@@ -347,7 +347,7 @@ class AbstractChosen
     """
       <ul class="chosen-choices">
         <li class="search-field">
-          <input class="chosen-search-input" type="text" autocomplete="off" value="#{@default_text}" />
+          <input class="chosen-search-input" type="text" autocomplete="off" placeholder="#{@default_text}" />
         </li>
       </ul>
       <div class="chosen-drop">
