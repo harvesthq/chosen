@@ -168,6 +168,12 @@ class AbstractChosen
     escapedQuery = query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regex = this.get_search_regex(escapedQuery)
 
+    querySplit = query.split(';')
+    ind = 0
+    while ind < querySplit.length
+      querySplit[ind] = querySplit[ind].trim().toLowerCase()
+      ind++
+
     for option in @results_data
 
       option.search_match = false
@@ -190,12 +196,28 @@ class AbstractChosen
 
         unless option.group and not @group_search
           search_match = this.search_string_match(text, regex)
+
+          tag_match = false
+          if option.tags
+            optInd = 0
+            while optInd < option.tags.length
+              qInd = 0
+              while qInd < querySplit.length
+                if querySplit[qInd] != ''
+                  tag_match = option.tags[optInd].toLowerCase().indexOf(querySplit[qInd]) >= 0
+                  if tag_match
+                    break
+                qInd++
+              if tag_match
+                break
+              optInd++
+
           option.search_match = search_match?
 
-          results += 1 if option.search_match and not option.group
+          results += 1 if (option.search_match or tag_match) and not option.group
 
-          if option.search_match
-            if query.length
+          if option.search_match or tag_match
+            if query.length and option.search_match
               startpos = search_match.index
               prefix = text.slice(0, startpos)
               fix    = text.slice(startpos, startpos + query.length)
@@ -203,7 +225,7 @@ class AbstractChosen
               option.highlighted_html = "#{this.escape_html(prefix)}<em>#{this.escape_html(fix)}</em>#{this.escape_html(suffix)}"
 
             results_group.group_match = true if results_group?
-
+            option.search_match = true
           else if option.group_array_index? and @results_data[option.group_array_index].search_match
             option.search_match = true
 

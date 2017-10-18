@@ -40,6 +40,7 @@ class SelectParser
           group_label: if group_position? then @parsed[group_position].label else null
           classes: option.className
           style: option.style.cssText
+          tags: $(option).data('tags')
       else
         @parsed.push
           array_index: @parsed.length
