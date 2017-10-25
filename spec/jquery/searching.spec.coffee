@@ -279,3 +279,93 @@ describe "Searching", ->
         search_field.trigger("keyup")
         expect(div.find(".active-result").length).toBe(1)
         expect(div.find(".active-result")[0].innerText.slice(1)).toBe(boundary_thing)
+
+  it "does not clear search text or highlight first suggestion when holding ctrl/cmd and selecting multiple items", () ->
+    div = $("<div>").html("""
+      <select multiple>
+        <option></option>
+        <option>Betty Holberton</option>
+        <option>Radia Perlman</option>
+        <option>Barbara Liskov</option>
+        <option>Frances Allen</option>
+        <option>Shafi Goldwasser</option>
+        <option>Maria Klawe</option>
+        <option>Jean E. Sammet</option>
+        <option>Adele Goldberg</option>
+        <option>Jeannette Wing</option>
+        <option>Éva Tardos</option>
+        <option>Lynn Conway</option>
+        <option>Karen Spärck Jones</option>
+        <option>Sophie Wilson</option>
+        <option>Wendy Hall</option>
+      </select>
+    """)
+
+    div.find("select").chosen()
+    div.find(".chosen-container").trigger("mousedown") # open the drop
+
+    search_field = div.find(".chosen-search-input")
+    search_field.val("s").trigger("keyup")
+
+    results = div.find(".chosen-results")
+    first_result = results.find("li:nth-of-type(1)")
+    second_result = results.find("li:nth-of-type(2)")
+
+    expect(first_result.prop("class")).toContain("highlighted")
+
+    mouseup_with_meta = $.Event("mouseup")
+    mouseup_with_meta.metaKey = true
+    second_result.mouseover().trigger(mouseup_with_meta)
+
+    expect(div.find(".search-choice").length).toBe(1)
+    expect(search_field.val()).toBe("s")
+    expect(first_result.prop("class")).not.toContain("highlighted")
+
+    third_result = results.find("li:nth-of-type(3)")
+
+    mouseup_with_ctrl = $.Event("mouseup")
+    mouseup_with_ctrl.ctrlKey = true
+    third_result.mouseover().trigger(mouseup_with_ctrl)
+
+    expect(div.find(".search-choice").length).toBe(2)
+    expect(search_field.val()).toBe("s")
+    expect(first_result.prop("class")).not.toContain("highlighted")
+
+  it "clears search text and highlights first suggestion without ctrl/cmd and selecting multiple items without hide_results_on_select", () ->
+    div = $("<div>").html("""
+      <select multiple>
+        <option></option>
+        <option>Betty Holberton</option>
+        <option>Radia Perlman</option>
+        <option>Barbara Liskov</option>
+        <option>Frances Allen</option>
+        <option>Shafi Goldwasser</option>
+        <option>Maria Klawe</option>
+        <option>Jean E. Sammet</option>
+        <option>Adele Goldberg</option>
+        <option>Jeannette Wing</option>
+        <option>Éva Tardos</option>
+        <option>Lynn Conway</option>
+        <option>Karen Spärck Jones</option>
+        <option>Sophie Wilson</option>
+        <option>Wendy Hall</option>
+      </select>
+    """)
+
+    div.find("select").chosen(hide_results_on_select: false)
+    div.find(".chosen-container").trigger("mousedown") # open the drop
+
+    search_field = div.find(".chosen-search-input")
+    search_field.val("s").trigger("keyup")
+
+    results = div.find(".chosen-results")
+    first_result = results.find("li:nth-of-type(1)")
+    second_result = results.find("li:nth-of-type(2)")
+
+    expect(first_result.prop("class")).toContain("highlighted")
+
+    second_result.mouseover().mouseup()
+
+    expect(div.find(".search-choice").length).toBe(1)
+    expect(search_field.val()).toBe("")
+    expect(results.find("li:nth-of-type(1)").prop("class")).toContain("highlighted")
