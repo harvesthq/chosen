@@ -209,7 +209,8 @@ i { font-style: italic; }
 .chosen-select-no-results,
 .chosen-select-deselect,
 .chosen-select-rtl,
-.chosen-select-width {
+.chosen-select-width,
+.chosen-select-transliteration {
   width: 350px;
 }
 
