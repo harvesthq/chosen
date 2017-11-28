@@ -150,6 +150,20 @@
             <p><strong>Note:</strong> <a href="#classes">the <code class="language-javascript">chosen-rtl</code> class</a> on the select has precedence over this option. However, the classname approach is deprecated and will be removed in future versions of Chosen.</p>
           </td>
         </tr>
+        <tr>
+          <td>normalize_search_text</td>
+          <td>
+<pre>
+  <code class="language-javascript">function(search_text) {
+    return search_text
+  }</code>
+</pre>
+
+        </td>
+          <td>
+            <p>By default, Chosen performs no text normalization. This allows you to provide a callback performing your own alterations to the provided <code class="language-javascript">search_text</code> argument, i.e. for transliteration. Callback receives a <code class="language-javascript">string</code> and must return a <code class="language-javascript">string</code>.</p>
+          </td>
+        </tr>
       </table>
 
       <h2><a name="attributes" class="anchor" href="#attributes">Attributes</a></h2>
