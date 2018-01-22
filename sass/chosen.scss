@@ -142,8 +142,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     background-clip: padding-box;
   }
   &.chosen-container-single-nosearch .chosen-search {
-    position: absolute;
-    clip: rect(0,0,0,0);
+    display: none;
   }
 }
 /* @end */
