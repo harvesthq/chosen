@@ -35,6 +35,7 @@ class AbstractChosen
     @include_group_label_in_selected = @options.include_group_label_in_selected || false
     @max_shown_results = @options.max_shown_results || Number.POSITIVE_INFINITY
     @case_sensitive_search = @options.case_sensitive_search || false
+    @hide_results_threshold = if @options.hide_results_threshold? and @disable_search is no and @disable_search_threshold <= @options.hide_results_threshold then @options.hide_results_threshold else false;
     @hide_results_on_select = if @options.hide_results_on_select? then @options.hide_results_on_select else true
 
   set_default_text: ->
@@ -209,12 +210,16 @@ class AbstractChosen
 
     this.result_clear_highlight()
 
-    if results < 1 and query.length
+    if this.hide_results_threshold isnt false and !query.length and results >0 and @form_field.options.length >= @hide_results_threshold
       this.update_results_content ""
       this.no_results query
     else
-      this.update_results_content this.results_option_build()
-      this.winnow_results_set_highlight()
+      if results < 1 and query.length
+        this.update_results_content ""
+        this.no_results query
+      else
+        this.update_results_content this.results_option_build()
+        this.winnow_results_set_highlight()
 
   get_search_regex: (escaped_search_string) ->
     regex_string = if @search_contains then escaped_search_string else "(^|\\s|\\b)#{escaped_search_string}[^\\s]*"

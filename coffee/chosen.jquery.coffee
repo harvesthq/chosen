@@ -443,7 +443,8 @@ class Chosen extends AbstractChosen
 
   no_results: (terms) ->
     no_results_html = this.get_no_results_html(terms)
-    @search_results.append no_results_html
+    if terms
+      @search_results.append no_results_html
     @form_field_jq.trigger("chosen:no_results", {chosen:this})
 
   no_results_clear: ->
