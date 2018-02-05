@@ -3,13 +3,6 @@ class @Chosen extends AbstractChosen
   setup: ->
     @current_selectedIndex = @form_field.selectedIndex
 
-  set_default_values: ->
-    super()
-
-    # HTML Templates
-    @new_option_temp = new Template('<option value="#{value}">#{text}</option>')
-    @create_option_temp = new Template('<li class="create-option active-result"><a>#{text}</a>: "#{terms}"</li>')
-
   set_up_html: ->
     container_classes = ["chosen-container"]
     container_classes.push "chosen-container-" + (if @is_multiple then "multi" else "single")
@@ -452,7 +445,7 @@ class @Chosen extends AbstractChosen
     @form_field.fire("chosen:no_results", {chosen: this})
 
   show_create_option: (terms) ->
-    create_option_html = @create_option_temp.evaluate( terms: terms, text: @create_option_text )
+    create_option_html = this.get_create_option_html(terms)
     @search_results.insert create_option_html
     @search_results.down(".create-option").observe "click", (evt) => this.select_create_option(terms)
 
@@ -466,9 +459,8 @@ class @Chosen extends AbstractChosen
     else
       this.select_append_option( value: terms, text: terms )
 
-  select_append_option: ( options ) ->
-    option = @new_option_temp.evaluate( options )
-    @form_field.insert option
+  select_append_option: (options) ->
+    @form_field.insert this.get_option_html(options)
     Event.fire @form_field, "chosen:updated"
     if typeof Event.simulate is 'function'
       @form_field.simulate("change")

@@ -376,6 +376,16 @@ class AbstractChosen
       </li>
     """
 
+  get_option_html: ({ value, text }) ->
+    """
+      <option value="#{value}" selected>#{text}</option>
+    """
+  
+  get_create_option_html: (terms) ->
+    """
+      <li class="create-option active-result"><a>#{@create_option_text}</a>: "#{this.escape_html(terms)}"</li>
+    """
+
   # class methods and variables ============================================================
 
   @browser_is_supported: ->
