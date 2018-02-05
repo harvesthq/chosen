@@ -8,6 +8,7 @@ class @Chosen extends AbstractChosen
 
     # HTML Templates
     @no_results_temp = new Template(this.get_no_results_html('#{terms}'))
+    @new_option_temp = new Template('<option value="#{value}">#{text}</option>')
     @create_option_temp = new Template('<li class="create-option active-result"><a>#{text}</a>: "#{terms}"</li>')
 
   set_up_html: ->
