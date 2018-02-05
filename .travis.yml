@@ -3,7 +3,8 @@ sudo: false
 language: node_js
 
 node_js:
-  - "node"
+  - 6
+  - node
 
 addons:
   apt:
@@ -12,6 +13,11 @@ addons:
     packages:
       - git
 
+matrix:
+  fast_finish: true
+  allow_failures:
+    - node_js: node
+
 before_install: npm install -g grunt-cli
 before_script: grunt build package-npm package-bower
 
@@ -19,4 +25,4 @@ after_success: ./publish-package.sh
 
 env:
   global:
-    secure: FHc3fAbJDydJywQ3HcFrTxqyAmmKbiAwP5Bi3qIzvXXCKNYbZb45iSjrMPFq7sHQR/evxDKl3zzBd8k6lvx0Sr77GDkmbN7HjI22fb3wu1Pi3WhmIM90/70ATs6hSZunsNEHCtQa4fDFM3NYeOeiwHFX8HQ9tVlqtjeAZngONL8=
+    secure: "SOYNh0YO4eLAM38FQxrg7iqytXgdjJHRkmj/1lFzGrGeuuXP6Owe/2TaMyTJXWb9nHAAtRRwQyhAUE07eKhxI6b3YNyozeRulMK4B0K8P3P1B2MslpROyvQYtZupno3dWc0tyvsQ3ucnZE25mtetH6KYcwiI+vHv6hT8HnzBnp0="

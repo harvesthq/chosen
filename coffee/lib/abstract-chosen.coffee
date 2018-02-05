@@ -120,7 +120,7 @@ class AbstractChosen
     option_el.className = classes.join(" ")
     option_el.style.cssText = option.style
     option_el.setAttribute("data-option-array-index", option.array_index)
-    option_el.innerHTML = option.search_text
+    option_el.innerHTML = option.highlighted_html or option.html
     option_el.title = option.title if option.title
 
     this.outerHTML(option_el)
@@ -135,7 +135,7 @@ class AbstractChosen
 
     group_el = document.createElement("li")
     group_el.className = classes.join(" ")
-    group_el.innerHTML = group.search_text
+    group_el.innerHTML = group.highlighted_html or this.escape_html(group.label)
     group_el.title = group.title if group.title
 
     this.outerHTML(group_el)
@@ -172,16 +172,17 @@ class AbstractChosen
     results = 0
     exact_result = false
 
-    searchText = this.get_search_text()
-    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-    regex = this.get_search_regex(escapedSearchText)
-    exactRegex = new RegExp("^#{escapedSearchText}$")
-    highlightRegex = this.get_highlight_regex(escapedSearchText)
+    query = this.get_search_text()
+    escapedQuery = query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    regex = this.get_search_regex(escapedQuery)
+    exactRegex = new RegExp("^#{escapedQuery}$")
 
     for option in @results_data
 
       option.search_match = false
       results_group = null
+      search_match = null
+      option.highlighted_html = ''
 
       if this.include_option_in_results(option)
 
@@ -194,19 +195,23 @@ class AbstractChosen
           results += 1 if results_group.active_options is 0 and results_group.search_match
           results_group.active_options += 1
 
-        option.search_text = if option.group then option.label else option.html
+        text = if option.group then option.label else option.text
 
         unless option.group and not @group_search
-          option.search_match = this.search_string_match(option.search_text, regex)
+          search_match = this.search_string_match(text, regex)
+          option.search_match = search_match?
+
           results += 1 if option.search_match and not option.group
 
           exact_result = exact_result || exactRegex.test option.html
 
           if option.search_match
-            if searchText.length
-              startpos = option.search_text.search highlightRegex
-              text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
-              option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+            if query.length
+              startpos = search_match.index
+              prefix = text.slice(0, startpos)
+              fix    = text.slice(startpos, startpos + query.length)
+              suffix = text.slice(startpos + query.length)
+              option.highlighted_html = "#{this.escape_html(prefix)}<em>#{this.escape_html(fix)}</em>#{this.escape_html(suffix)}"
 
             results_group.group_match = true if results_group?
 
@@ -215,36 +220,26 @@ class AbstractChosen
 
     this.result_clear_highlight()
 
-    if results < 1 and searchText.length
+    if results < 1 and query.length
       this.update_results_content ""
-      this.no_results searchText unless @create_option and @skip_no_results
+      this.no_results query unless @create_option and @skip_no_results
     else
       this.update_results_content this.results_option_build()
       this.winnow_results_set_highlight()
 
-    if @create_option and (results < 1 or (!exact_result and @persistent_create_option)) and searchText.length
-      this.show_create_option( searchText )
+    if @create_option and (results < 1 or (!exact_result and @persistent_create_option)) and query.length
+      this.show_create_option( query )
 
   get_search_regex: (escaped_search_string) ->
-    regex_anchor = if @search_contains then "" else "^"
+    regex_string = if @search_contains then escaped_search_string else "(^|\\s|\\b)#{escaped_search_string}[^\\s]*"
+    regex_string = "^#{regex_string}" unless @enable_split_word_search or @search_contains
     regex_flag = if @case_sensitive_search then "" else "i"
-    new RegExp(regex_anchor + escaped_search_string, regex_flag)
-
-  get_highlight_regex: (escaped_search_string) ->
-    regex_anchor = if @search_contains then "" else "\\b"
-    regex_flag = if @case_sensitive_search then "" else "i"
-    new RegExp(regex_anchor + escaped_search_string, regex_flag)
+    new RegExp(regex_string, regex_flag)
 
   search_string_match: (search_string, regex) ->
-    if regex.test search_string
-      return true
-    else if @enable_split_word_search and (search_string.indexOf(" ") >= 0 or search_string.indexOf("[") == 0)
-      #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-      parts = search_string.replace(/\[|\]/g, "").split(" ")
-      if parts.length
-        for part in parts
-          if regex.test part
-            return true
+    match = regex.exec(search_string)
+    match.index += 1 if !@search_contains && match?[1] # make up for lack of lookbehind operator in regex
+    match
 
   choices_count: ->
     return @selected_option_count if @selected_option_count?
@@ -351,12 +346,12 @@ class AbstractChosen
   get_single_html: ->
     """
       <a class="chosen-single chosen-default">
+        <input class="chosen-search-input" type="text" autocomplete="off" />
         <span>#{@default_text}</span>
         <div><b></b></div>
       </a>
       <div class="chosen-drop">
         <div class="chosen-search">
-          <input class="chosen-search-input" type="text" autocomplete="off" />
         </div>
         <ul class="chosen-results"></ul>
       </div>
@@ -377,7 +372,7 @@ class AbstractChosen
   get_no_results_html: (terms) ->
     """
       <li class="no-results">
-        #{@results_none_found} <span>#{terms}</span>
+        #{@results_none_found} <span>#{this.escape_html(terms)}</span>
       </li>
     """
 

@@ -18,7 +18,7 @@ Tell us how to reproduce this issue.
 
   3. Further steps, etc.
 
-Additionally, please link to a working demo that shows the issue so we can attempt to reproduce.  You can use [this template](https://jsfiddle.net/5v3v353z/) as a base.  Alternatively, confirm that the [Chosen demo page](http://harvesthq.github.io/chosen/) shows the issue.
+Additionally, please link to a working demo that shows the issue so we can attempt to reproduce.  You can use [this template](https://jsfiddle.net/j7k727cp/) as a base.  Alternatively, confirm that the [Chosen demo page](http://harvesthq.github.io/chosen/) shows the issue.
 
 
 ### Expected behavior
