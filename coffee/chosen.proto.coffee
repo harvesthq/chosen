@@ -28,7 +28,8 @@ class @Chosen extends AbstractChosen
     @form_field.hide().insert({ after: @container })
     @dropdown = @container.down('div.chosen-drop')
 
-    @search_field = @container.down('input')
+    @search_field = @container.down('input.chosen-search-input')
+    @focus_field = @container.down('input.chosen-focus-input')
     @search_results = @container.down('ul.chosen-results')
     this.search_field_scale()
 
@@ -83,6 +84,18 @@ class @Chosen extends AbstractChosen
       @search_choices.observe "click", (evt) => this.choices_click(evt)
     else
       @container.observe "click", (evt) => evt.preventDefault() # gobble click of anchor
+
+      @focus_field.observe "blur", (evt) => this.input_blur(evt)
+      @focus_field.observe "focus", (evt) => this.input_focus(evt)
+
+      transfer_value = () =>
+        @search_field.value = @focus_field.value
+        @focus_field.value = ""
+
+      @focus_field.observe "keyup", (evt) => transfer_value(); this.keyup_checker(evt)
+      @focus_field.observe "keydown", (evt) => transfer_value(); this.keydown_checker(evt)
+      @focus_field.observe "cut", (evt) => setTimeout(transfer_value, 0); this.clipboard_event_checker(evt)
+      @focus_field.observe "paste", (evt) => setTimeout(transfer_value, 0); this.clipboard_event_checker(evt)
 
   destroy: ->
     @container.ownerDocument.stopObserving "click", @click_test_action
@@ -174,7 +187,6 @@ class @Chosen extends AbstractChosen
     @container.addClassName "chosen-container-active"
     @active_field = true
 
-    @search_field.value = this.get_search_field_value()
     @search_field.focus()
 
   test_active_click: (evt) ->
@@ -195,9 +207,11 @@ class @Chosen extends AbstractChosen
       this.single_set_selected_text()
       if @disable_search or @form_field.options.length <= @disable_search_threshold
         @search_field.readOnly = true
+        @focus_field?.readOnly = true
         @container.addClassName "chosen-container-single-nosearch"
       else
         @search_field.readOnly = false
+        @focus_field?.readOnly = false
         @container.removeClassName "chosen-container-single-nosearch"
 
     this.update_results_content this.results_option_build({first:true})
@@ -235,9 +249,6 @@ class @Chosen extends AbstractChosen
       @form_field.fire("chosen:maxselected", {chosen: this})
       return false
 
-    unless @is_multiple
-      @search_container.insert @search_field
-
     @container.addClassName "chosen-with-drop"
     @results_showing = true
 
@@ -254,9 +265,7 @@ class @Chosen extends AbstractChosen
     if @results_showing
       this.result_clear_highlight()
 
-      unless @is_multiple
-        @selected_item.insert top: @search_field
-        @search_field.focus()
+      setTimeout((() => @focus_field?.focus()), 0)
 
       @container.removeClassName "chosen-with-drop"
       @form_field.fire("chosen:hiding_dropdown", {chosen: this})
@@ -269,6 +278,7 @@ class @Chosen extends AbstractChosen
       ti = @form_field.tabIndex
       @form_field.tabIndex = -1
       @search_field.tabIndex = ti
+      @focus_field?.tabIndex = ti
 
   set_label_behavior: ->
     @form_field_label = @form_field.up("label") # first check for a parent label

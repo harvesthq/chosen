@@ -70,6 +70,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
       cursor: pointer;
       opacity: 0;
       position: absolute;
+      width: 0;
     }
   }
   .chosen-default {

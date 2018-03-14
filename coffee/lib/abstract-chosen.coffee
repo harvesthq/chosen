@@ -332,12 +332,13 @@ class AbstractChosen
   get_single_html: ->
     """
       <a class="chosen-single chosen-default">
-        <input class="chosen-search-input" type="text" autocomplete="off" />
+        <input class="chosen-focus-input" type="text" autocomplete="off" />
         <span>#{@default_text}</span>
         <div><b></b></div>
       </a>
       <div class="chosen-drop">
         <div class="chosen-search">
+          <input class="chosen-search-input" type="text" autocomplete="off" />
         </div>
         <ul class="chosen-results"></ul>
       </div>
