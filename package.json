@@ -27,6 +27,7 @@
     "coffee-script": ">= 1.6",
     "grunt": "~1.0",
     "grunt-contrib-coffee": "~1.0",
+    "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-concat": "~1.0",
     "grunt-contrib-cssmin": "~2.2",
     "grunt-contrib-jasmine": "~1.1",
