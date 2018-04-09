@@ -159,7 +159,7 @@ class AbstractChosen
     else
       this.results_show()
 
-  winnow_results: ->
+  winnow_results: (options) ->
     this.no_results_clear()
 
     results = 0
@@ -214,7 +214,7 @@ class AbstractChosen
       this.no_results query
     else
       this.update_results_content this.results_option_build()
-      this.winnow_results_set_highlight()
+      this.winnow_results_set_highlight() unless options?.skip_highlight
 
   get_search_regex: (escaped_search_string) ->
     regex_string = if @search_contains then escaped_search_string else "(^|\\s|\\b)#{escaped_search_string}[^\\s]*"
