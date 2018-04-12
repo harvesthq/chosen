@@ -398,7 +398,7 @@ class Chosen extends AbstractChosen
         this.results_hide()
         this.show_search_field_default()
 
-      this.trigger_form_field_change selected: @form_field.options[item.options_index].value  if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
+      this.trigger_form_field_change selected: @form_field.options[item.options_index].value, selected_element: @form_field.options[item.options_index]  if @is_multiple || @form_field.selectedIndex != @current_selectedIndex
       @current_selectedIndex = @form_field.selectedIndex
 
       evt.preventDefault()
@@ -426,7 +426,7 @@ class Chosen extends AbstractChosen
       this.result_clear_highlight()
       this.winnow_results() if @results_showing
 
-      this.trigger_form_field_change deselected: @form_field.options[result_data.options_index].value
+      this.trigger_form_field_change deselected: @form_field.options[result_data.options_index].value, deselected_element: @form_field.options[result_data.options_index]
       this.search_field_scale()
 
       return true
