@@ -28,6 +28,12 @@ To install with npm:
 npm install chosen-js
 ```
 
+To install with composer:
+
+```
+composer require harvesthq/chosen
+```
+
 The compiled files for these packages are automatically generated and stored in a [2nd Chosen repository](https://github.com/harvesthq/chosen-package). No pull requests will be accepted to that repository.
 
 ### Contributing to this project
