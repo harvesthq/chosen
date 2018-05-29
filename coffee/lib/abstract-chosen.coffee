@@ -17,7 +17,6 @@ class AbstractChosen
     @click_test_action = (evt) => this.test_active_click(evt)
     @activate_action = (evt) => this.activate_field(evt)
     @active_field = false
-    @mouse_on_container = false
     @results_showing = false
     @result_highlighted = null
     @is_rtl = @options.rtl || /\bchosen-rtl\b/.test(@form_field.className)
@@ -55,19 +54,11 @@ class AbstractChosen
     else
       item.html
 
-  mouse_enter: -> @mouse_on_container = true
-  mouse_leave: -> @mouse_on_container = false
-
   input_focus: (evt) ->
     if @is_multiple
       setTimeout (=> this.container_mousedown()), 50 unless @active_field
     else
       @activate_field() unless @active_field
-
-  input_blur: (evt) ->
-    if not @mouse_on_container
-      @active_field = false
-      setTimeout (=> this.blur_test()), 100
 
   label_click_handler: (evt) =>
     if @is_multiple
@@ -253,7 +244,6 @@ class AbstractChosen
         break
       when 9 # tab
         this.result_select(evt) if @results_showing and not @is_multiple
-        @mouse_on_container = false
         break
       when 13 # enter
         evt.preventDefault() if @results_showing

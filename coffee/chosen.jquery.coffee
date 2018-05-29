@@ -77,11 +77,9 @@ class Chosen extends AbstractChosen
 
     @container.on 'mousedown.chosen', (evt) => this.container_mousedown(evt); return
     @container.on 'mouseup.chosen', (evt) => this.container_mouseup(evt); return
-    @container.on 'mouseenter.chosen', (evt) => this.mouse_enter(evt); return
-    @container.on 'mouseleave.chosen', (evt) => this.mouse_leave(evt); return
     @container.on 'focusin.chosen', (evt) => this.container_focusin(evt); return
     @container.on 'focusout.chosen', (evt) => this.container_focusout(evt); return
-    @container.on 'chosen:blur.chosen', (evt) => this.input_blur(evt); return
+    @container.on 'chosen:blur.chosen', (evt) => this.close_field(evt); return
     @container.on 'chosen:focus.chosen', (evt) => this.input_focus(evt); return
 
     @search_results.on 'mouseup.chosen', (evt) => this.search_results_mouseup(evt); return
@@ -168,9 +166,6 @@ class Chosen extends AbstractChosen
       evt.preventDefault()
       delta = delta * 40 if evt.type is 'DOMMouseScroll'
       @search_results.scrollTop(delta + @search_results.scrollTop())
-
-  blur_test: (evt) ->
-    this.close_field() if not @active_field and @container.hasClass "chosen-container-active"
 
   close_field: ->
     $(@container[0].ownerDocument).off "click.chosen", @click_test_action

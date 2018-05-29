@@ -55,11 +55,9 @@ class @Chosen extends AbstractChosen
 
     @container.observe "mousedown", (evt) => this.container_mousedown(evt)
     @container.observe "mouseup", (evt) => this.container_mouseup(evt)
-    @container.observe "mouseenter", (evt) => this.mouse_enter(evt)
-    @container.observe "mouseleave", (evt) => this.mouse_leave(evt)
     @container.observe "focusin", (evt) => this.container_focusin(evt)
     @container.observe "focusout", (evt) => this.container_focusout(evt)
-    @container.observe "chosen:blur", (evt) => this.input_blur(evt)
+    @container.observe "chosen:blur", (evt) => this.close_field(evt)
     @container.observe "chosen:focus", (evt) => this.input_focus(evt)
 
     @search_results.observe "mouseup", (evt) => this.search_results_mouseup(evt)
@@ -163,9 +161,6 @@ class @Chosen extends AbstractChosen
       evt.preventDefault()
       delta = delta * 40 if evt.type is 'DOMMouseScroll'
       @search_results.scrollTop = delta + @search_results.scrollTop
-
-  blur_test: (evt) ->
-    this.close_field() if not @active_field and @container.hasClassName("chosen-container-active")
 
   close_field: ->
     @container.ownerDocument.stopObserving "click", @click_test_action
