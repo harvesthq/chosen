@@ -12,6 +12,7 @@ class @Chosen extends AbstractChosen
     container_props =
       'class': container_classes.join ' '
       'title': @form_field.title
+      'tabIndex': '-1'
 
     container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
 
@@ -56,6 +57,10 @@ class @Chosen extends AbstractChosen
     @container.observe "mouseup", (evt) => this.container_mouseup(evt)
     @container.observe "mouseenter", (evt) => this.mouse_enter(evt)
     @container.observe "mouseleave", (evt) => this.mouse_leave(evt)
+    @container.observe "focusin", (evt) => this.container_focusin(evt)
+    @container.observe "focusout", (evt) => this.container_focusout(evt)
+    @container.observe "chosen:blur", (evt) => this.input_blur(evt)
+    @container.observe "chosen:focus", (evt) => this.input_focus(evt)
 
     @search_results.observe "mouseup", (evt) => this.search_results_mouseup(evt)
     @search_results.observe "mouseover", (evt) => this.search_results_mouseover(evt)
@@ -72,10 +77,8 @@ class @Chosen extends AbstractChosen
     @form_field.observe "chosen:open", (evt) => this.container_mousedown(evt)
     @form_field.observe "chosen:close", (evt) => this.close_field(evt)
 
-    @search_field.observe "blur", (evt) => this.input_blur(evt)
     @search_field.observe "keyup", (evt) => this.keyup_checker(evt)
     @search_field.observe "keydown", (evt) => this.keydown_checker(evt)
-    @search_field.observe "focus", (evt) => this.input_focus(evt)
     @search_field.observe "cut", (evt) => this.clipboard_event_checker(evt)
     @search_field.observe "paste", (evt) => this.clipboard_event_checker(evt)
 
@@ -144,6 +147,15 @@ class @Chosen extends AbstractChosen
 
   container_mouseup: (evt) ->
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
+
+  container_focusin: (evt) ->
+    return if @active_field
+    @container.fire('chosen:focus')
+
+  container_focusout: (evt) ->
+    setTimeout () =>
+      unless @container.contains(document.activeElement)
+        @container.fire('chosen:blur') if @active_field
 
   search_results_mousewheel: (evt) ->
     delta = evt.deltaY or -evt.wheelDelta or evt.detail
