@@ -13,7 +13,7 @@ https://github.com/harvesthq/chosen/releases/
 
 ### Package managers
 
-Chosen is available through [Bower](https://bower.io/) and [npm](https://www.npmjs.com),
+Chosen is available through [Bower](https://bower.io/), [npm](https://www.npmjs.com) and [Composer](https://getcomposer.org/),
 _however, the package names are not the same_.
 
 To install with Bower:
@@ -28,7 +28,7 @@ To install with npm:
 npm install chosen-js
 ```
 
-To install with composer:
+To install with Composer:
 
 ```
 composer require harvesthq/chosen
