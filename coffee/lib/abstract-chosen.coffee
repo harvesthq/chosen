@@ -51,7 +51,7 @@ class AbstractChosen
 
   choice_label: (item) ->
     if @include_group_label_in_selected and item.group_label?
-      "<b class='group-name'>#{item.group_label}</b>#{item.html}"
+      "<b class='group-name'>#{this.escape_html(item.group_label)}</b>#{item.html}"
     else
       item.html
 
