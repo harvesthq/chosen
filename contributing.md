@@ -196,24 +196,29 @@ If you're interested, you can find the task in [Gruntfile.coffee](https://github
 
 This documentation is for Chosen maintainers.  You must have write permissions for this repository to cut a release.
 
-1. Draft a new release [on the releases page](https://github.com/harvesthq/chosen/releases).
+1. Bump the version number in the source but _do not push it yet_. [Example commit](https://github.com/harvesthq/chosen/commit/be0a298f528ec59ce97889eaeeeb47a2dca9ca79).
 
-    1. Title formatted as "Version X.Y.Z"
-    2. Tagged as `vX.Y.Z`
-    3. Body of the release should contain changes included in the release. Ideally, there will already be a draft release present with a running log from contributions merged since the last release.
+2. Create a tag for that commit: `git tag <tagname> <SHA>`
 
-2. Bump the version number in the source. [Example commit](https://github.com/harvesthq/chosen/commit/be0a298f528ec59ce97889eaeeeb47a2dca9ca79).
+    - `<tagname>` formatted as `vX.Y.Z`
+    - `<SHA>` is the SHA of the commit from step 1
 
-3. Run `grunt prep-release`
+3. Push the commit _and_ the tag: `git push origin --follow-tags`
 
-4. Attach the generated `chosen_vX.Y.Z.zip` file (in the Chosen root directory) to the draft release from step 1.
+4. Draft a new release [on the releases page](https://github.com/harvesthq/chosen/releases).
 
-5. Target the release tag to the commit from step 2.
+    - Title formatted as "Version X.Y.Z"
+    - Tagged as `<tagname>` from step 2
+    - Body of the release should contain changes included in the release. Ideally, there will already be a draft release present with a running log from contributions merged since the last release.
 
-6. Publish the release.
+5. Run `grunt prep-release`
 
-7. Run `grunt publish-release` to publish to the `gh-pages` branch.
+6. Attach the generated `chosen_vX.Y.Z.zip` file (in the Chosen root directory) to the draft release from step 4.
 
-8. Verify https://harvesthq.github.io/chosen/ is showing the new version.
+7. Publish the release.
+
+8. Run `grunt publish-release` to publish to the `gh-pages` branch.
+
+9. Verify https://harvesthq.github.io/chosen/ is showing the new version.
 
 _Note:_ the release repository [harvesthq/chosen-package](https://github.com/harvesthq/chosen-package) is automatically built by [Travis CI](https://travis-ci.org/harvesthq/chosen). No explicit action is necessary.
