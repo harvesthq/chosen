@@ -191,3 +191,29 @@ Once you're configured, `grunt` tasks are available:
     grunt watch                # watch coffee/ for changes and build Chosen
 
 If you're interested, you can find the task in [Gruntfile.coffee](https://github.com/harvesthq/chosen/blob/master/Gruntfile.coffee).
+
+# Release a new version of Chosen
+
+This documentation is for Chosen maintainers.  You must have write permissions for this repository to cut a release.
+
+1. Draft a new release [on the releases page](https://github.com/harvesthq/chosen/releases).
+
+    1. Title formatted as "Version X.Y.Z"
+    2. Tagged as `vX.Y.Z`
+    3. Body of the release should contain changes included in the release. Ideally, there will already be a draft release present with a running log from contributions merged since the last release.
+
+2. Bump the version number in the source. [Example commit](https://github.com/harvesthq/chosen/commit/be0a298f528ec59ce97889eaeeeb47a2dca9ca79).
+
+3. Run `grunt prep-release`
+
+4. Attach the generated `chosen_vX.Y.Z.zip` file (in the Chosen root directory) to the draft release from step 1.
+
+5. Target the release tag to the commit from step 2.
+
+6. Publish the release.
+
+7. Run `grunt publish-release` to publish to the `gh-pages` branch.
+
+8. Verify https://harvesthq.github.io/chosen/ is showing the new version.
+
+_Note:_ the release repository [harvesthq/chosen-package](https://github.com/harvesthq/chosen-package) is automatically built by [Travis CI](https://travis-ci.org/harvesthq/chosen). No explicit action is necessary.
