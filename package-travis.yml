@@ -13,6 +13,10 @@ deploy:
     # but it is encrypted for publishing publicly like this using Travis.
     # More information about how this token is generated and encrypted here:
     # https://docs.travis-ci.com/user/deployment/npm#NPM-auth-token
+    #
+    # Be sure to use the _package_ repo when encrypting since that is what
+    # publishes to NPM:
+    #   travis encrypt THE-API-KEY -r "harvesthq/chosen-package"
     secure: "Db6T4izb22c2c6TnSckBBqbvU7Tp9uDKkBmTHpVJipH4dpeVGKJ6CMsmmvpXFd5zCWz+SgXarDTyUYcZPuzwmrMh8BvaT6LkugRZh0m/gh4V10CQWMfgmsQzpexZtU93VTzXynUHCQM3xVJReUVtQkmJEGt4FteY0pJTy3AVspE="
   on:
     tags: true
