@@ -5,7 +5,7 @@ set -e
 CURRENT_BRANCH=`git name-rev --name-only HEAD`
 
 if [ $CURRENT_BRANCH != 'master' ] ; then
-  echo "Build not on master. Skipped chosen-package release"
+  echo "Build not on master. Skipped pushing to chosen-package"
   exit 0
 fi
 
@@ -38,4 +38,4 @@ fi
 git push origin master
 git push origin --tags
 
-echo "Chosen published to harvesthq/chosen-package"
+echo "Chosen built and pushed to harvesthq/chosen-package"
