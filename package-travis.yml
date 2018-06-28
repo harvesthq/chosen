@@ -13,7 +13,7 @@ deploy:
     # but it is encrypted for publishing publicly like this using Travis.
     # More information about how this token is generated and encrypted here:
     # https://docs.travis-ci.com/user/deployment/npm#NPM-auth-token
-    secure: "WXJUezbSyFX2bDLmBpO2mLSTxVzn7FH1ll6hzGPD4PUrDCRgBW7RyXX3UnIwSknIOQ/pqDq9zRPCSxHgyWNW3dX84n4P7+5C2dlxagtsBKc/ovwGqHFOrb/U+yWgrBimXvpDQeaBveZJXPhN46YYkb4NNWlP3d6bYaXqR5qtURM="
+    secure: dBt1Dps9IHcT2h2l/uS/qWApUNqt6z4VxIeDFPBOQH6g1NpQoDl2fj3NFdeSsKaEcL1c6pya1sIDv5WTsXP2JJ8s4oR431sGjWi4pMi+yhIXS6SXfK7bc0z5Guh8vublUOFsIPeFLLvH5B6j83HEevXlbfdwWtxMU+jtIwjYQvc=
   on:
     tags: true
     repo: harvesthq/chosen-package
