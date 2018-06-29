@@ -198,7 +198,7 @@ This documentation is for Chosen maintainers.  You must have write permissions f
 
 1. Bump the version number in the source but _do not push it yet_. [Example commit](https://github.com/harvesthq/chosen/commit/be0a298f528ec59ce97889eaeeeb47a2dca9ca79).
 
-2. Create a tag for that commit: `git tag <tagname> <SHA>`
+2. Create a tag for that commit: `git tag -m "<tagname>" <tagname> <SHA>`
 
     - `<tagname>` formatted as `vX.Y.Z`
     - `<SHA>` is the SHA of the commit from step 1
