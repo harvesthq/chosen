@@ -17,7 +17,7 @@ deploy:
     # Be sure to use the _package_ repo when encrypting since that is what
     # publishes to NPM:
     #   travis encrypt THE-API-KEY -r "harvesthq/chosen-package"
-    secure: "Db6T4izb22c2c6TnSckBBqbvU7Tp9uDKkBmTHpVJipH4dpeVGKJ6CMsmmvpXFd5zCWz+SgXarDTyUYcZPuzwmrMh8BvaT6LkugRZh0m/gh4V10CQWMfgmsQzpexZtU93VTzXynUHCQM3xVJReUVtQkmJEGt4FteY0pJTy3AVspE="
+    secure: "LymcaqX4oXPmaIxaTYeMziNsr+FBi4WVZCc5XqCEeZxC/spRousJDX+oEf/gnmWtN5+sOEtct/WKALXye9MiOVkrRG87YEGXGaG5EQVm4+NJbulHpp/TNhJ61Su+NA+52rpj6zgeq15ruIaMr8OQXGkqdq1IRSlShXuaUgKByNY="
   on:
     tags: true
     repo: harvesthq/chosen-package
