@@ -51,7 +51,7 @@ class AbstractChosen
 
   choice_label: (item) ->
     if @include_group_label_in_selected and item.group_label?
-      "<b class='group-name'>#{item.group_label}</b>#{item.html}"
+      "<b class='group-name'>#{this.escape_html(item.group_label)}</b>#{item.html}"
     else
       item.html
 
@@ -114,7 +114,7 @@ class AbstractChosen
 
     option_el = document.createElement("li")
     option_el.className = classes.join(" ")
-    option_el.style.cssText = option.style
+    option_el.style.cssText = option.style if option.style
     option_el.setAttribute("data-option-array-index", option.array_index)
     option_el.innerHTML = option.highlighted_html or option.html
     option_el.title = option.title if option.title
@@ -159,7 +159,7 @@ class AbstractChosen
     else
       this.results_show()
 
-  winnow_results: ->
+  winnow_results: (options) ->
     this.no_results_clear()
 
     results = 0
@@ -214,7 +214,7 @@ class AbstractChosen
       this.no_results query
     else
       this.update_results_content this.results_option_build()
-      this.winnow_results_set_highlight()
+      this.winnow_results_set_highlight() unless options?.skip_highlight
 
   get_search_regex: (escaped_search_string) ->
     regex_string = if @search_contains then escaped_search_string else "(^|\\s|\\b)#{escaped_search_string}[^\\s]*"

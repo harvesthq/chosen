@@ -21,9 +21,11 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     background: #fff;
     box-shadow: 0 4px 5px rgba(#000,.15);
     clip: rect(0,0,0,0);
+    clip-path: inset(100% 100%);
   }
   &.chosen-with-drop .chosen-drop {
     clip: auto;
+    clip-path: none;
   }
   a{
     cursor: pointer;
@@ -138,6 +140,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
   &.chosen-container-single-nosearch .chosen-search {
     position: absolute;
     clip: rect(0,0,0,0);
+    clip-path: inset(100% 100%);
   }
 }
 /* @end */

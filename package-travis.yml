@@ -9,7 +9,15 @@ deploy:
   provider: npm
   email: chosenjs@getharvest.com
   api_key:
-    secure: jilkDlYp31lPr5AxNTSoC7cgeJv1k+HFyD97RdscUm7Oc45397H//62twQY1w8gUtonjqoncSUe+deElbBs8Zm1RXoX3F3YdcrdhLgmpUFa6Qt2L1ttSJRJ/HOn7NxupwNAHCFiLib5ffFED6FvntHJG/A1693yQeR9lycMsmrQ=
+    # This key is for automatically publishing releases to NPM,
+    # but it is encrypted for publishing publicly like this using Travis.
+    # More information about how this token is generated and encrypted here:
+    # https://docs.travis-ci.com/user/deployment/npm#NPM-auth-token
+    #
+    # Be sure to use the _package_ repo when encrypting since that is what
+    # publishes to NPM:
+    #   travis encrypt THE-API-KEY -r "harvesthq/chosen-package"
+    secure: "LymcaqX4oXPmaIxaTYeMziNsr+FBi4WVZCc5XqCEeZxC/spRousJDX+oEf/gnmWtN5+sOEtct/WKALXye9MiOVkrRG87YEGXGaG5EQVm4+NJbulHpp/TNhJ61Su+NA+52rpj6zgeq15ruIaMr8OQXGkqdq1IRSlShXuaUgKByNY="
   on:
     tags: true
     repo: harvesthq/chosen-package

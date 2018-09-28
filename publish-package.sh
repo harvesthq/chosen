@@ -5,7 +5,7 @@ set -e
 CURRENT_BRANCH=`git name-rev --name-only HEAD`
 
 if [ $CURRENT_BRANCH != 'master' ] ; then
-  echo "Build not on master. Skipped chosen-package release"
+  echo "Build not on master. Skipped pushing to chosen-package"
   exit 0
 fi
 
@@ -14,7 +14,7 @@ GITHUB_URL=https://pfiller:${GH_TOKEN}@github.com/harvesthq/chosen-package.git
 
 git clone $GITHUB_URL
 rm -rf chosen-package/*
-cp README.md public/*.json public/*.png public/*.js public/*.css chosen-package/
+cp README.md public/*.json public/*.png public/*.js public/*.css public/LICENSE* chosen-package/
 cp package-travis.yml chosen-package/.travis.yml
 cd chosen-package
 
@@ -38,4 +38,4 @@ fi
 git push origin master
 git push origin --tags
 
-echo "Chosen published to harvesthq/chosen-package"
+echo "Chosen built and pushed to harvesthq/chosen-package"

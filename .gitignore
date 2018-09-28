@@ -4,6 +4,7 @@ node_modules
 public/*.js
 public/*.css
 public/*.json
+public/LICENSE.md
 chosen*.zip
 .sass-cache
 .ruby-version

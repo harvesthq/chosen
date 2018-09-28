@@ -15,7 +15,7 @@
   <div id="container">
     <div id="content">
       <header>
-        <h1>Chosen <small>(<span id="latest-version">v1.8.2</span>)</small></h1>
+        <h1>Chosen <small>(<span id="latest-version">v1.8.7</span>)</small></h1>
       </header>
       <p>Chosen has a number of options and attributes that allow you to have full control of your select boxes.</p>
 
@@ -87,6 +87,11 @@
           <td>By default, Chosen’s search matches starting at the beginning of a word. Setting this option to <code class="language-javascript">true</code> allows matches starting from anywhere within a word. This is especially useful for options that include a lot of special characters or phrases in ()s and []s.</td>
         </tr>
         <tr>
+          <td>group_search</td>
+          <td>true</td>
+          <td>By default, Chosen will search group labels as well as options, and filter to show all options below matching groups. Set this to <code class="language-javascript">false</code> to search only in the options.</td>
+        </tr>
+        <tr>
           <td>single_backstroke_delete</td>
           <td>true</td>
           <td>By default, pressing delete/backspace on multiple selects will remove a selected choice. When <code class="language-javascript">false</code>, pressing delete/backspace will highlight the last choice, and a second press deselects it.</td>
@@ -127,14 +132,14 @@
           <td>case_sensitive_search</td>
           <td>false</td>
           <td>
-            <p>By default Chosen's search is case-insensitive. Setting this option to <code class="language-javascript">true</code> makes the search case-sensitive.</p>
+            <p>By default, Chosen's search is case-insensitive. Setting this option to <code class="language-javascript">true</code> makes the search case-sensitive.</p>
           </td>
         </tr>
         <tr>
           <td>hide_results_on_select</td>
           <td>true</td>
           <td>
-            <p>By default Chosen's results are hidden after a option is selected. Setting this option to <code class="language-javascript">false</code> will keep the results open after selection. This only applies to multiple selects.</p>
+            <p>By default, Chosen's results are hidden after a option is selected. Setting this option to <code class="language-javascript">false</code> will keep the results open after selection. This only applies to multiple selects.</p>
           </td>
         </tr>
         <tr>
@@ -277,7 +282,7 @@
         </tr>
         <tr>
           <td>chosen:activate</td>
-          <td>This is the equivalant of focusing a standard HTML select field. When activated, Chosen will capure keypress events as if you had clicked the field directly.</td>
+          <td>This is the equivalant of focusing a standard HTML select field. When activated, Chosen will capture keypress events as if you had clicked the field directly.</td>
         </tr>
         <tr>
           <td>chosen:open</td>

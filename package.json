@@ -1,7 +1,7 @@
 {
   "author": "harvest",
   "name": "chosen",
-  "version": "1.8.2",
+  "version": "1.8.7",
   "description": "Chosen is a JavaScript plugin that makes select boxes user-friendly. It is currently available in both jQuery and Prototype flavors.",
   "keywords": [
     "select",
@@ -27,6 +27,7 @@
     "coffee-script": ">= 1.6",
     "grunt": "~1.0",
     "grunt-contrib-coffee": "~1.0",
+    "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-concat": "~1.0",
     "grunt-contrib-cssmin": "~2.2",
     "grunt-contrib-jasmine": "~1.1",
