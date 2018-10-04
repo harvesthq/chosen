@@ -1,6 +1,35 @@
 $chosen-sprite: url('chosen-sprite.png') !default;
 $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
 
+$bg-color: #fff;
+$box-shadow-color: #000;
+$border-color: #aaa;
+$group-name-color: #999;
+$highlited-color: #3875d7;
+$highlited-second-color: #2a62bc;
+
+$search-choice-bg-color: #eee;
+$search-choice-disabled-bg-color: #e4e4e4;
+$search-choice-color: #333;
+$search-choice-bg: linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%);
+$search-choice-disabled-color: #666;
+$search-choice-focus-bg-color: $search-choice-disabled-color;
+$search-choice-disabled-border-color: #ccc;
+$no-results-bg: #f4f4f4;
+
+$chosen-color: #222;
+$chosen-border-color: #5897fb;
+$chosen-single-color: #444;
+$chosen-bg: linear-gradient($bg-color 20%, #f6f6f6 50%, #eee 52%, #f4f4f4 100%);
+$chosen-single-bg: linear-gradient(#eee 20%, $bg-color 80%);
+$chosen-default-color: $group-name-color;
+$chosen-container-color: $chosen-single-color;
+$chosen-container-disabled-color: $search-choice-disabled-border-color;
+$chosen-container-no-results-color: #777;
+$chosen-choices-color: #999;
+$chosen-choices-bg: linear-gradient($search-choice-bg-color 1%, $bg-color 15%);
+$chosen-drop-result-selected: $search-choice-disabled-border-color;
+
 /* @group Base */
 .chosen-container {
   position: relative;
@@ -16,10 +45,10 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     top: 100%;
     z-index: 1010;
     width: 100%;
-    border: 1px solid #aaa;
+    border: 1px solid $border-color;
     border-top: 0;
-    background: #fff;
-    box-shadow: 0 4px 5px rgba(#000,.15);
+    background: $bg-color;
+    box-shadow: 0 4px 5px rgba($box-shadow-color,.15);
     clip: rect(0,0,0,0);
     clip-path: inset(100% 100%);
   }
@@ -38,7 +67,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
       white-space: nowrap;
       text-overflow: ellipsis;
       font-weight: normal;
-      color: #999999;
+      color: $group-name-color;
       &:after {
         content: ":";
         padding-left: 2px;
@@ -57,19 +86,19 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     overflow: hidden;
     padding: 0 0 0 8px;
     height: 25px;
-    border: 1px solid #aaa;
+    border: 1px solid $border-color;
     border-radius: 5px;
-    background-color: #fff;
-    background: linear-gradient(#fff 20%, #f6f6f6 50%, #eee 52%, #f4f4f4 100%);
+    background-color: $bg-color;
+    background: $chosen-bg;
     background-clip: padding-box;
-    box-shadow: 0 0 3px #fff inset, 0 1px 1px rgba(#000,.1);
-    color: #444;
+    box-shadow: 0 0 3px $bg-color inset, 0 1px 1px rgba($box-shadow-color,.1);
+    color: $chosen-single-color;
     text-decoration: none;
     white-space: nowrap;
     line-height: 24px;
   }
   .chosen-default {
-    color: #999;
+    color: $chosen-default-color;
   }
   .chosen-single span {
     display: block;
@@ -124,7 +153,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
       width: 100%;
       height: auto;
       outline: 0;
-      border: 1px solid #aaa;
+      border: 1px solid $border-color;
       background: $chosen-sprite no-repeat 100% -20px;
       font-size: 1em;
       font-family: sans-serif;
@@ -147,7 +176,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
 
 /* @group Results */
 .chosen-container .chosen-results {
-  color: #444;
+  color: $chosen-container-color;
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
@@ -169,18 +198,18 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     }
     &.disabled-result {
       display: list-item;
-      color: #ccc;
+      color: $chosen-container-disabled-color;
       cursor: default;
     }
     &.highlighted {
-      background-color: #3875d7;
-      background-image: linear-gradient(#3875d7 20%, #2a62bc 90%);
-      color: #fff;
+      background-color: $highlited-color;
+      background-image: linear-gradient($highlited-color 20%, $highlited-second-color 90%);
+      color: $bg-color;
     }
     &.no-results {
-      color: #777;
+      color: $chosen-container-no-results-color;
       display: list-item;
-      background: #f4f4f4;
+      background: $no-results-bg;
     }
     &.group-result {
       display: list-item;
@@ -207,9 +236,9 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     padding: 0 5px;
     width: 100%;
     height: auto;
-    border: 1px solid #aaa;
-    background-color: #fff;
-    background-image: linear-gradient(#eee 1%, #fff 15%);
+    border: 1px solid $border-color;
+    background-color: $bg-color;
+    background-image: $chosen-choices-bg;
     cursor: text;
   }
   .chosen-choices li {
@@ -227,7 +256,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
         border: 0 !important;
         background: transparent !important;
         box-shadow: none;
-        color: #999;
+        color: $chosen-choices-color;
         font-size: 100%;
         font-family: sans-serif;
         line-height: normal;
@@ -239,16 +268,16 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
       position: relative;
       margin: 3px 5px 3px 0;
       padding: 3px 20px 3px 5px;
-      border: 1px solid #aaa;
+      border: 1px solid $border-color;
       max-width: 100%;
       border-radius: 3px;
-      background-color: #eeeeee;
-      background-image: linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%);
+      background-color: $search-choice-bg-color;
+      background-image: $search-choice-bg;
       background-size: 100% 19px;
       background-repeat: repeat-x;
       background-clip: padding-box;
-      box-shadow: 0 0 2px #fff inset, 0 1px 0 rgba(#000,.05);
-      color: #333;
+      box-shadow: 0 0 2px $bg-color inset, 0 1px 0 rgba($box-shadow-color,.05);
+      color: $search-choice-color;
       line-height: 13px;
       cursor: default;
       span {
@@ -270,13 +299,13 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     }
     &.search-choice-disabled {
       padding-right: 5px;
-      border: 1px solid #ccc;
-      background-color: #e4e4e4;
-      background-image: linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%);
-      color: #666;
+      border: 1px solid $search-choice-disabled-border-color;
+      background-color: $search-choice-disabled-bg-color;
+      background-image: $search-choice-bg;
+      color: $search-choice-disabled-color;
     }
     &.search-choice-focus {
-      background: #d4d4d4;
+      background: $search-choice-focus-bg-color;
       .search-choice-close {
         background-position: -42px -10px;
       }
@@ -288,7 +317,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
   }
   .chosen-drop .result-selected {
     display: list-item;
-    color: #ccc;
+    color: $chosen-drop-result-selected;
     cursor: default;
   }
 }
@@ -297,18 +326,18 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
 /* @group Active  */
 .chosen-container-active{
   .chosen-single {
-    border: 1px solid #5897fb;
-    box-shadow: 0 0 5px rgba(#000,.3);
+    border: 1px solid $chosen-border-color;
+    box-shadow: 0 0 5px rgba($box-shadow-color,.3);
   }
   &.chosen-with-drop{
     .chosen-single {
-      border: 1px solid #aaa;
+      border: 1px solid $border-color;
       -moz-border-radius-bottomright: 0;
       border-bottom-right-radius: 0;
       -moz-border-radius-bottomleft: 0;
       border-bottom-left-radius: 0;
-      background-image: linear-gradient(#eee 20%, #fff 80%);
-      box-shadow: 0 1px 0 #fff inset;
+      background-image: $chosen-single-bg;
+      box-shadow: 0 1px 0 $bg-color inset;
     }
     .chosen-single div {
       border-left: none;
@@ -319,10 +348,10 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     }
   }
   .chosen-choices {
-    border: 1px solid #5897fb;
-    box-shadow: 0 0 5px rgba(#000,.3);
+    border: 1px solid $chosen-border-color;
+    box-shadow: 0 0 5px rgba($box-shadow-color,.3);
     li.search-field input[type="text"] {
-      color: #222 !important;
+      color: $chosen-color !important;
     }
   }
 }
