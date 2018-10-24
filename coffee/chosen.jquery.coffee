@@ -106,7 +106,7 @@ class Chosen extends AbstractChosen
       @container.on 'click.chosen', (evt) -> evt.preventDefault(); return # gobble click of anchor
 
   destroy: ->
-    $(@container[0].ownerDocument).off 'click.chosen', @click_test_action
+    $(if @container[0].getRootNode? then @container[0].getRootNode() else @container[0].ownerDocument).off 'click.chosen', @click_test_action
     @form_field_label.off 'click.chosen' if @form_field_label.length > 0
 
     if @search_field[0].tabIndex
@@ -139,7 +139,7 @@ class Chosen extends AbstractChosen
     if not (evt? and ($ evt.target).hasClass "search-choice-close")
       if not @active_field
         @search_field.val "" if @is_multiple
-        $(@container[0].ownerDocument).on 'click.chosen', @click_test_action
+        $(if @container[0].getRootNode? then @container[0].getRootNode() else @container[0].ownerDocument).on 'click.chosen', @click_test_action
         this.results_show()
       else if not @is_multiple and evt and (($(evt.target)[0] == @selected_item[0]) || $(evt.target).parents("a.chosen-single").length)
         evt.preventDefault()
@@ -161,7 +161,7 @@ class Chosen extends AbstractChosen
     this.close_field() if not @active_field and @container.hasClass "chosen-container-active"
 
   close_field: ->
-    $(@container[0].ownerDocument).off "click.chosen", @click_test_action
+    $(if @container[0].getRootNode? then @container[0].getRootNode() else @container[0].ownerDocument).off "click.chosen", @click_test_action
 
     @active_field = false
     this.results_hide()
