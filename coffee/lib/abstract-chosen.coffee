@@ -62,6 +62,9 @@ class AbstractChosen
     if @is_multiple
       setTimeout (=> this.container_mousedown()), 50 unless @active_field
     else
+      if !@results_showing
+        @results_show()
+
       @activate_field() unless @active_field
 
   input_blur: (evt) ->
