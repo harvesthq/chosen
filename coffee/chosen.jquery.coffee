@@ -171,7 +171,7 @@ class Chosen extends AbstractChosen
 
     this.show_search_field_default()
     this.search_field_scale()
-    @search_field.blur()
+    @search_field.trigger 'blur'
 
   activate_field: ->
     return if @is_disabled
@@ -180,7 +180,7 @@ class Chosen extends AbstractChosen
     @active_field = true
 
     @search_field.val(@search_field.val())
-    @search_field.focus()
+    @search_field.trigger 'focus'
 
 
   test_active_click: (evt) ->
