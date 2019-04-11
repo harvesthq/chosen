@@ -222,8 +222,69 @@ class AbstractChosen
     regex_flag = if @case_sensitive_search then "" else "i"
     new RegExp(regex_string, regex_flag)
 
+  get_list_special_char: () ->
+    chars = []
+    chars.push { val: "ae", let: "(ä|æ|ǽ)" }
+    chars.push { val: "oe", let: "(ö|œ)" }
+    chars.push { val: "ue", let: "(ü)" }
+    chars.push { val: "Ae", let: "(Ä)" }
+    chars.push { val: "Ue", let: "(Ü)" }
+    chars.push { val: "Oe", let: "(Ö)" }
+    chars.push { val: "AE", let: "(Æ|Ǽ)" }
+    chars.push { val: "ss", let: "(ß)" }
+    chars.push { val: "IJ", let: "(Ĳ)" }
+    chars.push { val: "ij", let: "(ĳ)" }
+    chars.push { val: "OE", let: "(Œ)" }
+    chars.push { val: "A", let: "(À|Á|Â|Ã|Ä|Å|Ǻ|Ā|Ă|Ą|Ǎ)" }
+    chars.push { val: "a", let: "(à|á|â|ã|å|ǻ|ā|ă|ą|ǎ|ª)" }
+    chars.push { val: "C", let: "(Ç|Ć|Ĉ|Ċ|Č)" }
+    chars.push { val: "c", let: "(ç|ć|ĉ|ċ|č)" }
+    chars.push { val: "D", let: "(Ð|Ď|Đ)" }
+    chars.push { val: "d", let: "(ð|ď|đ)" }
+    chars.push { val: "E", let: "(È|É|Ê|Ë|Ē|Ĕ|Ė|Ę|Ě)" }
+    chars.push { val: "e", let: "(è|é|ê|ë|ē|ĕ|ė|ę|ě)" }
+    chars.push { val: "G", let: "(Ĝ|Ğ|Ġ|Ģ)" }
+    chars.push { val: "g", let: "(ĝ|ğ|ġ|ģ)" }
+    chars.push { val: "H", let: "(Ĥ|Ħ)" }
+    chars.push { val: "h", let: "(ĥ|ħ)" }
+    chars.push { val: "I", let: "(Ì|Í|Î|Ï|Ĩ|Ī|Ĭ|Ǐ|Į|İ)" }
+    chars.push { val: "i", let: "(ì|í|î|ï|ĩ|ī|ĭ|ǐ|į|ı)" }
+    chars.push { val: "J", let: "(Ĵ)" }
+    chars.push { val: "j", let: "(ĵ)" }
+    chars.push { val: "K", let: "(Ķ)" }
+    chars.push { val: "k", let: "(ķ)" }
+    chars.push { val: "L", let: "(Ĺ|Ļ|Ľ|Ŀ|Ł)" }
+    chars.push { val: "l", let: "(ĺ|ļ|ľ|ŀ|ł)" }
+    chars.push { val: "N", let: "(Ñ|Ń|Ņ|Ň)" }
+    chars.push { val: "n", let: "(ñ|ń|ņ|ň|ŉ)" }
+    chars.push { val: "O", let: "(Ò|Ó|Ô|Õ|Ō|Ŏ|Ǒ|Ő|Ơ|Ø|Ǿ)" }
+    chars.push { val: "o", let: "(ò|ó|ô|õ|ō|ŏ|ǒ|ő|ơ|ø|ǿ|º)" }
+    chars.push { val: "R", let: "(Ŕ|Ŗ|Ř)" }
+    chars.push { val: "r", let: "(ŕ|ŗ|ř)" }
+    chars.push { val: "S", let: "(Ś|Ŝ|Ş|Š)" }
+    chars.push { val: "s", let: "(ś|ŝ|ş|š|ſ)" }
+    chars.push { val: "T", let: "(Ţ|Ť|Ŧ)" }
+    chars.push { val: "t", let: "(ţ|ť|ŧ)" }
+    chars.push { val: "U", let: "(Ù|Ú|Û|Ũ|Ū|Ŭ|Ů|Ű|Ų|Ư|Ǔ|Ǖ|Ǘ|Ǚ|Ǜ)" }
+    chars.push { val: "u", let: "(ù|ú|û|ũ|ū|ŭ|ů|ű|ų|ư|ǔ|ǖ|ǘ|ǚ|ǜ)" }
+    chars.push { val: "Y", let: "(Ý|Ÿ|Ŷ)" }
+    chars.push { val: "y", let: "(ý|ÿ|ŷ)" }
+    chars.push { val: "W", let: "(Ŵ)" }
+    chars.push { val: "w", let: "(ŵ)" }
+    chars.push { val: "Z", let: "(Ź|Ż|Ž)" }
+    chars.push { val: "z", let: "(ź|ż|ž)" }
+    chars.push { val: "f", let: "(ƒ)" }
+    chars
+  
+  escape_special_char: (str) ->
+    specialChars = this.get_list_special_char()
+    for special in specialChars
+      str.replace(new RegExp(special.let, "g"), special.val)
+    str
+
   search_string_match: (search_string, regex) ->
     match = regex.exec(search_string)
+    match = regex.exec(this.escape_special_char(search_string)) if !@case_sensitive_search && match?
     match.index += 1 if !@search_contains && match?[1] # make up for lack of lookbehind operator in regex
     match
 
