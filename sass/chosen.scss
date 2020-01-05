@@ -108,7 +108,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
       display: block;
       width: 100%;
       height: 100%;
-      background: $chosen-sprite no-repeat 0px 2px;
+      background: $chosen-sprite no-repeat 0 0;
     }
   }
   .chosen-search {
@@ -420,6 +420,10 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     background-image: $chosen-sprite-retina !important;
     background-size: 52px 37px !important;
     background-repeat: no-repeat !important;
+  }
+
+  .chosen-container-single .chosen-single div b {
+    background-position: 0 2px;
   }
 }
 /* @end */
