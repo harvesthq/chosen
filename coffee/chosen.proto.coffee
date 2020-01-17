@@ -193,7 +193,7 @@ class @Chosen extends AbstractChosen
       @search_choices.select("li.search-choice").invoke("remove")
     else
       this.single_set_selected_text()
-      if @disable_search or @form_field.options.length <= @disable_search_threshold
+      if @disable_search or @form_field.options.length <= @disable_search_threshold and not @create_option
         @search_field.readOnly = true
         @container.addClassName "chosen-container-single-nosearch"
       else
@@ -340,6 +340,11 @@ class @Chosen extends AbstractChosen
   result_select: (evt) ->
     if @result_highlight
       high = @result_highlight
+
+      if high.hasClassName "create-option"
+        this.select_create_option(@search_field.value)
+        return this.results_hide()
+
       this.result_clear_highlight()
 
       if @is_multiple and @max_selected_options <= this.choices_count()
@@ -435,15 +440,38 @@ class @Chosen extends AbstractChosen
     @search_results.insert this.get_no_results_html(terms)
     @form_field.fire("chosen:no_results", {chosen: this})
 
+  show_create_option: (terms) ->
+    create_option_html = this.get_create_option_html(terms)
+    @search_results.insert create_option_html
+    @search_results.down(".create-option").observe "click", (evt) => this.select_create_option(terms)
+
+  create_option_clear: ->
+    co = null
+    co.remove() while co = @search_results.down(".create-option")
+
+  select_create_option: ( terms ) ->
+    if Object.isFunction( @create_option )
+      @create_option.call this, terms
+    else
+      this.select_append_option( value: terms, text: terms )
+
+  select_append_option: (options) ->
+    @form_field.insert this.get_option_html(options)
+    Event.fire @form_field, "chosen:updated"
+    if typeof Event.simulate is 'function'
+      @form_field.simulate("change")
+      @search_field.simulate("focus")
+
   no_results_clear: ->
     nr = null
     nr.remove() while nr = @search_results.down(".no-results")
-
 
   keydown_arrow: ->
     if @results_showing and @result_highlight
       next_sib = @result_highlight.next('.active-result')
       this.result_do_highlight next_sib if next_sib
+    else if @results_showing and @create_option
+      this.result_do_highlight(@search_results.select('.create-option').first())
     else
       this.results_show()
 
