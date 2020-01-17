@@ -279,12 +279,18 @@ class Chosen extends AbstractChosen
     if @form_field_label.length > 0
       @form_field_label.on 'click.chosen', this.label_click_handler
 
+  set_search_field_placeholder: ->
+    if @is_multiple and this.choices_count() < 1
+      @search_field.attr('placeholder', @default_text)
+    else
+      @search_field.attr('placeholder', '')
+
   show_search_field_default: ->
+    @search_field.val('')
+    do @set_search_field_placeholder
     if @is_multiple and this.choices_count() < 1 and not @active_field
-      @search_field.val(@default_text)
       @search_field.addClass "default"
     else
-      @search_field.val("")
       @search_field.removeClass "default"
 
   search_results_mouseup: (evt) ->
@@ -329,6 +335,7 @@ class Chosen extends AbstractChosen
 
       link.parents('li').first().remove()
 
+      do @set_search_field_placeholder
       this.search_field_scale()
 
   results_reset: ->
@@ -497,7 +504,7 @@ class Chosen extends AbstractChosen
       style_block[style] = @search_field.css(style)
 
     div = $('<div />').css(style_block)
-    div.text this.get_search_field_value()
+    div.text @get_search_field_value() || @search_field.attr('placeholder')
     $('body').append div
 
     width = div.width() + 25

@@ -227,7 +227,6 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
         border: 0 !important;
         background: transparent !important;
         box-shadow: none;
-        color: #999;
         font-size: 100%;
         font-family: sans-serif;
         line-height: normal;
@@ -321,9 +320,6 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
   .chosen-choices {
     border: 1px solid #5897fb;
     box-shadow: 0 0 5px rgba(#000,.3);
-    li.search-field input[type="text"] {
-      color: #222 !important;
-    }
   }
 }
 /* @end */
