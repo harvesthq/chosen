@@ -1,3 +1,9 @@
+# Deprecated
+
+#### This version of Chosen is not currently under active development while we decide on its future direction.
+
+---
+
 # Chosen
 
 Chosen is a library for making long, unwieldy select boxes more user friendly.
