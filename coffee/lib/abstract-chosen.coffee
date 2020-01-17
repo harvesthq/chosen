@@ -117,6 +117,8 @@ class AbstractChosen
     option_el.style.cssText = option.style if option.style
     option_el.setAttribute("data-option-array-index", option.array_index)
     option_el.innerHTML = option.highlighted_html or option.html
+    option_el.setAttribute("role", "option")
+    option_el.id = "#{@form_field.id}-chosen-search-result-#{option.array_index}"
     option_el.title = option.title if option.title
 
     this.outerHTML(option_el)
@@ -337,7 +339,7 @@ class AbstractChosen
       </a>
       <div class="chosen-drop">
         <div class="chosen-search">
-          <input class="chosen-search-input" type="text" autocomplete="off" />
+          <input class="chosen-search-input" type="text" autocomplete="off" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" autocomplete="off" role="listbox" />
         </div>
         <ul class="chosen-results"></ul>
       </div>
@@ -347,11 +349,11 @@ class AbstractChosen
     """
       <ul class="chosen-choices">
         <li class="search-field">
-          <input class="chosen-search-input" type="text" autocomplete="off" value="#{@default_text}" />
+          <input class="chosen-search-input" type="text" autocomplete="off" value="#{@default_text}" aria-expanded="false" aria-haspopup="true" role="combobox" aria-autocomplete="list" />
         </li>
       </ul>
       <div class="chosen-drop">
-        <ul class="chosen-results"></ul>
+        <ul class="chosen-results" role="listbox"></ul>
       </div>
     """
 
