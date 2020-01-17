@@ -27,7 +27,7 @@
     "input",
     "ui"
   ],
-  "type": "library",
+  "type": "npm-asset",
   "license": "MIT",
   "minimum-stability": "stable",
   "homepage": "https://harvesthq.github.io/chosen/",
