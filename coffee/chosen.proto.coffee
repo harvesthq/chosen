@@ -25,7 +25,10 @@ class @Chosen extends AbstractChosen
     else
       @container.update this.get_single_html()
 
-    @form_field.hide().insert({ after: @container })
+    @form_field.setStyle({
+      position: 'absolute',
+      opacity: '0'
+    }).insert({ after: @container })
     @dropdown = @container.down('div.chosen-drop')
 
     @search_field = @container.down('input')
