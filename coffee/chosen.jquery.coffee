@@ -47,7 +47,8 @@ class Chosen extends AbstractChosen
     else
       @container.html this.get_single_html()
 
-    @form_field_jq.hide().after @container
+    @form_field_jq.hide()
+    @form_field_jq.after @container
     @dropdown = @container.find('div.chosen-drop').first()
 
     @search_field = @container.find('input').first()
