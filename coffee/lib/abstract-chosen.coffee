@@ -309,6 +309,8 @@ class AbstractChosen
     return false if @is_multiple and (not @display_selected_options and option.selected)
     return false if not @display_disabled_options and option.disabled
     return false if option.empty
+    return false if option.hidden
+    return false if option.group_array_index? and @results_data[option.group_array_index].hidden
 
     return true
 
