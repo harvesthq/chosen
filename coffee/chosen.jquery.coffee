@@ -310,6 +310,8 @@ class Chosen extends AbstractChosen
       close_link = $('<a />', { class: 'search-choice-close', 'data-option-array-index': item.array_index })
       close_link.on 'click.chosen', (evt) => this.choice_destroy_link_click(evt)
       choice.append close_link
+    if @inherit_option_classes && item.classes
+      choice[0].classList.add item.classes
 
     @search_container.before  choice
 

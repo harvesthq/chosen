@@ -302,6 +302,8 @@ class @Chosen extends AbstractChosen
       close_link = new Element('a', { href: '#', class: 'search-choice-close', rel: item.array_index })
       close_link.observe "click", (evt) => this.choice_destroy_link_click(evt)
       choice.insert close_link
+    if @inherit_option_classes && item.classes
+      choice[0].classList.add item.classes
 
     @search_container.insert { before: choice }
 
