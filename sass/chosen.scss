@@ -8,6 +8,9 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
   vertical-align: middle;
   font-size: 13px;
   user-select: none;
+  &:focus {
+    outline: none;
+  }
   * {
     box-sizing: border-box;
   }
