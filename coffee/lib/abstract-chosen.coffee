@@ -211,9 +211,11 @@ class AbstractChosen
 
     if results < 1 and query.length
       this.update_results_content ""
+      this.fire_search_updated query
       this.no_results query
     else
       this.update_results_content this.results_option_build()
+      this.fire_search_updated query
       this.winnow_results_set_highlight() unless options?.skip_highlight
 
   get_search_regex: (escaped_search_string) ->
