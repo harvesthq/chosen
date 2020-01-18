@@ -34,6 +34,7 @@ class Chosen extends AbstractChosen
     container_props =
       'class': container_classes.join ' '
       'title': @form_field.title
+      'aria-hidden': true
 
     container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
 
@@ -47,7 +48,7 @@ class Chosen extends AbstractChosen
     else
       @container.html this.get_single_html()
 
-    @form_field_jq.hide().after @container
+    @form_field_jq.addClass('chosen-sr-only').after @container
     @dropdown = @container.find('div.chosen-drop').first()
 
     @search_field = @container.find('input').first()
