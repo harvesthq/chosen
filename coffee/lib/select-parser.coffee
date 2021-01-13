@@ -24,15 +24,16 @@ class SelectParser
 
   add_option: (option, group_position, group_disabled) ->
     if option.nodeName.toUpperCase() is "OPTION"
-      if option.text != ""
+      option_text = if option.text != "" then option.text else option.label
+      if option_text != ""
         if group_position?
           @parsed[group_position].children += 1
         @parsed.push
           array_index: @parsed.length
           options_index: @options_index
           value: option.value
-          text: option.text
-          html: option.innerHTML
+          text: option_text
+          html: if option.innerHTML != "" then option.innerHTML else option_text
           title: option.title if option.title
           selected: option.selected
           disabled: if group_disabled is true then group_disabled else option.disabled
