@@ -255,6 +255,9 @@ class Chosen extends AbstractChosen
   update_results_content: (content) ->
     @search_results.html content
 
+  fire_search_updated: (search_term) ->
+    @form_field_jq.trigger("chosen:search_updated", {chosen: this, search_term: search_term})
+
   results_hide: ->
     if @results_showing
       this.result_clear_highlight()
