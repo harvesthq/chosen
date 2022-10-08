@@ -283,8 +283,8 @@ class @Chosen extends AbstractChosen
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
     if target
       @result_highlight = target
-      this.result_select(evt)
       @search_field.focus()
+      this.result_select(evt)
 
   search_results_mouseover: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
