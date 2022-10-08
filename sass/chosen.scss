@@ -71,6 +71,7 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
   .chosen-default {
     color: #999;
   }
+  .chosen-single-with-deselect.chosen-default span,
   .chosen-single span {
     display: block;
     overflow: hidden;
