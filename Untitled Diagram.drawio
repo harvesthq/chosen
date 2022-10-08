@@ -1,0 +1,25 @@
+<mxfile modified="2021-08-07T00:46:51.330Z" host="app.diagrams.net" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36" etag="EVqKQCCnDcUdVtz8x1Zh" version="14.9.5" type="github">
+  <diagram id="WI9T0HZ2pTsCkuznbFz-" name="Page-1">
+    <mxGraphModel dx="1038" dy="547" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CjTgLH3chODo_smRKOSB-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CjTgLH3chODo_smRKOSB-2" target="CjTgLH3chODo_smRKOSB-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CjTgLH3chODo_smRKOSB-2" value="中科" style="image;html=1;image=img/lib/clip_art/computers/Network_128x128.png" vertex="1" parent="1">
+          <mxGeometry x="140" y="140" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="CjTgLH3chODo_smRKOSB-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CjTgLH3chODo_smRKOSB-3" target="CjTgLH3chODo_smRKOSB-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CjTgLH3chODo_smRKOSB-3" value="" style="line;strokeWidth=4;direction=south;html=1;perimeter=backbonePerimeter;points=[];outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="240" y="80" width="10" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="CjTgLH3chODo_smRKOSB-6" value="F5" style="strokeColor=#666666;html=1;labelPosition=right;align=left;spacingLeft=15;shadow=0;dashed=0;outlineConnect=0;shape=mxgraph.rack.f5.big_ip_110x0;" vertex="1" parent="1">
+          <mxGeometry x="310" y="135" width="110" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
