@@ -118,6 +118,7 @@ class AbstractChosen
     option_el.setAttribute("data-option-array-index", option.array_index)
     option_el.innerHTML = option.highlighted_html or option.html
     option_el.title = option.title if option.title
+    option_el.setAttribute("data-value", option.value);
 
     this.outerHTML(option_el)
 
