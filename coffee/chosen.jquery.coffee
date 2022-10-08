@@ -34,6 +34,7 @@ class Chosen extends AbstractChosen
     container_props =
       'class': container_classes.join ' '
       'title': @form_field.title
+      'tabIndex': '-1'
 
     container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
 
@@ -76,8 +77,10 @@ class Chosen extends AbstractChosen
 
     @container.on 'mousedown.chosen', (evt) => this.container_mousedown(evt); return
     @container.on 'mouseup.chosen', (evt) => this.container_mouseup(evt); return
-    @container.on 'mouseenter.chosen', (evt) => this.mouse_enter(evt); return
-    @container.on 'mouseleave.chosen', (evt) => this.mouse_leave(evt); return
+    @container.on 'focusin.chosen', (evt) => this.container_focusin(evt); return
+    @container.on 'focusout.chosen', (evt) => this.container_focusout(evt); return
+    @container.on 'chosen:blur.chosen', (evt) => this.close_field(evt); return
+    @container.on 'chosen:focus.chosen', (evt) => this.input_focus(evt); return
 
     @search_results.on 'mouseup.chosen', (evt) => this.search_results_mouseup(evt); return
     @search_results.on 'mouseover.chosen', (evt) => this.search_results_mouseover(evt); return
@@ -93,10 +96,8 @@ class Chosen extends AbstractChosen
     @form_field_jq.on "chosen:open.chosen", (evt) => this.container_mousedown(evt); return
     @form_field_jq.on "chosen:close.chosen", (evt) => this.close_field(evt); return
 
-    @search_field.on 'blur.chosen', (evt) => this.input_blur(evt); return
     @search_field.on 'keyup.chosen', (evt) => this.keyup_checker(evt); return
     @search_field.on 'keydown.chosen', (evt) => this.keydown_checker(evt); return
-    @search_field.on 'focus.chosen', (evt) => this.input_focus(evt); return
     @search_field.on 'cut.chosen', (evt) => this.clipboard_event_checker(evt); return
     @search_field.on 'paste.chosen', (evt) => this.clipboard_event_checker(evt); return
 
@@ -150,15 +151,21 @@ class Chosen extends AbstractChosen
   container_mouseup: (evt) ->
     this.results_reset(evt) if evt.target.nodeName is "ABBR" and not @is_disabled
 
+  container_focusin: (evt) ->
+    return if @active_field
+    @container.trigger("chosen:focus")
+
+  container_focusout: (evt) ->
+    setTimeout () =>
+      unless @container[0].contains(document.activeElement)
+        @container.trigger("chosen:blur") if @active_field
+
   search_results_mousewheel: (evt) ->
     delta = evt.originalEvent.deltaY or -evt.originalEvent.wheelDelta or evt.originalEvent.detail if evt.originalEvent
     if delta?
       evt.preventDefault()
       delta = delta * 40 if evt.type is 'DOMMouseScroll'
       @search_results.scrollTop(delta + @search_results.scrollTop())
-
-  blur_test: (evt) ->
-    this.close_field() if not @active_field and @container.hasClass "chosen-container-active"
 
   close_field: ->
     $(@container[0].ownerDocument).off "click.chosen", @click_test_action
